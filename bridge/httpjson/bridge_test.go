@@ -157,6 +157,16 @@ func TestExplicitContractsAuthorizationAndConfigurationSnapshots(t *testing.T) {
 	if calls.Load() != 1 {
 		t.Fatal("invalid local calls reached remote capability")
 	}
+	_, err := c.Call(context.Background(), "read", func() {}, &result)
+	var encodeError *json.UnsupportedTypeError
+	if !errors.Is(err, bridge.ErrInvalidRequest) || !errors.As(err, &encodeError) || calls.Load() != 1 {
+		t.Fatal("local encoding cause lost", err, calls.Load())
+	}
+	_, err = c.Call(context.Background(), "read", struct{}{}, new(int))
+	var decodeError *json.UnmarshalTypeError
+	if !errors.Is(err, bridge.ErrProtocolMismatch) || !errors.As(err, &decodeError) {
+		t.Fatal("local decoding cause lost", err)
+	}
 }
 
 func TestMalformedAndOversizedMessagesDoNotInvokeProvider(t *testing.T) {
@@ -307,7 +317,7 @@ func TestDeadlinesAndCancellationReachRemoteContext(t *testing.T) {
 }
 
 func TestNoAutomaticRetryOrRedirect(t *testing.T) {
-	for _, mode := range []string{"drop", "redirect", "wrong-protocol"} {
+	for _, mode := range []string{"drop", "redirect", "wrong-protocol", "wrong-route", "wrong-status", "wrong-contract"} {
 		t.Run(mode, func(t *testing.T) {
 			var calls atomic.Int32
 			listener, err := net.Listen("tcp", "127.0.0.1:0")
@@ -329,6 +339,20 @@ func TestNoAutomaticRetryOrRedirect(t *testing.T) {
 				if mode == "redirect" {
 					w.Header().Set("Location", "/unexpected")
 					w.WriteHeader(http.StatusTemporaryRedirect)
+					return
+				}
+				if mode == "wrong-route" || mode == "wrong-status" || mode == "wrong-contract" {
+					name, responseContract := "read", contract
+					if mode == "wrong-route" {
+						name = "different"
+					}
+					if mode == "wrong-contract" {
+						responseContract.Version++
+					}
+					if mode == "wrong-status" {
+						w.WriteHeader(http.StatusBadGateway)
+					}
+					_ = json.NewEncoder(w).Encode(map[string]any{"protocol": 1, "route": name, "contract": responseContract, "generation": 0, "result": "ok"})
 					return
 				}
 				connection, _, err := w.(http.Hijacker).Hijack()
@@ -354,6 +378,12 @@ func TestNoAutomaticRetryOrRedirect(t *testing.T) {
 			_, err = c.Call(context.Background(), "read", struct{}{}, new(string))
 			if err == nil || calls.Load() != 1 {
 				t.Fatal("request retried or redirected", err, calls.Load())
+			}
+			if (mode == "wrong-route" || mode == "wrong-status") && !errors.Is(err, bridge.ErrProtocolMismatch) {
+				t.Fatal("malformed response classified as contract mismatch", err)
+			}
+			if mode == "wrong-contract" && !errors.Is(err, bridge.ErrContractMismatch) {
+				t.Fatal("contract mismatch not identified", err)
 			}
 		})
 	}
@@ -389,6 +419,47 @@ func TestTLSVerificationAndInsecureConfiguration(t *testing.T) {
 	var result string
 	if _, err := trusted.Call(context.Background(), "read", struct{}{}, &result); err != nil || result != "tls" {
 		t.Fatal(result, err)
+	}
+	// Selecting an alternate certificate/config must not weaken bridge policy.
+	selected := &tls.Config{Certificates: config.TLSConfig.Certificates, MinVersion: tls.VersionTLS10, NextProtos: []string{"h2"}}
+	config.TLSConfig = &tls.Config{GetConfigForClient: func(*tls.ClientHelloInfo) (*tls.Config, error) { return selected, nil }}
+	callbackHost := host(t, config)
+	address, err := url.Parse(callbackHost.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
+	legacy, err := tls.DialWithDialer(&net.Dialer{Timeout: time.Second}, "tcp", address.Host, &tls.Config{RootCAs: pool, MinVersion: tls.VersionTLS10, MaxVersion: tls.VersionTLS11})
+	if err == nil {
+		legacy.Close()
+		t.Fatal("TLS callback bypassed minimum version")
+	}
+	modern, err := tls.DialWithDialer(&net.Dialer{Timeout: time.Second}, "tcp", address.Host, &tls.Config{RootCAs: pool, MinVersion: tls.VersionTLS12, NextProtos: []string{"h2", "http/1.1"}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if state := modern.ConnectionState(); state.Version < tls.VersionTLS12 || state.NegotiatedProtocol != "http/1.1" {
+		t.Fatal("TLS callback changed transport policy", state)
+	}
+	modern.Close()
+	if selected.MinVersion != tls.VersionTLS10 || len(selected.NextProtos) != 1 || selected.NextProtos[0] != "h2" {
+		t.Fatal("application TLS config mutated")
+	}
+	// Static trust pools and certificate data belong to the constructed bridge.
+	emptyPool := x509.NewCertPool()
+	isolated := client(t, h, bridge.ClientOptions{TLSConfig: &tls.Config{RootCAs: emptyPool}})
+	emptyPool.AddCert(certificate)
+	if err := isolated.Start(context.Background()); !errors.Is(err, bridge.ErrUnavailable) {
+		t.Fatal("client trust changed through original pool", err)
+	}
+	ownedDER := append([]byte(nil), der...)
+	staticConfig := options(bridge.Handle("read", contract, func(context.Context, struct{}) (string, error) { return "snapshot", nil }))
+	staticConfig.TLSConfig = &tls.Config{Certificates: []tls.Certificate{{Certificate: [][]byte{ownedDER}, PrivateKey: key}}}
+	staticHost := host(t, staticConfig)
+	ownedDER[0] ^= 0xff
+	staticConfig.TLSConfig.Certificates[0] = tls.Certificate{}
+	staticClient := client(t, staticHost, bridge.ClientOptions{TLSConfig: &tls.Config{RootCAs: pool}})
+	if err := staticClient.Start(context.Background()); err != nil {
+		t.Fatal("host certificate changed through original configuration", err)
 	}
 	for _, co := range []bridge.ClientOptions{{URL: "http://192.0.2.1:80"}, {URL: "http://user:password@127.0.0.1"}, {URL: "http://127.0.0.1?token=secret"}, {URL: h.URL(), TLSConfig: &tls.Config{InsecureSkipVerify: true}}} {
 		co.Token = "reader"

@@ -46,13 +46,7 @@ func NewClient(options ClientOptions) (*Client, error) {
 	if u.Scheme == "http" && !loopback(u.Hostname()) && !options.AllowInsecure {
 		return nil, ErrInvalidConfig
 	}
-	tlsConfig := &tls.Config{MinVersion: tls.VersionTLS12}
-	if options.TLSConfig != nil {
-		tlsConfig = options.TLSConfig.Clone()
-		if tlsConfig.MinVersion < tls.VersionTLS12 {
-			tlsConfig.MinVersion = tls.VersionTLS12
-		}
-	}
+	tlsConfig := transportTLS(options.TLSConfig)
 	if tlsConfig.InsecureSkipVerify && !options.AllowInsecure {
 		return nil, ErrInvalidConfig
 	}
@@ -76,7 +70,6 @@ func NewClient(options ClientOptions) (*Client, error) {
 		}
 		routes[d.Name] = d
 	}
-	tlsConfig.NextProtos = []string{"http/1.1"}
 	transport := &http.Transport{DialContext: (&net.Dialer{Timeout: 5 * time.Second, KeepAlive: 30 * time.Second}).DialContext, TLSClientConfig: tlsConfig, TLSNextProto: map[string]func(string, *tls.Conn) http.RoundTripper{}, MaxIdleConns: 100, IdleConnTimeout: 90 * time.Second, TLSHandshakeTimeout: 5 * time.Second}
 	ctx, cancel := context.WithCancel(context.Background())
 	return &Client{url: strings.TrimSuffix(options.URL, "/"), token: options.Token, routes: routes, timeout: options.Timeout, limit: limit, transport: transport, http: &http.Client{Transport: transport, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}, ctx: ctx, cancel: cancel}, nil
@@ -146,7 +139,7 @@ func (c *Client) Call(ctx context.Context, route string, input, output any) (Cal
 	}
 	payload, err := json.Marshal(input)
 	if err != nil {
-		return CallInfo{}, failure("encode", route, ErrInvalidRequest)
+		return CallInfo{}, failure("encode", route, errors.Join(ErrInvalidRequest, err))
 	}
 	result, err := c.perform(ctx, callPath, d, payload)
 	if err != nil {
@@ -155,7 +148,7 @@ func (c *Client) Call(ctx context.Context, route string, input, output any) (Cal
 	info := CallInfo{RemoteGeneration: result.Generation}
 	if output != nil {
 		if err := decode(result.Result, output); err != nil {
-			return info, failure("decode", route, ErrProtocolMismatch)
+			return info, failure("decode", route, errors.Join(ErrProtocolMismatch, err))
 		}
 	}
 	return info, nil
@@ -176,7 +169,7 @@ func (c *Client) perform(parent context.Context, path string, d Descriptor, payl
 	}
 	data, err := json.Marshal(request{Protocol: ProtocolVersion, Route: d.Name, Contract: d.Contract, TimeoutMillis: milliseconds(budget), Payload: payload})
 	if err != nil {
-		return response{}, failure("encode", d.Name, ErrInvalidRequest)
+		return response{}, failure("encode", d.Name, errors.Join(ErrInvalidRequest, err))
 	}
 	if int64(len(data)) > c.limit {
 		return response{}, failure("encode", d.Name, ErrMessageTooLarge)
@@ -202,7 +195,10 @@ func (c *Client) perform(parent context.Context, path string, d Descriptor, payl
 		return response{}, failure("response", d.Name, requestError(ctx, err))
 	}
 	var result response
-	if err := decode(data, &result); err != nil || result.Protocol != ProtocolVersion {
+	if err := decode(data, &result); err != nil {
+		return response{}, failure("response", d.Name, errors.Join(ErrProtocolMismatch, err))
+	}
+	if result.Protocol != ProtocolVersion {
 		return response{}, failure("response", d.Name, ErrProtocolMismatch)
 	}
 	if result.Error != nil {
@@ -212,7 +208,10 @@ func (c *Client) perform(parent context.Context, path string, d Descriptor, payl
 		}
 		return response{}, failure("remote", d.Name, faultCause(f))
 	}
-	if res.StatusCode != http.StatusOK || result.Route != d.Name || result.Contract != d.Contract {
+	if res.StatusCode != http.StatusOK || result.Route != d.Name {
+		return response{}, failure("response", d.Name, ErrProtocolMismatch)
+	}
+	if result.Contract != d.Contract {
 		return response{}, failure("response", d.Name, ErrContractMismatch)
 	}
 	if path == callPath && len(result.Result) == 0 {

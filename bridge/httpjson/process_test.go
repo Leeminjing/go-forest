@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -470,6 +471,9 @@ func (p *childProcess) kill(t *testing.T) {
 	case <-p.done:
 	case <-time.After(5 * time.Second):
 		t.Fatal("killed process did not exit")
+	}
+	if strings.Contains(p.stderr.String(), "WARNING: DATA RACE") {
+		t.Fatalf("race report before intentional kill: %s", p.stderr.String())
 	}
 }
 

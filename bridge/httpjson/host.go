@@ -71,14 +71,10 @@ func NewHost(f *forest.Forest, options HostOptions) (*Host, error) {
 	}
 	h := &Host{forest: f, address: options.Address, routes: map[string]Route{}, timeout: options.MaxCallDuration, limit: limit}
 	if options.TLSConfig != nil {
-		h.tls = options.TLSConfig.Clone()
+		h.tls = transportTLS(options.TLSConfig)
 		if len(h.tls.Certificates) == 0 && h.tls.GetCertificate == nil && h.tls.GetConfigForClient == nil {
 			return nil, ErrInvalidConfig
 		}
-		if h.tls.MinVersion < tls.VersionTLS12 {
-			h.tls.MinVersion = tls.VersionTLS12
-		}
-		h.tls.NextProtos = []string{"http/1.1"}
 	}
 	for _, r := range options.Routes {
 		if !validDescriptor(r.Descriptor) || r.Handle == nil {
