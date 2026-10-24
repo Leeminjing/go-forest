@@ -12,7 +12,7 @@ go get github.com/Leeminjing/go-forest@v0.1.0
 
 应用导入 `github.com/Leeminjing/go-forest/forest`。发布版本遵循 Go 模块的语义版本标签约定。
 
-v0.1.0 标签只包含稳定核心；使用当前 v0.2 组合层可在项目中执行 `go get github.com/Leeminjing/go-forest@main`，再导入 `github.com/Leeminjing/go-forest/forest/compose`。
+v0.1.0 标签只包含稳定核心；使用 v0.2 组合层可执行 `go get github.com/Leeminjing/go-forest@v0.2.0`，再导入 `github.com/Leeminjing/go-forest/forest/compose`。
 
 ## 先运行
 
