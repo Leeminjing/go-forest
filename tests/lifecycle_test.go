@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"go-forest/forest"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 func receive[T any](t *testing.T, ch <-chan T) T {

@@ -4,7 +4,13 @@
 
 核心不包含 Web、Agent、RPC 或数据库模型。普通 Go 包通过自己的接口声明依赖、公开能力，在运行中嵌套、连接、重绑和替换。
 
-本仓库实现单进程内存版 v0.1，Go 1.23+。行为基线见 [Spec](docs/spec.md)，实现协议见 [Design](docs/design.md)。模块路径暂为 `go-forest`；发布到代码托管平台时可改为实际仓库路径。
+本仓库实现单进程内存版 v0.1，Go 1.23+。行为基线见 [Spec](docs/spec.md)，实现协议见 [Design](docs/design.md)。正式模块路径为 `github.com/Leeminjing/go-forest`。
+
+```sh
+go get github.com/Leeminjing/go-forest@v0.1.0
+```
+
+应用导入 `github.com/Leeminjing/go-forest/forest`。发布版本遵循 Go 模块的语义版本标签约定。
 
 ## 先运行
 
@@ -144,14 +150,14 @@ Snapshot 返回独立的结构副本和实例诊断。事件涵盖成功、失�
 go vet ./...
 go test ./... -timeout 60s
 go test -race ./... -count=3 -timeout 90s
-go test -coverpkg=go-forest/forest -coverprofile=coverage.out ./tests
+go test -coverpkg=github.com/Leeminjing/go-forest/forest -coverprofile=coverage.out ./tests
 ```
 
 Windows 的 Go race detector 需要适当的 C 工具链。没有时可在 PowerShell 中通过 Docker 执行 Linux 并发验收：
 
 ```powershell
 docker run --rm --mount "type=bind,source=$($PWD.Path),target=/src" -w /src golang:1.26 go test -race ./... -count=3 -timeout 90s
-go test '-coverpkg=go-forest/forest' '-coverprofile=coverage.out' ./tests
+go test '-coverpkg=github.com/Leeminjing/go-forest/forest' '-coverprofile=coverage.out' ./tests
 ```
 
 测试覆盖十项验收及资源顺序、事件缺口、取消、类型/语义契约、独占资源拒绝、子树安全保留等约束。CI 在 Windows/Linux 运行测试，在 Linux 运行 race detector。

@@ -6,8 +6,8 @@ import (
 	"log"
 	"time"
 
-	"go-forest/examples/trees/clock"
-	"go-forest/forest"
+	"github.com/Leeminjing/go-forest/examples/trees/clock"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 func main() {

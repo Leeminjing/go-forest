@@ -7,7 +7,7 @@
 | `go vet ./...` | 通过 |
 | `go test ./... -timeout 60s` | 30 个顶层验收/回归测试通过，另含子测试 |
 | `go test -race ./... -count=3 -timeout 90s` | Linux Docker，完整测试连续三轮通过，无 data race 报告 |
-| 核心语句覆盖率 | 87.9%，使用 `-coverpkg=go-forest/forest` |
+| 核心语句覆盖率 | 87.9%，使用 `-coverpkg=github.com/Leeminjing/go-forest/forest` |
 | Hello Forest | `forest: 2026-10-24T08:00:00Z`，版本 1、三树、两条 Link |
 | Nesting | clock → formatter → printer 两级父子关系及实际调用通过 |
 | Hot Swap | 新调用返回 2，替换前进入的旧调用返回 1 |

@@ -3,7 +3,7 @@ package model
 
 import (
 	"context"
-	"go-forest/forest"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 type Generator interface {

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"go-forest/forest"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 // The consumer owns these interfaces. Providers never import a consumer package.

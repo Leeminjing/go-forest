@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"go-forest/forest"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 func register(t *testing.T, f *forest.Forest, d forest.Definition) forest.DefinitionRef {

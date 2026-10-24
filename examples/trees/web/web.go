@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"go-forest/forest"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 type Agent interface {

@@ -8,10 +8,10 @@ import (
 	"net/http"
 	"time"
 
-	"go-forest/examples/trees/agent"
-	"go-forest/examples/trees/model"
-	"go-forest/examples/trees/web"
-	"go-forest/forest"
+	"github.com/Leeminjing/go-forest/examples/trees/agent"
+	"github.com/Leeminjing/go-forest/examples/trees/model"
+	"github.com/Leeminjing/go-forest/examples/trees/web"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 func main() {

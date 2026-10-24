@@ -3,7 +3,7 @@ package printer
 
 import (
 	"context"
-	"go-forest/forest"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 type Formatter interface {

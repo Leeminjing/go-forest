@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"go-forest/forest"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 func TestAddRebindRemoveIsOneObservableVersion(t *testing.T) {

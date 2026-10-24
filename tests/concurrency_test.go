@@ -7,7 +7,7 @@ import (
 	"sync"
 	"testing"
 
-	"go-forest/forest"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 func TestConcurrentChangesConflictWithoutLostUpdates(t *testing.T) {

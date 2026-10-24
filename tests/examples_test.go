@@ -5,10 +5,10 @@ import (
 	"testing"
 	"time"
 
-	exampleClock "go-forest/examples/trees/clock"
-	"go-forest/examples/trees/formatter"
-	examplePrinter "go-forest/examples/trees/printer"
-	"go-forest/forest"
+	exampleClock "github.com/Leeminjing/go-forest/examples/trees/clock"
+	"github.com/Leeminjing/go-forest/examples/trees/formatter"
+	examplePrinter "github.com/Leeminjing/go-forest/examples/trees/printer"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 func TestThreeIndependentTreesUseConsumerOwnedContracts(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"context"
 	"time"
 
-	"go-forest/forest"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 // Source is this provider's promise; consumers define their own interfaces.

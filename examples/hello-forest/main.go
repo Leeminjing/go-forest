@@ -6,10 +6,10 @@ import (
 	"log"
 	"time"
 
-	"go-forest/examples/trees/clock"
-	"go-forest/examples/trees/formatter"
-	"go-forest/examples/trees/printer"
-	"go-forest/forest"
+	"github.com/Leeminjing/go-forest/examples/trees/clock"
+	"github.com/Leeminjing/go-forest/examples/trees/formatter"
+	"github.com/Leeminjing/go-forest/examples/trees/printer"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 func main() {

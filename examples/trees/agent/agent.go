@@ -3,7 +3,7 @@ package agent
 
 import (
 	"context"
-	"go-forest/forest"
+	"github.com/Leeminjing/go-forest/forest"
 )
 
 type Model interface {
