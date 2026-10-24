@@ -88,6 +88,7 @@ func (f *Forest) Close(ctx context.Context) error {
 	f.gate.Lock()
 	if !f.closed {
 		f.closed = true
+		f.retireOwnersLocked(f.current.Load(), nil)
 		f.releaseGraphLocked(f.current.Load())
 	}
 	f.gate.Unlock()

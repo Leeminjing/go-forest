@@ -14,6 +14,7 @@ type instance struct {
 	object       Lifecycle
 	capabilities map[CapabilityID]any // sealed when Build returns
 	refs         int                  // Forest.gate
+	retired      bool                 // owner fixed once when leaving the active topology
 	dependencies []*instance          // construction/start resources, then drain ownership
 	mu           sync.Mutex
 	state        State
@@ -46,19 +47,33 @@ func (f *Forest) releaseGraphLocked(g *graph) {
 			zero = append(zero, n.instance)
 		}
 	}
-	// A draining child retains its old owner until Stop actually returns. This
-	// also protects parents when Stop ignores its deadline.
-	for _, i := range zero {
-		n := g.nodes[i.tree]
-		if parent := g.nodes[n.parent]; parent != nil {
-			i.dependencies = append(i.dependencies, parent.instance)
-			parent.instance.refs++
-		}
-	}
 	for _, i := range zero {
 		if i.refs == 0 {
 			f.drainLocked(i)
 		}
+	}
+}
+
+// Ownership belongs to the last active topology, not each historical graph.
+// Record it once to avoid cycles when safe moves reverse ancestry across
+// versions, while retaining owners of children held by lifecycle resources.
+func (f *Forest) retireOwnersLocked(old, next *graph) {
+	for id, n := range old.nodes {
+		if next != nil {
+			if current := next.nodes[id]; current != nil && current.instance == n.instance {
+				continue
+			}
+		}
+		i := n.instance
+		if i.retired {
+			continue
+		}
+		i.retired = true
+		if parent := old.nodes[n.parent]; parent != nil {
+			i.dependencies = append(i.dependencies, parent.instance)
+			parent.instance.refs++
+		}
+		f.setState(i, Draining, nil)
 	}
 }
 
@@ -69,7 +84,7 @@ func (f *Forest) drainLocked(i *instance) {
 		if err != nil {
 			// Failed Stop has not demonstrated resource release. Keep dependencies
 			// retained, report the failure, and leave the instance inspectable.
-			f.setState(i, Draining, err)
+			f.setState(i, Draining, failure("stop", i.tree, "", err))
 			return
 		}
 		f.setState(i, Stopped, nil)
@@ -81,6 +96,9 @@ func (f *Forest) drainLocked(i *instance) {
 				f.drainLocked(dep)
 			}
 		}
+		// Keep diagnostic identity/state, but release the retired implementation
+		// and its captured resources once no graph or callback can access it.
+		i.object, i.capabilities, i.dependencies = nil, nil, nil
 		f.gate.Unlock()
 	}()
 }
@@ -97,10 +115,17 @@ func (f *Forest) stop(i *instance) error {
 	go func() { result <- safeLifecycle(func() error { return i.object.Stop(ctx) }) }()
 	select {
 	case err := <-result:
+		if err != nil && ctx.Err() != nil {
+			return errors.Join(ErrDrainTimeout, ctx.Err(), err)
+		}
 		return err
 	case <-ctx.Done():
 		f.setState(i, Draining, failure("stop", i.tree, "", errors.Join(ErrDrainTimeout, ctx.Err())))
-		return <-result
+		err := <-result
+		if err != nil {
+			return errors.Join(ErrDrainTimeout, ctx.Err(), err)
+		}
+		return nil
 	}
 }
 

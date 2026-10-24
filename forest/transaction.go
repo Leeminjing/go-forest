@@ -75,7 +75,7 @@ func (f *Forest) Apply(ctx context.Context, plan ChangePlan) (generation uint64,
 		f.observe.Unlock()
 		f.setState(i, Preparing, nil)
 		env := &BuildEnv{forest: f, node: n}
-		err = f.withCandidate(ctx, candidate, id, Construction, func(callCtx context.Context) error {
+		err = f.withCandidate(ctx, candidate, Construction, func(callCtx context.Context) error {
 			return safeLifecycle(func() error {
 				var buildErr error
 				i.object, buildErr = n.definition.Build(callCtx, env)
@@ -111,17 +111,19 @@ func (f *Forest) Apply(ctx context.Context, plan ChangePlan) (generation uint64,
 		if previous := old.nodes[id]; previous != nil && previous.instance == n.instance {
 			continue
 		}
-		err = f.withCandidate(ctx, candidate, id, Startup, func(callCtx context.Context) error {
+		stage := "start"
+		err = f.withCandidate(ctx, candidate, Startup, func(callCtx context.Context) error {
 			if err := safeLifecycle(func() error { return n.instance.object.Start(callCtx) }); err != nil {
 				return failure("start", id, "", err)
 			}
 			if ready, ok := n.instance.object.(Readiness); ok {
+				stage = "readiness"
 				return safeLifecycle(func() error { return ready.Ready(callCtx) })
 			}
 			return nil
 		})
 		if err != nil {
-			return generation, failure("readiness", id, "", errors.Join(ErrPrepareFailed, err))
+			return generation, failure(stage, id, "", errors.Join(ErrPrepareFailed, err))
 		}
 		f.setState(n.instance, Ready, nil)
 	}
@@ -141,11 +143,7 @@ func (f *Forest) Apply(ctx context.Context, plan ChangePlan) (generation uint64,
 		f.setState(i, Active, nil)
 	}
 	f.current.Store(candidate)
-	for id, before := range old.nodes {
-		if after := candidate.nodes[id]; after == nil || after.instance != before.instance {
-			f.setState(before.instance, Draining, nil)
-		}
-	}
+	f.retireOwnersLocked(old, candidate)
 	f.releaseGraphLocked(old)
 	f.gate.Unlock()
 	committed = true

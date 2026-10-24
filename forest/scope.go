@@ -16,8 +16,8 @@ type invocation struct {
 	users     int
 	released  bool
 	preparing bool
-	tree      TreeID
 	phase     Phase
+	finished  chan struct{}
 }
 
 func (s *invocation) acquire() error {
@@ -41,6 +41,9 @@ func (s *invocation) leave(closeScope bool) {
 		s.released = true
 	}
 	s.mu.Unlock()
+	if closeScope {
+		s.cancel()
+	}
 	if release {
 		s.cancel()
 		if !s.preparing {
@@ -49,6 +52,9 @@ func (s *invocation) leave(closeScope bool) {
 			s.forest.releaseGraphLocked(s.graph)
 			s.forest.gate.Unlock()
 			s.forest.notify()
+		}
+		if s.finished != nil {
+			close(s.finished)
 		}
 	}
 }
@@ -86,10 +92,12 @@ func (f *Forest) Invoke(ctx context.Context, fn func(context.Context) error) err
 	return fn(context.WithValue(callCtx, scopeKey{f}, s))
 }
 
-func (f *Forest) withCandidate(ctx context.Context, g *graph, tree TreeID, phase Phase, fn func(context.Context) error) error {
+func (f *Forest) withCandidate(ctx context.Context, g *graph, phase Phase, fn func(context.Context) error) error {
 	callCtx, cancel := context.WithCancel(ctx)
-	s := &invocation{forest: f, graph: g, cancel: cancel, preparing: true, tree: tree, phase: phase}
-	defer s.leave(true)
+	s := &invocation{forest: f, graph: g, cancel: cancel, preparing: true, phase: phase, finished: make(chan struct{})}
+	// Preparation may join parallel, already-entered Ref callbacks. Cancel on
+	// return, but do not proceed to rollback or publication until they release.
+	defer func() { s.leave(true); <-s.finished }()
 	return fn(context.WithValue(callCtx, scopeKey{f}, s))
 }
 
@@ -163,7 +171,7 @@ func (r Ref[T]) use(ctx context.Context, many bool, fn func([]T) error) error {
 		if !ok || p.Many != many {
 			return failure("resolve", r.consumer, r.port, ErrContractMismatch)
 		}
-		if s.preparing && (s.tree != r.consumer || p.Phase == Runtime || (s.phase == Construction && p.Phase != Construction)) {
+		if s.preparing && (p.Phase == Runtime || (s.phase == Construction && p.Phase != Construction)) {
 			return failure("resolve-phase", r.consumer, r.port, ErrBindingUnavailable)
 		}
 		var values []T
