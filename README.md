@@ -4,15 +4,15 @@
 
 核心不包含 Web、Agent、RPC 或数据库模型。普通 Go 包通过自己的接口声明依赖、公开能力，在运行中嵌套、连接、重绑和替换。
 
-本仓库实现单进程内存森林，Go 1.23+。v0.1 运行时的行为基线见 [Spec](docs/spec.md)，实现协议见 [Design](docs/design.md)；v0.2 在独立 `forest/compose` 包中增加可复用、可递归组合的模板。正式模块路径为 `github.com/Leeminjing/go-forest`。
+本仓库实现单进程内存森林，Go 1.23+。v0.1 运行时的行为基线见 [Spec](docs/spec.md)，实现协议见 [Design](docs/design.md)；v0.2 在独立 `forest/compose` 包中增加可复用、可递归组合的模板。v0.3 在可选扩展 `bridge/httpjson` 中增加跨进程能力调用，各个 Forest 仍独立管理自己的拓扑与版本。正式模块路径为 `github.com/Leeminjing/go-forest`。
 
 ```sh
-go get github.com/Leeminjing/go-forest@v0.1.0
+go get github.com/Leeminjing/go-forest@v0.2.0
 ```
 
 应用导入 `github.com/Leeminjing/go-forest/forest`。发布版本遵循 Go 模块的语义版本标签约定。
 
-v0.1.0 标签只包含稳定核心；使用 v0.2 组合层可执行 `go get github.com/Leeminjing/go-forest@v0.2.0`，再导入 `github.com/Leeminjing/go-forest/forest/compose`。
+v0.2.0 是稳定的核心及组合层标签。使用尚未发布标签的 v0.3 桥接扩展可执行 `go get github.com/Leeminjing/go-forest@main`，再导入 `github.com/Leeminjing/go-forest/bridge/httpjson`。
 
 ## 先运行
 
@@ -79,6 +79,42 @@ Definition 通过原 Registry 在每个 Forest 注册一次，再重复实例化
 内部管理可用 `instance.Tree("engine/provider")` 查询真实 TreeID，再用原有 Replace；整体删除用 `RemoveSubtree(instance.Root())`。这些路径按模板命名空间组织，普通节点的 Parent 决定拓扑归属，不改变局部名称。
 
 `examples/composite` 使用独立 Clockwork 组合库，复用已有 Clock/Formatter 和外部 Printer；一次提交两套组合和外部连接，输出七棵树、版本 1。逐项验收见 [v0.2 验收记录](docs/v0.2/validation.md)。
+
+## v0.3：跨进程能力桥接
+
+[Spec](docs/v0.3/spec.md) 和 [Design](docs/v0.3/design.md) 在实现之前单独提交。桥接作为普通树组合，未改动 Core 或 compose：
+
+```text
+Forest A: Formatter --Link--> Clock Proxy
+                                  |
+                              HTTP/JSON
+                                  |
+Forest B: Clock     <--Link-- Clock Host
+```
+
+两个终端使用同一份随机凭据。在仓库根目录分别运行以下 PowerShell 命令（将示例值换成自己的凭据）：
+
+```powershell
+# 终端 B：启动提供者及 Host，Ctrl+C 退出。
+$env:FOREST_BRIDGE_TOKEN = 'replace-with-your-random-token'
+go run ./examples/remote-clock/host -address 127.0.0.1:8088
+```
+
+```powershell
+# 终端 A：启动 Proxy 及 Formatter，完成一次真实远程调用后退出。
+$env:FOREST_BRIDGE_TOKEN = 'replace-with-your-random-token'
+go run ./examples/remote-clock/client -url http://127.0.0.1:8088
+```
+
+Formatter 定义自己的 Clock 接口；Proxy 显式实现它。Client 命令不导入具体 `localtime` 提供者包。Host 的类型化 Route 通过自己的 Ref 调用 Clock，远端请求不能指定任意 TreeID 或方法名。新领域通过显式适配器使用 `httpjson.Handle[Input, Output]` 和 `Client.Call`，无需生成接口代理。
+
+Proxy 启动时检查协议及每条路由的精确契约，每次调用也检查契约；Host 使用凭据对应的路由白名单授权。默认请求及响应上限为 1 MiB，Client 超时 5 秒，Host 最大执行时间 30 秒。取消和截止传播到远端 Context，业务需要协作处理。错误支持 `errors.Is`，例如 `ErrUnauthorized`、`ErrContractMismatch`、`ErrTimeout` 和 `ErrUnavailable`；内部业务错误及 panic 内容不会发送给客户端。
+
+默认明文只用于回环地址；跨机器需配置 TLS 证书及信任根。`AllowInsecure` 是应用的显式不安全选择。桥接不自动重试或跟随重定向；通信失败不能证明业务没有执行。凭据通过请求头传递，示例不将其打印或放入 URL。
+
+B 的每个请求单独进入本地 Scope，远端替换仍保护旧调用及其资源；后续请求使用新实例。B 在同一地址重启后，A 的原代理可再次调用。A/B 的 Generation 相互独立，同一个 A Scope 的两次远程调用可以看到不同 B 版本；本版没有全局快照或跨进程事务。
+
+真实双进程测试覆盖启动失败回滚、热替换、取消、活动调用期间杀死对端及恢复，并验证 A 的其他本地树继续工作。逐项结果见 [v0.3 验收记录](docs/v0.3/validation.md)。
 
 ## 声明与组合
 
@@ -205,4 +241,4 @@ go test '-coverpkg=github.com/Leeminjing/go-forest/forest' '-coverprofile=covera
 
 本次执行结果见 [验证记录](docs/validation.md)，独立审查及修复见 [审查记录](docs/review.md)。
 
-本版不持久化拓扑，不加载进程启动时不存在的机器代码。跨进程和协议转换可以在后续通过适配树扩展。
+本版不持久化拓扑，不加载进程启动时不存在的机器代码。桥接不提供服务发现、分布式调度或远程拓扑管理。
