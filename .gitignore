@@ -1,0 +1,4 @@
+*.test
+*.exe
+coverage.out
+.tools/
