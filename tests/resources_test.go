@@ -10,6 +10,117 @@ import (
 	"go-forest/forest"
 )
 
+func TestRetainedLifecycleDependencyRejectsReusedBindingID(t *testing.T) {
+	for _, phase := range []struct {
+		name  string
+		value forest.Phase
+	}{{"construction", forest.Construction}, {"startup", forest.Startup}} {
+		for _, scenario := range []string{"different-consumer", "different-port", "nest-binding"} {
+			t.Run(phase.name+"/"+scenario, func(t *testing.T) {
+				f := newForest(t)
+				provider := register(t, f, clockDef("1", "available", forest.Public|forest.Descendants))
+				consumer := printerDef(false)
+				consumer.Ports[0].Phase = phase.value
+				if scenario == "different-port" {
+					consumer.Ports = append(consumer.Ports, forest.Port[clock]("runtime"))
+				}
+				definition := register(t, f, consumer)
+				oldLink := binding("link-1", "a", "clock", "provider", "now")
+				newLink := binding("link-1", "b", "clock", "provider", "now")
+				initial := []forest.Operation{forest.AddRoot("provider", provider)}
+				var operations []forest.Operation
+				switch scenario {
+				case "different-consumer":
+					initial = append(initial, forest.AddRoot("a", definition), forest.AddRoot("b", definition), forest.Connect(oldLink))
+					operations = []forest.Operation{forest.Remove("a"), forest.Connect(newLink)}
+				case "different-port":
+					oldLink.Consumer, oldLink.Port = "b", "runtime"
+					initial = append(initial, forest.AddRoot("b", definition), forest.Connect(oldLink))
+					operations = []forest.Operation{forest.Unlink("link-1"), forest.Connect(newLink)}
+				case "nest-binding":
+					initial = append(initial, forest.Nest("provider", "a", definition), forest.Nest("provider", "b", definition), forest.BindNest(oldLink))
+					operations = []forest.Operation{forest.Remove("a"), forest.BindNest(newLink)}
+				}
+				apply(t, f, initial...)
+				before := f.Snapshot()
+				generation, err := f.Apply(context.Background(), forest.ChangePlan{BaseGeneration: before.Generation, Operations: operations})
+				if !errors.Is(err, forest.ErrDependencyInUse) {
+					t.Fatalf("retained consumer accepted a new lifecycle binding with a reused ID: generation=%d err=%v", generation, err)
+				}
+				var detail *forest.Error
+				if !errors.As(err, &detail) || detail.Tree != "b" || detail.Port != "clock" || detail.Stage != "retained-resource" {
+					t.Fatalf("missing consumer/port error context: %v", err)
+				}
+				after := f.Snapshot()
+				if generation != before.Generation || after.Generation != before.Generation || len(after.Trees) != len(before.Trees) || after.Trees["b"].InstanceID != before.Trees["b"].InstanceID {
+					t.Fatal("rejected plan changed the generation, topology, or consumer instance")
+				}
+				links := after.Links
+				if scenario == "nest-binding" {
+					links = after.NestBindings
+				}
+				if links["link-1"].Link != oldLink {
+					t.Fatal("rejected plan changed the original binding")
+				}
+				// The same plan is legal when the lifecycle consumer is rebuilt.
+				operations = append(operations, forest.Replace("b", definition, false))
+				apply(t, f, operations...)
+				after = f.Snapshot()
+				if after.Generation != before.Generation+1 || after.Trees["b"].InstanceID == before.Trees["b"].InstanceID {
+					t.Fatal("consumer was not rebuilt atomically")
+				}
+				links = after.Links
+				if scenario == "nest-binding" {
+					links = after.NestBindings
+				}
+				if links["link-1"].Link != newLink {
+					t.Fatal("replacement did not receive the new binding")
+				}
+			})
+		}
+	}
+}
+
+func TestRetainedLifecycleDependencyPreservesProviderOrder(t *testing.T) {
+	for _, phase := range []struct {
+		name  string
+		value forest.Phase
+	}{{"construction", forest.Construction}, {"startup", forest.Startup}} {
+		t.Run(phase.name, func(t *testing.T) {
+			f := newForest(t)
+			first := register(t, f, clockDef("1", "first", forest.Public))
+			second := register(t, f, clockDef("2", "second", forest.Public))
+			consumer := printerDef(false)
+			consumer.Ports[0] = forest.Port[clock]("clock", forest.Many(), forest.During(phase.value))
+			consumer.Build = func(ctx context.Context, env *forest.BuildEnv) (forest.Lifecycle, error) {
+				ref, err := forest.Reference[clock](env, "clock")
+				if err != nil {
+					return nil, err
+				}
+				return forest.Hooks{}, forest.Provide(env, "print", multiPrinter{ref})
+			}
+			definition := register(t, f, consumer)
+			link := binding("first", "printer", "clock", "first", "now")
+			apply(t, f, forest.AddRoot("first", first), forest.AddRoot("second", second), forest.AddRoot("printer", definition), forest.Connect(link), forest.Connect(binding("second", "printer", "clock", "second", "now")))
+			if got := readPrint(t, f); got != "first,second" {
+				t.Fatal(got)
+			}
+			operations := []forest.Operation{forest.Unlink(link.ID), forest.Connect(link)}
+			generation, err := f.Apply(context.Background(), forest.ChangePlan{BaseGeneration: 1, Operations: operations})
+			if !errors.Is(err, forest.ErrDependencyInUse) || generation != 1 || f.Snapshot().Generation != 1 {
+				t.Fatalf("changed lifecycle dependency order: generation=%d err=%v", generation, err)
+			}
+			if got := readPrint(t, f); got != "first,second" {
+				t.Fatalf("rejected plan changed provider order: %s", got)
+			}
+			apply(t, f, append(operations, forest.Replace("printer", definition, false))...)
+			if got := readPrint(t, f); got != "second,first" {
+				t.Fatalf("replacement did not receive the new provider order: %s", got)
+			}
+		})
+	}
+}
+
 func TestLifecycleConsumerRetainsChildAndOwnerUntilStop(t *testing.T) {
 	f := newForest(t)
 	var parentStopped, childStopped atomic.Bool

@@ -287,7 +287,9 @@ func validateRetained(old, next *graph, ops []Operation) error {
 			}
 			p, _ := portOf(n.definition, b.Port)
 			if p.Phase != Runtime {
-				if _, existed := old.bindings[b.ID]; !existed {
+				// An ID may be reused after unlinking or removing its consumer.
+				// Retention requires the same endpoints, assembly kind, and order.
+				if previous, existed := old.bindings[b.ID]; !existed || previous != b {
 					return failure("retained-resource", id, b.Port, ErrDependencyInUse)
 				}
 			}

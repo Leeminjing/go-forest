@@ -23,3 +23,9 @@ Standards：3 项发现，最高 P1；全部修复，复核通过。
 修复中额外发现的历史归属反转引用环也已解决：g1 中 A 包含 B，g2 安全反转为 B 包含 A，各有未退出 Scope；g3 删除后按多个历史图追加 owner 曾产生互相持有。现在 owner 只在离开活动拓扑时记录一次。回归：`TestReversedOwnershipAcrossPinnedVersionsDoesNotLeak`。
 
 Spec：3 项初版发现，最高 P1；另有 1 项修复回归，全部修复，复核通过。复核对相关测试连续运行 10 次通过；完整测试及 race 验证见 README 的可复现命令。
+
+## 对 6e31052 的后续审查：复用 Link ID
+
+用户指出一项 P2：删除旧消费者 A 并将其 Link ID 用于保留消费者 B 的可选构造端口时，`validateRetained` 仅检查该 ID 是否存在于旧图，遗漏旧绑定实际所属的消费者和端口，因此 B 没有重建也可获得新的生命周期依赖。
+
+已通过公开 Apply API 复现。Construction/Startup 下跨消费者、跨端口和 Nest 装配共六个子测试，在修复前均返回成功、发布版本 2。现改为比较完整 Binding，保留提供实例身份检查；拒绝时保留原拓扑和实例，同一计划显式替换消费者后允许提交。另验证多值生命周期依赖不能通过删后重建相同 ID 改变提供者顺序。测试名和最新执行结果见 [validation.md](validation.md)。
