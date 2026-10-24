@@ -4,13 +4,15 @@
 
 核心不包含 Web、Agent、RPC 或数据库模型。普通 Go 包通过自己的接口声明依赖、公开能力，在运行中嵌套、连接、重绑和替换。
 
-本仓库实现单进程内存版 v0.1，Go 1.23+。行为基线见 [Spec](docs/spec.md)，实现协议见 [Design](docs/design.md)。正式模块路径为 `github.com/Leeminjing/go-forest`。
+本仓库实现单进程内存森林，Go 1.23+。v0.1 运行时的行为基线见 [Spec](docs/spec.md)，实现协议见 [Design](docs/design.md)；v0.2 在独立 `forest/compose` 包中增加可复用、可递归组合的模板。正式模块路径为 `github.com/Leeminjing/go-forest`。
 
 ```sh
 go get github.com/Leeminjing/go-forest@v0.1.0
 ```
 
 应用导入 `github.com/Leeminjing/go-forest/forest`。发布版本遵循 Go 模块的语义版本标签约定。
+
+v0.1.0 标签只包含稳定核心；使用当前 v0.2 组合层可在项目中执行 `go get github.com/Leeminjing/go-forest@main`，再导入 `github.com/Leeminjing/go-forest/forest/compose`。
 
 ## 先运行
 
@@ -19,6 +21,7 @@ go run ./examples/hello-forest
 go run ./examples/nesting
 go run ./examples/hot-swap
 go run ./examples/web-agent
+go run ./examples/composite
 ```
 
 第一个例子动态种下 Clock、Formatter、Printer 三棵独立树并连接：
@@ -38,6 +41,44 @@ old invocation: 1
 三棵树各自位于 `examples/trees/` 的独立包。Formatter 自己定义 Clock 接口；Clock 提供者不导入 Formatter。Printer 同样只依赖自己声明的 Formatter 接口。
 
 `web-agent` 在同一个 Forest 内运行 HTTP、Agent 和确定性 Model 三种普通扩展树，通过本机临时端口完成一次请求后自动退出，无需 API Key，输出 `agent: model: hello`。它们全部在 examples 中，核心没有领域分支。
+
+## v0.2：可复用组合树
+
+组合层的 [Spec](docs/v0.2/spec.md) 和 [Design](docs/v0.2/design.md) 先于实现建立。模板使用局部名称，展开成普通 ChangePlan，沿用已有原子提交、Scope 和资源回收机制。
+
+```go
+blueprint, err := compose.New(compose.Spec{
+    Root: rootDefinition.Ref(),
+    Trees: []compose.Tree{
+        {ID: "provider", Definition: providerDefinition.Ref()},
+    },
+    Bindings: []forest.Link{
+        {ID: "source", Port: "source", Provider: "provider", Capability: "read"},
+    },
+})
+if err != nil {
+    return err
+}
+left, err := blueprint.Instantiate("left", "")
+if err != nil {
+    return err
+}
+right, err := blueprint.Instantiate("right", "")
+if err != nil {
+    return err
+}
+plan := left.Plan(f.Snapshot().Generation)
+plan.Operations = append(plan.Operations, right.Plan(plan.BaseGeneration).Operations...)
+_, err = f.Apply(ctx, plan)
+```
+
+Definition 通过原 Registry 在每个 Forest 注册一次，再重复实例化。例中得到 `left/provider`、`right/provider` 两个独立实例；内部绑定身份分别为 `left/@source`、`right/@source`，根到后代的关系自动展开为 BindNest。
+
+`compose.Tree{ID: "engine", Composite: innerBlueprint}` 可以嵌入已有模板。外层模板只接线到 `engine` 根，不穿透 `engine/internal`。封闭根保持 `ExportChildren: false`，通过自己的 Ref 和公开接口使用内部树；没有反射代理或核心专用分支。
+
+内部管理可用 `instance.Tree("engine/provider")` 查询真实 TreeID，再用原有 Replace；整体删除用 `RemoveSubtree(instance.Root())`。这些路径按模板命名空间组织，普通节点的 Parent 决定拓扑归属，不改变局部名称。
+
+`examples/composite` 使用独立 Clockwork 组合库，复用已有 Clock/Formatter 和外部 Printer；一次提交两套组合和外部连接，输出七棵树、版本 1。逐项验收见 [v0.2 验收记录](docs/v0.2/validation.md)。
 
 ## 声明与组合
 

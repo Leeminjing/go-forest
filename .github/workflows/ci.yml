@@ -21,3 +21,4 @@ jobs:
       - run: go run ./examples/nesting
       - run: go run ./examples/hot-swap
       - run: go run ./examples/web-agent
+      - run: go run ./examples/composite
