@@ -29,10 +29,12 @@
 
 ## 执行方式
 
-Windows/amd64 主机 Go 1.26.5：`go vet ./...`、`go test ./... -timeout 90s` 和五个示例均通过。组合包测试覆盖率 95.5%。
+Windows/amd64 主机 Go 1.26.5：`go vet ./...`、`go test ./... -timeout 90s` 和五个示例均通过。共 41 个顶层测试（原有 30 个、组合层 11 个），另含子测试。组合包测试覆盖率 95.5%。
 
 Linux/amd64 Docker：`golang:1.26` 中执行 `go test -race ./... -count=3 -timeout 120s`，完整测试连续三轮通过，无 data race 报告。CI 继续使用 Go 1.23，Windows/Linux 普通测试，Linux race，并增加 Composite 示例。
 
 模板注册仍采用原有 Registry 的一次性应用安装协议；实例化是纯计划展开，没有注册副作用。封闭的能力边界由根 Definition 的 Visibility、ExportChildren 和普通接口实现负责，compose 另限制模板间只连接根。Forest 管理者仍可显式定位和修改内部树。
 
 没有增加跨进程适配、持久化、机器代码加载、Agent Runtime，或其他 v0.3 功能。
+
+两轴独立复核均通过：Standards 0 项行动项，Spec 0 项行动项，记录见 [review.md](review.md)。
