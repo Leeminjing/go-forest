@@ -255,7 +255,16 @@ func TestContractIsRecheckedAfterRemoteRestart(t *testing.T) {
 	config := options(bridge.Handle("read", bridge.Contract{ID: contract.ID, Version: 2}, func(context.Context, struct{}) (string, error) { calls.Add(1); return "incompatible", nil }))
 	config.Address = address.Host
 	_ = host(t, config)
-	if _, err := c.Call(context.Background(), "read", struct{}{}, new(string)); !errors.Is(err, bridge.ErrContractMismatch) {
+	// Shutdown may race the client's observation of an idle connection closing.
+	// Do not demand an automatic retry: a new explicit call checks the new host.
+	for attempt := 0; attempt < 2; attempt++ {
+		_, err := c.Call(context.Background(), "read", struct{}{}, new(string))
+		if errors.Is(err, bridge.ErrContractMismatch) {
+			break
+		}
+		if attempt == 0 && errors.Is(err, bridge.ErrUnavailable) {
+			continue
+		}
 		t.Fatal(err)
 	}
 	if calls.Load() != 0 {

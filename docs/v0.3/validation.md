@@ -45,6 +45,8 @@ docker run --rm --mount type=bind,source=D:\go-forest,target=/src -w /src golang
 
 CI 使用 Go 1.23，Windows/Linux 都运行 vet 和完整测试，Linux 另运行三轮 race。独立审查结果见 [review.md](review.md)。
 
+首次 CI（`40085221689`）在两个平台都指出重启契约测试对旧空闲连接关闭时序的假设过强：第一次请求可能得到 EOF。运行时按“不自动重试”的约定返回 unavailable 是正确行为。已修正测试：允许这一次明确的连接失败，然后发起新的独立调用，要求得到 contract_mismatch，且新 Host 的业务调用计数仍为零；未增加运行时重试。修正后的该测试在 Windows 连续 100 次通过。
+
 ## 范围检查
 
 `git diff v0.2.0 -- forest` 为空：未修改 Core、transaction、Scope、生命周期或 compose。go.mod 仍无第三方依赖。新增实现位于 bridge/httpjson，业务示例位于 examples。未加入服务发现、分布式调度、全局事务、机器代码加载或 Agent Runtime。
