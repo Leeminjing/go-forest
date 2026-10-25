@@ -16,7 +16,7 @@
 
 普通测试在主机运行；Windows 原生 race 未执行，因为主机没有已配置的 C 工具链。Linux Docker race 命令已经实际执行，完整命令见 [README](../README.md#验证)。CI 配置覆盖 Windows/Linux 普通测试与 Linux race；此记录不表示远程 CI 已经运行。
 
-测试从公开 Go API 验证，十项用户验收场景的逐项映射见 [Spec](spec.md#验收映射)。热替换、删除占用、并发冲突、同一调用跨 Link 版本一致性、构造资源持有、准备回调回滚保护和历史归属反转都有自动化用例。
+测试从公开 Go API 验证十项用户验收场景。热替换、删除占用、并发冲突、同一调用跨 Link 版本一致性、构造资源持有、准备回调回滚保护和历史归属反转都有自动化用例。
 
 对 `6e31052` 的后续审查补充了 Link ID 复用回归：`TestRetainedLifecycleDependencyRejectsReusedBindingID` 覆盖 Construction/Startup 下跨消费者、跨端口、Nest 装配三类情况。修复前六个子测试均错误提交为版本 2；修复后返回 ErrDependencyInUse，原版本、绑定和消费实例不变。同一计划显式 Replace 消费者后均可提交。`TestRetainedLifecycleDependencyPreservesProviderOrder` 另覆盖这两个阶段的多值提供者顺序变化。上表普通测试、race 与覆盖率已在这次修复后重新运行。
 

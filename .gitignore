@@ -3,3 +3,7 @@
 coverage.out
 .tools/
 .scratch/
+
+# Spec and Design documents stay local, at every directory level.
+[sS][pP][eE][cC].md
+[dD][eE][sS][iI][gG][nN].md

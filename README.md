@@ -4,7 +4,7 @@
 
 核心不包含 Web、Agent、RPC 或数据库模型。普通 Go 包通过自己的接口声明依赖、公开能力，在运行中嵌套、连接、重绑和替换。
 
-本仓库实现单进程内存森林，Go 1.23+。v0.1 运行时的行为基线见 [Spec](docs/spec.md)，实现协议见 [Design](docs/design.md)；v0.2 在独立 `forest/compose` 包中增加可复用、可递归组合的模板。v0.3 在可选扩展 `bridge/httpjson` 中增加跨进程能力调用，各个 Forest 仍独立管理自己的拓扑与版本。正式模块路径为 `github.com/Leeminjing/go-forest`。
+本仓库实现单进程内存森林，Go 1.23+。v0.1 提供动态组合运行时；v0.2 在独立 `forest/compose` 包中增加可复用、可递归组合的模板。v0.3 在可选扩展 `bridge/httpjson` 中增加跨进程能力调用，各个 Forest 仍独立管理自己的拓扑与版本。正式模块路径为 `github.com/Leeminjing/go-forest`。
 
 ```sh
 go get github.com/Leeminjing/go-forest@v0.2.0
@@ -44,7 +44,7 @@ old invocation: 1
 
 ## v0.2：可复用组合树
 
-组合层的 [Spec](docs/v0.2/spec.md) 和 [Design](docs/v0.2/design.md) 先于实现建立。模板使用局部名称，展开成普通 ChangePlan，沿用已有原子提交、Scope 和资源回收机制。
+模板使用局部名称，展开成普通 ChangePlan，沿用已有原子提交、Scope 和资源回收机制。
 
 ```go
 blueprint, err := compose.New(compose.Spec{
@@ -82,7 +82,7 @@ Definition 通过原 Registry 在每个 Forest 注册一次，再重复实例化
 
 ## v0.3：跨进程能力桥接
 
-[Spec](docs/v0.3/spec.md) 和 [Design](docs/v0.3/design.md) 在实现之前单独提交。桥接作为普通树组合，未改动 Core 或 compose：
+桥接作为普通树组合，未改动 Core 或 compose：
 
 ```text
 Forest A: Formatter --Link--> Clock Proxy
