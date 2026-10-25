@@ -65,4 +65,11 @@ python tests/browser_test.py
 
 三个扩展都是嵌套 Go Module，根目录 `go test ./...` 不会测试它们。CI 逐模块测试，Linux 增加 race 和独立浏览器任务。
 
-当前为本地实现，go.mod 中的扩展版本是待发布版本，通过本地 replace 构建。发布顺序为 Observe、Gin Adapter、Observatory，标签分别使用 `extensions/observe/v0.1.0`、`adapters/gin/v0.1.0`、`extensions/observatory/v0.1.0`。发布后须在不含 replace 的独立消费者中执行 go get/构建；本地测试不替代这项发布验收。
+模块固定依赖已发布的 Core v0.3.0、Observe v0.1.0 与 Gin Adapter v0.1.0，不需要本地 replace。
+
+```sh
+go get github.com/Leeminjing/go-forest/extensions/observatory@v0.1.0
+go install github.com/Leeminjing/go-forest/extensions/observatory/cmd/demo@v0.1.0
+```
+
+发布顺序为 Observe、Gin Adapter、Observatory，标签分别使用 `extensions/observe/v0.1.0`、`adapters/gin/v0.1.0`、`extensions/observatory/v0.1.0`。仓库的 `scripts/verify-release.py` 将固定版本消费者复制到仓库外，禁用 workspace 并确认不存在 replace，再运行真实 HTTP/SSE 与热替换验证；本地源码测试不替代这项发布验收。

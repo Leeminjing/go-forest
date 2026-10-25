@@ -40,9 +40,3 @@ require (
 	golang.org/x/text v0.34.0 // indirect
 	google.golang.org/protobuf v1.36.10 // indirect
 )
-
-replace github.com/Leeminjing/go-forest => ../..
-
-replace github.com/Leeminjing/go-forest/adapters/gin => ../../adapters/gin
-
-replace github.com/Leeminjing/go-forest/extensions/observe => ../observe
