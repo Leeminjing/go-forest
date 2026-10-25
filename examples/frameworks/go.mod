@@ -44,6 +44,3 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260706201446-f0a921348800 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 )
-
-// Only the new, not-yet-published adapter is developed locally.
-replace github.com/Leeminjing/go-forest/adapters/grpc => ../../adapters/grpc

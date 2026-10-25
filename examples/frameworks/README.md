@@ -2,7 +2,7 @@
 
 五棵普通树：HTTP、gRPC、Business、Observatory 根及其 Inspector 子树。HTTP 与 gRPC 都通过自己的 Runtime Ref 使用同一业务树，观察组合通过 BindNest 读取诊断。Core 和业务包都没有传输框架分支。
 
-本示例最低 Go 1.25。依赖正式发布的 Core v0.3.0、Gin/Observatory v0.1.0；仅尚未发布的 gRPC Adapter 使用 `../../adapters/grpc` 本地 replace。这不影响 v0.4 已完成的无 replace 外部发布验收。
+本示例最低 Go 1.25。依赖正式发布的 Core v0.3.0、Gin/gRPC/Observatory v0.1.0，不含本地 replace。HTTP、RPC 和观察界面均使用正式模块版本。
 
 ## 运行
 

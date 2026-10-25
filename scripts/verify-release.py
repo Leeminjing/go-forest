@@ -17,9 +17,10 @@ with tempfile.TemporaryDirectory(prefix="go-forest-consumer-") as temporary:
     def run(*arguments, capture=False):
         return subprocess.run(arguments, cwd=target, env=environment, check=True, text=True, encoding="utf-8", stdout=subprocess.PIPE if capture else None).stdout
 
-    modules = ["github.com/Leeminjing/go-forest/extensions/observe", "github.com/Leeminjing/go-forest/adapters/gin", "github.com/Leeminjing/go-forest/extensions/observatory"]
+    modules = ["github.com/Leeminjing/go-forest/extensions/observe", "github.com/Leeminjing/go-forest/adapters/gin", "github.com/Leeminjing/go-forest/adapters/grpc", "github.com/Leeminjing/go-forest/extensions/observatory"]
     run("go", "get", *(module + "@v0.1.0" for module in modules))
     run("go", "mod", "tidy")
+    run("go", "mod", "verify")
     payload = run("go", "list", "-m", "-json", "all", capture=True)
     decoder, records = json.JSONDecoder(), {}
     while payload.strip():
@@ -34,4 +35,4 @@ with tempfile.TemporaryDirectory(prefix="go-forest-consumer-") as temporary:
     assert records["github.com/Leeminjing/go-forest"]["Version"] == "v0.3.0"
     run("go", "vet", "./...")
     run("go", "test", "./...", "-count=1", "-timeout", "30s")
-    print("PASS: external HTTP/SSE, topology, pinned replacement, draining, stopped, Close", flush=True)
+    print("PASS: external HTTP/RPC/SSE, topology, pinned unary/stream replacement, draining, stopped, Close", flush=True)

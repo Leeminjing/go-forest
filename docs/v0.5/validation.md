@@ -1,10 +1,10 @@
-# v0.5 gRPC 开发验收
+# v0.5 gRPC 验收
 
-2026-10-25。开发基线为 v0.4 发布闭环提交 ddbe2b9；Spec/Design 按仓库约定仅在本地保存。本期 gRPC 模块尚未发布版本标签。
+2026-10-25。开发基线为 v0.4 发布闭环提交 ddbe2b9；Spec/Design 按仓库约定仅在本地保存。gRPC 模块已于本日发布 v0.1.0，发布标签为 adapters/grpc/v0.1.0。
 
 ## 范围
 
-新增 adapters/grpc（Go 1.25、grpc-go v1.84.0、Core v0.3.0，无 replace）和 examples/frameworks 组合示例。Core、bridge、根 go.mod、已发布 Gin/Observe/Observatory 实现没有改动。示例仅通过显式 replace 使用尚未发布的 gRPC Adapter，其他依赖使用正式 v0.4 版本。
+新增 adapters/grpc（Go 1.25、grpc-go v1.84.0、Core v0.3.0，无 replace）和 examples/frameworks 组合示例。Core、bridge、根 go.mod、已发布 Gin/Observe/Observatory 实现没有改动。组合示例已移除 gRPC 的本地 replace，所有依赖均使用正式发布版本。
 
 ## 验收证据
 
@@ -31,4 +31,4 @@ Linux Docker Go 1.26，CGO=1、GOWORK=off：根、Observe、Gin、Observatory、
 
 流的 Scope 覆盖整条 RPC，不在每条消息间自动迁移版本。客户端取消不证明忽略 Context 的业务已经完成；CancelGeneration 也不能保证打断原生 RecvMsg 或第三方阻塞。新增原生服务类型仍须在 Serve 前注册，运行中仅替换业务实现。注册描述预校验只服务于候选回滚，没有业务接口反射代理。
 
-v0.4 的三个 v0.1.0 模块与 R12 已正式发布并验收，记录见 [v0.4 发布验收](../v0.4/release.md)。gRPC 本轮为开发交付，不复用或修改已经发布的标签。
+v0.4 的三个 v0.1.0 模块与 R12 已正式发布并验收，记录见 [v0.4 发布验收](../v0.4/release.md)。随后按用户授权完成 gRPC 正式发布与外部消费者验证，见 [v0.5 发布验收](release.md)；没有修改既有发布标签或 Core。

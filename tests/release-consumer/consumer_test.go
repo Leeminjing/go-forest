@@ -4,17 +4,24 @@ import (
 	"bufio"
 	"context"
 	"encoding/json"
+	"errors"
+	"io"
 	"net/http"
+	"strconv"
 	"strings"
 	"sync"
 	"testing"
 	"time"
 
 	ginforest "github.com/Leeminjing/go-forest/adapters/gin"
+	grpcforest "github.com/Leeminjing/go-forest/adapters/grpc"
 	"github.com/Leeminjing/go-forest/extensions/observatory"
 	"github.com/Leeminjing/go-forest/extensions/observe"
 	"github.com/Leeminjing/go-forest/forest"
 	"github.com/gin-gonic/gin"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	pb "google.golang.org/grpc/interop/grpc_testing"
 )
 
 type service interface {
@@ -42,6 +49,49 @@ func definition(version string, s *implementation) forest.Definition {
 	return forest.Definition{TypeID: "consumer.service", Version: version, HotSwappable: true, Capabilities: []forest.CapabilityDescriptor{forest.Capability[service]("value", forest.Public)}, Build: func(ctx context.Context, env *forest.BuildEnv) (forest.Lifecycle, error) {
 		return forest.Hooks{}, forest.Provide(env, "value", s)
 	}}
+}
+
+// An external application owns its protocol adapter and consumes its own
+// interface. Only the native registration and lifecycle come from grpcforest.
+type rpcAdapter struct {
+	pb.UnimplementedTestServiceServer
+	f   *forest.Forest
+	ref forest.Ref[service]
+}
+
+func (a *rpcAdapter) read(ctx context.Context) (string, error) {
+	var first, second string
+	err := a.ref.Use(ctx, func(s service) error { var err error; first, err = s.Value(ctx, false); return err })
+	if err == nil {
+		err = a.ref.Use(ctx, func(s service) error { var err error; second, err = s.Value(ctx, false); return err })
+	}
+	if err != nil {
+		return "", err
+	}
+	generation, err := a.f.Generation(ctx)
+	return first + "/" + second + "@" + strconv.FormatUint(generation, 10), err
+}
+func (a *rpcAdapter) UnaryCall(ctx context.Context, _ *pb.SimpleRequest) (*pb.SimpleResponse, error) {
+	value, err := a.read(ctx)
+	return &pb.SimpleResponse{Payload: &pb.Payload{Body: []byte(value)}}, err
+}
+func (a *rpcAdapter) FullDuplexCall(stream grpc.BidiStreamingServer[pb.StreamingOutputCallRequest, pb.StreamingOutputCallResponse]) error {
+	for {
+		_, err := stream.Recv()
+		if errors.Is(err, io.EOF) {
+			return nil
+		}
+		if err != nil {
+			return err
+		}
+		value, err := a.read(stream.Context())
+		if err != nil {
+			return err
+		}
+		if err = stream.Send(&pb.StreamingOutputCallResponse{Payload: &pb.Payload{Body: []byte(value)}}); err != nil {
+			return err
+		}
+	}
 }
 
 func TestPublishedModulesComposeAndHotReplace(t *testing.T) {
@@ -88,12 +138,23 @@ func TestPublishedModulesComposeAndHotReplace(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	rpcDefinition, err := grpcforest.Definition(f, grpcforest.Options{TypeID: "consumer.grpc", Version: "1", Ports: []forest.PortDescriptor{forest.Port[service]("service", forest.Required())}, Register: func(ctx context.Context, env *forest.BuildEnv, registrar grpc.ServiceRegistrar) error {
+		ref, err := forest.Reference[service](env, "service")
+		if err != nil {
+			return err
+		}
+		pb.RegisterTestServiceServer(registrar, &rpcAdapter{f: f, ref: ref})
+		return nil
+	}})
+	if err != nil {
+		t.Fatal(err)
+	}
 	const token = "external-consumer-test-credential"
 	bundle, err := observatory.New(f, observatory.Options{Token: token, SampleInterval: 10 * time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, d := range append([]forest.Definition{v1, v2, app}, bundle.Definitions...) {
+	for _, d := range append([]forest.Definition{v1, v2, app, rpcDefinition}, bundle.Definitions...) {
 		if err = f.Register(d); err != nil {
 			t.Fatal(err)
 		}
@@ -103,7 +164,7 @@ func TestPublishedModulesComposeAndHotReplace(t *testing.T) {
 		t.Fatal(err)
 	}
 	plan := placement.Plan(0)
-	plan.Operations = append(plan.Operations, forest.AddRoot("service", v1.Ref()), forest.AddRoot("http", app.Ref()), forest.Connect(forest.Link{ID: "service", Consumer: "http", Port: "service", Provider: "service", Capability: "value"}))
+	plan.Operations = append(plan.Operations, forest.AddRoot("service", v1.Ref()), forest.AddRoot("http", app.Ref()), forest.AddRoot("grpc", rpcDefinition.Ref()), forest.Connect(forest.Link{ID: "service", Consumer: "http", Port: "service", Provider: "service", Capability: "value"}), forest.Connect(forest.Link{ID: "rpc.service", Consumer: "grpc", Port: "service", Provider: "service", Capability: "value"}))
 	if _, err = f.Apply(context.Background(), plan); err != nil {
 		t.Fatal(err)
 	}
@@ -118,6 +179,36 @@ func TestPublishedModulesComposeAndHotReplace(t *testing.T) {
 		return value
 	}
 	appURL, observeURL := endpoint("http"), endpoint("observatory")
+	var rpcTarget string
+	err = f.Invoke(context.Background(), func(ctx context.Context) error {
+		return forest.Use[grpcforest.Endpoint](ctx, f, "grpc", "rpc", func(endpoint grpcforest.Endpoint) error { rpcTarget = endpoint.Target(); return endpoint.ServeError() })
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	connection, err := grpc.NewClient(rpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer connection.Close()
+	rpcClient := pb.NewTestServiceClient(connection)
+	rpcCtx, rpcCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer rpcCancel()
+	rpcStream, err := rpcClient.FullDuplexCall(rpcCtx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	streamMessage := func(want string) {
+		t.Helper()
+		if err := rpcStream.Send(&pb.StreamingOutputCallRequest{}); err != nil {
+			t.Fatal(err)
+		}
+		response, err := rpcStream.Recv()
+		if err != nil || string(response.GetPayload().GetBody()) != want {
+			t.Fatal(response, err)
+		}
+	}
+	streamMessage("v1/v1@1")
 	client := &http.Client{Timeout: 5 * time.Second}
 	defer client.CloseIdleConnections()
 	request := func(path string) *http.Response {
@@ -143,7 +234,7 @@ func TestPublishedModulesComposeAndHotReplace(t *testing.T) {
 		return value
 	}
 	initial := frame()
-	if initial.Snapshot.Counts.Trees != 4 || initial.Snapshot.Counts.Links != 1 || initial.Snapshot.Counts.NestBindings != 1 {
+	if initial.Snapshot.Counts.Trees != 5 || initial.Snapshot.Counts.Links != 2 || initial.Snapshot.Counts.NestBindings != 1 {
 		t.Fatal(initial)
 	}
 	if _, err := observe.ParseCursor(initial.Cursor); err != nil {
@@ -194,6 +285,11 @@ func TestPublishedModulesComposeAndHotReplace(t *testing.T) {
 	if got := readValue(false); got.err != nil || got.first != "v2" || got.second != "v2" {
 		t.Fatal(got)
 	}
+	response, err := rpcClient.UnaryCall(rpcCtx, &pb.SimpleRequest{})
+	if err != nil || string(response.GetPayload().GetBody()) != "v2/v2@2" {
+		t.Fatal(response, err)
+	}
+	streamMessage("v1/v1@1")
 	if next := frame(); next.Snapshot.Generation != 2 || next.Snapshot.Counts.Draining != 1 {
 		t.Fatal(next)
 	}
@@ -205,6 +301,15 @@ func TestPublishedModulesComposeAndHotReplace(t *testing.T) {
 		}
 	case <-time.After(3 * time.Second):
 		t.Fatal("old request did not finish")
+	}
+	if frame().Snapshot.Counts.Draining != 1 {
+		t.Fatal("old stream should retain the old provider after HTTP finishes")
+	}
+	if err = rpcStream.CloseSend(); err != nil {
+		t.Fatal(err)
+	}
+	if _, err = rpcStream.Recv(); !errors.Is(err, io.EOF) {
+		t.Fatal(err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()

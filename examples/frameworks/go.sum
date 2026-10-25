@@ -2,6 +2,8 @@ github.com/Leeminjing/go-forest v0.3.0 h1:TrdMiVMHTgfI2e7JdhZ6nud7KJuqB2688M2IwM
 github.com/Leeminjing/go-forest v0.3.0/go.mod h1:UejDPb4g0Q8YdwTVz0OyFLXw1WowR/DizszTlKhGkVc=
 github.com/Leeminjing/go-forest/adapters/gin v0.1.0 h1:cvDAQw/juYuQh1wJ8wOSNKNYLM8NSbzt+X3Zd36PvXM=
 github.com/Leeminjing/go-forest/adapters/gin v0.1.0/go.mod h1:iS6+AjKD06qraCoVEzGR19PDbgi5n0NPCgqBizlJjCI=
+github.com/Leeminjing/go-forest/adapters/grpc v0.1.0 h1:NAcB+NpeKhie95PWVpFI0fY22e5J0S3xOQF61jjwfPs=
+github.com/Leeminjing/go-forest/adapters/grpc v0.1.0/go.mod h1:DmQfEYSMfZgrLWBhaKSAQI6X8nOw87QXmkOYsifiFCk=
 github.com/Leeminjing/go-forest/extensions/observatory v0.1.0 h1:rybEBRlh5rdb97K9GmWUdnmyH9k5x/E+P2LauJzV9uE=
 github.com/Leeminjing/go-forest/extensions/observatory v0.1.0/go.mod h1:8KNE6YFSYBDfg29OvhdXPr4x9QMr15mhtytM6qFQwms=
 github.com/Leeminjing/go-forest/extensions/observe v0.1.0 h1:9WOyFp3NLl0y0JBjy1A+Hj7LWBQTCKs0MV/5UOSkgVM=
