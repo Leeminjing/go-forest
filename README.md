@@ -7,12 +7,12 @@
 本仓库实现单进程内存森林，Go 1.23+。v0.1 提供动态组合运行时；v0.2 在独立 `forest/compose` 包中增加可复用、可递归组合的模板。v0.3 在可选扩展 `bridge/httpjson` 中增加跨进程能力调用，各个 Forest 仍独立管理自己的拓扑与版本。正式模块路径为 `github.com/Leeminjing/go-forest`。
 
 ```sh
-go get github.com/Leeminjing/go-forest@v0.2.0
+go get github.com/Leeminjing/go-forest@v0.3.0
 ```
 
 应用导入 `github.com/Leeminjing/go-forest/forest`。发布版本遵循 Go 模块的语义版本标签约定。
 
-v0.2.0 是稳定的核心及组合层标签。使用尚未发布标签的 v0.3 桥接扩展可执行 `go get github.com/Leeminjing/go-forest@main`，再导入 `github.com/Leeminjing/go-forest/bridge/httpjson`。
+v0.3.0 包含核心、组合层与可选桥接扩展。桥接应用导入 `github.com/Leeminjing/go-forest/bridge/httpjson`；单进程应用可以只导入 forest 或 forest/compose。
 
 ## 先运行
 
