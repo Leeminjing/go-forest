@@ -21,6 +21,8 @@
 | A8 观测 | OTel `TestCountersSurviveTraceSamplingAndBoundedDetails`：NeverSample 下计数仍准确，详情丢弃可见、在途归零、过期可见。Observatory 测试鉴权、无数据源、非法/超限 JSON；Chromium 验证真实运行数据、幂等任务、断开后过期以及桌面/手机布局。 |
 | A9 工程 | 分模块 vet/test；Linux Core 和五个相关模块分别三轮 race；GORM/PostgreSQL 与 NATS 服务真实重启后保持 Forest 身份。Spec/Design/.scratch 通过 ignore 检查，未纳入提交。 |
 
+发布收尾另增加 `TestTaskIdentityIsUnchangedAcrossURLAndMessageHeaders`：路径分隔、空白和 CRLF 等不稳定 ID 在写任务/outbox 前被拒绝，合法 ID 保持幂等；最终示例再次通过三轮 Linux race。
+
 ## 实际命令与环境
 
 - Windows Go 1.26.5、Docker 29.0.1：`python scripts/test-ecosystem.py` PASS，启动独立 PostgreSQL 18 和 NATS 2.12.4 JetStream 容器，包含两类服务重启及三处应用崩溃恢复。
