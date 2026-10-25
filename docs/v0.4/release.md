@@ -12,7 +12,7 @@
 
 ## 外部消费者
 
-`python scripts/verify-release.py` 把 tests/release-consumer 复制到系统临时目录（仓库之外），强制 GOWORK=off，然后执行三个固定版本的 go get、go mod tidy、go list -m -json all、vet/test。
+v0.4 验收时，`python scripts/verify-release.py` 把 tests/release-consumer 复制到系统临时目录（仓库之外），强制 GOWORK=off，然后执行三个固定版本的 go get、go mod tidy、go list -m -json all、vet/test。共享脚本后来随 v0.5 扩展为四模块，并增加真实 RPC 与模块完整性校验，见 [v0.5 发布验收](../v0.5/release.md)；下文保留 v0.4 当时的验收事实。
 
 检查不仅是可编译：
 

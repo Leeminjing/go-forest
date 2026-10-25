@@ -35,6 +35,8 @@ Core 继续使用已发布 v0.3.0，grpc-go 固定 v1.84.0；已有 Gin、Observ
 
 删除 examples/frameworks 的 replace 后，其 vet/test 和真实服务端/RPC 客户端进程加 Chromium 验收通过。浏览器看到五树、两 Link、Generation 切换、Draining 与最终 Stopped，说明正式 Gin/gRPC/Observatory 可共同运行。
 
-Linux race 和独立审查的最终结果随本轮收尾记录。CI 的 published-consumer 任务已使用扩展后的四模块仓库外验证；现有多模块及组合浏览器验收继续执行。
+Linux Docker Go 1.26、GOWORK=off 下，消费者与 frameworks 两模块的 vet 和三轮 race 均通过。两名独立审查者分别执行 Standards / Spec，结果都是 0 项行动项，并各自重跑仓库外消费者脚本通过。审查者还核对了远程标签、正式 Release 和模块下载校验和。
+
+发布基线 [04bc232 的全部 CI](https://github.com/Leeminjing/go-forest/actions/runs/40170716037) 已通过。CI 的 published-consumer 任务现使用扩展后的四模块仓库外验证；现有多模块及组合浏览器验收继续执行。
 
 v0.5 发布验收完成不意味着新增 Core 能力；本轮没有重构 Forest Core，也没有修改 go-forest-agent 或 Focus-Go。
