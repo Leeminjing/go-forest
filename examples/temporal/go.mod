@@ -6,7 +6,7 @@ require (
 	github.com/Leeminjing/go-forest v0.3.0
 	github.com/Leeminjing/go-forest-agent v0.2.0
 	github.com/Leeminjing/go-forest/adapters/gorm v0.1.0
-	github.com/Leeminjing/go-forest/adapters/temporal v0.0.0-00010101000000-000000000000
+	github.com/Leeminjing/go-forest/adapters/temporal v0.1.0
 	go.temporal.io/api v1.63.5
 	go.temporal.io/sdk v1.50.0
 	gorm.io/driver/postgres v1.6.3
@@ -44,5 +44,3 @@ require (
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/Leeminjing/go-forest/adapters/temporal => ../../adapters/temporal

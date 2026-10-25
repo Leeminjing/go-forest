@@ -4,6 +4,8 @@ github.com/Leeminjing/go-forest-agent v0.2.0 h1:ggFOVs5ZeDvuVpCKHXwdbiSdqQ+K3cAx
 github.com/Leeminjing/go-forest-agent v0.2.0/go.mod h1:AMcJ9Lv92DSg7xSJvjt/x/FxfTAYdoZoQu6z6rFNIQ8=
 github.com/Leeminjing/go-forest/adapters/gorm v0.1.0 h1:DgrECqi1fZSCb0b19A+ONj13BEnZWAAzOoYB2EpjCAE=
 github.com/Leeminjing/go-forest/adapters/gorm v0.1.0/go.mod h1:JTSiiLdwS4vV0KoUFpaldCPL7uRumEKUVrPX5NwiahU=
+github.com/Leeminjing/go-forest/adapters/temporal v0.1.0 h1:Qw4r1WWmfx8l5oMg0nP8FQsAMSsfYD08y7YzL+TqrFs=
+github.com/Leeminjing/go-forest/adapters/temporal v0.1.0/go.mod h1:cy0OuBv+WnSxipK+ZiKL3xJ4Wch0TKqAaPCgdIQ+il4=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
 github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

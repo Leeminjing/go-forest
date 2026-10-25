@@ -4,6 +4,10 @@ Go 1.26+. Native Temporal SDK v1.50.0, Forest v0.3.0, GORM adapter v0.1.0 and
 Forest Agent v0.2.0. Deterministic model, no LLM key. The adapter itself has no
 Agent/database dependency; this independent example supplies the business seam.
 
+```sh
+go install github.com/Leeminjing/go-forest/examples/temporal/cmd/demo@v0.1.0
+```
+
 Nine trees: jobs with a worker child, client, database, Agent, model, checkpoint,
 events and approval. Worker-to-parent assembly is explicit BindNest; jobs and
 Agent declare their own database/executor/model/checkpoint/event/approval Ports.
