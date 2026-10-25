@@ -18,6 +18,8 @@ v0.3.0 包含核心、组合层与可选桥接扩展。桥接应用导入 `githu
 
 独立 [GORM](adapters/gorm/README.md)、[NATS JetStream](adapters/nats/README.md) 与可选 [运行观测](extensions/telemetry/README.md) 组合现有框架。[多框架森林示例](examples/ecosystem/README.md) 使用真实数据库、消息、Agent、HTTP/RPC 和 Observatory 验证事务、重复消息、热替换与恢复。接入约定见 [框架适配指南](docs/adapter-guide.md)；Core 依赖保持不变。
 
+GORM、NATS、Telemetry 各自发布 v0.1.0，Observatory 运行观察为 v0.2.0；示例固定依赖这些版本。运行示例需配置独立测试数据库/消息服务，详见示例 README。
+
 ## 先运行
 
 ```sh

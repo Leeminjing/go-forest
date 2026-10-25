@@ -6,11 +6,11 @@ require (
 	github.com/Leeminjing/go-forest v0.3.0
 	github.com/Leeminjing/go-forest-agent v0.2.0
 	github.com/Leeminjing/go-forest/adapters/gin v0.1.0
-	github.com/Leeminjing/go-forest/adapters/gorm v0.0.0
+	github.com/Leeminjing/go-forest/adapters/gorm v0.1.0
 	github.com/Leeminjing/go-forest/adapters/grpc v0.1.0
-	github.com/Leeminjing/go-forest/adapters/nats v0.0.0
-	github.com/Leeminjing/go-forest/extensions/observatory v0.1.0
-	github.com/Leeminjing/go-forest/extensions/telemetry v0.0.0
+	github.com/Leeminjing/go-forest/adapters/nats v0.1.0
+	github.com/Leeminjing/go-forest/extensions/observatory v0.2.0
+	github.com/Leeminjing/go-forest/extensions/telemetry v0.1.0
 	github.com/gin-gonic/gin v1.12.0
 	github.com/nats-io/nats.go v1.55.0
 	go.opentelemetry.io/otel v1.47.0
@@ -71,12 +71,3 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260706201446-f0a921348800 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 )
-
-// Development substitutions are removed before release verification.
-replace github.com/Leeminjing/go-forest/adapters/gorm => ../../adapters/gorm
-
-replace github.com/Leeminjing/go-forest/adapters/nats => ../../adapters/nats
-
-replace github.com/Leeminjing/go-forest/extensions/telemetry => ../../extensions/telemetry
-
-replace github.com/Leeminjing/go-forest/extensions/observatory => ../../extensions/observatory

@@ -70,8 +70,8 @@ python tests/browser_test.py
 模块固定依赖已发布的 Core v0.3.0、Observe v0.1.0 与 Gin Adapter v0.1.0，不需要本地 replace。
 
 ```sh
-go get github.com/Leeminjing/go-forest/extensions/observatory@v0.1.0
-go install github.com/Leeminjing/go-forest/extensions/observatory/cmd/demo@v0.1.0
+go get github.com/Leeminjing/go-forest/extensions/observatory@v0.2.0
+go install github.com/Leeminjing/go-forest/extensions/observatory/cmd/demo@v0.2.0
 ```
 
 发布顺序为 Observe、Gin Adapter、Observatory，标签分别使用 `extensions/observe/v0.1.0`、`adapters/gin/v0.1.0`、`extensions/observatory/v0.1.0`。仓库的 `scripts/verify-release.py` 将固定版本消费者复制到仓库外，禁用 workspace 并确认不存在 replace，再运行真实 HTTP/SSE 与热替换验证；本地源码测试不替代这项发布验收。
