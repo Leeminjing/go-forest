@@ -18,7 +18,13 @@ nil cursor 读取初始化快照及保留的近期事件；后续使用 `ParseCu
 
 JSON 中 uint64 使用十进制字符串，类型使用文本描述，error 仅转换成分类码及结构化上下文。所有已停止实例仍来自 Core 保留的诊断，因此读取成本随实例历史增加。
 
-此扩展尚未发布独立版本，本地 go.mod 使用 replace 指向仓库根。验证：
+独立模块版本 v0.1.0，依赖已发布的 Core v0.3.0，不需要本地 replace：
+
+```sh
+go get github.com/Leeminjing/go-forest/extensions/observe@v0.1.0
+```
+
+验证：
 
 ```sh
 go vet ./...

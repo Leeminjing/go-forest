@@ -33,7 +33,13 @@ type Endpoint interface {
 
 监听树不声明 HotSwappable。首期只热换业务 Provider；不热换路由表、共享同一 Engine、或支持 Hijack/WebSocket 生命周期。Adapter 本身不添加认证、TLS 或业务错误模型；Observatory 的回环限制与凭据策略由该扩展实现。
 
-此扩展尚未发布独立版本，本地 go.mod 使用 replace。完整用法见同仓库 `extensions/observatory/internal/demo`。验证：
+独立模块版本 v0.1.0，依赖已发布的 Core v0.3.0，不需要本地 replace：
+
+```sh
+go get github.com/Leeminjing/go-forest/adapters/gin@v0.1.0
+```
+
+完整用法见同仓库 `extensions/observatory/internal/demo`。验证：
 
 ```sh
 go vet ./...
