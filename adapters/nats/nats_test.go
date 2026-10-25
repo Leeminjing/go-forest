@@ -195,6 +195,16 @@ func TestExplicitAdmissionHotReplacementAndQuiesce(t *testing.T) {
 		t.Fatal("old call did not finish")
 	}
 	wait(t, func() bool { return !status(t, f).Quiescing })
+	for i := 0; i < 2; i++ {
+		if err = f.Invoke(ctx, func(c context.Context) error {
+			return forest.Use[nt.Control](c, f, "consumer", "control", func(w nt.Control) error { return w.Quiesce(c) })
+		}); err != nil {
+			t.Fatal(err)
+		}
+		if s := status(t, f); s.Quiescing || s.Enabled {
+			t.Fatalf("completed Quiesce not idempotent: %+v", s)
+		}
+	}
 	apply(t, f, forest.Remove("consumer"))
 	if err = nc.FlushTimeout(time.Second); err != nil {
 		t.Fatalf("borrowed connection closed: %v", err)

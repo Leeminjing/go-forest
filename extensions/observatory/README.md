@@ -2,6 +2,8 @@
 
 同一 Forest 中的只读观察网关。Gin 组合根包含 Inspector 子树，通过 BindNest 使用 Reader；应用 Gin 树与它共用同一个 Adapter。最低 Go 1.25。
 
+v0.2 增加可选 `runtime` Port：消费方定义 `ReadRuntime(context.Context) (json.RawMessage, error)`，可通过普通 Link 接入独立 telemetry 树。授权后的 `/api/v1/runtime` 返回不超过 256 KiB 的有效 JSON；未绑定、错误或无效数据返回 503，不将未知状态伪装为零。运行观察页面只展示明确采集的操作累计次数、错误、在途、耗时、时间与覆盖范围，不推导全部 Link 的流量。未配置时原结构观察继续工作，SDK 不进入本网关的依赖。
+
 ## 运行演示
 
 从仓库根目录，在 PowerShell 中配置自己的观察凭据（16–256 字节，不含空白），然后启动：

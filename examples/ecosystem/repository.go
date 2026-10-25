@@ -54,7 +54,7 @@ type repositoryAPI interface {
 	Pending(context.Context) ([]outbox, error)
 	MarkSent(context.Context, string) error
 	Receive(context.Context, event) error
-	Runnable(context.Context) ([]Task, error)
+	Candidates(context.Context, string) ([]Task, error)
 	Finish(context.Context, string, string, string) error
 }
 type repository struct {
@@ -140,14 +140,14 @@ func (r *repository) Receive(ctx context.Context, e event) error {
 		return tx.Model(&Task{}).Where("namespace = ? AND id = ? AND state = ?", r.namespace, e.ID, "pending").Update("state", "runnable").Error
 	})
 }
-func (r *repository) Runnable(ctx context.Context) (rows []Task, err error) {
+func (r *repository) Candidates(ctx context.Context, after string) (rows []Task, err error) {
 	err = r.with(ctx, func(d *gorm.DB) error {
-		return d.Where("namespace = ? AND state = ?", r.namespace, "runnable").Order("id").Limit(32).Find(&rows).Error
+		return d.Where("namespace = ? AND state IN ? AND id > ?", r.namespace, []string{"runnable", "awaiting-approval", "outcome-unknown"}, after).Order("id").Limit(32).Find(&rows).Error
 	})
 	return
 }
 func (r *repository) Finish(ctx context.Context, id, state, result string) error {
 	return r.with(ctx, func(d *gorm.DB) error {
-		return d.Model(&Task{}).Where("namespace = ? AND id = ? AND state = ?", r.namespace, id, "runnable").Updates(map[string]any{"state": state, "result": result}).Error
+		return d.Model(&Task{}).Where("namespace = ? AND id = ? AND state IN ?", r.namespace, id, []string{"runnable", "awaiting-approval", "outcome-unknown"}).Updates(map[string]any{"state": state, "result": result}).Error
 	})
 }

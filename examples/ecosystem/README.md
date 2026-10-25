@@ -25,6 +25,11 @@ Agent Run and persists results. Agent uses its own filesystem checkpoint format.
 Offline model calls the calculator Tool then returns `model v1: 5`; no key or
 arbitrary shell. Pauses/unknown outcomes remain visible, never blindly replayed.
 
+With `RequireApproval`, the calculator pauses. Authorized hosts use the existing
+Agent Executor's revision-checked Decide/Resolve API; the bounded rotating driver
+rechecks paused checkpoints and settles once they progress. OutcomeUnknown is
+never advanced or replayed without explicit resolution. No approval UI is added.
+
 Exactly **one driver per namespace/checkpoint directory**. Stop prior processes
 before recovery. No distributed scheduler, lease, cross-resource transaction or
 exactly-once tool claim. Outbox/inbox belong to this application, not adapters.

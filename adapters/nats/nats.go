@@ -3,6 +3,7 @@ package natsforest
 
 import (
 	"context"
+	"crypto/sha256"
 	"errors"
 	"fmt"
 	"sync"
@@ -308,6 +309,13 @@ func (c *consumer) quiesce(ctx context.Context) error {
 		c.mu.Unlock()
 		return nil
 	}
+	select {
+	case <-s.done:
+		c.status.Enabled, c.status.Quiescing = false, false
+		c.mu.Unlock()
+		return nil
+	default:
+	}
 	s.enabled = false
 	s.cancel()
 	c.status.Enabled = false
@@ -359,11 +367,12 @@ func (c *consumer) process(msg jetstream.Msg) {
 		return
 	}
 	id := msg.Headers().Get(jetstream.MsgIDHeader)
-	if len(id) > 256 {
-		id = id[:256]
-	}
 	if id == "" {
 		id = fmt.Sprintf("%s:%d", c.options.Stream, meta.Sequence.Stream)
+	}
+	diagnosticID := id
+	if len(diagnosticID) > 256 {
+		diagnosticID = fmt.Sprintf("sha256:%x", sha256.Sum256([]byte(id)))
 	}
 	header := nats.Header{}
 	for key, values := range msg.Headers() {
@@ -377,16 +386,16 @@ func (c *consumer) process(msg jetstream.Msg) {
 	})
 	if err != nil {
 		terminal := int(meta.NumDelivered) >= c.maxDeliver
-		c.record("handler", id, terminal, false)
+		c.record("handler", diagnosticID, terminal, false)
 		if !terminal {
 			if err = msg.NakWithDelay(c.options.RetryDelay); err != nil {
-				c.record("nak-unknown", id, false, false)
+				c.record("nak-unknown", diagnosticID, false, false)
 			}
 		}
 		return
 	}
 	if err = msg.DoubleAck(ctx); err != nil {
-		c.record("ack-unknown", id, false, true)
+		c.record("ack-unknown", diagnosticID, false, true)
 		return
 	}
 	c.mu.Lock()

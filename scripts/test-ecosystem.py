@@ -10,6 +10,7 @@ from pathlib import Path
 import secrets
 import socket
 import subprocess
+import sys
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,6 +24,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--race", action="store_true")
     parser.add_argument("--count", type=int, default=1)
+    parser.add_argument("--browser", action="store_true")
     args = parser.parse_args()
     suffix = secrets.token_hex(5)
     pg, nats = "forest-test-pg-" + suffix, "forest-test-nats-" + suffix
@@ -33,6 +35,8 @@ def main():
                 listener.bind(("127.0.0.1", 0))
                 return str(listener.getsockname()[1])
         pg_port, nats_port = available_port(), available_port()
+        while nats_port == pg_port:
+            nats_port = available_port()
         # Pin the chosen ports. Docker's random host-port assignment can change
         # when a container restarts, which would test a stale URL, not reconnect.
         # Test-only credentials for an isolated, loopback-only database.
@@ -58,6 +62,8 @@ def main():
             print("CHECK " + module, flush=True)
             run("go", "vet", "./...", cwd=ROOT / module, env=env)
             run("go", "test", *( ["-race"] if args.race else [] ), "./...", "-count=" + str(args.count), "-timeout=180s", cwd=ROOT / module, env=env)
+        if args.browser:
+            run(sys.executable, str(ROOT / "examples/ecosystem/tests/browser_test.py"), env=env)
         print("PASS: real database/message services, process crash recovery, per-module checks", flush=True)
     finally:
         for name in reversed(started):

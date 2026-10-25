@@ -5,6 +5,7 @@ import (
 	"errors"
 	"os"
 	"os/exec"
+	"strings"
 	"testing"
 	"time"
 
@@ -38,6 +39,45 @@ func TestRedeliveryIsBoundedAndFailuresObservable(t *testing.T) {
 	s := status(t, f)
 	if s.Failed != 3 || s.Handled != 0 || s.LastEventID != "bad-event" || s.LastStage != "handler" {
 		t.Fatalf("failure hidden: %+v", s)
+	}
+}
+
+func TestLongBusinessMessageIDsRemainDistinct(t *testing.T) {
+	nc, js, name := broker(t)
+	f := forest.New(forest.Options{})
+	defer f.Close(context.Background())
+	ctx := context.Background()
+	ids := make(chan string, 2)
+	h := hdef("1", func(_ context.Context, m nt.Message) error { ids <- m.ID; return nil })
+	d := consumeDef(t, f, nc, name)
+	for _, def := range []forest.Definition{h, d} {
+		if err := f.Register(def); err != nil {
+			t.Fatal(err)
+		}
+	}
+	apply(t, f, forest.AddRoot("consumer", d.Ref()), forest.AddRoot("handler", h.Ref()), forest.Connect(forest.Link{ID: "h", Consumer: "consumer", Port: "handler", Provider: "handler", Capability: "handle"}))
+	if err := f.Invoke(ctx, func(c context.Context) error {
+		return forest.Use[nt.Control](c, f, "consumer", "control", func(w nt.Control) error { return w.Enable(c) })
+	}); err != nil {
+		t.Fatal(err)
+	}
+	a, b := strings.Repeat("x", 300)+"a", strings.Repeat("x", 300)+"b"
+	for _, id := range []string{a, b} {
+		if _, err := js.Publish(ctx, name, []byte("one"), jetstream.WithMsgID(id)); err != nil {
+			t.Fatal(err)
+		}
+	}
+	got := map[string]bool{}
+	for i := 0; i < 2; i++ {
+		select {
+		case id := <-ids:
+			got[id] = true
+		case <-time.After(3 * time.Second):
+			t.Fatal("missing long ID message")
+		}
+	}
+	if !got[a] || !got[b] {
+		t.Fatal("different business IDs merged")
 	}
 }
 

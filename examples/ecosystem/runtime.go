@@ -31,6 +31,7 @@ import (
 )
 
 type Options struct {
+	RequireApproval                               bool
 	DSN, NATSURL, Namespace, CheckpointDir, Token string
 	HTTPAddress, GRPCAddress, ObservatoryAddress  string
 	BeforeSubmit                                  func(context.Context, string) error `json:"-"`
@@ -38,6 +39,7 @@ type Options struct {
 	Telemetry                                     telemetry.Options                   `json:"-"`
 }
 type Runtime struct {
+	candidateCursor                     string // guarded by tickMu; wraps after each bounded scan
 	Forest                              *forest.Forest
 	Telemetry                           *telemetry.Recorder
 	HTTPURL, GRPCTarget, ObservatoryURL string
@@ -149,7 +151,7 @@ func New(ctx context.Context, o Options) (r *Runtime, err error) {
 		return nil, err
 	}
 	root := forest.Definition{TypeID: "ecosystem.root", Version: "1", ExportChildren: true, Build: func(context.Context, *forest.BuildEnv) (forest.Lifecycle, error) { return forest.Hooks{}, nil }}
-	defs := map[forest.TreeID]forest.Definition{"app": root, "app/db": db, "app/publisher": pub, "app/consumer": cons, "app/repository": repositoryDefinition(o.Namespace), "app/service": serviceDefinition("v1", o.BeforeSubmit), "app/handler": handlerDefinition(o.AfterReceive), "app/http": http, "app/grpc": rpc, "app/telemetry": r.Telemetry.Definition("ecosystem.telemetry"), "app/agent": agent.Definition(agent.Options{}), "app/checkpoint": filecheckpoint.Definition(o.CheckpointDir), "app/model": scriptedmodel.Definition("v1"), "app/tool": calculator.Definition(false), "app/events": events.Definition(events.New(4096)), "app/approval": manualapproval.Definition()}
+	defs := map[forest.TreeID]forest.Definition{"app": root, "app/db": db, "app/publisher": pub, "app/consumer": cons, "app/repository": repositoryDefinition(o.Namespace), "app/service": serviceDefinition("v1", o.BeforeSubmit), "app/handler": handlerDefinition(o.AfterReceive), "app/http": http, "app/grpc": rpc, "app/telemetry": r.Telemetry.Definition("ecosystem.telemetry"), "app/agent": agent.Definition(agent.Options{}), "app/checkpoint": filecheckpoint.Definition(o.CheckpointDir), "app/model": scriptedmodel.Definition("v1"), "app/tool": calculator.Definition(o.RequireApproval), "app/events": events.Definition(events.New(4096)), "app/approval": manualapproval.Definition()}
 	for _, d := range defs {
 		if err = f.Register(d); err != nil {
 			return nil, err
@@ -259,10 +261,18 @@ func (r *Runtime) Tick(ctx context.Context) error {
 		}
 	}
 	var tasks []Task
-	if err := r.repository(ctx, func(c context.Context, p repositoryAPI) error { var err error; tasks, err = p.Runnable(c); return err }); err != nil {
+	if err := r.repository(ctx, func(c context.Context, p repositoryAPI) error {
+		var err error
+		tasks, err = p.Candidates(c, r.candidateCursor)
+		return err
+	}); err != nil {
 		return err
 	}
+	if len(tasks) == 0 {
+		r.candidateCursor = ""
+	}
 	for _, task := range tasks {
+		r.candidateCursor = task.ID
 		if err := r.drive(ctx, task); err != nil {
 			return err
 		}
@@ -310,6 +320,9 @@ func (r *Runtime) drive(ctx context.Context, task Task) error {
 		}
 		switch run.Status {
 		case agent.Completed, agent.Failed, agent.Canceled, agent.AwaitingApproval, agent.OutcomeUnknown:
+			if task.State == string(run.Status) {
+				return nil
+			}
 			result := ""
 			if len(run.Messages) > 0 {
 				result = run.Messages[len(run.Messages)-1].Content
