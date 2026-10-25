@@ -22,6 +22,8 @@ jobs:
           - {path: 'examples/ecosystem', go: '1.26.x'}
           - {path: 'adapters/eino', go: '1.23.x'}
           - {path: 'examples/eino', go: '1.23.x'}
+          - {path: 'adapters/temporal', go: '1.26.x'}
+          - {path: 'examples/temporal', go: '1.26.x'}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -46,6 +48,18 @@ jobs:
         run: go run ./examples/web-agent
       - if: matrix.module.path == '.'
         run: go run ./examples/composite
+  temporal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.x'
+          cache-dependency-path: '**/go.sum'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/test-temporal.py --race --count 3
   eino-published:
     runs-on: ubuntu-latest
     steps:
