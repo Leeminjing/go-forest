@@ -16,8 +16,8 @@ VERSIONS = {
     "github.com/Leeminjing/go-forest/adapters/gorm": "v0.1.0",
     "github.com/Leeminjing/go-forest/adapters/nats": "v0.1.0",
     "github.com/Leeminjing/go-forest/extensions/telemetry": "v0.1.0",
-    "github.com/Leeminjing/go-forest/extensions/observatory": "v0.2.0",
-    "github.com/Leeminjing/go-forest/examples/ecosystem": "v0.1.0",
+    "github.com/Leeminjing/go-forest/extensions/observatory": "v0.2.1",
+    "github.com/Leeminjing/go-forest/examples/ecosystem": "v0.1.1",
 }
 
 
@@ -48,7 +48,8 @@ def main():
             print(module + "@" + version + ": downloaded, no replace", flush=True)
         run("go", "vet", "./...")
         run("go", "build", "./...")
-        run("go", "install", "github.com/Leeminjing/go-forest/examples/ecosystem/cmd/demo@v0.1.0")
+        app = "github.com/Leeminjing/go-forest/examples/ecosystem"
+        run("go", "install", app + "/cmd/demo@" + VERSIONS[app])
         binary = directory / "bin" / ("demo.exe" if os.name == "nt" else "demo")
         env["FOREST_ECOSYSTEM_BINARY"] = str(binary)
         subprocess.run([sys.executable, str(ROOT / "examples/ecosystem/tests/browser_test.py")], env=env, check=True)

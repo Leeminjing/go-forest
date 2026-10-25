@@ -67,7 +67,7 @@ def main():
         print("PASS: real database/message services, process crash recovery, per-module checks", flush=True)
     finally:
         for name in reversed(started):
-            subprocess.run(["docker", "rm", "-f", name], stdout=subprocess.DEVNULL, check=False)
+            subprocess.run(["docker", "rm", "-f", "-v", name], stdout=subprocess.DEVNULL, check=False)
 
 
 if __name__ == "__main__":
