@@ -138,6 +138,20 @@ Observatory 只读且仅监听回环地址，分别显示 Nest、Link、BindNest
 
 根模块仍只依赖标准库。三个扩展均已发布独立 v0.1.0，使用 Core v0.3.0 和正式版本依赖，不含本地 replace；根目录 `go test ./...` 不涵盖嵌套模块，需逐模块验证。仓库外消费者已验证真实 HTTP/SSE 与热替换，发布版本及复现方式见 [v0.4 发布验收](docs/v0.4/release.md)。
 
+## v0.5 开发：gRPC Tree Adapter
+
+[adapters/grpc](adapters/grpc/README.md) 用普通 Definition 承载原生生成服务、Unary 和三种 Streaming RPC。应用链式拦截器与业务处理位于同一 Forest Scope，已注册服务的业务实现可以热替换。流内各条消息固定在同一 Generation，流结束后才释放旧实例。
+
+[examples/frameworks](examples/frameworks/README.md) 在同一 Forest 中种下 Gin、gRPC、Business 与 Observatory，支持真实 HTTP/RPC 调用、长流和旧请求保持、替换及排空观察：
+
+```powershell
+$env:FOREST_OBSERVATORY_TOKEN = 'replace-with-your-random-token'
+cd examples/frameworks
+go run ./cmd/demo
+```
+
+gRPC Adapter 是独立 Go 1.25 模块，锁定 grpc-go v1.84.0；Core、Gin 和已发布 v0.4 模块没有改动。gRPC 独立版本尚未发布，组合示例显式引用本地 Adapter。RPC 状态码、TLS、认证及恢复策略继续使用原生 gRPC 配置，不加入 Core。
+
 ## 声明与组合
 
 消费方定义接口和端口，在 Factory 中创建动态引用：
