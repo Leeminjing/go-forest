@@ -113,6 +113,9 @@ func TestCandidateNeverPollsAndNativeStopIsNotPhysicalJoin(t *testing.T) {
 	if err = tf.Enable(ctx, f, "worker"); err != nil {
 		t.Fatal(err)
 	}
+	if err = tf.Enable(ctx, f, "worker"); err != nil {
+		t.Fatalf("repeated Enable failed: %v", err)
+	}
 	select {
 	case <-entered:
 	case <-ctx.Done():
@@ -153,6 +156,9 @@ func TestCandidateNeverPollsAndNativeStopIsNotPhysicalJoin(t *testing.T) {
 	}
 	if stopped.Load() != 1 {
 		t.Fatalf("rollback resource cleanup=%d", stopped.Load())
+	}
+	if calls.Load() != 1 {
+		t.Fatalf("repeated Enable duplicated activity: %d", calls.Load())
 	}
 	// A shutdown attempt can be retried by the real service; its original result is not invented here.
 	_ = run

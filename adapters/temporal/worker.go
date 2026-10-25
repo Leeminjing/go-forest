@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"errors"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -83,8 +84,18 @@ func supportedClient(o client.Options) bool {
 	return true
 }
 
+func cloneClient(o client.Options) client.Options {
+	o.Interceptors = slices.Clone(o.Interceptors)
+	o.ContextPropagators = slices.Clone(o.ContextPropagators)
+	o.ConnectionOptions.DialOptions = slices.Clone(o.ConnectionOptions.DialOptions)
+	if o.ConnectionOptions.TLS != nil {
+		o.ConnectionOptions.TLS = o.ConnectionOptions.TLS.Clone()
+	}
+	return o
+}
+
 func WorkerDefinition(f *forest.Forest, o WorkerOptions) (forest.Definition, error) {
-	if f == nil || !valid(o.TypeID) || !valid(o.Version) || !valid(string(o.TreeID)) || !valid(o.TaskQueue) || o.BuildRegistration == nil || o.ConnectTimeout < 0 {
+	if f == nil || !valid(o.TypeID) || !valid(o.Version) || !valid(string(o.TreeID)) || !valid(o.TaskQueue) || o.BuildRegistration == nil || o.ConnectTimeout < 0 || (o.Client.Namespace != "" && !valid(o.Client.Namespace)) {
 		return forest.Definition{}, ErrInvalid
 	}
 	if !supportedClient(o.Client) || o.Native.OnFatalError != nil || o.Native.BackgroundActivityContext != nil || len(o.Native.Plugins) != 0 || o.Native.EnableSessionWorker || o.Native.LocalActivityWorkerOnly {
@@ -94,6 +105,7 @@ func WorkerDefinition(f *forest.Forest, o WorkerOptions) (forest.Definition, err
 		o.ConnectTimeout = 5 * time.Second
 	}
 	o.Ports = append([]forest.PortDescriptor(nil), o.Ports...)
+	o.Client = cloneClient(o.Client)
 	o.Native.Interceptors = append([]interceptor.WorkerInterceptor(nil), o.Native.Interceptors...)
 	return forest.Definition{TypeID: o.TypeID, Version: o.Version, Ports: o.Ports, Capabilities: []forest.CapabilityDescriptor{forest.Capability[Control]("control", forest.Public)}, Build: func(_ context.Context, env *forest.BuildEnv) (forest.Lifecycle, error) {
 		root, cancel := context.WithCancel(context.Background())
@@ -157,7 +169,7 @@ func (w *workerTree) Start(ctx context.Context) (err error) {
 		o.Interceptors = append([]interceptor.WorkerInterceptor{&scopeInterceptor{w: w}}, o.Interceptors...)
 		o.OnFatalError = func(error) { w.mu.Lock(); w.status.ErrorStage = "native-fatal"; w.beginStopLocked(); w.mu.Unlock() }
 		w.native = worker.New(w.client, w.options.TaskQueue, o)
-		if err := w.register(w.native); err != nil {
+		if err := w.register(registry{workflows: w.native, activities: w.native}); err != nil {
 			return err
 		}
 		w.mu.Lock()

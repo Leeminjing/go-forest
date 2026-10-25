@@ -3,6 +3,10 @@
 Independent Go 1.26 module. Pins Temporal SDK v1.50.0 and Forest v0.3.0;
 no GORM, Agent or product dependency is added to this adapter or Core.
 
+```sh
+go get github.com/Leeminjing/go-forest/adapters/temporal@v0.1.0
+```
+
 `ClientDefinition` publishes `client` (`ClientAccess.Use`), borrowing the native
 client for a controlled callback. Retain namespace/WorkflowID/RunID and detached
 values; consume WorkflowRun.Get, query values and history iterators inside the

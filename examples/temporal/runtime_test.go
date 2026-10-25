@@ -2,7 +2,9 @@ package temporaldemo_test
 
 import (
 	"context"
+	"github.com/Leeminjing/go-forest-agent/agent"
 	"os"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -23,6 +25,14 @@ func config(t *testing.T) demo.Options {
 }
 func TestRealAgentDatabaseWorkflowAndReplay(t *testing.T) {
 	o := config(t)
+	var modelCalls atomic.Int32
+	o.Model = modelFunc(func(_ context.Context, _ agent.ModelRequest, emit func(string) error) (agent.ModelResult, error) {
+		modelCalls.Add(1)
+		if err := emit("plan:oak"); err != nil {
+			return agent.ModelResult{}, err
+		}
+		return agent.ModelResult{Content: "plan:oak"}, nil
+	})
 	ctx, cancel := context.WithTimeout(context.Background(), 35*time.Second)
 	defer cancel()
 	if err := demo.Setup(ctx, o.DSN); err != nil {
@@ -54,6 +64,12 @@ func TestRealAgentDatabaseWorkflowAndReplay(t *testing.T) {
 	if err = r.ReplaceBusiness(ctx); err != nil {
 		t.Fatal(err)
 	}
+	short, end := context.WithTimeout(ctx, time.Second)
+	err = r.Forest.Wait(short)
+	end()
+	if err != nil {
+		t.Fatalf("idle workflow pinned old business resources: %v", err)
+	}
 	if err = r.Signal(ctx, id); err != nil {
 		t.Fatal(err)
 	}
@@ -66,6 +82,9 @@ func TestRealAgentDatabaseWorkflowAndReplay(t *testing.T) {
 	}
 	if err = r.Replay(ctx, id); err != nil {
 		t.Fatal(err)
+	}
+	if modelCalls.Load() != 1 {
+		t.Fatalf("history replay executed model again: %d", modelCalls.Load())
 	}
 	if len(r.Forest.Snapshot().Trees) < 8 {
 		t.Fatal("real composition missing")

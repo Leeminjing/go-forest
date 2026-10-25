@@ -18,6 +18,7 @@ import (
 	"github.com/Leeminjing/go-forest/examples/temporal/flow"
 	"github.com/Leeminjing/go-forest/examples/temporal/internal/jobservice"
 	"github.com/Leeminjing/go-forest/forest"
+	enumspb "go.temporal.io/api/enums/v1"
 	historypb "go.temporal.io/api/history/v1"
 	"go.temporal.io/sdk/activity"
 	"go.temporal.io/sdk/client"
@@ -163,7 +164,7 @@ func (r *Runtime) use(ctx context.Context, fn func(client.Client) error) error {
 }
 func (r *Runtime) StartRun(ctx context.Context, in flow.Input) (out Ref, err error) {
 	err = r.use(ctx, func(c client.Client) error {
-		run, err := c.ExecuteWorkflow(ctx, client.StartWorkflowOptions{ID: in.ID, TaskQueue: r.options.TaskQueue}, flow.Job, in)
+		run, err := c.ExecuteWorkflow(ctx, client.StartWorkflowOptions{ID: in.ID, TaskQueue: r.options.TaskQueue, WorkflowIDReusePolicy: enumspb.WORKFLOW_ID_REUSE_POLICY_REJECT_DUPLICATE}, flow.Job, in)
 		if err == nil {
 			out = Ref{WorkflowID: run.GetID(), RunID: run.GetRunID()}
 		}

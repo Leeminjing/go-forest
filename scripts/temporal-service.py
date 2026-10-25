@@ -7,6 +7,7 @@ The fixed CLI is downloaded from official release assets and checksum verified.
 import argparse
 import hashlib
 import os
+import shutil
 from pathlib import Path
 import subprocess
 import sys
@@ -29,7 +30,12 @@ def binary():
     directory.mkdir(parents=True, exist_ok=True)
     archive = directory / name
     if not archive.exists():
-        urllib.request.urlretrieve("https://github.com/temporalio/cli/releases/download/v1.9.1/" + name, archive)
+        temporary = directory / (name + ".download")
+        with urllib.request.urlopen("https://github.com/temporalio/cli/releases/download/v1.9.1/" + name, timeout=60) as source, temporary.open("wb") as target:
+            shutil.copyfileobj(source, target)
+        if hashlib.sha256(temporary.read_bytes()).hexdigest() != HASHES[platform]:
+            raise RuntimeError("Temporal CLI download checksum mismatch")
+        temporary.replace(archive)
     if hashlib.sha256(archive.read_bytes()).hexdigest() != HASHES[platform]:
         raise RuntimeError("Temporal CLI checksum mismatch")
     executable = directory / ("temporal.exe" if os.name == "nt" else "temporal")

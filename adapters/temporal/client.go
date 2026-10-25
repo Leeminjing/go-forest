@@ -21,7 +21,7 @@ type ClientOptions struct {
 }
 
 func ClientDefinition(f *forest.Forest, o ClientOptions) (forest.Definition, error) {
-	if f == nil || !valid(o.TypeID) || !valid(o.Version) || o.ConnectTimeout < 0 {
+	if f == nil || !valid(o.TypeID) || !valid(o.Version) || o.ConnectTimeout < 0 || (o.Native.Namespace != "" && !valid(o.Native.Namespace)) {
 		return forest.Definition{}, ErrInvalid
 	}
 	if !supportedClient(o.Native) {
@@ -30,6 +30,7 @@ func ClientDefinition(f *forest.Forest, o ClientOptions) (forest.Definition, err
 	if o.ConnectTimeout == 0 {
 		o.ConnectTimeout = 5 * time.Second
 	}
+	o.Native = cloneClient(o.Native)
 	return forest.Definition{TypeID: o.TypeID, Version: o.Version, Capabilities: []forest.CapabilityDescriptor{forest.Capability[ClientAccess]("client", forest.Public)}, Build: func(_ context.Context, e *forest.BuildEnv) (forest.Lifecycle, error) {
 		c := &clientTree{f: f, options: o}
 		return c, forest.Provide(e, "client", c)

@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net"
 	"os"
@@ -258,7 +257,7 @@ func TestActualPersistentServerRestartKeepsHistory(t *testing.T) {
 	if result.Receipt.ID != id.WorkflowID || result.Receipt.Changes != 1 {
 		t.Fatalf("identity/history lost: %+v", result)
 	}
-	if err = r.Replay(ctx, id); err != nil && !errors.Is(err, context.Canceled) {
+	if err = r.Replay(ctx, id); err != nil {
 		t.Fatal(err)
 	}
 }

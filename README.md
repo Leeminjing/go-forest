@@ -26,6 +26,8 @@ GORM、NATS、Telemetry 各自发布 v0.1.0，Observatory 运行观察为 v0.2.1
 
 适配器与示例各自发布 `v0.1.0`，可直接按版本安装；见 [Eino 交付验收](docs/eino/release.md)。
 
+[Temporal Adapter](adapters/temporal/README.md) 与 [持久工作流示例](examples/temporal/README.md) 使用独立 Go 1.26 模块，验证提交后 Worker 准入、Activity Scope、业务热替换、真实服务/Worker 重启以及 PostgreSQL 收据核对。Core 不包含 Temporal 调度或持久化逻辑；见 [验收记录](docs/temporal/validation.md)。
+
 ```sh
 go run ./examples/hello-forest
 go run ./examples/nesting
