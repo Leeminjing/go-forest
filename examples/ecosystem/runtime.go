@@ -53,6 +53,7 @@ type Runtime struct {
 }
 
 var validNamespace = regexp.MustCompile(`^[A-Za-z][A-Za-z0-9_]{0,47}$`)
+var validTaskID = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$`)
 
 func openDB(dsn string) (*gorm.DB, error) {
 	return gorm.Open(postgres.Open(dsn), &gorm.Config{DisableAutomaticPing: true, Logger: logger.Default.LogMode(logger.Silent)})

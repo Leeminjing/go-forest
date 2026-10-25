@@ -25,6 +25,7 @@ def main():
     parser.add_argument("--race", action="store_true")
     parser.add_argument("--count", type=int, default=1)
     parser.add_argument("--browser", action="store_true")
+    parser.add_argument("--published", action="store_true", help="also verify already published modules and CLI")
     args = parser.parse_args()
     suffix = secrets.token_hex(5)
     pg, nats = "forest-test-pg-" + suffix, "forest-test-nats-" + suffix
@@ -64,6 +65,8 @@ def main():
             run("go", "test", *( ["-race"] if args.race else [] ), "./...", "-count=" + str(args.count), "-timeout=180s", cwd=ROOT / module, env=env)
         if args.browser:
             run(sys.executable, str(ROOT / "examples/ecosystem/tests/browser_test.py"), env=env)
+        if args.published:
+            run(sys.executable, str(ROOT / "scripts/verify-ecosystem-release.py"), env=env)
         print("PASS: real database/message services, process crash recovery, per-module checks", flush=True)
     finally:
         for name in reversed(started):

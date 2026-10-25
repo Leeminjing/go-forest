@@ -5,6 +5,7 @@ Does not publish tags or modify any checkout.
 """
 import json
 import os
+import secrets
 from pathlib import Path
 import subprocess
 import sys
@@ -24,7 +25,12 @@ VERSIONS = {
 def main():
     with tempfile.TemporaryDirectory(prefix="forest-published-") as temporary:
         directory = Path(temporary)
-        env = dict(os.environ, GOWORK="off", GOBIN=str(directory / "bin"))
+        # Module sources/build context are outside the checkout. Keep only the
+        # installed evidence binary ignored locally; Windows AV may retain an
+        # image handle after child exit, preventing tempdir cleanup.
+        bindir = ROOT / ".scratch" / "ecosystem" / ("published-" + secrets.token_hex(6))
+        bindir.mkdir(parents=True)
+        env = dict(os.environ, GOWORK="off", GOBIN=str(bindir))
 
         def run(*args, capture=False):
             return subprocess.run(args, cwd=directory, env=env, check=True, text=True, encoding="utf-8", stdout=subprocess.PIPE if capture else None).stdout
@@ -50,7 +56,7 @@ def main():
         run("go", "build", "./...")
         app = "github.com/Leeminjing/go-forest/examples/ecosystem"
         run("go", "install", app + "/cmd/demo@" + VERSIONS[app])
-        binary = directory / "bin" / ("demo.exe" if os.name == "nt" else "demo")
+        binary = bindir / ("demo.exe" if os.name == "nt" else "demo")
         env["FOREST_ECOSYSTEM_BINARY"] = str(binary)
         subprocess.run([sys.executable, str(ROOT / "examples/ecosystem/tests/browser_test.py")], env=env, check=True)
         print("PASS: external published CLI + real database/message/Agent/browser roundtrip", flush=True)

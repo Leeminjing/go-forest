@@ -19,7 +19,9 @@ def main():
     OUTPUT.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as temporary:
         supplied = os.environ.get("FOREST_ECOSYSTEM_BINARY")
-        binary = Path(supplied) if supplied else Path(temporary) / ("ecosystem.exe" if os.name == "nt" else "ecosystem")
+        # Keep generated executables in ignored evidence storage: Windows may
+        # retain an AV/image handle after wait(), preventing tempdir removal.
+        binary = Path(supplied) if supplied else OUTPUT / ("browser-" + secrets.token_hex(6) + (".exe" if os.name == "nt" else ""))
         if not supplied:
             subprocess.run(["go", "build", "-o", str(binary), "./cmd/demo"], cwd=ROOT, check=True)
         credential = secrets.token_urlsafe(24)

@@ -235,3 +235,22 @@ func TestOldHTTPAndRPCPinBusinessVersion(t *testing.T) {
 		t.Fatal("telemetry mislabeled pinned generations")
 	}
 }
+
+func TestTaskIdentityIsUnchangedAcrossURLAndMessageHeaders(t *testing.T) {
+	o := options(t)
+	r := runtime(t, o)
+	for _, id := range []string{"one\r\nX-Header: other", "one two", "one/two", " leading", "trailing ", ""} {
+		body, _ := json.Marshal(map[string]string{"id": id, "input": "task"})
+		if _, err := request(r.HTTPURL+"/tasks", "POST", string(body)); err == nil || err.Error() != "HTTP 400" {
+			t.Fatalf("unsafe task identity accepted: id=%q err=%v", id, err)
+		}
+	}
+	first, err := request(r.HTTPURL+"/tasks", "POST", `{"id":"safe-1_2.3","input":"task"}`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	again, err := request(r.HTTPURL+"/tasks", "POST", `{"id":"safe-1_2.3","input":"task"}`)
+	if err != nil || again.ID != first.ID || again.Input != first.Input {
+		t.Fatalf("identity changed: %+v %+v %v", first, again, err)
+	}
+}

@@ -78,7 +78,7 @@ func (r *repository) transaction(ctx context.Context, fn func(*gorm.DB) error) e
 	return r.db.Use(ctx, func(d dbtree.Database) error { return d.Transaction(ctx, fn) })
 }
 func (r *repository) Submit(ctx context.Context, id, input, version string) (task Task, err error) {
-	if len(id) == 0 || len(id) > 128 || len(input) == 0 || len(input) > 4096 {
+	if !validTaskID.MatchString(id) || len(input) == 0 || len(input) > 4096 {
 		return task, ErrInvalid
 	}
 	err = r.transaction(ctx, func(tx *gorm.DB) error {

@@ -15,8 +15,10 @@ Init explicitly provisions tables/stream/durable. New/Start never do migrations
 or broker provisioning. Serve prints loopback HTTP/RPC/Observatory endpoints
 without credentials. HTTP POST `/tasks` takes `{"id":"one","input":"compute 2 + 3"}`;
 GET `/tasks/one` reads state/result. Supply `Authorization: Bearer <token>`.
-Same ID+input is idempotent; a different input conflicts. RPC UnaryCall accepts
-the same JSON in grpc-go's generated interoperability payload with authorization
+Same ID+input is idempotent; a different input conflicts.
+Task IDs use 1–128 ASCII letters/digits/dot/underscore/hyphen, starting with a
+letter or digit, so their URL and message-header identity remain unchanged.
+RPC UnaryCall accepts the same JSON in grpc-go's generated interoperability payload with authorization
 metadata (a demo wire schema, no protoc needed).
 
 Tasks+outbox commit together; relay publishes stable event IDs. Consumer writes

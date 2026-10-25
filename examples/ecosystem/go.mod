@@ -9,7 +9,7 @@ require (
 	github.com/Leeminjing/go-forest/adapters/gorm v0.1.0
 	github.com/Leeminjing/go-forest/adapters/grpc v0.1.0
 	github.com/Leeminjing/go-forest/adapters/nats v0.1.0
-	github.com/Leeminjing/go-forest/extensions/observatory v0.2.0
+	github.com/Leeminjing/go-forest/extensions/observatory v0.2.1
 	github.com/Leeminjing/go-forest/extensions/telemetry v0.1.0
 	github.com/gin-gonic/gin v1.12.0
 	github.com/nats-io/nats.go v1.55.0
