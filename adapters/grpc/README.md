@@ -51,7 +51,13 @@ Forest.Close 先拒绝新 Scope，再等已有 Scope。请先结束/取消客户
 
 ## 版本与验证
 
-当前为 v0.5 开发实现，gRPC 模块尚未打版本标签；go.mod 使用已发布 Core，无本地 replace。只有未发布的组合示例通过显式 replace 使用本模块。v0.4 的三个已发布 v0.1.0 标签保持不变。
+独立模块版本为 v0.1.0，go.mod 使用已发布 Core v0.3.0，无本地 replace。最低 Go 1.25：
+
+```sh
+go get github.com/Leeminjing/go-forest/adapters/grpc@v0.1.0
+```
+
+项目 v0.5 是交付里程碑，不重发 Core。v0.4 的三个已发布 v0.1.0 标签保持不变。
 
 ```sh
 go vet ./...
