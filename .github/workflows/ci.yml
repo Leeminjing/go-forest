@@ -20,6 +20,8 @@ jobs:
           - {path: 'adapters/nats', go: '1.26.x'}
           - {path: 'extensions/telemetry', go: '1.26.x'}
           - {path: 'examples/ecosystem', go: '1.26.x'}
+          - {path: 'adapters/eino', go: '1.23.x'}
+          - {path: 'examples/eino', go: '1.23.x'}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
