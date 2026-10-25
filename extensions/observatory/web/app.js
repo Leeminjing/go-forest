@@ -16,6 +16,27 @@ let detailsKey = "",
   eventKey = "";
 const expandedHistory = new Set();
 let resetNotice = "";
+let runtimeReading = false;
+async function readRuntime(currentRun) {
+  if (runtimeReading) return;
+  runtimeReading = true;
+  try {
+    const response = await fetch("/api/v1/runtime", { headers: { Authorization: "Bearer " + token }, cache: "no-store", signal: controller.signal });
+    if (currentRun !== run) return;
+    if (!response.ok) throw new Error("运行数据未配置或不可用；未知不等于零调用。");
+    const data = await response.json();
+    if (currentRun !== run) return;
+    if (!Array.isArray(data.operations)) throw new Error("运行数据格式未知。");
+    $("runtime-coverage").textContent = (data.coverage || "采集范围未知") + " · 采样 " + (data.sampled_at || "未知") + " · 丢弃详情 " + (data.dropped_details ?? "未知");
+    $("runtime-operations").replaceChildren(...data.operations.slice(0, 128).map((op) => {
+      const row = document.createElement("tr");
+      for (const value of [op.name, op.calls, op.errors, op.inflight, Number(op.seconds || 0).toFixed(4), op.fresh ? "近期有采集" : "无近期采集／未调用"]) row.append(text("td", String(value ?? "未知")));
+      return row;
+    }));
+  } catch (error) {
+    if (currentRun === run) { $("runtime-coverage").textContent = error.message; $("runtime-operations").replaceChildren(); }
+  } finally { runtimeReading = false; }
+}
 const text = (tag, value, className) => {
   const e = document.createElement(tag);
   e.textContent = value;
@@ -57,6 +78,7 @@ function updateFrame(frame, reset = false) {
   renderDetails();
   renderInstances();
   renderEvents();
+  readRuntime(run);
 }
 function addEvent(event) {
   if (!events.some((e) => e.sequence === event.sequence)) events.push(event);
@@ -489,6 +511,8 @@ async function follow(currentRun) {
       controller.abort();
       setStatus(state ? "连接中断，快照已过期" : "连接失败");
       notice(error.message + "，正在重试。");
+      $("runtime-coverage").textContent = "观察连接中断；运行数据已过期。";
+      $("runtime-operations").replaceChildren();
     }
     await new Promise((resolve) => setTimeout(resolve, delay));
     delay = Math.min(delay * 2, 8000);
@@ -515,6 +539,8 @@ $("disconnect").addEventListener("click", () => {
   $("disconnect").disabled = true;
   setStatus("已断开，快照已过期");
   notice("");
+  $("runtime-coverage").textContent = "已断开；运行数据已过期。";
+  $("runtime-operations").replaceChildren();
 });
 $("relationship").addEventListener("change", renderGraph);
 $("show-stopped").addEventListener("change", renderInstances);

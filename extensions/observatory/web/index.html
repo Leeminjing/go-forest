@@ -145,6 +145,11 @@
           <li class="empty">暂无观察记录。</li>
         </ol>
       </section>
+      <section class="panel" aria-labelledby="runtime-title">
+        <div class="section-head"><div><h2 id="runtime-title">运行观察</h2><p>仅统计明确采集的边界，不代表全部 Tree 或 Link。</p></div></div>
+        <p id="runtime-coverage" class="caption" role="status">尚未读取运行数据。</p>
+        <div class="instance-table-wrap"><table><thead><tr><th scope="col">采集边界</th><th scope="col">累计调用</th><th scope="col">错误</th><th scope="col">在途</th><th scope="col">累计耗时（秒）</th><th scope="col">数据状态</th></tr></thead><tbody id="runtime-operations"></tbody></table></div>
+      </section>
       <footer>
         生命周期状态来自定时采样；Active
         不等于业务健康。快照与事件不构成一个原子快照。

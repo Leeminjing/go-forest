@@ -16,6 +16,10 @@ jobs:
           - {path: 'tests/release-consumer', go: '1.25.x'}
           - {path: 'adapters/grpc', go: '1.25.x'}
           - {path: 'examples/frameworks', go: '1.25.x'}
+          - {path: 'adapters/gorm', go: '1.25.x'}
+          - {path: 'adapters/nats', go: '1.26.x'}
+          - {path: 'extensions/telemetry', go: '1.26.x'}
+          - {path: 'examples/ecosystem', go: '1.26.x'}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -76,3 +80,15 @@ jobs:
         with:
           python-version: '3.12'
       - run: python scripts/verify-release.py
+  ecosystem:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.x'
+          cache-dependency-path: '**/go.sum'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/test-ecosystem.py --race --count 3

@@ -46,6 +46,12 @@ type reader interface {
 	Read(context.Context, *observe.Cursor) (observe.Frame, error)
 }
 
+// runtimeReader is owned by this consumer. The optional source returns a bounded,
+// detached JSON document; its measurements are separate from topology sampling.
+type runtimeReader interface {
+	ReadRuntime(context.Context) (json.RawMessage, error)
+}
+
 func New(f *forest.Forest, options Options) (*Bundle, error) {
 	if f == nil || len(options.Token) < 16 || len(options.Token) > 256 || strings.ContainsAny(options.Token, "\r\n\t ") {
 		return nil, ErrInvalidOptions
@@ -76,13 +82,17 @@ func New(f *forest.Forest, options Options) (*Bundle, error) {
 	inspector := observe.Definition(f)
 	inspector.TypeID = options.TypeID + ".inspector"
 	dashboard, err := ginforest.Definition(f, ginforest.Options{TypeID: options.TypeID, Version: "1", Address: options.Address,
-		Ports: []forest.PortDescriptor{forest.Port[reader]("reader", forest.Required())},
+		Ports: []forest.PortDescriptor{forest.Port[reader]("reader", forest.Required()), forest.Port[runtimeReader]("runtime")},
 		BuildRouter: func(ctx context.Context, env *forest.BuildEnv) (*gin.Engine, error) {
 			ref, err := forest.Reference[reader](env, "reader")
 			if err != nil {
 				return nil, err
 			}
-			h := &gateway{forest: f, ref: ref, options: options}
+			runtimeRef, err := forest.Reference[runtimeReader](env, "runtime")
+			if err != nil {
+				return nil, err
+			}
+			h := &gateway{forest: f, ref: ref, runtimeRef: runtimeRef, options: options}
 			r := gin.New()
 			r.Use(func(c *gin.Context) {
 				c.Header("X-Content-Type-Options", "nosniff")
@@ -107,6 +117,7 @@ func New(f *forest.Forest, options Options) (*Bundle, error) {
 			api := r.Group("/api/v1", h.authorize)
 			api.GET("/state", h.state)
 			api.GET("/events", h.stream)
+			api.GET("/runtime", h.runtime)
 			return r, nil
 		},
 	})
@@ -121,9 +132,22 @@ func New(f *forest.Forest, options Options) (*Bundle, error) {
 }
 
 type gateway struct {
-	forest  *forest.Forest
-	ref     forest.Ref[reader]
-	options Options
+	forest     *forest.Forest
+	ref        forest.Ref[reader]
+	runtimeRef forest.Ref[runtimeReader]
+	options    Options
+}
+
+func (h *gateway) runtime(c *gin.Context) {
+	var data json.RawMessage
+	err := h.forest.Invoke(c.Request.Context(), func(ctx context.Context) error {
+		return h.runtimeRef.Use(ctx, func(r runtimeReader) error { var err error; data, err = r.ReadRuntime(ctx); return err })
+	})
+	if err != nil || len(data) > 256<<10 || !json.Valid(data) {
+		c.JSON(503, gin.H{"error": "runtime_unavailable", "coverage": "unknown"})
+		return
+	}
+	c.Data(200, "application/json; charset=utf-8", data)
 }
 
 func (h *gateway) authorize(c *gin.Context) {
