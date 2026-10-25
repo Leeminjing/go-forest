@@ -3,6 +3,10 @@
 Independent Go module, minimum Go 1.23; pins Eino v0.9.22 and Forest v0.3.0.
 No dependency on go-forest-agent, and no Eino dependency is added to Core.
 
+```sh
+go get github.com/Leeminjing/go-forest/adapters/eino@v0.1.0
+```
+
 `ADKDefinition` publishes `agent` (`ADK`), preserving native messages,
 AgentRunOption, AgentEvent, interrupts and targeted ResumeParams. Run/Query/
 Resume are blocking, controlled event-consumption calls: enter Forest normally,
@@ -36,6 +40,10 @@ The adapter attaches an `Execution` to each call Context. For a managed builder:
   Join seals admission, rejects late callbacks before they touch resources, and
   awaits admitted work. For external tasks, provide a real Cancel/Join contract;
   both it and the adapter's Execution gate are awaited.
+
+Context cancellation is independently forwarded to the session Lifetime even
+while native iteration blocks. Cancel is called once; its notification callback
+is also joined before release. A canceled caller is reported after final drain.
 
 An arbitrary opaque Runner is not automatically safe. Presence of a callback
 cannot mechanically prove its semantics: the builder is responsible for covering

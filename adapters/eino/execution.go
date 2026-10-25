@@ -158,7 +158,7 @@ type Config struct {
 }
 
 func (c Config) valid() bool {
-	return c.TypeID != "" && c.Version != "" && c.Namespace != "" && len(c.Namespace) <= 256 && c.Owner != nil
+	return c.TypeID != "" && c.Version != "" && validKey(c.Namespace) && c.Owner != nil
 }
 
 type Status struct {
@@ -166,6 +166,45 @@ type Status struct {
 	Active, Joining           int
 	LastPhase                 string
 	OwnershipFailed           bool
+}
+
+// A native iterator may block until an external resource receives Cancel.
+// Forward Context cancellation independently of iteration, then join that
+// forwarding callback as well. Cancel is invoked exactly once on every path.
+type watchedLifetime struct {
+	runtime   *runtime
+	child     Lifetime
+	once      sync.Once
+	cancelErr error
+	stopWatch func() bool
+	watchDone chan struct{}
+}
+
+func (r *runtime) watch(ctx context.Context, child Lifetime) Lifetime {
+	w := &watchedLifetime{runtime: r, child: child, watchDone: make(chan struct{})}
+	w.stopWatch = context.AfterFunc(ctx, func() { defer close(w.watchDone); w.Cancel() })
+	return w
+}
+func (w *watchedLifetime) Cancel() {
+	w.once.Do(func() { w.cancelErr = w.runtime.lifetimeCall(func() error { w.child.Cancel(); return nil }) })
+}
+func (w *watchedLifetime) Join() error {
+	if !w.stopWatch() {
+		<-w.watchDone
+	}
+	w.Cancel()
+	return errors.Join(w.cancelErr, w.runtime.lifetimeCall(w.child.Join))
+}
+func (r *runtime) lifetimeCall(fn func() error) (err error) {
+	defer func() {
+		if recover() != nil {
+			r.mu.Lock()
+			r.status.OwnershipFailed = true
+			r.mu.Unlock()
+			err = errors.Join(ErrUnmanaged, ErrNativePanic)
+		}
+	}()
+	return fn()
 }
 
 func (r *runtime) join(l Lifetime) (err error) {
@@ -212,7 +251,7 @@ func (r *runtime) run(ctx context.Context, id string, fn func(context.Context) e
 	if unsafe {
 		return ErrUnmanaged
 	}
-	if len(id) > 256 {
+	if id != "" && !validKey(id) {
 		return ErrInvalid
 	}
 	if _, err = r.config.Owner.forest.Generation(ctx); err != nil {
@@ -233,6 +272,7 @@ func (r *runtime) run(ctx context.Context, id string, fn func(context.Context) e
 			release()
 		}
 	}()
+	caller := ctx
 	ctx, execution := newExecution(ctx)
 	r.mu.Lock()
 	r.status.Started++
@@ -245,7 +285,7 @@ func (r *runtime) run(ctx context.Context, id string, fn func(context.Context) e
 		r.status.Joining++
 		r.status.LastPhase = "joining"
 		r.mu.Unlock()
-		err = errors.Join(err, execution.Join())
+		err = errors.Join(err, execution.Join(), caller.Err())
 		r.mu.Lock()
 		r.status.Active--
 		r.status.Joining--

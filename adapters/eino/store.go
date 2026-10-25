@@ -39,7 +39,7 @@ type FileStore struct {
 }
 
 func NewFileStore(directory string, p Profile) (*FileStore, error) {
-	if directory == "" || p.Engine == "" || p.Namespace == "" || p.Schema == "" || len(p.Engine) > 128 || len(p.Namespace) > 256 || len(p.Schema) > 256 {
+	if directory == "" || !validKey(p.Engine) || !validKey(p.Namespace) || !validKey(p.Schema) || len(p.Engine) > 128 {
 		return nil, ErrInvalid
 	}
 	path, err := filepath.Abs(directory)

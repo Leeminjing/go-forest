@@ -81,6 +81,7 @@ func (g *graph[I, O]) execute(ctx context.Context, c GraphCall, fn func(context.
 	return g.run(ctx, c.CheckpointID, func(ctx context.Context) (err error) {
 		session, err := g.host.NewSession(ctx)
 		if session.Lifetime != nil {
+			session.Lifetime = g.watch(ctx, session.Lifetime)
 			defer func() { err = errors.Join(err, g.join(session.Lifetime)) }()
 		}
 		if err != nil {

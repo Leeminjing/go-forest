@@ -89,6 +89,7 @@ func (a *agent) execute(ctx context.Context, o RunOptions, visit Visitor, start 
 	err = a.run(ctx, o.CheckpointID, func(ctx context.Context) (err error) {
 		session, err := a.host.NewSession(ctx)
 		if session.Lifetime != nil {
+			session.Lifetime = a.watch(ctx, session.Lifetime)
 			defer func() { err = errors.Join(err, a.join(session.Lifetime)) }()
 		}
 		if err != nil {

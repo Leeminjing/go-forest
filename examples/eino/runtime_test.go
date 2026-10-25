@@ -170,3 +170,48 @@ func TestNarrowContractDoesNotPretendNativeApprovalIsText(t *testing.T) {
 		t.Fatalf("native state hidden: %v", err)
 	}
 }
+
+func TestFailedChangesKeepBothEnginesAvailable(t *testing.T) {
+	r := newRuntime(t, demo.Options{})
+	ctx := context.Background()
+	generation := r.Forest.Snapshot().Generation
+	owner, _ := ef.NewOwner(r.Forest, 4)
+	startErr := errors.New("native resource unavailable")
+	var cleaned int
+	bad, err := ef.ADKDefinition(ef.ADKOptions{Config: ef.Config{TypeID: "failed-start", Version: "1", Namespace: "failed", Owner: owner}, Build: func(context.Context, *forest.BuildEnv) (*ef.ADKHost, error) {
+		return &ef.ADKHost{Lifecycle: forest.Hooks{OnStart: func(context.Context) error { return startErr }, OnStop: func(context.Context) error { cleaned++; return nil }}, NewSession: func(context.Context) (ef.ADKSession, error) {
+			t.Error("prepare ran native session")
+			return ef.ADKSession{}, ef.ErrUnmanaged
+		}}, nil
+	}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = r.Forest.Register(bad); err != nil {
+		t.Fatal(err)
+	}
+	for _, test := range []struct {
+		op   forest.Operation
+		want error
+	}{
+		{forest.AddRoot("failed", bad.Ref()), startErr},
+		{forest.Unlink("eino.lookup"), forest.ErrDependencyInUse},
+		{forest.Replace("catalog/graph", forest.DefinitionRef{TypeID: "eino-example.graph", Version: "1"}, false), forest.ErrUnsupportedHotReplace},
+	} {
+		if _, err = r.Forest.Apply(ctx, forest.ChangePlan{BaseGeneration: generation, Operations: []forest.Operation{test.op}}); !errors.Is(err, test.want) {
+			t.Fatalf("want %v, got %v", test.want, err)
+		}
+		if r.Forest.Snapshot().Generation != generation {
+			t.Fatal("failed change committed")
+		}
+		for _, engine := range []string{"eino", "forest"} {
+			out, err := r.AskEngine(ctx, engine, "oak")
+			if err != nil || !strings.HasSuffix(out, "v1:oak/v1:oak") {
+				t.Fatalf("%s failed: %s %v", engine, out, err)
+			}
+		}
+	}
+	if cleaned != 1 {
+		t.Fatalf("rollback cleanup=%d", cleaned)
+	}
+}
