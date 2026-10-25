@@ -2,6 +2,8 @@ github.com/Leeminjing/go-forest v0.3.0 h1:TrdMiVMHTgfI2e7JdhZ6nud7KJuqB2688M2IwM
 github.com/Leeminjing/go-forest v0.3.0/go.mod h1:UejDPb4g0Q8YdwTVz0OyFLXw1WowR/DizszTlKhGkVc=
 github.com/Leeminjing/go-forest-agent v0.2.0 h1:ggFOVs5ZeDvuVpCKHXwdbiSdqQ+K3cAxeAtSOiPzdzA=
 github.com/Leeminjing/go-forest-agent v0.2.0/go.mod h1:AMcJ9Lv92DSg7xSJvjt/x/FxfTAYdoZoQu6z6rFNIQ8=
+github.com/Leeminjing/go-forest/adapters/eino v0.1.0 h1:rHfGWYnUznnZLGcn75TI0vBPSqZvuVdqMd6Y6HnoUAw=
+github.com/Leeminjing/go-forest/adapters/eino v0.1.0/go.mod h1:3PvuQskYNKwxA+KWddVULhpgqqvUfFOVAgQOpXuZGFE=
 github.com/airbrake/gobrake v3.6.1+incompatible/go.mod h1:wM4gu3Cn0W0K7GUuVWnlXZU11AGBXMILnrdOU8Kn00o=
 github.com/bahlo/generic-list-go v0.2.0 h1:5sz/EEAK+ls5wF+NeqDpk5+iNdMDXrh3z3nPnH1Wvgk=
 github.com/bahlo/generic-list-go v0.2.0/go.mod h1:2KvAjgMlE5NNynlg/5iLrrCCZ2+5xWbdbCW3pNTGyYg=

@@ -3,6 +3,15 @@
 Go 1.23+. Uses released go-forest-agent v0.2.0, Forest v0.3.0 and Eino v0.9.22.
 No keys, external model API, web server, database or broker needed.
 
+Install the fixed release from any directory:
+
+```sh
+go install github.com/Leeminjing/go-forest/examples/eino/cmd/demo@v0.1.0
+demo -checkpoints /path/to/checkpoints
+```
+
+From this module's source directory:
+
 ```sh
 go run ./cmd/demo -checkpoints .scratch/checkpoints
 go test ./...

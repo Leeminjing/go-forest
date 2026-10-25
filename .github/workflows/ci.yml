@@ -46,6 +46,17 @@ jobs:
         run: go run ./examples/web-agent
       - if: matrix.module.path == '.'
         run: go run ./examples/composite
+  eino-published:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/verify-eino-release.py
   browser:
     runs-on: ubuntu-latest
     steps:

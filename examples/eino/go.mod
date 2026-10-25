@@ -5,7 +5,7 @@ go 1.23.0
 require (
 	github.com/Leeminjing/go-forest v0.3.0
 	github.com/Leeminjing/go-forest-agent v0.2.0
-	github.com/Leeminjing/go-forest/adapters/eino v0.0.0
+	github.com/Leeminjing/go-forest/adapters/eino v0.1.0
 	github.com/cloudwego/eino v0.9.22
 )
 
@@ -38,5 +38,3 @@ require (
 	golang.org/x/sys v0.29.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/Leeminjing/go-forest/adapters/eino => ../../adapters/eino
