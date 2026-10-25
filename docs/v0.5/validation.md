@@ -17,7 +17,7 @@
 | G05 资源 | 注册错误/panic、重复服务/类型不匹配、Scope 槽冲突导致候选失败；`TestNativeServerIsStoppedAfterRegistrationPanic` 确认真正停止原生 Server；端口占用验证已启动监听器回滚；`TestRollbackStopDeadlineDoesNotReleaseRunningHandler` 观察超时 Draining，直到真实 handler 完成才 Stopped。 |
 | G06 Close | 活动且忽略取消的 RPC 导致 Close 截止返回 ErrDrainTimeout，后续新调用为脱敏 Unavailable，资源保留至实际完成；监听树不声明 HotSwappable。 |
 | G07 完整组合 | `TestGinGRPCAndObservatoryShareOneBusinessTree` 以真实 TCP 检查五树、两 Link、一 BindNest；HTTP/RPC 共用 Provider，旧 HTTP 请求和双向流都固定 v1，新请求 v2，旧流结束后才 Stopped，保留 SSE 时 Close 完成。 |
-| G08 交付 | Windows 新模块 vet/test 通过；Linux 七模块 vet 和三轮 race 通过；真实服务端/RPC 客户端进程及 Chromium 演示验收通过。CI 已增加新模块与组合浏览器验收。独立两轴审查进行中。 |
+| G08 交付 | Windows 新模块 vet/test 通过；Linux 七模块 vet 和三轮 race 通过；真实服务端/RPC 客户端进程及 Chromium 演示验收通过。CI 已增加新模块与组合浏览器验收。独立两轴审查均为 0 项行动项，见 [review.md](review.md)。 |
 
 Python `examples/frameworks/tests/demo_test.py` 构建并启动两个真实 Go 进程，与 HTTP 请求和 Chromium 同步操作；stdin 只用于显式演示命令，不替代 RPC 业务通信。截图保存在本地 `.scratch/v0.5/frameworks.png`。业务包依赖图只包含标准库和 forest。
 
@@ -25,7 +25,7 @@ Python `examples/frameworks/tests/demo_test.py` 构建并启动两个真实 Go �
 
 Windows Go 1.26.5：新模块各自 `go vet ./...`、`go test ./... -timeout 60s` PASS。组合 Python/Playwright 1.58.0/Chromium PASS。
 
-Linux Docker Go 1.26，CGO=1、GOWORK=off：根、Observe、Gin、Observatory、已发布版本消费者、gRPC、frameworks 七模块分别执行 vet 和 `go test -race ./... -count=3 -timeout 120s` PASS。后续新增定向测试在最终审查后再做相关模块回归。
+Linux Docker Go 1.26，CGO=1、GOWORK=off：根、Observe、Gin、Observatory、已发布版本消费者、gRPC、frameworks 七模块分别执行 vet 和 `go test -race ./... -count=3 -timeout 120s` PASS。最终新增的流取消、注册校验及组合演示又执行 gRPC/frameworks 的 vet、三轮 race 与真实进程 Chromium 回归，全部通过。
 
 ## 明确语义
 
