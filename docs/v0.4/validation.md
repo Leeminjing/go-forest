@@ -21,7 +21,7 @@
 | R09 资源 | Gin 的 `TestPreparationRollbackReleasesListeningServer` 占用端口制造失败，确认原 Generation 不变且先启动的 Server 端口回收；集成及浏览器保留 SSE 时 Close/quit 正常。 |
 | R10 只读 | 认证、非法/超前/溢出游标、跨 Origin、POST 拒绝及匿名静态资源均有 HTTP 验证；Observe 检查 raw error 不出网和 uint64 JSON 精度；浏览器恶意树名仅显示为文本。 |
 | R11 浏览器 | `tests/browser_test.py` 使用真实 Chromium，检查拓扑、详情、关系筛选与直接依赖高亮、关系阶段/契约、键盘选择、热替换、排空、恢复提示、390px 窄屏无页面横向溢出、空数据和无事件状态。审查后增加历史折叠区在普通采样与数据变更后保持展开/焦点、独立查看已移除和未发布树的实例诊断。 |
-| R12 模块 | 根与各扩展的本地 vet/test 通过；多模块 CI 已配置。Linux 四模块三轮 race 已通过。独立扩展尚未发布，无 replace 的已发布版本消费者验收尚未执行。 |
+| R12 模块 | 根与各扩展的本地 vet/test、Linux 三轮 race 通过。三个扩展 v0.1.0 已发布；移除全部本地 replace 后 CI 通过。仓库外消费者的版本下载、依赖无替换检查、真实 HTTP/SSE 与热替换验收通过，见 [release.md](release.md)。 |
 
 空森林及恶意标识为明确的浏览器 UI 输入；HTTP 热替换、SSE 生命周期和恢复使用真实 Forest、进程和 TCP，不以模拟传输替代。
 
@@ -35,4 +35,4 @@
 
 ## 发布边界
 
-本轮实现没有推送、打标签或发布。各扩展 go.mod 使用本地 replace 和待发布 v0.1.0 版本。源码实现与本地验收不能证明这些版本可被公网 Go Proxy 下载；发布后必须另行在无 replace 的独立消费者中验证。因此 R12 的发布消费者部分尚未完成，不能宣称 v0.4 已正式发布。
+初次源码验收仅完成本地实现。2026-10-25 随用户授权完成独立模块发布及仓库外消费者验收，R12 已闭环。扩展版本为各自 v0.1.0；Core 继续使用 v0.3.0，没有为项目 v0.4 里程碑重发 Core。具体标签、发布提交、CI 和下载验证见 [release.md](release.md)。

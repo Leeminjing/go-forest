@@ -136,7 +136,7 @@ go run ./cmd/demo
 
 Observatory 只读且仅监听回环地址，分别显示 Nest、Link、BindNest。SSE 采用短读取，等待和网络写入不固定旧 Generation。状态来自采样，Active 不代表业务健康；近期事件不支持历史图回放。gRPC 和性能指标留到后续版本。
 
-根模块仍只依赖标准库。三个扩展尚未发布独立版本，当前使用本地 replace；根目录 `go test ./...` 不涵盖嵌套模块，需逐模块验证。结果与发布验收状态见 [v0.4 验证记录](docs/v0.4/validation.md)。
+根模块仍只依赖标准库。三个扩展均已发布独立 v0.1.0，使用 Core v0.3.0 和正式版本依赖，不含本地 replace；根目录 `go test ./...` 不涵盖嵌套模块，需逐模块验证。仓库外消费者已验证真实 HTTP/SSE 与热替换，发布版本及复现方式见 [v0.4 发布验收](docs/v0.4/release.md)。
 
 ## 声明与组合
 
