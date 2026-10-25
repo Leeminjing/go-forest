@@ -24,6 +24,8 @@ GORM、NATS、Telemetry 各自发布 v0.1.0，Observatory 运行观察为 v0.2.1
 
 新的 [Eino Adapter](adapters/eino/README.md) 与 [双引擎示例](examples/eino/README.md) 验证原生 Eino Agent/Graph 和 go-forest-agent 共存、工具 Ref、窄契约切换、中断恢复及执行退出保护。Core 与两个引擎的原生状态机保持独立。
 
+适配器与示例各自发布 `v0.1.0`，可直接按版本安装；见 [Eino 交付验收](docs/eino/release.md)。
+
 ```sh
 go run ./examples/hello-forest
 go run ./examples/nesting
