@@ -20,7 +20,7 @@
 | R08 长流 | 集成测试保持 SSE 时替换、排空和 Close；`TestTwoPlacementsAndRemovalTerminatesStream` 验证移除与多个组合实例；`TestSlowSocketWriteTimeoutAndStopCancellation` 用真实小接收缓冲 TCP 套接字及大诊断数据阻塞写入，分别验证写超时和 Stop 主动取消。 |
 | R09 资源 | Gin 的 `TestPreparationRollbackReleasesListeningServer` 占用端口制造失败，确认原 Generation 不变且先启动的 Server 端口回收；集成及浏览器保留 SSE 时 Close/quit 正常。 |
 | R10 只读 | 认证、非法/超前/溢出游标、跨 Origin、POST 拒绝及匿名静态资源均有 HTTP 验证；Observe 检查 raw error 不出网和 uint64 JSON 精度；浏览器恶意树名仅显示为文本。 |
-| R11 浏览器 | `tests/browser_test.py` 使用真实 Chromium，检查拓扑、详情、关系筛选、键盘选择、热替换、排空、恢复提示、390px 窄屏无页面横向溢出、空数据和无事件状态。 |
+| R11 浏览器 | `tests/browser_test.py` 使用真实 Chromium，检查拓扑、详情、关系筛选与直接依赖高亮、关系阶段/契约、键盘选择、热替换、排空、恢复提示、390px 窄屏无页面横向溢出、空数据和无事件状态。审查后增加历史折叠区在普通采样与数据变更后保持展开/焦点、独立查看已移除和未发布树的实例诊断。 |
 | R12 模块 | 根与各扩展的本地 vet/test 通过；多模块 CI 已配置。Linux 四模块三轮 race 已通过。独立扩展尚未发布，无 replace 的已发布版本消费者验收尚未执行。 |
 
 空森林及恶意标识为明确的浏览器 UI 输入；HTTP 热替换、SSE 生命周期和恢复使用真实 Forest、进程和 TCP，不以模拟传输替代。
@@ -30,7 +30,8 @@
 - Windows Go 1.26.5：根模块及三个扩展的 `go vet ./...`、`go test ./...` 已通过。
 - Python 3.12 / Playwright 1.58.0 / Chromium：浏览器验收通过，截图位于本地 `.scratch/v0.4/overview.png`、`draining.png`、`mobile.png`。
 - Linux Docker Go 1.26，CGO=1：四个模块 `go vet ./...` 和 `go test -race ./... -count=3 -timeout 120s` 通过，无 race 报告；Core/bridge、compose、Observe、Gin Adapter 和 Observatory 均在验证范围内。
-- Core、bridge、根 go.mod 差异检查为空。独立代码审查待执行。
+- Go 1.23 Linux 容器单独运行 Observe 测试通过，验证其最低版本。
+- Core、bridge、根 go.mod 差异检查为空。独立代码审查与修复见 [review.md](review.md)。
 
 ## 发布边界
 

@@ -10,6 +10,11 @@ let state = null,
   controller = null,
   token = "";
 let graphKey = "";
+let detailsKey = "",
+  detailTree = "",
+  instanceKey = "",
+  eventKey = "";
+const expandedHistory = new Set();
 let resetNotice = "";
 const text = (tag, value, className) => {
   const e = document.createElement(tag);
@@ -50,6 +55,7 @@ function updateFrame(frame, reset = false) {
   notice(resetNotice);
   renderGraph();
   renderDetails();
+  renderInstances();
   renderEvents();
 }
 function addEvent(event) {
@@ -119,7 +125,12 @@ function renderGraph() {
       d = `M ${a.x + 205} ${a.y + 38 + shift} C ${a.x + 245} ${a.y + 38 + shift}, ${b.x - 40} ${b.y + 38 + shift}, ${b.x} ${b.y + 38 + shift}`;
     else
       d = `M ${a.x + 205} ${a.y + 38} C ${a.x + 300} ${a.y + 38}, ${b.x + 300} ${b.y + 38}, ${b.x + 205} ${b.y + 38}`;
-    const p = svg("path", { d, class: "edge " + kind });
+    const emphasis = selected
+      ? from === selected || to === selected
+        ? " direct"
+        : " distant"
+      : "";
+    const p = svg("path", { d, class: "edge " + kind + emphasis });
     if (kind !== "nest")
       p.setAttribute("marker-end", "url(#arrow-" + kind + ")");
     const title = svg("title");
@@ -181,8 +192,31 @@ function renderGraph() {
 }
 function renderDetails() {
   const box = $("detail-content");
-  box.replaceChildren();
   const tree = state?.trees.find((t) => t.id === selected);
+  const bindings =
+    state?.bindings.filter(
+      (b) => b.consumer === tree?.id || b.provider === tree?.id,
+    ) || [];
+  const instances =
+    state?.instances.filter((i) => i.tree_id === tree?.id) || [];
+  const historyBefore = box.querySelector("details");
+  if (historyBefore && detailTree) {
+    if (historyBefore.open) expandedHistory.add(detailTree);
+    else expandedHistory.delete(detailTree);
+  }
+  const endpointTypes = bindings.map((b) => [
+    state.trees.find((t) => t.id === b.consumer),
+    state.trees.find((t) => t.id === b.provider),
+  ]);
+  const key = JSON.stringify([tree, bindings, endpointTypes, instances]);
+  if (key === detailsKey) return;
+  detailsKey = key;
+  const keepFocus =
+    document.activeElement === historyBefore?.querySelector("summary") &&
+    detailTree === tree?.id;
+  const scrollTop = detailTree === tree?.id ? box.scrollTop : 0;
+  detailTree = tree?.id || "";
+  box.replaceChildren();
   if (!tree) {
     box.append(
       text("p", "选择图中的树。可使用 Tab 聚焦，按 Enter 选择。", "empty"),
@@ -243,19 +277,34 @@ function renderDetails() {
       ),
     );
   });
-  section(
-    "依赖关系",
-    state.bindings.filter(
-      (b) => b.consumer === tree.id || b.provider === tree.id,
-    ),
-    (li, b) => {
-      li.append(
-        text("strong", `${b.kind} / ${b.id}`),
-        text("span", `${b.consumer}.${b.port} → ${b.provider}.${b.capability}`),
-        text("span", "绑定顺序 " + b.order),
-      );
-    },
-  );
+  section("依赖关系", bindings, (li, b) => {
+    const port = state.trees
+      .find((t) => t.id === b.consumer)
+      ?.ports.find((p) => p.id === b.port);
+    const capability = state.trees
+      .find((t) => t.id === b.provider)
+      ?.capabilities.find((c) => c.id === b.capability);
+    li.append(
+      text("strong", `${b.kind} / ${b.id}`),
+      text("span", `${b.consumer}.${b.port} → ${b.provider}.${b.capability}`),
+      text("span", "绑定顺序 " + b.order),
+      text("span", "阶段 " + (port?.phase || "未知")),
+      text(
+        "span",
+        "需求契约 " +
+          (port?.contract_id
+            ? `${port.contract_id} [${port.min_version}, ${port.max_version === "0" ? "不限" : port.max_version}]`
+            : "未声明"),
+      ),
+      text(
+        "span",
+        "提供契约 " +
+          (capability?.contract_id
+            ? `${capability.contract_id} v${capability.contract_version}`
+            : "未声明"),
+      ),
+    );
+  });
   const describeInstance = (li, i) => {
     li.append(
       text("strong", `${i.id} / ${i.state}`),
@@ -266,7 +315,6 @@ function renderDetails() {
         text("span", `${i.diagnostic.code} ${i.diagnostic.stage || ""}`),
       );
   };
-  const instances = state.instances.filter((i) => i.tree_id === tree.id);
   section(
     "实例诊断",
     instances.filter((i) => i.state !== "stopped"),
@@ -275,6 +323,7 @@ function renderDetails() {
   const stopped = instances.filter((i) => i.state === "stopped");
   if (stopped.length) {
     const history = document.createElement("details");
+    history.open = expandedHistory.has(tree.id);
     history.append(text("summary", `已停止历史（${stopped.length}）`));
     const list = document.createElement("ul");
     for (const i of stopped) {
@@ -284,11 +333,58 @@ function renderDetails() {
     }
     history.append(list);
     box.append(history);
+    if (keepFocus)
+      history.querySelector("summary").focus({ preventScroll: true });
   }
+  box.scrollTop = scrollTop;
+}
+function renderInstances() {
+  if (!state) return;
+  const showStopped = $("show-stopped").checked;
+  const key = JSON.stringify([
+    state.instances,
+    state.trees.map((t) => t.instance_id),
+    showStopped,
+  ]);
+  if (key === instanceKey) return;
+  instanceKey = key;
+  const current = new Set(state.trees.map((t) => t.instance_id));
+  const visible = state.instances.filter(
+    (i) => showStopped || i.state !== "stopped",
+  );
+  const body = $("instances");
+  body.replaceChildren();
+  for (const i of visible) {
+    const row = document.createElement("tr");
+    row.dataset.instanceId = i.id;
+    for (const value of [
+      i.id,
+      i.tree_id,
+      `${i.type_id} v${i.version}`,
+      i.state,
+      current.has(i.id) ? "当前实例" : "候选或历史",
+      i.diagnostic ? `${i.diagnostic.code} ${i.diagnostic.stage || ""}` : "无",
+    ])
+      row.append(text("td", value));
+    body.append(row);
+  }
+  if (!visible.length) {
+    const row = document.createElement("tr"),
+      cell = text("td", "没有符合筛选的实例。", "empty");
+    cell.colSpan = 6;
+    row.append(cell);
+    body.append(row);
+  }
+  $("instance-summary").textContent =
+    `显示 ${visible.length} 个，共 ${state.instances.length} 个实例。已停止实例默认折叠。`;
 }
 function renderEvents() {
+  const key = JSON.stringify(events);
+  if (key === eventKey) return;
+  eventKey = key;
   $("event-count").textContent = events.length + " 条记录";
   const list = $("events");
+  const scrollTop = list.scrollTop;
   list.replaceChildren();
   if (!events.length) {
     list.append(text("li", "暂无观察记录。", "empty"));
@@ -319,6 +415,7 @@ function renderEvents() {
     );
     list.append(li);
   }
+  list.scrollTop = scrollTop;
 }
 function consume(block) {
   let kind = "message",
@@ -420,3 +517,4 @@ $("disconnect").addEventListener("click", () => {
   notice("");
 });
 $("relationship").addEventListener("change", renderGraph);
+$("show-stopped").addEventListener("change", renderInstances);

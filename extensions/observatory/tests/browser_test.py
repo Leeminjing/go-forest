@@ -85,7 +85,7 @@ def main():
                                     with sockets_lock:
                                         sockets.discard(self.request)
                                         sockets.discard(backend)
-                        except OSError:
+                        except (OSError, ValueError):
                             return
 
                 proxy = socketserver.ThreadingTCPServer(("127.0.0.1", 0), Tunnel)
@@ -108,6 +108,9 @@ def main():
                     page.locator('[data-tree-id="business"]').click()
                     expect(page.locator(".tree-name")).to_have_text("business")
                     expect(page.locator("#detail-content")).to_contain_text("demo.work")
+                    expect(page.locator("#detail-content")).to_contain_text("阶段 runtime")
+                    expect(page.locator("#detail-content")).to_contain_text("需求契约 demo.work")
+                    expect(page.locator(".edge.direct")).to_have_count(1)
                     expect(page.locator(".edge.nest")).to_have_count(1)
                     expect(page.locator(".edge.nest_binding")).to_have_count(1)
                     page.screenshot(path=str(output / "overview.png"), full_page=True)
@@ -131,6 +134,16 @@ def main():
                         assert old.result(timeout=10) == {"value": "v1", "again": "v1", "generation": "1"}
                     expect(page.locator("#draining-count")).to_have_text("0")
                     expect(page.locator("#detail-content")).to_contain_text("stopped")
+                    history = page.locator("#detail-content details")
+                    summary = history.locator("summary")
+                    summary.click()
+                    summary.focus()
+                    # Ordinary sampling must preserve expansion and keyboard focus.
+                    for _ in range(2):
+                        sampled = page.locator("#sample-time").inner_text()
+                        page.wait_for_function("previous => document.querySelector('#sample-time').textContent !== previous", arg=sampled)
+                    expect(history).to_have_attribute("open", "")
+                    expect(summary).to_be_focused()
                     online.clear()
                     with sockets_lock:
                         for connection in list(sockets):
@@ -146,6 +159,10 @@ def main():
                     expect(page.locator("#status")).to_have_text("已连接", timeout=15000)
                     expect(page.locator("#notice")).to_contain_text("缺口")
                     expect(page.locator("#generation")).to_have_text("22")
+                    # Even a changed instance history on resync preserves interaction.
+                    expect(history).to_have_attribute("open", "")
+                    expect(summary).to_be_focused()
+                    summary.click()
                     sequences = page.locator("#events li").evaluate_all("items => items.map(x => x.dataset.sequence)")
                     assert len(sequences) == len(set(sequences))
                     page.set_viewport_size({"width": 390, "height": 844})
@@ -167,6 +184,13 @@ def main():
                     expect(fixture.locator("#tree-count")).to_have_text("0")
                     expect(fixture.locator("#graph-empty")).to_have_text("森林中暂时没有树。")
                     expect(fixture.locator("#events")).to_contain_text("暂无观察记录")
+                    sample["snapshot"]["instances"] = [{"id": "retired-instance", "tree_id": "removed-tree", "type_id": "removed.type", "version": "1", "state": "draining", "diagnostic": {"code": "drain_timeout", "stage": "stop"}}, {"id": "candidate-instance", "tree_id": "unpublished-tree", "type_id": "candidate.type", "version": "1", "state": "stopped"}]
+                    sample["snapshot"]["counts"]["draining"] = "1"
+                    expect(fixture.locator("#instances")).to_contain_text("removed-tree", timeout=10000)
+                    expect(fixture.locator("#instances")).to_contain_text("drain_timeout")
+                    expect(fixture.locator("#instances")).not_to_contain_text("unpublished-tree")
+                    fixture.locator("#show-stopped").check()
+                    expect(fixture.locator("#instances")).to_contain_text("unpublished-tree")
                     hostile = '<img src=x onerror="window.__xss=1">'
                     sample["snapshot"]["trees"] = [{"id": hostile, "parent_id": "", "instance_id": "i", "type_id": "unsafe-name", "version": "1", "sampled_state": "active", "ports": [], "capabilities": []}]
                     sample["snapshot"]["counts"]["trees"] = "1"

@@ -106,6 +106,33 @@
           </div>
         </aside>
       </div>
+      <section class="instances panel" aria-labelledby="instances-title">
+        <div class="section-head">
+          <div>
+            <h2 id="instances-title">实例诊断</h2>
+            <p>独立于当前拓扑，包括排空、候选与历史实例。</p>
+          </div>
+          <label class="history-filter"
+            ><input id="show-stopped" type="checkbox" />显示已停止实例</label
+          >
+        </div>
+        <div class="instance-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">实例</th>
+                <th scope="col">树</th>
+                <th scope="col">定义版本</th>
+                <th scope="col">采样状态</th>
+                <th scope="col">拓扑归属</th>
+                <th scope="col">诊断</th>
+              </tr>
+            </thead>
+            <tbody id="instances"></tbody>
+          </table>
+        </div>
+        <p id="instance-summary" class="caption">连接后显示实例诊断。</p>
+      </section>
       <section class="timeline panel" aria-labelledby="timeline-title">
         <div class="section-head">
           <div>

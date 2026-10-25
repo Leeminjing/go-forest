@@ -270,6 +270,57 @@ dd {
   stroke: var(--clay);
   stroke-dasharray: 2 5;
 }
+.edge.direct {
+  stroke-width: 3.5;
+}
+.edge.distant {
+  opacity: 0.22;
+}
+.instances {
+  margin-top: 20px;
+}
+.instances .history-filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 9px;
+}
+.history-filter input {
+  accent-color: var(--moss);
+}
+.instance-table-wrap {
+  overflow-x: auto;
+}
+.instances table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+}
+.instances th,
+.instances td {
+  padding: 10px 22px;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+  max-width: 280px;
+}
+.instances th {
+  color: var(--muted);
+  font-weight: 500;
+}
+.detail details {
+  margin-top: 16px;
+  font-size: 12px;
+}
+.detail summary {
+  cursor: pointer;
+  color: var(--moss);
+}
+.detail summary:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 4px;
+}
 .node {
   cursor: pointer;
 }
