@@ -18,8 +18,10 @@ def main():
     assert os.environ.get("FOREST_POSTGRES_DSN") and os.environ.get("FOREST_NATS_URL"), "real services required"
     OUTPUT.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as temporary:
-        binary = Path(temporary) / ("ecosystem.exe" if os.name == "nt" else "ecosystem")
-        subprocess.run(["go", "build", "-o", str(binary), "./cmd/demo"], cwd=ROOT, check=True)
+        supplied = os.environ.get("FOREST_ECOSYSTEM_BINARY")
+        binary = Path(supplied) if supplied else Path(temporary) / ("ecosystem.exe" if os.name == "nt" else "ecosystem")
+        if not supplied:
+            subprocess.run(["go", "build", "-o", str(binary), "./cmd/demo"], cwd=ROOT, check=True)
         credential = secrets.token_urlsafe(24)
         env = dict(os.environ, FOREST_TOKEN=credential)
         namespace = "Browser_" + secrets.token_hex(8)
@@ -53,6 +55,8 @@ def main():
                     time.sleep(0.05)
                 submit = page.locator("#runtime-operations tr").filter(has=page.get_by_text("http.submit", exact=True))
                 expect(submit.locator("td").nth(1)).to_have_text("1")
+                duplicate = api("/tasks", {"id": "browser", "input": "compute 2 + 3"})
+                assert duplicate["state"] == "completed" and duplicate["result"] == "model v1: 5", duplicate
                 expect(page.locator("#runtime-coverage")).to_contain_text("explicit boundaries only")
                 page.locator("#runtime-title").scroll_into_view_if_needed()
                 page.screenshot(path=str(OUTPUT / "runtime-desktop.png"), full_page=True)
