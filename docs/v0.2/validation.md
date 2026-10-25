@@ -5,7 +5,7 @@
 ## 发布与模块边界
 
 - 正式路径：`github.com/Leeminjing/go-forest`，Go 1.23+，仅标准库依赖。
-- `v0.1.0` 标签指向 `f47d5ed`，包含正式模块路径和 v0.1 核心，不包含 v0.2 组合层。
+- `v0.1.0` 标签指向 `5d08e4e`，包含正式模块路径和 v0.1 核心，不包含 v0.2 组合层。
 - 独立外部模块 `example.com/go-forest-consumer` 执行 `go get github.com/Leeminjing/go-forest@v0.1.0` 并运行，输出 `external module: generation=0`。未使用 replace 或工作区源码。
 - v0.2 逻辑仅在 `forest/compose`，相对 v0.1.0 未修改 Core 的 Apply、Scope、Lifecycle 或其他运行时代码。
 

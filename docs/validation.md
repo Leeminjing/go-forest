@@ -18,6 +18,6 @@
 
 测试从公开 Go API 验证十项用户验收场景。热替换、删除占用、并发冲突、同一调用跨 Link 版本一致性、构造资源持有、准备回调回滚保护和历史归属反转都有自动化用例。
 
-对 `6e31052` 的后续审查补充了 Link ID 复用回归：`TestRetainedLifecycleDependencyRejectsReusedBindingID` 覆盖 Construction/Startup 下跨消费者、跨端口、Nest 装配三类情况。修复前六个子测试均错误提交为版本 2；修复后返回 ErrDependencyInUse，原版本、绑定和消费实例不变。同一计划显式 Replace 消费者后均可提交。`TestRetainedLifecycleDependencyPreservesProviderOrder` 另覆盖这两个阶段的多值提供者顺序变化。上表普通测试、race 与覆盖率已在这次修复后重新运行。
+对 `2740874` 的后续审查补充了 Link ID 复用回归：`TestRetainedLifecycleDependencyRejectsReusedBindingID` 覆盖 Construction/Startup 下跨消费者、跨端口、Nest 装配三类情况。修复前六个子测试均错误提交为版本 2；修复后返回 ErrDependencyInUse，原版本、绑定和消费实例不变。同一计划显式 Replace 消费者后均可提交。`TestRetainedLifecycleDependencyPreservesProviderOrder` 另覆盖这两个阶段的多值提供者顺序变化。上表普通测试、race 与覆盖率已在这次修复后重新运行。
 
 本版安全边界：只承诺单进程内存拓扑；树必须遵守 Context、作用域与资源准备协议。Stop 超时不强制释放资源；忽略取消的准备回调会继续被等待。HotSwappable、Reparentable、PreserveChildren 等声明是树实现者需自行验证的行为承诺。

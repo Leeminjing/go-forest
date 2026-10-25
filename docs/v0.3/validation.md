@@ -4,7 +4,7 @@
 
 ## 稳定基线
 
-已将 `v0.2.0` 标签发布到 `1161b62`。独立 Go 模块实际执行 `go get github.com/Leeminjing/go-forest@v0.2.0`，导入 forest 和 compose，注册普通 Definition、实例化 Blueprint 并 Apply，得到 `generation=1 trees=1`。该验证使用独立 go.mod，未使用本地 replace。
+已将 `v0.2.0` 标签发布到 `5b9795d`。独立 Go 模块实际执行 `go get github.com/Leeminjing/go-forest@v0.2.0`，导入 forest 和 compose，注册普通 Definition、实例化 Blueprint 并 Apply，得到 `generation=1 trees=1`。该验证使用独立 go.mod，未使用本地 replace。
 
 ## 按 Spec 验收
 
