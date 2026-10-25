@@ -116,6 +116,28 @@ B 的每个请求单独进入本地 Scope，远端替换仍保护旧调用及其
 
 真实双进程测试覆盖启动失败回滚、热替换、取消、活动调用期间杀死对端及恢复，并验证 A 的其他本地树继续工作。逐项结果见 [v0.3 验收记录](docs/v0.3/validation.md)。
 
+## v0.4：只读观察网关与 Gin 扩展
+
+本地实现新增三个独立 Go Module，Core、compose 与 bridge 的实现不变：
+
+| 模块 | 最低 Go 版本 | 职责 |
+| --- | --- | --- |
+| [extensions/observe](extensions/observe/README.md) | 1.23 | Inspector Tree、脱敏 DTO、事件游标与状态采样 |
+| [adapters/gin](adapters/gin/README.md) | 1.25 | 原生 Gin 路由与中间件、HTTP 生命周期、有限请求 Scope |
+| [extensions/observatory](extensions/observatory/README.md) | 1.25 | 自观察的组合树、JSON/SSE、拓扑和实例诊断 UI、热替换演示 |
+
+```powershell
+$env:FOREST_OBSERVATORY_TOKEN = 'replace-with-your-random-token'
+cd extensions/observatory
+go run ./cmd/demo
+```
+
+打开 `http://127.0.0.1:8089` 并输入相同凭据。应用请求使用 `http://127.0.0.1:8080/work`；另开终端请求 `/work?hold=1`，在演示终端输入 `wait`、`replace`，即可查看旧实例 Draining 与新请求返回 v2。输入 `release` 后旧请求返回 v1，页面继续采样到 Stopped；`quit` 退出。
+
+Observatory 只读且仅监听回环地址，分别显示 Nest、Link、BindNest。SSE 采用短读取，等待和网络写入不固定旧 Generation。状态来自采样，Active 不代表业务健康；近期事件不支持历史图回放。gRPC 和性能指标留到后续版本。
+
+根模块仍只依赖标准库。三个扩展尚未发布独立版本，当前使用本地 replace；根目录 `go test ./...` 不涵盖嵌套模块，需逐模块验证。结果与发布验收状态见 [v0.4 验证记录](docs/v0.4/validation.md)。
+
 ## 声明与组合
 
 消费方定义接口和端口，在 Factory 中创建动态引用：

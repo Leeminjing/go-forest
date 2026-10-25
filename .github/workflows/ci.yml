@@ -7,18 +7,53 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
+        module:
+          - {path: '.', go: '1.23.x'}
+          - {path: 'extensions/observe', go: '1.23.x'}
+          - {path: 'adapters/gin', go: '1.25.x'}
+          - {path: 'extensions/observatory', go: '1.25.x'}
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ${{ matrix.module.path }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.23.x'
+          go-version: ${{ matrix.module.go }}
+          cache-dependency-path: '**/go.sum'
       - run: go vet ./...
       - run: go test ./... -timeout 60s
       - if: runner.os == 'Linux'
         run: go test -race ./... -count=3 -timeout 90s
-      - run: go run ./examples/hello-forest
-      - run: go run ./examples/nesting
-      - run: go run ./examples/hot-swap
-      - run: go run ./examples/web-agent
-      - run: go run ./examples/composite
+      - if: matrix.module.path == '.'
+        run: go run ./examples/hello-forest
+      - if: matrix.module.path == '.'
+        run: go run ./examples/nesting
+      - if: matrix.module.path == '.'
+        run: go run ./examples/hot-swap
+      - if: matrix.module.path == '.'
+        run: go run ./examples/web-agent
+      - if: matrix.module.path == '.'
+        run: go run ./examples/composite
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.x'
+          cache-dependency-path: '**/go.sum'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r extensions/observatory/tests/requirements.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: python extensions/observatory/tests/browser_test.py
+        env:
+          PYTHONIOENCODING: utf-8
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: observatory-screenshots
+          path: .scratch/v0.4/*.png

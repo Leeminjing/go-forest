@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forest Observatory</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="masthead">
+      <div class="brand">
+        <span class="tree-mark" aria-hidden="true">♧</span>
+        <div>
+          <h1>Forest Observatory</h1>
+          <p>看见组合，理解变化</p>
+        </div>
+      </div>
+      <div class="connection">
+        <span id="status" role="status">尚未连接</span
+        ><span id="sample-time">等待首次采样</span>
+      </div>
+    </header>
+    <main>
+      <form id="connect-form" class="connect">
+        <label for="token">观察凭据</label
+        ><input
+          id="token"
+          type="password"
+          autocomplete="off"
+          required
+          minlength="16"
+          placeholder="输入启动时配置的 token"
+        /><button type="submit">连接森林</button
+        ><button type="button" id="disconnect" class="quiet" disabled>
+          断开</button
+        ><span>凭据仅保存在当前页面内存中</span>
+      </form>
+      <p id="notice" class="notice" role="alert" hidden></p>
+      <section class="overview" aria-label="森林概览">
+        <div class="generation">
+          <span>当前拓扑</span><strong id="generation">—</strong
+          ><span>Generation</span>
+        </div>
+        <dl>
+          <div>
+            <dt>树</dt>
+            <dd id="tree-count">—</dd>
+          </div>
+          <div>
+            <dt>Nest 归属</dt>
+            <dd id="nest-count">—</dd>
+          </div>
+          <div>
+            <dt>Link 依赖</dt>
+            <dd id="link-count">—</dd>
+          </div>
+          <div>
+            <dt>BindNest</dt>
+            <dd id="binding-count">—</dd>
+          </div>
+          <div>
+            <dt>排空实例</dt>
+            <dd id="draining-count">—</dd>
+          </div>
+        </dl>
+      </section>
+      <div class="workspace">
+        <section class="topology panel" aria-labelledby="topology-title">
+          <div class="section-head">
+            <div>
+              <h2 id="topology-title">森林拓扑</h2>
+              <p>选择一棵树，查看它的能力和依赖。</p>
+            </div>
+            <label
+              >显示关系<select id="relationship">
+                <option value="all">全部关系</option>
+                <option value="nest">Nest 归属</option>
+                <option value="link">Link 依赖</option>
+                <option value="nest_binding">BindNest 装配</option>
+              </select></label
+            >
+          </div>
+          <div class="legend">
+            <span class="nest">Nest 归属</span
+            ><span class="link">Link 依赖</span
+            ><span class="nest_binding">BindNest 装配</span>
+          </div>
+          <div id="graph-wrap">
+            <svg
+              id="graph"
+              role="group"
+              aria-label="可选择的森林拓扑"
+              viewBox="0 0 900 420"
+            ></svg>
+            <p id="graph-empty">连接后将在这里显示真实森林。</p>
+          </div>
+          <p class="caption">
+            依赖箭头：消费方 → 提供方。线条表示结构关系，不表示调用流量。
+          </p>
+        </section>
+        <aside class="detail panel" aria-labelledby="detail-title">
+          <div class="section-head"><h2 id="detail-title">树的详情</h2></div>
+          <div id="detail-content">
+            <p class="empty">选择图中的树。可使用 Tab 聚焦，按 Enter 选择。</p>
+          </div>
+        </aside>
+      </div>
+      <section class="timeline panel" aria-labelledby="timeline-title">
+        <div class="section-head">
+          <div>
+            <h2 id="timeline-title">森林时间线</h2>
+            <p>近期 Apply 记录。失败与冲突也有独立的事件顺序。</p>
+          </div>
+          <span id="event-count">0 条记录</span>
+        </div>
+        <ol id="events">
+          <li class="empty">暂无观察记录。</li>
+        </ol>
+      </section>
+      <footer>
+        生命周期状态来自定时采样；Active
+        不等于业务健康。快照与事件不构成一个原子快照。
+      </footer>
+    </main>
+  </body>
+</html>
