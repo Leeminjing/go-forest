@@ -63,14 +63,16 @@ func RunWorker(ctx context.Context, o Options, files WorkerFiles) (err error) {
 		}
 	}
 	r, err := New(ctx, o)
+	if r != nil {
+		defer func() {
+			c, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+			defer cancel()
+			err = errors.Join(err, r.Close(c))
+		}()
+	}
 	if err != nil {
 		return err
 	}
-	defer func() {
-		c, cancel := context.WithTimeout(context.Background(), 20*time.Second)
-		defer cancel()
-		err = errors.Join(err, r.Close(c))
-	}()
 	if err = r.Enable(ctx); err != nil {
 		return err
 	}

@@ -84,6 +84,9 @@ local generations; Generation 1 after restart is not global version continuity.
 preparation preserves that topology, and Close removes only `app`/`database`.
 The example reserves those logical IDs and definition IDs for one installation
 per forest; registration is not a reusable multi-application container API.
+After publication, identity inspection uses a fresh bounded Context. If that
+inspection fails, New returns a non-nil Runtime with the inspection error;
+the host still owns Close and must use a fresh management Context for cleanup.
 Hooks in Options are explicit acceptance fault/observation seams, not plugins.
 
 ## Process recovery

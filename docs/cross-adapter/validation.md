@@ -7,7 +7,7 @@ or changed. Private Spec/Design remain local and ignored.
 | Acceptance | Actual public-boundary evidence |
 | --- | --- |
 | A01 real end-to-end command and data | TestRealWorkflowCrossesFxAndDatabaseInOneGeneration; native CLI |
-| A02 candidate failure and old forest continuity | TestFailedCandidateLeavesOldForestAliveAndCleansThreeAdapters |
+| A02 candidate failure and old forest continuity | TestFailedCandidateLeavesOldForestAliveAndCleansThreeAdapters; TestCallerCancellationAfterPublicationKeepsBorrowedForestManageable |
 | A03 disabled/partially enabled/full admission and enable failure | TestQueuedWorkflowWaitsForCommittedFxAndWorkerAdmission; TestWorkerEnableFailureDoesNotPretendToRollbackCommittedGraph; TestWrongEnableOrderReturnsDependencyUnavailableRatherThanHalfReadySuccess |
 | A04 old/new scopes, Replace and Rebind | TestOldActivityKeepsVersionWhileNewCallsUseReboundOrReplacedBusiness |
 | A05 native retry with new route | TestNativeRetryUsesNewGenerationAfterAnExplicitTransientFailure |

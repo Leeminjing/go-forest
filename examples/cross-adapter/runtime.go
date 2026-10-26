@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"io"
 	"log/slog"
 	"sync"
@@ -98,6 +99,9 @@ func Setup(ctx context.Context, dsn string) error {
 	return db.WithContext(ctx).AutoMigrate(&business.Record{}, &business.Effect{})
 }
 
+// New prepares and commits the composition. Once committed, identity inspection
+// is independent of caller cancellation. A non-nil Runtime with an error means
+// publication succeeded but final inspection failed; the caller retains Close.
 func New(ctx context.Context, o Options) (r *Runtime, err error) {
 	if o.Address == "" || o.DSN == "" || o.TaskQueue == "" || o.Directory == "" {
 		return nil, errors.New("address, DSN, queue and resource directory required")
@@ -120,8 +124,9 @@ func New(ctx context.Context, o Options) (r *Runtime, err error) {
 	r = &Runtime{Forest: f, Process: "cross-" + hex.EncodeToString(identity), options: o, native: &fxmodule.Resource{}, management: make(chan struct{}, 1), businessID: "app/business", ownsForest: owns}
 	r.management <- struct{}{}
 	r.requests.init()
+	committed := false
 	defer func() {
-		if err != nil && owns {
+		if err != nil && owns && !committed {
 			c, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 			defer cancel()
 			f.Close(c)
@@ -191,13 +196,16 @@ func New(ctx context.Context, o Options) (r *Runtime, err error) {
 	if err != nil {
 		return nil, err
 	}
-	w, err := tf.Inspect(ctx, f, "app/worker")
+	committed = true
+	finalize, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	w, err := tf.Inspect(finalize, f, "app/worker")
 	if err != nil {
-		return nil, err
+		return r, fmt.Errorf("inspect committed worker: %w", err)
 	}
-	x, err := ff.Inspect(ctx, f, "app/fx")
+	x, err := ff.Inspect(finalize, f, "app/fx")
 	if err != nil {
-		return nil, err
+		return r, fmt.Errorf("inspect committed Fx app: %w", err)
 	}
 	r.bridge.WorkerIdentity = w.Identity
 	r.bridge.FxIdentity = x.Identity

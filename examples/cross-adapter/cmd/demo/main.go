@@ -46,14 +46,16 @@ func run() (err error) {
 	ctx, end := context.WithTimeout(ctx, 45*time.Second)
 	defer end()
 	r, err := demo.New(ctx, o)
+	if r != nil {
+		defer func() {
+			c, done := context.WithTimeout(context.Background(), 20*time.Second)
+			defer done()
+			err = errors.Join(err, r.Close(c))
+		}()
+	}
 	if err != nil {
 		return err
 	}
-	defer func() {
-		c, done := context.WithTimeout(context.Background(), 20*time.Second)
-		defer done()
-		err = errors.Join(err, r.Close(c))
-	}()
 	if err = r.Enable(ctx); err != nil {
 		return err
 	}
