@@ -9,14 +9,14 @@ Eino engine and real Temporal Server, not an SDK mock execution environment.
 | A01 native Graph and ADK cycle | TestRealWorkflowUsesNativeGraphAndAgentThenSignalResumesCheckpoint |
 | A02 preparation, admission, post-publication cancellation | TestCandidateFailurePreservesBorrowedForestAndCleansOwnedResources; TestQueuedTasksWaitForPostCommitEnable; TestCallerCancellationAfterPublicationKeepsBorrowedForestManageable |
 | A03 old/new generations and compatible Resume | TestOldNativeAgentKeepsGenerationAcrossReplaceAndRebind; TestEarlyConsumerErrorJoinsProducerAndRetainsOldStreamGeneration |
-| A04 signal identity and native continuation | TestStaleConflictAndDuplicateSignalsDoNotAdvanceNativeExecution |
+| A04 signal identity and native continuation | TestStaleConflictAndDuplicateSignalsDoNotAdvanceNativeExecution; TestSignalsDuringResumeAreClassifiedAndCompletionWaitsForFinalGraph |
 | A05 retry and sealed receipt redelivery | TestRetryBeforeNativeAdmissionUsesNewGeneration; TestSealedStepRetriesDoNotResumeStaleNativeCheckpoint |
 | A06 actual cancellation, timeout, producer drain | TestWorkerStopAndStreamCloseDoNotReleaseLiveNativeProducer; TestServerCancellationReachesStreamButCannotReleaseNoncooperativeWork; TestTimedOutAttemptRetainsOwnershipUntilActualNativeExit |
 | A07 original workflow and checkpoint restart | TestKilledWorkerRestoresNativeCheckpointAndOriginalWorkflow/paused |
 | A08 completed step restart | TestKilledWorkerRestoresNativeCheckpointAndOriginalWorkflow/completed |
 | A09 unsafe restart/state corruption | TestKilledWorkerRestoresNativeCheckpointAndOriginalWorkflow/unknown; TestCheckpointFaultsNeverRestartTheNativeAgent; TestOrphanNativeCheckpointCannotAuthorizeFreshRun |
-| A10 isolated sessions, operation conflicts and directory ownership | TestIndependentNativeSessionsReconcileOneArtifactAndRejectChangedInput; TestStateDirectoryCannotBeManagedTwiceAndBorrowedForestRemainsUsable; process ownership gate |
-| A11 native replay and host management | Native replay in initial and process cases; TestHostCloseCancelsLocalGetWithoutWaitingForDurableWorkflow; TestActivityCannotSynchronouslyManageItsOwnResources; TestNativeErrorClassificationSurvivesTheActivityBoundary |
+| A10 isolated sessions, operation conflicts and directory ownership | TestIndependentNativeSessionsReconcileOneArtifactAndRejectChangedInput; TestStateDirectoryCannotBeManagedTwiceAndBorrowedForestRemainsUsable; actual rejected second OS process before handover in paused process case |
+| A11 native replay, evidence and host management | Native replay and qualified instance evidence in initial/process cases; TestObservationCannotMutateSealedPauseOrDeliveredNativeResult; TestHostCloseCancelsLocalGetWithoutWaitingForDurableWorkflow; TestActivityCannotSynchronouslyManageItsOwnResources; TestNativeErrorClassificationSurvivesTheActivityBoundary |
 | A12 platform/race/review/published consumer/comparison | Separate final release/review evidence; comparison.md |
 
 Selected Windows real-service tests have passed during implementation. Full

@@ -32,6 +32,8 @@ GORM、NATS、Telemetry 各自发布 v0.1.0，Observatory 运行观察为 v0.2.1
 
 [跨 Adapter 组合示例](examples/cross-adapter/README.md) 将已发布的 Fx、Temporal、GORM 放入同一森林，验证 Activity 跨框架 Scope、业务切换、SQL 收据、实际排空和提交后强杀恢复。它不引入统一事务或 exactly-once 承诺；见 [验收矩阵](docs/cross-adapter/validation.md) 与 [兼容性观察](docs/cross-adapter/conformance-notes.md)。
 
+[Temporal × Eino 示例](examples/temporal-eino/README.md) 组合原生 Workflow、ADK/Graph、工具 Ref、Signal 与检查点，分别验证封存结果重投、原生 Resume、真实进程交接及 Unknown 核对；见 [验收矩阵](docs/temporal-eino/validation.md) 和 [跨引擎边界对比](docs/temporal-eino/comparison.md)。
+
 ```sh
 go run ./examples/hello-forest
 go run ./examples/nesting
