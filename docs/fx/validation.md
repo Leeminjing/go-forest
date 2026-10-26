@@ -4,7 +4,8 @@ Implementation baseline: Forest `f4d6c26`. Core, Agent and Focus remain unchange
 The independent adapter pins Fx v1.24.0 and uses public Fx APIs only.
 
 This file records implementation evidence; it does not contain the local-only
-Spec or Design documents. Final release/CI verification is recorded separately.
+Spec or Design documents. Final release/CI verification is recorded in
+[release.md](release.md).
 
 | Acceptance | Automated evidence |
 | --- | --- |
