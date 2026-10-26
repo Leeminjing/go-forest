@@ -25,6 +25,7 @@ jobs:
           - {path: 'adapters/temporal', go: '1.26.x'}
           - {path: 'examples/temporal', go: '1.26.x'}
           - {path: 'adapters/fx', go: '1.23.x'}
+          - {path: 'examples/fx', go: '1.23.x'}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -49,6 +50,19 @@ jobs:
         run: go run ./examples/web-agent
       - if: matrix.module.path == '.'
         run: go run ./examples/composite
+      - if: matrix.module.path == 'examples/fx'
+        run: go run ./cmd/demo
+  fx-published:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/verify-fx-release.py
   temporal:
     runs-on: ubuntu-latest
     steps:

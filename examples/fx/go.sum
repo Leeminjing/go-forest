@@ -1,5 +1,7 @@
 github.com/Leeminjing/go-forest v0.3.0 h1:TrdMiVMHTgfI2e7JdhZ6nud7KJuqB2688M2IwM/TNJc=
 github.com/Leeminjing/go-forest v0.3.0/go.mod h1:UejDPb4g0Q8YdwTVz0OyFLXw1WowR/DizszTlKhGkVc=
+github.com/Leeminjing/go-forest/adapters/fx v0.1.0 h1:BzNa4/EFEt5wdvZmNHGYKRCEdJwIpy5RzLVf40rw8sM=
+github.com/Leeminjing/go-forest/adapters/fx v0.1.0/go.mod h1:xnSBPn39XHpkz+YzvbGgHi1/Gaqu8FZYlDGL6e9PNbw=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
