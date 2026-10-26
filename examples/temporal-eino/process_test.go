@@ -35,6 +35,9 @@ func TestWorkerChild(t *testing.T) {
 		t.Fatal(e)
 	}
 	if e = demo.RunWorker(context.Background(), c.Options, c.Files); e != nil {
+		if errors.Is(e, protocol.ErrOwner) {
+			_ = os.WriteFile(c.Files.Ready+".rejected", []byte("OwnerPresent"), 0600)
+		}
 		t.Fatal(e)
 	}
 }
@@ -62,6 +65,7 @@ func startChild(t *testing.T, ctx context.Context, o demo.Options, mode, label s
 		t.Fatal(e)
 	}
 	cmd := exec.CommandContext(ctx, os.Args[0], "-test.run=^TestWorkerChild$")
+	hideCommand(cmd)
 	cmd.Env = append(os.Environ(), "FOREST_TEMPORAL_EINO_CHILD="+path)
 	cmd.Stdout = log
 	cmd.Stderr = log
@@ -80,7 +84,9 @@ func startChild(t *testing.T, ctx context.Context, o demo.Options, mode, label s
 			t.Error("child race", string(data))
 		}
 	})
-	readReport(t, ctx, files.Ready)
+	readyContext, cancel := context.WithTimeout(ctx, 15*time.Second)
+	defer cancel()
+	readReport(t, readyContext, files.Ready)
 	return c
 }
 func readReport(t *testing.T, ctx context.Context, path string) demo.WorkerReport {
@@ -102,6 +108,30 @@ func TestKilledWorkerRestoresNativeCheckpointAndOriginalWorkflow(t *testing.T) {
 			defer control.Close(ctx)
 			a := startChild(t, ctx, o, mode, "A")
 			aReady := readReport(t, ctx, a.ready)
+			// An actual second OS process must be rejected before any handover.
+			if mode == "paused" {
+				denied := t.TempDir()
+				files := demo.WorkerFiles{Ready: filepath.Join(denied, "ready"), Stop: filepath.Join(denied, "stop")}
+				raw, _ := json.Marshal(childConfig{Options: o, Files: files})
+				path := filepath.Join(denied, "configuration.json")
+				if e = os.WriteFile(path, raw, 0600); e != nil {
+					t.Fatal(e)
+				}
+				command := exec.CommandContext(ctx, os.Args[0], "-test.run=^TestWorkerChild$")
+				hideCommand(command)
+				command.Env = append(os.Environ(), "FOREST_TEMPORAL_EINO_CHILD="+path)
+				log, e := command.CombinedOutput()
+				if e == nil {
+					t.Fatal("second process acquired active state directory")
+				}
+				rejection, e := os.ReadFile(files.Ready + ".rejected")
+				if e != nil || string(rejection) != "OwnerPresent" {
+					t.Fatal("unexpected child rejection", e, string(log))
+				}
+				if strings.Contains(string(log), "WARNING: DATA RACE") {
+					t.Fatal(string(log))
+				}
+			}
 			id, e := control.Start(ctx, o.Queue, input(o))
 			if e != nil {
 				t.Fatal(e)
@@ -152,6 +182,12 @@ func TestKilledWorkerRestoresNativeCheckpointAndOriginalWorkflow(t *testing.T) {
 			} else if e != nil || out.State != "completed" || out.Receipt != barrier.Evidence.Receipt || out.Text != "finished:v1:oak" {
 				t.Fatal(out, e)
 			}
+			if mode == "completed" && out.Engine != aReady.Agent {
+				t.Fatal("redelivery changed original native identity", out.Engine, aReady.Agent)
+			}
+			if mode == "paused" && out.Engine != bReady.Agent {
+				t.Fatal("resume did not record new native identity", out.Engine, bReady.Agent)
+			}
 			if e = control.Replay(ctx, id); e != nil {
 				t.Fatal(e)
 			}
@@ -184,5 +220,3 @@ func TestKilledWorkerRestoresNativeCheckpointAndOriginalWorkflow(t *testing.T) {
 		})
 	}
 }
-
-var _ = time.Second

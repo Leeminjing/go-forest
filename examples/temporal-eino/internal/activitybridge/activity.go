@@ -69,18 +69,7 @@ func (b *Bridge) Step(ctx context.Context, in protocol.Request) (out protocol.Re
 	if err = b.Meter.At(ctx, "activity", "", in.Input, in.Step, nil); err != nil {
 		return out, nativeError(err)
 	}
-	if err = tf.Go(ctx, func(c context.Context) error {
-		ticker := time.NewTicker(100 * time.Millisecond)
-		defer ticker.Stop()
-		for {
-			select {
-			case <-c.Done():
-				return nil
-			case <-ticker.C:
-				activity.RecordHeartbeat(c)
-			}
-		}
-	}); err != nil {
+	if err = heartbeat(ctx); err != nil {
 		return out, err
 	}
 	err = b.Steps.Use(ctx, func(s Steps) error { var e error; out, e = s.Step(ctx, in); return e })
@@ -88,20 +77,10 @@ func (b *Bridge) Step(ctx context.Context, in protocol.Request) (out protocol.Re
 	out.Delivery = protocol.Delivery{Process: b.Meter.Process, Worker: b.WorkerIdentity, Generation: g, Attempt: activity.GetInfo(ctx).Attempt}
 	return out, nativeError(err)
 }
-func (b *Bridge) ReadGraph(ctx context.Context, in protocol.Input) (out string, err error) {
+func (b *Bridge) ReadGraph(ctx context.Context, in protocol.Input) (out protocol.GraphResult, err error) {
 	ctx = observe.Begin(ctx)
-	if err = tf.Go(ctx, func(c context.Context) error {
-		ticker := time.NewTicker(100 * time.Millisecond)
-		defer ticker.Stop()
-		for {
-			select {
-			case <-c.Done():
-				return nil
-			case <-ticker.C:
-				activity.RecordHeartbeat(c)
-			}
-		}
-	}); err != nil {
+	ctx = observe.WithEngine(ctx, b.Meter.Engine("app/graph"))
+	if err = heartbeat(ctx); err != nil {
 		return out, err
 	}
 	data, _ := json.Marshal(in)
@@ -133,8 +112,27 @@ func (b *Bridge) ReadGraph(ctx context.Context, in protocol.Input) (out string, 
 		if first != streamed {
 			return protocol.ErrConflict
 		}
-		out = first
+		out.Text = first
 		return nil
 	})
+	out.Process = b.Meter.Process
+	out.Instance = b.Meter.Engine("app/graph")
+	out.Generation, _ = b.Meter.Forest.Generation(ctx)
+	out.Trace = observe.Trace(ctx)
 	return out, nativeError(err)
+}
+
+func heartbeat(ctx context.Context) error {
+	return tf.Go(ctx, func(c context.Context) error {
+		ticker := time.NewTicker(100 * time.Millisecond)
+		defer ticker.Stop()
+		for {
+			select {
+			case <-c.Done():
+				return nil
+			case <-ticker.C:
+				activity.RecordHeartbeat(c)
+			}
+		}
+	})
 }

@@ -77,6 +77,7 @@ type Point struct {
 }
 type Result struct {
 	State, Text string
+	Engine      string
 	Receipt     Receipt
 	Pause       Pause
 	Process     string
@@ -85,6 +86,20 @@ type Result struct {
 	Reused      bool
 	Delivery    Delivery
 }
+
+// CopyResult detaches observations from delivery and persistent values.
+func CopyResult(v Result) Result {
+	v.Pause.Targets = append([]string(nil), v.Pause.Targets...)
+	v.Trace = append([]Point(nil), v.Trace...)
+	for i := range v.Trace {
+		if v.Trace[i].Result != nil {
+			c := CopyResult(*v.Trace[i].Result)
+			v.Trace[i].Result = &c
+		}
+	}
+	return v
+}
+
 type Record struct {
 	Request Request
 	Owner   string
@@ -102,6 +117,12 @@ type WorkflowState struct {
 	Pause     Pause
 	Decisions map[string]string
 	Last      Result
+	Graph     GraphResult
+}
+type GraphResult struct {
+	Text, Process, Instance string
+	Generation              uint64
+	Trace                   []Point
 }
 type Counts struct{ Model, Apply, Query, Resume, Graph int64 }
 type ResourceReport struct {

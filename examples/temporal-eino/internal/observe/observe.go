@@ -14,6 +14,8 @@ type Meter struct {
 	Hook                               Hook
 	Process                            string
 	Forest                             *forest.Forest
+	instancesMu                        sync.Mutex
+	instances                          map[forest.TreeID]string
 }
 
 func (m *Meter) Counts() protocol.Counts {
@@ -21,6 +23,28 @@ func (m *Meter) Counts() protocol.Counts {
 }
 
 type key struct{}
+type engineKey struct{}
+
+func WithEngine(ctx context.Context, id string) context.Context {
+	return context.WithValue(ctx, engineKey{}, id)
+}
+func (m *Meter) Engine(tree forest.TreeID) string {
+	m.instancesMu.Lock()
+	defer m.instancesMu.Unlock()
+	if m.instances == nil {
+		m.instances = map[forest.TreeID]string{}
+	}
+	if id := m.instances[tree]; id != "" {
+		return id
+	}
+	if node, ok := m.Forest.Snapshot().Trees[tree]; ok {
+		id := m.Process + "/" + node.InstanceID
+		m.instances[tree] = id
+		return id
+	}
+	return ""
+}
+
 type trace struct {
 	mu    sync.Mutex
 	items []protocol.Point
@@ -42,6 +66,7 @@ func (m *Meter) At(ctx context.Context, stage, version string, in protocol.Input
 		return e
 	}
 	p := protocol.Point{Stage: stage, Version: version, Process: m.Process, Generation: g, Input: in, Step: step}
+	p.Instance, _ = ctx.Value(engineKey{}).(string)
 	if t, _ := ctx.Value(key{}).(*trace); t != nil {
 		t.mu.Lock()
 		if len(t.items) >= 64 {
@@ -51,7 +76,10 @@ func (m *Meter) At(ctx context.Context, stage, version string, in protocol.Input
 		t.items = append(t.items, p)
 		t.mu.Unlock()
 	}
-	p.Result = result
+	if result != nil {
+		copy := protocol.CopyResult(*result)
+		p.Result = &copy
+	}
 	if m.Hook != nil {
 		return m.Hook(ctx, p)
 	}

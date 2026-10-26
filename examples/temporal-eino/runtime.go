@@ -160,6 +160,8 @@ func New(ctx context.Context, o Options) (r *Runtime, err error) {
 		return nil, err
 	}
 	committed = true
+	r.meter.Engine("app/adk")
+	r.meter.Engine("app/graph")
 	finalize, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	status, err := tf.Inspect(finalize, f, "app/worker")

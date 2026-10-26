@@ -67,6 +67,7 @@ func (s *Service) Step(ctx context.Context, in protocol.Request) (out protocol.R
 			return nil
 		}
 		out.Process = s.m.Process
+		out.Engine = s.m.Engine("app/adk")
 		out.Generation, _ = s.m.Forest.Generation(ctx)
 		var targets []string
 		visit := func(event *adk.AgentEvent) error {
@@ -90,16 +91,17 @@ func (s *Service) Step(ctx context.Context, in protocol.Request) (out protocol.R
 			return nil
 		}
 		var result ef.Result
-		e = s.agent.Use(ctx, func(a agent) error {
+		nativeContext := observe.WithEngine(ctx, out.Engine)
+		e = s.agent.Use(nativeContext, func(a agent) error {
 			var e error
 			o := ef.RunOptions{CheckpointID: protocol.Checkpoint(in.Input)}
 			if in.Action == "run" {
 				s.m.Query.Add(1)
 				b, _ := json.Marshal(in.Input)
-				result, e = a.Query(ctx, string(b), o, visit)
+				result, e = a.Query(nativeContext, string(b), o, visit)
 			} else {
 				s.m.Resume.Add(1)
-				result, e = a.Resume(ctx, &adk.ResumeParams{Targets: map[string]any{in.Decision.Target: in.Decision.Value}}, o, visit)
+				result, e = a.Resume(nativeContext, &adk.ResumeParams{Targets: map[string]any{in.Decision.Target: in.Decision.Value}}, o, visit)
 			}
 			return e
 		})

@@ -66,6 +66,20 @@ func TestRealWorkflowUsesNativeGraphAndAgentThenSignalResumesCheckpoint(t *testi
 	if out.State != "completed" || out.Text != "finished:v1:oak" || out.Receipt.Content != "v1:oak" {
 		t.Fatal(out)
 	}
+	engine := r.Process + "/" + r.Forest.Snapshot().Trees["app/adk"].InstanceID
+	if out.Engine != engine {
+		t.Fatal("missing actual Eino identity", out.Engine, engine)
+	}
+	diagnostic,e:=r.Query(ctx,id);if e!=nil{t.Fatal(e)}
+	graphEngine:=r.Process+"/"+r.Forest.Snapshot().Trees["app/graph"].InstanceID
+	if diagnostic.Stage!="completed"||diagnostic.Graph.Instance!=graphEngine{t.Fatal("graph execution evidence missing",diagnostic,e)}
+	for _, p := range out.Trace {
+		if p.Stage == "model" || p.Stage == "checkpoint.get" || p.Stage == "business.inspect" {
+			if p.Instance != engine {
+				t.Fatal("native boundary lost physical identity", p)
+			}
+		}
+	}
 	evidence, e := r.Inspect(ctx, input(o))
 	if e != nil {
 		t.Fatal(e)
