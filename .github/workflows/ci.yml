@@ -24,6 +24,7 @@ jobs:
           - {path: 'examples/eino', go: '1.23.x'}
           - {path: 'adapters/temporal', go: '1.26.x'}
           - {path: 'examples/temporal', go: '1.26.x'}
+          - {path: 'adapters/fx', go: '1.23.x'}
     runs-on: ${{ matrix.os }}
     defaults:
       run:

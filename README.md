@@ -28,6 +28,8 @@ GORM、NATS、Telemetry 各自发布 v0.1.0，Observatory 运行观察为 v0.2.1
 
 [Temporal Adapter](adapters/temporal/README.md) 与 [持久工作流示例](examples/temporal/README.md) 使用独立 Go 1.26 模块，验证提交后 Worker 准入、Activity Scope、业务热替换、真实服务/Worker 重启以及 PostgreSQL 收据核对。Core 不包含 Temporal 调度或持久化逻辑；见 [验收记录](docs/temporal/validation.md)。
 
+[Fx Adapter](adapters/fx/README.md) 与 [原生 DI 组合示例](examples/fx/README.md) 保留 Fx Module、构造函数注入和生命周期，在模块边界以动态 Ref 连接 Forest 业务树，验证提交后准入、失败回滚和真实资源排空。Core 无 Fx 专属逻辑；见 [验收记录](docs/fx/validation.md)。
+
 ```sh
 go run ./examples/hello-forest
 go run ./examples/nesting
