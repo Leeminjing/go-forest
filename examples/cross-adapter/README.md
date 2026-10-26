@@ -106,5 +106,6 @@ Default `go test ./...` explicitly skips real-service tests. Full acceptance set
 `FOREST_INTEGRATION=1`; missing real configuration then fails. The subprocess
 entry-point skip in the parent is not an integration pass or missing test gate.
 
-See [acceptance](../../docs/cross-adapter/validation.md) and
-[observed conformance rules](../../docs/cross-adapter/conformance-notes.md).
+See [acceptance](../../docs/cross-adapter/validation.md),
+[release](../../docs/cross-adapter/release.md), [review](../../docs/cross-adapter/review.md)
+and [observed conformance rules](../../docs/cross-adapter/conformance-notes.md).
