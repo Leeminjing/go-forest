@@ -19,13 +19,37 @@ import (
 )
 
 type Store struct {
-	mu               sync.Mutex
-	directory, owner string
-	active           map[string]bool
-	native           *ef.FileStore
-	owned            bool
+	mu                        sync.Mutex
+	directory, owner, profile string
+	active                    map[string]bool
+	native                    *ef.FileStore
+	owned                     bool
 }
 type claim struct{ Owner, Profile string }
+
+// HandoverAfterExit does not detect death: the trusted caller has completed Wait.
+func HandoverAfterExit(directory, oldOwner string) error {
+	if oldOwner == "" {
+		return protocol.ErrOwner
+	}
+	p := filepath.Join(directory, "owner.json")
+	b, e := os.ReadFile(p)
+	if e != nil {
+		return e
+	}
+	var c claim
+	if json.Unmarshal(b, &c) != nil || c.Owner != oldOwner || c.Profile != protocol.Profile {
+		return protocol.ErrOwner
+	}
+	return os.Remove(p)
+}
+func Audit(directory string, in protocol.Input) (protocol.Evidence, error) {
+	if !protocol.Valid(in) {
+		return protocol.Evidence{}, protocol.ErrConflict
+	}
+	return (&Store{directory: directory, profile: protocol.Profile}).Inspect(context.Background(), in)
+}
+
 type envelope struct {
 	Digest  string
 	Payload json.RawMessage
@@ -39,7 +63,7 @@ func publish(path string, v any) error {
 	if len(b) > 1<<20 {
 		return protocol.ErrPartial
 	}
-	w, e := json.Marshal(envelope{Digest: protocol.Hash(string(b)), Payload: b})
+	w, e := json.Marshal(envelope{Digest: protocol.BytesHash(b), Payload: b})
 	if e != nil {
 		return e
 	}
@@ -72,7 +96,7 @@ func read(path string, v any) error {
 		return protocol.ErrCorrupt
 	}
 	var w envelope
-	if json.Unmarshal(b, &w) != nil || w.Digest != protocol.Hash(string(w.Payload)) {
+	if json.Unmarshal(b, &w) != nil || w.Digest != protocol.BytesHash(w.Payload) {
 		return protocol.ErrCorrupt
 	}
 	if json.Unmarshal(w.Payload, v) != nil {
@@ -80,9 +104,9 @@ func read(path string, v any) error {
 	}
 	return nil
 }
-func Definition(directory, owner string, capture func(*Store)) forest.Definition {
+func Definition(directory, owner, profile string, capture func(*Store)) forest.Definition {
 	return forest.Definition{TypeID: "te.state", Version: "1", Capabilities: []forest.CapabilityDescriptor{forest.Capability[*Store]("state", forest.Public)}, Build: func(_ context.Context, e *forest.BuildEnv) (forest.Lifecycle, error) {
-		s := &Store{directory: directory, owner: owner, active: map[string]bool{}}
+		s := &Store{directory: directory, owner: owner, profile: profile, active: map[string]bool{}}
 		capture(s)
 		return forest.Hooks{OnStart: func(context.Context) error { return s.open() }, OnStop: func(context.Context) error { return s.close() }}, forest.Provide(e, "state", s)
 	}}
@@ -114,7 +138,7 @@ func (s *Store) open() error {
 		s.owned = false
 		return e
 	}
-	s.native, e = ef.NewFileStore(filepath.Join(s.directory, "native"), ef.Profile{Engine: "eino/0.9.22", Namespace: "temporal-eino", Schema: protocol.Profile})
+	s.native, e = ef.NewFileStore(filepath.Join(s.directory, "native"), ef.Profile{Engine: "eino/0.9.22", Namespace: "temporal-eino", Schema: s.profile})
 	return e
 }
 func (s *Store) close() error {
@@ -151,7 +175,7 @@ func (s *Store) CheckpointDigest(ctx context.Context, k string) (string, error) 
 	if !ok {
 		return "", protocol.ErrMissing
 	}
-	return protocol.Hash(string(b)), nil
+	return protocol.BytesHash(b), nil
 }
 func (s *Store) recordPath(id string) string {
 	return filepath.Join(s.directory, "steps", protocol.Hash(id))
@@ -163,7 +187,7 @@ type journal struct {
 }
 
 func (s *Store) load(id string) (journal, int, error) {
-	j := journal{Profile: protocol.Profile}
+	j := journal{Profile: s.profile}
 	entries, e := os.ReadDir(s.recordPath(id))
 	if errors.Is(e, os.ErrNotExist) {
 		return j, 0, nil
@@ -193,7 +217,7 @@ func (s *Store) load(id string) (journal, int, error) {
 	if e != nil {
 		return j, 0, e
 	}
-	if j.Profile != protocol.Profile {
+	if j.Profile != s.profile {
 		return j, 0, ef.ErrProfile
 	}
 	return j, len(names), nil
@@ -228,6 +252,15 @@ func (s *Store) Begin(ctx context.Context, r protocol.Request) (*protocol.Result
 			out.Reused = true
 			return &out, func() {}, nil
 		}
+		if old.State == "running" {
+			// No active in-process owner remains, and startup holds the exclusive
+			// directory claim. Persist uncertainty rather than resetting execution.
+			j.Records[r.Step].State = "unknown"
+			j.Records[r.Step].Result.State = "unknown"
+			if e = s.save(id, j, n); e != nil {
+				return nil, nil, errors.Join(protocol.ErrUnknown, e)
+			}
+		}
 		return nil, nil, protocol.ErrUnknown
 	}
 	if r.Step != len(j.Records) {
@@ -236,6 +269,16 @@ func (s *Store) Begin(ctx context.Context, r protocol.Request) (*protocol.Result
 	if r.Step == 0 {
 		if r.Action != "run" {
 			return nil, nil, protocol.ErrConflict
+		}
+		// A checkpoint without a receipt is not permission to overwrite native state.
+		if _, exists, e := s.Get(ctx, protocol.Checkpoint(r.Input)); e != nil {
+			return nil, nil, e
+		} else if exists {
+			j.Records = append(j.Records, protocol.Record{Request: r, Owner: s.owner, State: "unknown", Result: protocol.Result{State: "unknown"}})
+			if e = s.save(id, j, n); e != nil {
+				return nil, nil, errors.Join(protocol.ErrUnknown, e)
+			}
+			return nil, nil, protocol.ErrUnknown
 		}
 	} else {
 		last := j.Records[r.Step-1]
@@ -252,7 +295,7 @@ func (s *Store) Begin(ctx context.Context, r protocol.Request) (*protocol.Result
 			return nil, nil, protocol.ErrUnknown
 		}
 	}
-	j.Records = append(j.Records, protocol.Record{Request: r, State: "running"})
+	j.Records = append(j.Records, protocol.Record{Request: r, Owner: s.owner, State: "running"})
 	if e = s.save(id, j, n); e != nil {
 		return nil, nil, e
 	}

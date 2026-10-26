@@ -14,7 +14,14 @@ func Execute(ctx workflow.Context, in protocol.Input) (out protocol.Result, err 
 	if err = workflow.SetQueryHandler(ctx, "state", func() (protocol.WorkflowState, error) { return state, nil }); err != nil {
 		return
 	}
-	ctx = workflow.WithActivityOptions(ctx, workflow.ActivityOptions{StartToCloseTimeout: 20 * time.Second, ScheduleToCloseTimeout: 2 * time.Minute, HeartbeatTimeout: 3 * time.Second, WaitForCancellation: true, RetryPolicy: &temporal.RetryPolicy{InitialInterval: 100 * time.Millisecond, MaximumInterval: time.Second, MaximumAttempts: 4}})
+	timeout, heartbeat := 20*time.Second, 3*time.Second
+	if in.AttemptMillis != 0 {
+		timeout = time.Duration(in.AttemptMillis) * time.Millisecond
+		if heartbeat > timeout/2 {
+			heartbeat = timeout / 2
+		}
+	}
+	ctx = workflow.WithActivityOptions(ctx, workflow.ActivityOptions{StartToCloseTimeout: timeout, ScheduleToCloseTimeout: 2 * time.Minute, HeartbeatTimeout: heartbeat, WaitForCancellation: true, RetryPolicy: &temporal.RetryPolicy{InitialInterval: 100 * time.Millisecond, MaximumInterval: time.Second, MaximumAttempts: 4}})
 	var graph string
 	if err = workflow.ExecuteActivity(ctx, "te.graph", in).Get(ctx, &graph); err != nil {
 		return

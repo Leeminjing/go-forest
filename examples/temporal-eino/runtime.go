@@ -33,9 +33,10 @@ var ErrUnavailable = protocol.ErrUnavailable
 
 type Options struct {
 	Address, Queue, Directory, Version string
-	Forest                             *forest.Forest
-	Hook                               func(context.Context, protocol.Point) error
-	Prepared                           func(context.Context, *Runtime) error
+	Profile                            string                                      // Expected execution schema; empty selects protocol.Profile.
+	Forest                             *forest.Forest                              `json:"-"`
+	Hook                               func(context.Context, protocol.Point) error `json:"-"`
+	Prepared                           func(context.Context, *Runtime) error       `json:"-"`
 }
 type Ref struct{ WorkflowID, RunID string }
 type Runtime struct {
@@ -57,8 +58,18 @@ func New(ctx context.Context, o Options) (r *Runtime, err error) {
 	if o.Address == "" || o.Queue == "" || o.Directory == "" {
 		return nil, protocol.ErrConflict
 	}
+	o.Directory, err = filepath.Abs(o.Directory)
+	if err != nil {
+		return nil, err
+	}
 	if o.Version == "" {
 		o.Version = "v1"
+	}
+	if o.Profile == "" {
+		o.Profile = protocol.Profile
+	}
+	if len(o.Profile) > 256 {
+		return nil, protocol.ErrConflict
 	}
 	if o.Version != "v1" && o.Version != "v2" {
 		return nil, protocol.ErrConflict
@@ -88,7 +99,7 @@ func New(ctx context.Context, o Options) (r *Runtime, err error) {
 	if err != nil {
 		return nil, err
 	}
-	data := state.Definition(o.Directory, r.Process, func(s *state.Store) { r.state = s })
+	data := state.Definition(o.Directory, r.Process, o.Profile, func(s *state.Store) { r.state = s })
 	agent, err := nativeeino.ADK(owner, r.meter, filepath.Join(o.Directory, "handles"), r.native)
 	if err != nil {
 		return nil, err
@@ -234,6 +245,17 @@ func (r *Runtime) Cancel(ctx context.Context, id Ref) error {
 	return r.client(ctx, func(c context.Context, n client.Client) error { return n.CancelWorkflow(c, id.WorkflowID, id.RunID) })
 }
 func (r *Runtime) Counts() protocol.Counts { return r.meter.Counts() }
+
+type HostStatus struct {
+	Active  int
+	Closing bool
+}
+
+func (r *Runtime) HostStatus() HostStatus {
+	r.requests.mu.Lock()
+	defer r.requests.mu.Unlock()
+	return HostStatus{Active: len(r.requests.calls), Closing: r.requests.closed}
+}
 func (r *Runtime) Inspect(ctx context.Context, in protocol.Input) (out protocol.Evidence, err error) {
 	if !protocol.Valid(in) {
 		return out, protocol.ErrConflict

@@ -25,14 +25,27 @@ type checkpoint interface {
 	Get(context.Context, string) ([]byte, bool, error)
 	Set(context.Context, string, []byte) error
 }
-type storage struct{ ref forest.Ref[checkpoint] }
+type storage struct {
+	ref   forest.Ref[checkpoint]
+	meter *observe.Meter
+}
 
 func (s storage) Get(c context.Context, k string) (b []byte, ok bool, e error) {
-	e = ef.Guard(c, func() error { return s.ref.Use(c, func(p checkpoint) error { b, ok, e = p.Get(c, k); return e }) })
+	e = ef.Guard(c, func() error {
+		if e := s.meter.At(c, "checkpoint.get", "", protocol.Input{}, 0, nil); e != nil {
+			return e
+		}
+		return s.ref.Use(c, func(p checkpoint) error { b, ok, e = p.Get(c, k); return e })
+	})
 	return
 }
 func (s storage) Set(c context.Context, k string, b []byte) error {
-	return ef.Guard(c, func() error { return s.ref.Use(c, func(p checkpoint) error { return p.Set(c, k, b) }) })
+	return ef.Guard(c, func() error {
+		if e := s.meter.At(c, "checkpoint.set", "", protocol.Input{}, 0, nil); e != nil {
+			return e
+		}
+		return s.ref.Use(c, func(p checkpoint) error { return p.Set(c, k, b) })
+	})
 }
 
 type offline struct {
@@ -167,7 +180,7 @@ func ADK(owner *ef.Owner, m *observe.Meter, directory string, h *observe.Handle)
 			if err != nil {
 				return ef.ADKSession{}, err
 			}
-			return ef.ADKSession{Runner: adk.NewRunner(c, adk.RunnerConfig{Agent: a, EnableStreaming: true, CheckPointStore: storage{s}}), Lifetime: ef.ExecutionFrom(c)}, nil
+			return ef.ADKSession{Runner: adk.NewRunner(c, adk.RunnerConfig{Agent: a, EnableStreaming: true, CheckPointStore: storage{s, m}}), Lifetime: ef.ExecutionFrom(c)}, nil
 		}}, nil
 	}})
 }
@@ -178,7 +191,7 @@ func Graph(owner *ef.Owner, m *observe.Meter) (forest.Definition, error) {
 			return nil, err
 		}
 		g := compose.NewGraph[string, string]()
-		err = g.AddLambdaNode("read", compose.InvokableLambda(func(c context.Context, s string) (out string, e error) {
+		invoke := func(c context.Context, s string, _ ...struct{}) (out string, e error) {
 			e = ef.Guard(c, func() error {
 				m.Graph.Add(1)
 				var in protocol.Input
@@ -195,7 +208,48 @@ func Graph(owner *ef.Owner, m *observe.Meter) (forest.Definition, error) {
 				return r.Use(c, func(b business) error { v, e := b.Observe(c, in); out += "/" + v; return e })
 			})
 			return
-		}))
+		}
+		stream := func(c context.Context, raw string, _ ...struct{}) (*schema.StreamReader[string], error) {
+			var in protocol.Input
+			if json.Unmarshal([]byte(raw), &in) != nil || !protocol.Valid(in) {
+				return nil, protocol.ErrConflict
+			}
+			reader, writer := schema.Pipe[string](0)
+			err := ef.Go(c, func(c context.Context) error {
+				defer writer.Close()
+				m.Graph.Add(1)
+				var first string
+				if e := r.Use(c, func(b business) error { var e error; first, e = b.Observe(c, in); return e }); e != nil {
+					writer.Send("", e)
+					return e
+				}
+				if writer.Send(first+"/", nil) {
+					return nil
+				}
+				if e := m.At(c, "stream.producer", "", in, 0, nil); e != nil {
+					writer.Send("", e)
+					return e
+				}
+				var last string
+				if e := r.Use(c, func(b business) error { var e error; last, e = b.Observe(c, in); return e }); e != nil {
+					writer.Send("", e)
+					return e
+				}
+				writer.Send(last, nil)
+				return nil
+			})
+			if err != nil {
+				reader.Close()
+				writer.Close()
+				return nil, err
+			}
+			return reader, nil
+		}
+		lambda, err := compose.AnyLambda(invoke, stream, nil, nil)
+		if err != nil {
+			return nil, err
+		}
+		err = g.AddLambdaNode("read", lambda)
 		if err != nil {
 			return nil, err
 		}

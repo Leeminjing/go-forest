@@ -47,6 +47,18 @@ func nativeError(e error) error {
 	if errors.Is(e, protocol.ErrBusy) || errors.Is(e, ef.ErrBusy) || errors.Is(e, protocol.ErrTransient) {
 		return temporal.NewApplicationError("execution not admitted", "AdmissionRetry", nil)
 	}
+	var app *temporal.ApplicationError
+	if errors.As(e, &app) {
+		return app
+	}
+	var canceled *temporal.CanceledError
+	if errors.As(e, &canceled) {
+		return canceled
+	}
+	var timeout *temporal.TimeoutError
+	if errors.As(e, &timeout) {
+		return timeout
+	}
 	if errors.Is(e, context.Canceled) {
 		return temporal.NewCanceledError()
 	}
@@ -78,6 +90,20 @@ func (b *Bridge) Step(ctx context.Context, in protocol.Request) (out protocol.Re
 }
 func (b *Bridge) ReadGraph(ctx context.Context, in protocol.Input) (out string, err error) {
 	ctx = observe.Begin(ctx)
+	if err = tf.Go(ctx, func(c context.Context) error {
+		ticker := time.NewTicker(100 * time.Millisecond)
+		defer ticker.Stop()
+		for {
+			select {
+			case <-c.Done():
+				return nil
+			case <-ticker.C:
+				activity.RecordHeartbeat(c)
+			}
+		}
+	}); err != nil {
+		return out, err
+	}
 	data, _ := json.Marshal(in)
 	err = b.Graph.Use(ctx, func(g Graph) error {
 		first, e := g.Invoke(ctx, string(data), ef.GraphCall{})

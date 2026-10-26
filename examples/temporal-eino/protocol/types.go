@@ -24,16 +24,22 @@ var (
 	ErrTransient   = errors.New("explicit pre-engine transient failure")
 )
 
-type Input struct{ ExecutionID, OperationID, Text string }
+type Input struct {
+	ExecutionID, OperationID, Text string
+	AttemptMillis                  int
+}
 
 func Valid(in Input) bool {
-	return Key(in.ExecutionID) && Key(in.OperationID) && len(in.Text) <= 512 && utf8.ValidString(in.Text) && !strings.ContainsRune(in.Text, 0)
+	return Key(in.ExecutionID) && Key(in.OperationID) && len(in.Text) <= 512 && utf8.ValidString(in.Text) && !strings.ContainsRune(in.Text, 0) && (in.AttemptMillis == 0 || (in.AttemptMillis >= 250 && in.AttemptMillis <= 20000))
 }
 func Key(s string) bool {
 	return s != "" && len(s) <= 128 && utf8.ValidString(s) && !strings.ContainsRune(s, 0)
 }
 func Hash(v any) string {
 	b, _ := json.Marshal(v)
+	return BytesHash(b)
+}
+func BytesHash(b []byte) string {
 	h := sha256.Sum256(b)
 	return hex.EncodeToString(h[:])
 }
@@ -81,6 +87,7 @@ type Result struct {
 }
 type Record struct {
 	Request Request
+	Owner   string
 	State   string
 	Result  Result
 }

@@ -54,6 +54,11 @@ func (s *Service) Step(ctx context.Context, in protocol.Request) (out protocol.R
 	err = s.state.Use(ctx, func(p persistence) error {
 		cached, release, e := p.Begin(ctx, in)
 		if e != nil {
+			if errors.Is(e, protocol.ErrBusy) {
+				if observed := s.m.At(ctx, "step.busy", "", in.Input, in.Step, nil); observed != nil {
+					return errors.Join(e, observed)
+				}
+			}
 			return e
 		}
 		defer release()
