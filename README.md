@@ -30,6 +30,8 @@ GORM、NATS、Telemetry 各自发布 v0.1.0，Observatory 运行观察为 v0.2.1
 
 [Fx Adapter](adapters/fx/README.md) 与 [原生 DI 组合示例](examples/fx/README.md) 保留 Fx Module、构造函数注入和生命周期，在模块边界以动态 Ref 连接 Forest 业务树，验证提交后准入、失败回滚和真实资源排空。Core 无 Fx 专属逻辑；见 [验收记录](docs/fx/validation.md)。
 
+[跨 Adapter 组合示例](examples/cross-adapter/README.md) 将已发布的 Fx、Temporal、GORM 放入同一森林，验证 Activity 跨框架 Scope、业务切换、SQL 收据、实际排空和提交后强杀恢复。它不引入统一事务或 exactly-once 承诺；见 [验收矩阵](docs/cross-adapter/validation.md) 与 [兼容性观察](docs/cross-adapter/conformance-notes.md)。
+
 ```sh
 go run ./examples/hello-forest
 go run ./examples/nesting
