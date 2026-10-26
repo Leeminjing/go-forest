@@ -34,7 +34,7 @@ the parent; it is actually run in separate child OS processes. During race runs
 both child workers are instrumented, and the killed worker's log is also checked
 for a race diagnostic (normal exit cannot flush its final report after Kill).
 
-Implementation validation so far:
+Implementation validation:
 
 - Windows Go 1.26.5: real-service tests/vet and deterministic CLI passed.
 - Linux Go 1.26: isolated real-service harness, three race rounds and real CLI passed.
@@ -51,6 +51,7 @@ Full standalone command from repository root:
 python scripts/test-cross-adapter.py --race --count 3
 ```
 
-Independent review and published-consumer results will be recorded before final
-delivery. The example's SQL protocol does not establish cross-framework atomic
+Independent review is complete with no outstanding findings on either axis;
+see [review](review.md). Published-consumer and CI evidence is recorded in
+[release](release.md). The example's SQL protocol does not establish cross-framework atomic
 transactions, distributed generations, or exactly-once external effects.

@@ -75,7 +75,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python scripts/test-cross-adapter.py --race --count 3
+      - run: python scripts/test-cross-adapter.py --race --count 3 --published
   temporal:
     runs-on: ubuntu-latest
     steps:
