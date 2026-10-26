@@ -12,7 +12,8 @@ its only producer exited. Fixed by signalling both closing admission and actual
 producer exit, checking them during enqueue and result waits. The public
 TestClosingRuntimeWakesQueuedAndFutureBackgroundCalls failed before the fix and
 passes afterwards. No Core/module-boundary violations or material baseline smells
-were reported. Fix re-review pending.
+were reported. Independent re-review of `81b1d0c` confirmed closure; example
+tests were rerun three times and vet passed.
 
 ## Spec
 
@@ -21,6 +22,8 @@ checkable cause. Fixed with a separate ErrRuntime/Failure result and RuntimeFail
 status, returned by Quiesce. It does not poison resource ownership or prevent
 final Stop. TestLoopFailureIsCheckableWithoutPoisoningResourceCleanup covers
 both a sentinel and panic, and successful eventual resource release. No scope
-expansion or other confirmed A01–A12 defect was reported. Fix re-review pending.
+expansion or other confirmed A01–A12 defect was reported. Independent re-review
+of `81b1d0c` confirmed closure; new failure and queue regressions passed ten
+repetitions. There are no open confirmed findings on either axis.
 
 Both fixes passed Windows tests/vet and Linux Go 1.23 three-round race validation.
