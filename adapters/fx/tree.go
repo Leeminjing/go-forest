@@ -24,6 +24,7 @@ var (
 	ErrPanic        = errors.New("Fx callback panicked")
 	ErrDrainTimeout = errors.New("Fx drain incomplete")
 	ErrOwnership    = errors.New("Fx resource release not proven")
+	ErrRuntime      = errors.New("Fx background loop failed")
 )
 
 type Failure struct {
@@ -52,7 +53,7 @@ type Access[T any] interface {
 }
 type Status struct {
 	Identity, Phase, ErrorStage                         string
-	Accepting, OwnershipFailed                          bool
+	Accepting, OwnershipFailed, RuntimeFailed           bool
 	Inflight, Loops, Tasks, HookRunning, CleanupPending int
 }
 type Control interface{ Status() Status }

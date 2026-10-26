@@ -4,6 +4,7 @@ package fxdemo
 import (
 	"context"
 	"errors"
+	"sync"
 	"time"
 
 	ff "github.com/Leeminjing/go-forest/adapters/fx"
@@ -14,11 +15,13 @@ import (
 
 type Options struct{ BetweenReads func(context.Context, string) }
 type Runtime struct {
-	Forest  *forest.Forest
-	options Options
-	address string
-	jobs    chan job
-	next    forest.DefinitionRef
+	Forest                *forest.Forest
+	options               Options
+	address               string
+	jobs                  chan job
+	next                  forest.DefinitionRef
+	closing, producerDone chan struct{}
+	closeOnce             sync.Once
 }
 type Response struct {
 	Text       string `json:"text"`
@@ -26,7 +29,7 @@ type Response struct {
 }
 
 func New(ctx context.Context, o Options) (r *Runtime, err error) {
-	r = &Runtime{Forest: forest.New(forest.Options{}), options: o, jobs: make(chan job)}
+	r = &Runtime{Forest: forest.New(forest.Options{}), options: o, jobs: make(chan job), closing: make(chan struct{}), producerDone: make(chan struct{})}
 	f := r.Forest
 	defer func() {
 		if err != nil {
@@ -67,15 +70,30 @@ func (r *Runtime) Render(ctx context.Context, text string) (out string, err erro
 	return
 }
 func (r *Runtime) Background(ctx context.Context, text string) (string, error) {
+	select {
+	case <-r.closing:
+		return "", ff.ErrUnavailable
+	case <-r.producerDone:
+		return "", ff.ErrUnavailable
+	default:
+	}
 	work := job{ctx: ctx, text: text, reply: make(chan answer, 1)}
 	select {
 	case r.jobs <- work:
+	case <-r.closing:
+		return "", ff.ErrUnavailable
+	case <-r.producerDone:
+		return "", ff.ErrUnavailable
 	case <-ctx.Done():
 		return "", ctx.Err()
 	}
 	select {
 	case out := <-work.reply:
 		return out.text, out.err
+	case <-r.closing:
+		return "", ff.ErrUnavailable
+	case <-r.producerDone:
+		return "", ff.ErrUnavailable
 	case <-ctx.Done():
 		return "", ctx.Err()
 	}
@@ -85,9 +103,13 @@ func (r *Runtime) ReplaceBusiness(ctx context.Context) error {
 	return err
 }
 func (r *Runtime) Close(ctx context.Context) error {
+	r.closeOnce.Do(func() { close(r.closing) })
 	if err := ff.Quiesce(ctx, r.Forest, "host/fx"); err != nil {
 		if errors.Is(err, forest.ErrClosed) {
 			return r.Forest.Close(ctx)
+		}
+		if errors.Is(err, ff.ErrRuntime) && !errors.Is(err, ff.ErrOwnership) {
+			return errors.Join(err, r.Forest.Close(ctx))
 		}
 		return err
 	}

@@ -21,6 +21,7 @@ type Bridge struct {
 	startCtx, cleanupCtx       context.Context
 	startCancel, cleanupCancel context.CancelFunc
 	cleanupErr                 error
+	runtimeErr                 error
 	calls                      map[*callState]context.CancelFunc
 	enabled, quiesced          chan struct{}
 	sealed                     bool
@@ -129,11 +130,12 @@ func Quiesce(ctx context.Context, f *forest.Forest, id forest.TreeID) error {
 		case <-b.quiesced:
 			b.mu.Lock()
 			err := b.cleanupErr
+			runtimeErr := b.runtimeErr
 			b.mu.Unlock()
 			if err != nil {
-				return errors.Join(ErrOwnership, err)
+				return errors.Join(ErrOwnership, err, runtimeErr)
 			}
-			return nil
+			return runtimeErr
 		case <-ctx.Done():
 			return errors.Join(ErrDrainTimeout, ctx.Err())
 		}

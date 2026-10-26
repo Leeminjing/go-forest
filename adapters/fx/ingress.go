@@ -99,6 +99,8 @@ func (b *Bridge) loopExited(err error) {
 	unexpected := err != nil && !errors.Is(err, context.Canceled)
 	if unexpected {
 		b.statusValue.ErrorStage = "loop"
+		b.statusValue.RuntimeFailed = true
+		b.runtimeErr = &Failure{Tree: b.options.TreeID, Identity: b.statusValue.Identity, Stage: "loop", Err: errors.Join(ErrRuntime, err)}
 	}
 	b.cond.Broadcast()
 	b.mu.Unlock()

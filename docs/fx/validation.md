@@ -17,9 +17,13 @@ Spec or Design documents. Final release/CI verification is recorded separately.
 | A07 failures/partial resources/rollback errors | TestFailedInitializationAndStartCleanAllOwnedResourcesOnce; TestNativeRollbackWaitsForPreparedIngressBeforeStoppingDependencies; TestNativeRollbackErrorsAreNotErasedByLaterNoopStop; TestCleanupErrorRemainsUnreleasedInsteadOfBeingRetried |
 | A08 actual hook exit distinct from cancellation | TestCancelledStartJoinsRealHookBeforeRollback; TestStopDeadlineDoesNotProveHookOrResourceRelease |
 | A09 joined children, cancellation isolation, late callbacks | TestChildTaskKeepsScopeAfterServiceReturnsAndRejectsLateWork; TestIndependentCancellationAndConcurrentQuiesceJoinAllCalls |
-| A10 real HTTP/producer stop, timeout/repeated waits, final native cleanup | TestRealHTTPAndLoopQuiesceBeforeNativeResourceStop |
+| A10 real HTTP/producer stop, timeout/repeated waits, final native cleanup | TestRealHTTPAndLoopQuiesceBeforeNativeResourceStop; TestClosingRuntimeWakesQueuedAndFutureBackgroundCalls |
 | A11 management restrictions, parallel quiesce, required dependencies, default replacement rejection | TestManagementBoundariesAndNativeActuatorStayPrivate; TestConsumerRequiredLinkStillProtectsFxRemoval |
 | A12 real offline composition, race and platform matrix | examples/fx integration test and installed demo; CI matrix for both independent modules |
+
+Runtime error diagnostics are also covered by
+TestLoopFailureIsCheckableWithoutPoisoningResourceCleanup: sentinel errors and
+panics remain checkable through Quiesce, while final owned cleanup still succeeds.
 
 Tests use real native Fx construction and lifecycle calls. HTTP tests listen on
 real loopback sockets and prove failed preparation releases the port by binding
@@ -34,7 +38,7 @@ Local validation during implementation:
 
 - Windows Go 1.26.5: adapter/example tests, vet, real demo; passed.
 - Linux Go 1.23: both modules passed three race rounds (final verification below).
-- Adapter package-local coverage measured 89.8% before final review. This is not
+- Adapter package-local coverage measured 90.4% after review fixes. This is not
   a coverage claim for every repository/package or every possible Fx module.
 
 Commands for a released checkout:

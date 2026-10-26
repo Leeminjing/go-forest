@@ -81,6 +81,7 @@ func (r *Runtime) module(env *forest.BuildEnv, b *ff.Bridge) (fx.Option, error) 
 				r.address = "http://" + ln.Addr().String()
 				go func() { defer close(done); server.Serve(ln) }()
 				return b.Loop(func(c context.Context) error {
+					defer close(r.producerDone)
 					for {
 						select {
 						case <-c.Done():

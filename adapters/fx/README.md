@@ -85,6 +85,11 @@ framework producer; quiesce first. Cleanup errors leave the instance visibly
 draining/failed, rather than reporting released resources. Status separates
 admission, real calls, producers, children, hooks and pending cleanup.
 
+An unexpected managed Loop error/panic seals admission and sets RuntimeFailed.
+Quiesce returns a contextual Failure matching ErrRuntime and the original cause;
+this is separate from ErrOwnership. Once work has joined, a runtime failure does
+not prevent the host from removing the tree and releasing its resources.
+
 ## Compatibility boundary
 
 - This is trusted in-process composition, not a sandbox for arbitrary fx.Option.
