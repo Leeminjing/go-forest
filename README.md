@@ -36,6 +36,8 @@ GORM、NATS、Telemetry 各自发布 v0.1.0，Observatory 运行观察为 v0.2.1
 
 [Adapter Conformance TestKit](testkit/README.md) 是仅依赖标准库的独立 Go 1.23 测试模块。三组组合实验共享屏障、版本固定、准入回滚、实际退出及身份校验机制，包括[不依赖 Temporal 的 JetStream 执行模式](docs/ecosystem-conformance/validation.md)，继续保留各框架原生恢复与真实服务验收；见 [兼容矩阵](docs/testkit/compatibility.md)。
 
+[Core 状态机验证](tests/statemachine/README.md) 使用独立参考模型、随机计划、受监管并发脚本和真实资源探针核对动态拓扑；失败记录可原样回放并按同一失败签名缩减。它不修改公开运行机制，也不引入业务框架依赖；见 [验收矩阵](docs/core-state-machine/validation.md)。
+
 ```sh
 go run ./examples/hello-forest
 go run ./examples/nesting

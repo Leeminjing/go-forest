@@ -55,6 +55,31 @@ jobs:
         run: go run ./examples/composite
       - if: matrix.module.path == 'examples/fx'
         run: go run ./cmd/demo
+      - uses: actions/upload-artifact@v4
+        if: failure() && matrix.module.path == '.'
+        with:
+          name: core-state-machine-${{ matrix.os }}
+          path: .scratch/core-state-machine/runs/**
+          retention-days: 7
+  core-state-machine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      GOWORK: 'off'
+      FOREST_MODEL_PROFILE: extended
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+      - run: go vet ./tests/internal/topologymodel ./tests/statemachine
+      - run: go test -race ./tests/internal/topologymodel ./tests/statemachine -count=3 -timeout=480s -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: core-state-machine-extended
+          path: .scratch/core-state-machine/runs/**
+          retention-days: 7
   fx-published:
     runs-on: ubuntu-latest
     steps:
