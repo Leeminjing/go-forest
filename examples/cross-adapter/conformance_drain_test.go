@@ -102,17 +102,19 @@ func TestConformanceRealDrainRetainsOriginalHandleAndBorrowedResource(t *testing
 		return record("exited", false, exit)
 	}
 	r, err = New(ctx, o)
+	if r != nil {
+		defer func() {
+			gate.Release()
+			cleanup, c := context.WithTimeout(context.Background(), 10*time.Second)
+			defer c()
+			if err := r.Close(cleanup); err != nil {
+				t.Error(err)
+			}
+		}()
+	}
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer func() {
-		gate.Release()
-		cleanup, c := context.WithTimeout(context.Background(), 10*time.Second)
-		defer c()
-		if err := r.Close(cleanup); err != nil {
-			t.Error(err)
-		}
-	}()
 	if err = r.Enable(ctx); err != nil {
 		t.Fatal(err)
 	}

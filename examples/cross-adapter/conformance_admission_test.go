@@ -185,16 +185,18 @@ func TestConformanceCandidateRollbackAndPostCommitAdmission(t *testing.T) {
 	o.Prepared = nil
 	o.Directory = t.TempDir()
 	r, err := New(ctx, o)
+	if r != nil {
+		defer func() {
+			cleanup, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+			defer cancel()
+			if err := r.Close(cleanup); err != nil {
+				t.Error("positive control cleanup", err)
+			}
+		}()
+	}
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer func() {
-		cleanup, cancel := context.WithTimeout(context.Background(), 20*time.Second)
-		defer cancel()
-		if err := r.Close(cleanup); err != nil {
-			t.Error("positive control cleanup", err)
-		}
-	}()
 	state, err := tf.Inspect(ctx, r.Forest, "app/worker")
 	if err != nil || state.Phase != "disabled" || state.Started != 0 {
 		t.Fatal(state, err)
