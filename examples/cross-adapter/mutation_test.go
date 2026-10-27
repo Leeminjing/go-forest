@@ -3,6 +3,8 @@ package crossdemo_test
 import (
 	"context"
 	"errors"
+	"fmt"
+	tk "github.com/Leeminjing/go-forest/testkit"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -23,10 +25,26 @@ func wait(t *testing.T, ctx context.Context, ch <-chan struct{}) {
 }
 func checkGeneration(t *testing.T, out protocol.Result, g uint64) {
 	t.Helper()
+	j, err := tk.NewJournal(128)
+	if err != nil {
+		t.Fatal(err)
+	}
+	label := fmt.Sprintf("%s/%s/%d", t.Name(), out.WorkerIdentity, out.Attempt)
+	domain := ""
+	if len(out.Trace) > 0 {
+		domain = out.Trace[0].Process
+	}
 	for _, p := range out.Trace {
-		if p.Generation != g {
-			t.Fatalf("mixed generation: %+v", out.Trace)
+		if _, err = j.Record(tk.Event{Stage: p.Stage, Execution: &tk.Execution{Scope: tk.Scope{Forest: p.Process, Call: label, Generation: p.Generation}}}); err != nil {
+			t.Fatal(err)
 		}
+	}
+	snapshot, err := j.Snapshot()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = tk.CheckPinned(tk.PinnedEvidence{Label: label, Scope: tk.Scope{Forest: domain, Call: label, Generation: g}, Required: []string{"activity", "fx"}, Trace: snapshot}); err != nil {
+		t.Fatal(err)
 	}
 }
 
@@ -34,19 +52,17 @@ func TestOldActivityKeepsVersionWhileNewCallsUseReboundOrReplacedBusiness(t *tes
 	for _, mode := range []string{"replace", "rebind"} {
 		t.Run(mode, func(t *testing.T) {
 			ctx, o := config(t)
-			entered, release := make(chan struct{}), make(chan struct{})
-			var once sync.Once
-			defer once.Do(func() { close(release) })
+			barrier := tk.NewBarrier()
+			defer barrier.Release()
 			var stopped atomic.Int32
 			o.BusinessStopped = func(v string) {
 				if v == "v1" {
 					stopped.Add(1)
 				}
 			}
-			o.BetweenReads = func(_ context.Context, in protocol.Request) error {
+			o.BetweenReads = func(call context.Context, in protocol.Request) error {
 				if in.Payload == "hold" {
-					close(entered)
-					<-release
+					return barrier.Hold(call)
 				}
 				return nil
 			}
@@ -57,7 +73,7 @@ func TestOldActivityKeepsVersionWhileNewCallsUseReboundOrReplacedBusiness(t *tes
 			if e != nil {
 				t.Fatal(e)
 			}
-			defer func() { once.Do(func() { close(release) }); r.Close(ctx) }()
+			defer func() { barrier.Release(); r.Close(ctx) }()
 			if e = r.Enable(ctx); e != nil {
 				t.Fatal(e)
 			}
@@ -69,7 +85,9 @@ func TestOldActivityKeepsVersionWhileNewCallsUseReboundOrReplacedBusiness(t *tes
 			if e != nil {
 				t.Fatal(e)
 			}
-			wait(t, ctx, entered)
+			if err := tk.Await(ctx, barrier.Arrived()); err != nil {
+				t.Fatal(err)
+			}
 			if e = r.Switch(ctx, mode); e != nil {
 				t.Fatal(e)
 			}
@@ -98,7 +116,7 @@ func TestOldActivityKeepsVersionWhileNewCallsUseReboundOrReplacedBusiness(t *tes
 			if p := r.Resources(ctx); !p.FileOpen || !p.PoolResponding {
 				t.Fatal(p)
 			}
-			once.Do(func() { close(release) })
+			barrier.Release()
 			old, e := r.Result(ctx, oldID)
 			if e != nil {
 				t.Fatal(e)

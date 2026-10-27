@@ -3,6 +3,7 @@ package einodemo_test
 import (
 	"context"
 	"errors"
+	tk "github.com/Leeminjing/go-forest/testkit"
 	"sync"
 	"testing"
 
@@ -38,13 +39,10 @@ func TestOldNativeAgentKeepsGenerationAcrossReplaceAndRebind(t *testing.T) {
 			next := old
 			next.ExecutionID += "-next"
 			next.OperationID += "-next"
-			entered, release := make(chan struct{}), make(chan struct{})
-			var once sync.Once
-			var free sync.Once
+			barrier := tk.NewBarrier()
 			o.Hook = func(c context.Context, p protocol.Point) error {
 				if p.Stage == "tool.between" && p.Input == old {
-					once.Do(func() { close(entered) })
-					<-release
+					return barrier.Hold(c)
 				}
 				return nil
 			}
@@ -53,7 +51,7 @@ func TestOldNativeAgentKeepsGenerationAcrossReplaceAndRebind(t *testing.T) {
 				t.Fatal(e)
 			}
 			defer r.Close(ctx)
-			defer free.Do(func() { close(release) })
+			defer barrier.Release()
 			if e = r.Enable(ctx); e != nil {
 				t.Fatal(e)
 			}
@@ -62,10 +60,8 @@ func TestOldNativeAgentKeepsGenerationAcrossReplaceAndRebind(t *testing.T) {
 			if e != nil {
 				t.Fatal(e)
 			}
-			select {
-			case <-entered:
-			case <-ctx.Done():
-				t.Fatal(ctx.Err())
+			if e = tk.Await(ctx, barrier.Arrived()); e != nil {
+				t.Fatal(e)
 			}
 			if e = r.Switch(ctx, mode); e != nil {
 				t.Fatal(e)
@@ -84,7 +80,7 @@ func TestOldNativeAgentKeepsGenerationAcrossReplaceAndRebind(t *testing.T) {
 			if p := r.Resources(); !p.BusinessOpen || p.BusinessCloses != 0 {
 				t.Fatal("old resource prematurely released", p)
 			}
-			free.Do(func() { close(release) })
+			barrier.Release()
 			oldState := paused(t, ctx, r, id)
 			for _, pair := range []struct {
 				s protocol.WorkflowState
@@ -94,10 +90,22 @@ func TestOldNativeAgentKeepsGenerationAcrossReplaceAndRebind(t *testing.T) {
 				if pair.s.Last.Generation != pair.g || pair.s.Last.Receipt.Version != pair.v {
 					t.Fatal(pair.s)
 				}
-				for _, p := range pair.s.Last.Trace {
-					if p.Generation != pair.g {
-						t.Fatal("mixed native scope", p)
+				j, err := tk.NewJournal(128)
+				if err != nil {
+					t.Fatal(err)
+				}
+				call := pair.s.Last.Engine + "/step-0"
+				for _, point := range pair.s.Last.Trace {
+					if _, err = j.Record(tk.Event{Stage: point.Stage, Execution: &tk.Execution{Scope: tk.Scope{Forest: point.Process, Call: call, Generation: point.Generation}}}); err != nil {
+						t.Fatal(err)
 					}
+				}
+				evidence, err := j.Snapshot()
+				if err != nil {
+					t.Fatal(err)
+				}
+				if err = tk.CheckPinned(tk.PinnedEvidence{Label: call, Scope: tk.Scope{Forest: pair.s.Last.Process, Call: call, Generation: pair.g}, Required: []string{"tool.between", "business.apply"}, Trace: evidence}); err != nil {
+					t.Fatal(err)
 				}
 			}
 			out := continueRun(t, ctx, r, id, old)

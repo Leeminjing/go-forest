@@ -12,7 +12,7 @@ VERSIONS = {
     "github.com/Leeminjing/go-forest/adapters/fx": "v0.1.0",
     "github.com/Leeminjing/go-forest/adapters/temporal": "v0.1.0",
     "github.com/Leeminjing/go-forest/adapters/gorm": "v0.1.0",
-    "github.com/Leeminjing/go-forest/examples/cross-adapter": "v0.1.0",
+    "github.com/Leeminjing/go-forest/examples/cross-adapter": "v0.1.1",
 }
 
 

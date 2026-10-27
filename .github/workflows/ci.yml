@@ -10,6 +10,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         module:
           - {path: '.', go: '1.23.x'}
+          - {path: 'testkit', go: '1.23.x'}
           - {path: 'extensions/observe', go: '1.23.x'}
           - {path: 'adapters/gin', go: '1.25.x'}
           - {path: 'extensions/observatory', go: '1.25.x'}
@@ -77,6 +78,17 @@ jobs:
         with:
           python-version: '3.12'
       - run: python scripts/test-cross-adapter.py --race --count 3 --published
+  testkit-published:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/verify-testkit-release.py
   temporal-eino:
     runs-on: ubuntu-latest
     steps:

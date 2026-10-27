@@ -34,6 +34,8 @@ GORM、NATS、Telemetry 各自发布 v0.1.0，Observatory 运行观察为 v0.2.1
 
 [Temporal × Eino 示例](examples/temporal-eino/README.md) 组合原生 Workflow、ADK/Graph、工具 Ref、Signal 与检查点，分别验证封存结果重投、原生 Resume、真实进程交接及 Unknown 核对；见 [验收矩阵](docs/temporal-eino/validation.md) 和 [跨引擎边界对比](docs/temporal-eino/comparison.md)。
 
+[Adapter Conformance TestKit](testkit/README.md) 是仅依赖标准库的独立 Go 1.23 测试模块。两组组合实验共享屏障、版本固定、准入回滚、实际退出及身份校验机制，继续保留各框架原生恢复与真实服务验收；见 [兼容矩阵](docs/testkit/compatibility.md)。
+
 ```sh
 go run ./examples/hello-forest
 go run ./examples/nesting

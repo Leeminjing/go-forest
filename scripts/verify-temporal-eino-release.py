@@ -11,7 +11,7 @@ VERSIONS = {
     "github.com/Leeminjing/go-forest": "v0.3.0",
     "github.com/Leeminjing/go-forest/adapters/eino": "v0.1.0",
     "github.com/Leeminjing/go-forest/adapters/temporal": "v0.1.0",
-    "github.com/Leeminjing/go-forest/examples/temporal-eino": "v0.1.0",
+    "github.com/Leeminjing/go-forest/examples/temporal-eino": "v0.1.1",
 }
 
 

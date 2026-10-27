@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
+	tk "github.com/Leeminjing/go-forest/testkit"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -33,6 +35,12 @@ func TestWorkerChild(t *testing.T) {
 	var c childConfig
 	if e = json.Unmarshal(data, &c); e != nil {
 		t.Fatal(e)
+	}
+	c.Options.Hook = func(ctx context.Context, p protocol.Point) error {
+		if p.Stage == "activity" {
+			return saveAttempt(c.Files.Ready+".attempt.json", ctx, fmt.Sprintf("te.step/%d", p.Step), p.Generation)
+		}
+		return nil
 	}
 	if e = demo.RunWorker(context.Background(), c.Options, c.Files); e != nil {
 		if errors.Is(e, protocol.ErrOwner) {
@@ -181,6 +189,16 @@ func TestKilledWorkerRestoresNativeCheckpointAndOriginalWorkflow(t *testing.T) {
 				}
 			} else if e != nil || out.State != "completed" || out.Receipt != barrier.Evidence.Receipt || out.Text != "finished:v1:oak" {
 				t.Fatal(out, e)
+			}
+			if mode != "unknown" {
+				original := readAttempt(t, a.ready+".attempt.json")
+				delivery := readAttempt(t, b.ready+".attempt.json")
+				receipt := barrier.Evidence.Receipt
+				firstEffect := tk.Effect{Namespace: "eino.artifact.receipt", Operation: receipt.OperationID, InputDigest: receipt.Digest, Receipt: digestEvidence(receipt), ContentDigest: digestEvidence(receipt.Content), OriginProcess: receipt.Process, OriginVersion: receipt.Version, OriginGeneration: receipt.Generation}
+				lastEffect := tk.Effect{Namespace: "eino.artifact.receipt", Operation: out.Receipt.OperationID, InputDigest: out.Receipt.Digest, Receipt: digestEvidence(out.Receipt), ContentDigest: digestEvidence(out.Receipt.Content), OriginProcess: out.Receipt.Process, OriginVersion: out.Receipt.Version, OriginGeneration: out.Receipt.Generation}
+				if err := tk.CheckIdentity(tk.IdentityEvidence{Label: "real Eino crash recovery " + mode, Original: executionWitness(original, aReady.Process, aReady.Worker, original.Generation), Delivery: executionWitness(delivery, out.Delivery.Process, out.Delivery.Worker, out.Delivery.Generation), OriginalEffect: firstEffect, DeliveredEffect: lastEffect, Changed: []tk.IdentityField{tk.Process, tk.Instance}}); err != nil {
+					t.Fatal(err)
+				}
 			}
 			if mode == "completed" && out.Engine != aReady.Agent {
 				t.Fatal("redelivery changed original native identity", out.Engine, aReady.Agent)

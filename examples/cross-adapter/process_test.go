@@ -4,9 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	tk "github.com/Leeminjing/go-forest/testkit"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -34,7 +36,11 @@ func TestWorkerSubprocess(t *testing.T) {
 	if err = json.Unmarshal(data, &cfg); err != nil {
 		t.Fatal(err)
 	}
-	if err = demo.RunWorker(context.Background(), demo.Options{Address: cfg.Address, DSN: cfg.DSN, TaskQueue: cfg.Queue, Directory: cfg.Directory, Version: cfg.Version}, cfg.Files); err != nil {
+	options := demo.Options{Address: cfg.Address, DSN: cfg.DSN, TaskQueue: cfg.Queue, Directory: cfg.Directory, Version: cfg.Version}
+	options.BeforeCommit = func(c context.Context, _ protocol.Request) error {
+		return saveAttempt(cfg.Files.Ready+".attempt.json", c, "cross.apply", 0)
+	}
+	if err = demo.RunWorker(context.Background(), options, cfg.Files); err != nil {
 		t.Fatal(err)
 	}
 }
@@ -174,6 +180,15 @@ func TestKillAfterCommitRecoversOriginalWorkflowWithoutRepeatingEffect(t *testin
 	}
 	if a.Process == b.Process || a.WorkerIdentity == b.WorkerIdentity || a.FxIdentity == b.FxIdentity || a.Generation != 1 || b.Generation != 1 {
 		t.Fatal("physical/global generation identity confused", a, b)
+	}
+	source := readAttempt(t, firstFiles.Ready+".attempt.json")
+	delivery := source
+	delivery.Attempt = strconv.Itoa(int(out.Attempt))
+	delivery.Call = source.Activity + "/" + delivery.Attempt
+	firstEffect := tk.Effect{Namespace: "cross.sql.receipt", Operation: committed.OperationID, InputDigest: committed.Digest, Receipt: digestEvidence(committed), ContentDigest: digestEvidence(committed.Output), OriginProcess: committed.EffectProcess, OriginVersion: committed.EffectVersion, OriginGeneration: committed.EffectGeneration}
+	delivered := tk.Effect{Namespace: "cross.sql.receipt", Operation: out.Receipt.OperationID, InputDigest: out.Receipt.Digest, Receipt: digestEvidence(out.Receipt), ContentDigest: digestEvidence(out.Receipt.Output), OriginProcess: out.Receipt.EffectProcess, OriginVersion: out.Receipt.EffectVersion, OriginGeneration: out.Receipt.EffectGeneration}
+	if err := tk.CheckIdentity(tk.IdentityEvidence{Label: "real SQL crash recovery", Original: executionWitness(source, a.Process, a.WorkerIdentity, committed.EffectGeneration), Delivery: executionWitness(delivery, b.Process, out.WorkerIdentity, out.Trace[0].Generation), OriginalEffect: firstEffect, DeliveredEffect: delivered, Changed: []tk.IdentityField{tk.Process, tk.Instance, tk.Attempt}}); err != nil {
+		t.Fatal(err)
 	}
 	if out.Receipt.EffectProcess != a.Process {
 		t.Fatal("receipt origin overwritten")

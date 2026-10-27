@@ -109,3 +109,8 @@ entry-point skip in the parent is not an integration pass or missing test gate.
 See [acceptance](../../docs/cross-adapter/validation.md),
 [release](../../docs/cross-adapter/release.md), [review](../../docs/cross-adapter/review.md)
 and [observed conformance rules](../../docs/cross-adapter/conformance-notes.md).
+
+The v0.1.1 test suite uses the independent [TestKit](../../testkit/README.md)
+for shared pinned-version, admission/rollback, actual-drain and execution/effect
+identity checks. Production code, native state formats and Adapter versions are
+unchanged. Original real-service, Kill+Wait, recovery and native assertions remain.

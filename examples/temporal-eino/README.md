@@ -98,3 +98,8 @@ an actual Temporal address and fails if it is absent. See the
 [acceptance matrix](../../docs/temporal-eino/validation.md) and
 [comparison](../../docs/temporal-eino/comparison.md). Source process/race evidence,
 review and published-consumer checks are separate delivery gates.
+
+The v0.1.1 test suite uses the independent [TestKit](../../testkit/README.md)
+for shared pinned-version, admission/rollback, actual-drain and execution/effect
+identity checks. Production code, native state formats and Adapter versions are
+unchanged. Original real-service, Kill+Wait, recovery and native assertions remain.
