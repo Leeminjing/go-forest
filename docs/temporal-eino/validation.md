@@ -19,9 +19,11 @@ Eino engine and real Temporal Server, not an SDK mock execution environment.
 | A11 native replay, evidence and host management | Native replay and qualified instance evidence in initial/process cases; TestObservationCannotMutateSealedPauseOrDeliveredNativeResult; TestHostCloseCancelsLocalGetWithoutWaitingForDurableWorkflow; TestActivityCannotSynchronouslyManageItsOwnResources; TestNativeErrorClassificationSurvivesTheActivityBoundary |
 | A12 platform/race/review/published consumer/comparison | Separate final release/review evidence; comparison.md |
 
-Selected Windows real-service tests have passed during implementation. Full
-Windows/Linux, three-round Linux race, independent review and external consumer
-execution remain final gates until their results are recorded in release.md.
+Windows full real-service tests/vet and the native CLI passed. Linux full
+real-service tests/vet, three race rounds and the native CLI passed. Independent
+Spec and Standards re-review closed all findings. Fixed-version consumer and CI
+evidence are recorded separately in release.md; default integration skips do not
+stand in for these actual service runs.
 No skipped parent helper role is counted as a passed service scenario: the
 helper executes in actual child OS processes, instrumented under -race.
 

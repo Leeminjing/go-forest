@@ -28,6 +28,7 @@ Candidate helpers could package controlled barriers, identity comparison, physic
 resource probes and installed-consumer provenance checks. Framework-specific
 fixtures must still provide actual admission, cancellation and Join actions,
 native interruption/error interpretation and side-effect reconciliation policy.
-The current helpers should stay local until both full acceptance/review gates
-close; a later proposal can select a minimal public TestKit surface from these
-witnesses. No unified Transaction, Checkpoint, Agent or Lifecycle wrapper is added.
+The current helpers remain local after this experiment; a later proposal can
+select a minimal public TestKit surface from these witnesses and the completed
+acceptance/review evidence. No unified Transaction, Checkpoint, Agent or Lifecycle
+wrapper is added.
