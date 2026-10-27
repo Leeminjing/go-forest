@@ -26,7 +26,11 @@ def main():
     parser.add_argument("--count", type=int, default=1)
     parser.add_argument("--browser", action="store_true")
     parser.add_argument("--published", action="store_true", help="also verify already published modules and CLI")
+    parser.add_argument("--serve", action="store_true", help="keep only owned test services until a stop marker")
+    parser.add_argument("--directory", help="ignored local evidence directory for --serve")
     args = parser.parse_args()
+    if args.count < 1:
+        raise ValueError("count must be positive")
     suffix = secrets.token_hex(5)
     pg, nats = "forest-test-pg-" + suffix, "forest-test-nats-" + suffix
     started = []
@@ -59,10 +63,23 @@ def main():
                    FOREST_POSTGRES_DSN="host=127.0.0.1 port=" + port(pg, "5432") + " user=postgres password=forest dbname=forest sslmode=disable",
                    FOREST_NATS_URL="nats://127.0.0.1:" + port(nats, "4222"),
                    FOREST_NATS_RESTART_CONTAINER=nats, FOREST_POSTGRES_RESTART_CONTAINER=pg)
+        if args.serve:
+            if not args.directory:
+                raise ValueError("--serve requires an owned --directory")
+            directory = Path(args.directory).resolve()
+            directory.mkdir(parents=True, exist_ok=True)
+            if (directory / "stop").exists():
+                raise ValueError("use a fresh owned directory without a stop marker")
+            configuration = {key: env[key] for key in ("GOWORK", "GIN_MODE", "FOREST_INTEGRATION", "FOREST_POSTGRES_DSN", "FOREST_NATS_URL", "FOREST_NATS_RESTART_CONTAINER", "FOREST_POSTGRES_RESTART_CONTAINER")}
+            (directory / "environment.json").write_text(json.dumps(configuration), encoding="utf-8")
+            print("READY: owned PostgreSQL/JetStream; " + str(directory / "environment.json"), flush=True)
+            while not (directory / "stop").exists():
+                time.sleep(0.2)
+            return
         for module in ["adapters/gorm", "adapters/nats", "extensions/telemetry", "extensions/observatory", "examples/ecosystem"]:
             print("CHECK " + module, flush=True)
             run("go", "vet", "./...", cwd=ROOT / module, env=env)
-            run("go", "test", *( ["-race"] if args.race else [] ), "./...", "-count=" + str(args.count), "-timeout=180s", cwd=ROOT / module, env=env)
+            run("go", "test", *( ["-race"] if args.race else [] ), "./...", "-count=" + str(args.count), "-timeout=" + ("600s" if module == "examples/ecosystem" else "180s"), cwd=ROOT / module, env=env)
         if args.browser:
             run(sys.executable, str(ROOT / "examples/ecosystem/tests/browser_test.py"), env=env)
         if args.published:

@@ -173,7 +173,7 @@ jobs:
           python-version: '3.12'
       - run: pip install -r extensions/observatory/tests/requirements.txt
       - run: python -m playwright install --with-deps chromium
-      - run: python scripts/test-ecosystem.py --race --count 3 --browser
+      - run: python scripts/test-ecosystem.py --race --count 3 --browser --published
       - uses: actions/upload-artifact@v4
         if: always()
         with:

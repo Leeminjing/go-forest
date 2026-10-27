@@ -14,11 +14,15 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 VERSIONS = {
     "github.com/Leeminjing/go-forest": "v0.3.0",
+    "github.com/Leeminjing/go-forest-agent": "v0.2.0",
+    "github.com/Leeminjing/go-forest/adapters/gin": "v0.1.0",
+    "github.com/Leeminjing/go-forest/adapters/grpc": "v0.1.0",
     "github.com/Leeminjing/go-forest/adapters/gorm": "v0.1.0",
     "github.com/Leeminjing/go-forest/adapters/nats": "v0.1.0",
     "github.com/Leeminjing/go-forest/extensions/telemetry": "v0.1.0",
     "github.com/Leeminjing/go-forest/extensions/observatory": "v0.2.1",
-    "github.com/Leeminjing/go-forest/examples/ecosystem": "v0.1.1",
+    "github.com/Leeminjing/go-forest/examples/ecosystem": "v0.1.2",
+    "github.com/Leeminjing/go-forest/testkit": "v0.1.0",
 }
 
 
@@ -36,7 +40,8 @@ def main():
             return subprocess.run(args, cwd=directory, env=env, check=True, text=True, encoding="utf-8", stdout=subprocess.PIPE if capture else None).stdout
 
         run("go", "mod", "init", "external.example/forest-consumer")
-        (directory / "main.go").write_text('package main\nimport "github.com/Leeminjing/go-forest/examples/ecosystem"\nfunc main(){ _ = ecosystem.Options{} }\n', encoding="utf-8")
+        assert run("go", "env", "GOSUMDB", capture=True).strip() != "off", "checksum verification must be enabled"
+        (directory / "main.go").write_text('package main\nimport "github.com/Leeminjing/go-forest/examples/ecosystem"\nimport "github.com/Leeminjing/go-forest/testkit"\nfunc main(){ _ = ecosystem.Options{}; _ = testkit.Scope{} }\n', encoding="utf-8")
         run("go", "get", *(module + "@" + version for module, version in VERSIONS.items()))
         run("go", "mod", "tidy")
         run("go", "mod", "verify")
@@ -52,6 +57,9 @@ def main():
             assert record["Version"] == version, module
             assert not Path(record["Dir"]).is_relative_to(ROOT), module
             print(module + "@" + version + ": downloaded, no replace", flush=True)
+        assert not any("temporal" in module.lower() for module in records), "unexpected Temporal module"
+        dependencies = run("go", "list", "-deps", "-test", "github.com/Leeminjing/go-forest/examples/ecosystem", capture=True)
+        assert not any("temporal" in package.lower() for package in dependencies.splitlines()), "unexpected Temporal test dependency"
         run("go", "vet", "./...")
         run("go", "build", "./...")
         app = "github.com/Leeminjing/go-forest/examples/ecosystem"
