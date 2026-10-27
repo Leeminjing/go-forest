@@ -8,9 +8,9 @@ Core or stable Adapter implementation is changed.
 | --- | --- |
 | A01 barrier order/misuse/cancel | TestBarrierCoordinatesActualWorkAndRejectsReentry; TestBarrierDoesNotInventArrivalAfterCancellationOrEarlyRelease; TestCancellationUnblocksActualBarrierWaitWithoutInventingRelease |
 | A02 concurrent detached complete evidence | TestJournalKeepsConcurrentDetachedEvidenceAndFailsClosedOnLoss; TestInvalidEvidenceCannotRecoverIntoAnApparentlyCompleteTrace |
-| A03 pinned versions and counterexamples | TestPinnedRejectsMixedMissingAndForeignInvocationEvidence; both original Replace/Rebind real integration tests now use CheckPinned |
+| A03 pinned versions and counterexamples | TestPinnedRejectsMixedMissingAndForeignInvocationEvidence; both original Replace/Rebind real tests use actual callback identity, including rejecting swapped traces from two actual tasks at the same generation |
 | A04 candidate interval + positive control | TestAdmissionRequiresFullRollbackAndRealPositiveControl; both TestConformanceCandidateRollbackAndPostCommitAdmission cases |
-| A05 physical drain + ownership | TestDrainRequiresActualExitAndPreservesBorrowedResources; both TestConformanceRealDrainRetainsOriginalHandleAndBorrowedResource cases |
+| A05 physical drain + ownership | TestDrainRequiresActualExitAndPreservesBorrowedResources includes mixed/missing work; both TestConformanceRealDrainRetainsOriginalHandleAndBorrowedResource cases |
 | A06 execution/effect identity | TestIdentitySeparatesNewDeliveryFromOriginalEffect; native test-only attempt witnesses added to both existing crash-recovery tests |
 | A07 Fx/Temporal/GORM | Existing mutation/process tests plus new conformance admission/drain fixtures, real native file and PostgreSQL proofs |
 | A08 Temporal/Eino | Existing mutation/process tests plus new conformance admission/drain fixtures, original native checkpoints/Resume/Unknown proofs |
@@ -19,6 +19,7 @@ Core or stable Adapter implementation is changed.
 | A11 published external consumers | verify-testkit-release.py and the two original real-service published consumer scripts |
 | A12 review/preserved scope | Independent Spec/Standards review and unchanged Core/Adapters/Agent/Focus checks at final delivery |
 
-Targeted native Windows tests have passed for pinned versions, drain, candidate
-rollback and crash recovery. Full platform/race/review/publication gates remain
-separate until their executed results are recorded in release.md.
+Full native Windows tests/vet and targeted reviewed regressions have passed.
+Independent Spec and Standards re-review closed every finding; see review.md.
+Final platform/race and publication gates remain separate until their executed
+results are recorded in release.md.
