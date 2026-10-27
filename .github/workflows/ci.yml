@@ -11,6 +11,7 @@ jobs:
         module:
           - {path: '.', go: '1.23.x'}
           - {path: 'testkit', go: '1.23.x'}
+          - {path: 'extensions/topology', go: '1.23.x'}
           - {path: 'extensions/observe', go: '1.23.x'}
           - {path: 'adapters/gin', go: '1.25.x'}
           - {path: 'extensions/observatory', go: '1.25.x'}
@@ -54,6 +55,8 @@ jobs:
       - if: matrix.module.path == '.'
         run: go run ./examples/composite
       - if: matrix.module.path == 'examples/fx'
+        run: go run ./cmd/demo
+      - if: matrix.module.path == 'extensions/topology'
         run: go run ./cmd/demo
       - uses: actions/upload-artifact@v4
         if: failure() && matrix.module.path == '.'

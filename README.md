@@ -38,6 +38,8 @@ GORM、NATS、Telemetry 各自发布 v0.1.0，Observatory 运行观察为 v0.2.1
 
 [Core 状态机验证](tests/statemachine/README.md) 使用独立参考模型、随机计划、受监管并发脚本和真实资源探针核对动态拓扑；失败记录可原样回放并按同一失败签名缩减。它不修改公开运行机制，也不引入业务框架依赖；见 [验收矩阵](docs/core-state-machine/validation.md)。
 
+[拓扑恢复扩展](extensions/topology/README.md) 独立保存期望结构、变更意图和历史观察，通过原生 Apply 在新森林中恢复，或以新的提交回退结构。未完成意图需要宿主核对；不恢复旧 Go 对象、Scope 或业务副作用；见 [验收记录](docs/topology/validation.md)。
+
 ```sh
 go run ./examples/hello-forest
 go run ./examples/nesting

@@ -1,0 +1,36 @@
+# Topology recovery acceptance
+
+Baseline: `657a783`. Approved Spec/Design remain local and ignored. This delivery
+adds the optional Go 1.23 `extensions/topology` module, depending on released
+Forest `v0.3.0`; protected Core, Adapter, TestKit, Agent and Focus-Go sources remain
+unchanged.
+
+| Gate | Native/public evidence |
+| --- | --- |
+| Capture/format | Manifest preserves IDs, definition identities, parent relationships, Link/BindNest and relative binding order; duplicate keys, unsupported format and detached values checked |
+| Cold restore | Fresh native Forest, one commit, explicit admission, idempotent attempt, new session; missing catalog fails before construction |
+| Phase/resource assembly | Two-level Nest, real Construction/Startup Ref reads, Runtime Many reads in actual provider order, dependency probes during Stop |
+| Persistence | OS lock, CAS, framed checksums and sequence chain, stale external anchor, short/failed writes and Sync uncertainty; no automatic repair |
+| Process recovery | Actual Kill+Wait before intent, during partial/full unacknowledged intent write, after intent Sync, during Build/Start/Ready, after Apply and after observation Sync |
+| Reconciliation | Pending blocks native recreation; host choice recorded separately; damaged original preserved and explicit import creates a different StoreID |
+| Rollback | New native Generation and desired Revision; old callback reads its original real file; new callback gets a new resource; no-op preserves instances |
+| Rejections | Unsafe hot replacement, exclusive file contention, weakened capability, invalid links, missing dependencies and lifecycle cycles retain the old/empty graph |
+| Drain/identity | Cancel is not exit; actual preparing work must return; Close deadline retains both OS lock and referenced native resource until actual join |
+| Business effects | Durable business receipt remains unchanged through a topology rollback |
+| Independent review | Pending after implementation; no approval claimed yet |
+| Final platform/release | Pending final Windows/Linux/race/full CI and fixed-version external consumer |
+
+Local Windows tests and vet have passed during incremental implementation. An
+early Linux Go 1.23 three-round race run passed, including instrumented native
+subprocesses. Final-source acceptance and independent review are still required;
+these interim passes are not the final delivery gate.
+
+The demo actually executes Capture → Seed → Restore → Invoke → Reconfigure →
+Rollback → second Forest Restore, yielding v1/v2/v1/v1 with in-process Generations
+1/2/3 and cold Generation 1 in a new session.
+
+The finite tests cover process faults, not arbitrary hardware power loss. The
+module never restores Go objects or business execution state, cannot atomically
+commit the OS journal with Forest Apply, and cannot revoke an ingress that the
+host leaves outside managed admission. Full-rebuild switching does not promise
+incremental instance retention or universal resource compatibility.
