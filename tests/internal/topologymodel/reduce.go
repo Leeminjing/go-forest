@@ -30,6 +30,9 @@ func Clone(t Trace) Trace {
 
 // Rebase only expands explicit command intent, never actual Forest results.
 func Rebase(t Trace) (Trace, error) {
+	if err := ValidateRaceTail(t.Actions); err != nil {
+		return Trace{}, err
+	}
 	out := Clone(t)
 	model := New(t.Catalog)
 	versions := map[string]uint64{}
@@ -92,8 +95,12 @@ func Rebase(t Trace) (Trace, error) {
 					return Trace{}, err
 				}
 			}
-			next, _ := model.Next(a.Plans[0])
-			model.State = next
+			if a.Kind == "race" {
+				model.State.Generation++
+			} else {
+				next, _ := model.Next(a.Plans[0])
+				model.State = next
+			}
 		}
 		if a.Kind == "cancel-apply" {
 			canceled[a.Actor] = true
@@ -166,10 +173,11 @@ func Reduce(ctx context.Context, input Trace, budget int, sameFailure func(Trace
 		if changed {
 			continue
 		}
-		for i, s := range result.Trace.Steps {
-			for j := range s.Plan.Ops {
+		for i, plan := range allPlans(&result.Trace) {
+			for j := range plan.Ops {
 				candidate := Clone(result.Trace)
-				candidate.Steps[i].Plan.Ops = append(candidate.Steps[i].Plan.Ops[:j], candidate.Steps[i].Plan.Ops[j+1:]...)
+				p := allPlans(&candidate)[i]
+				p.Ops = append(p.Ops[:j], p.Ops[j+1:]...)
 				if try(candidate) {
 					changed = true
 					break
@@ -199,11 +207,11 @@ func Reduce(ctx context.Context, input Trace, budget int, sameFailure func(Trace
 		if changed {
 			continue
 		}
-		for i, s := range result.Trace.Steps {
-			for j, o := range s.Plan.Ops {
+		for i, plan := range allPlans(&result.Trace) {
+			for j, o := range plan.Ops {
 				if o.KeepChildren {
 					candidate := Clone(result.Trace)
-					candidate.Steps[i].Plan.Ops[j].KeepChildren = false
+					allPlans(&candidate)[i].Ops[j].KeepChildren = false
 					if try(candidate) {
 						changed = true
 						break
@@ -225,7 +233,7 @@ func Reduce(ctx context.Context, input Trace, budget int, sameFailure func(Trace
 				sort.Strings(ids)
 				for _, id := range ids {
 					candidate := Clone(result.Trace)
-					candidate.Steps[i].Plan.Ops[j].Definition = id
+					allPlans(&candidate)[i].Ops[j].Definition = id
 					if try(candidate) {
 						changed = true
 						break
@@ -251,4 +259,50 @@ func Reduce(ctx context.Context, input Trace, budget int, sameFailure func(Trace
 		break
 	}
 	return result
+}
+
+func allPlans(trace *Trace) []*Plan {
+	out := make([]*Plan, 0, len(trace.Steps)+len(trace.Actions))
+	for i := range trace.Steps {
+		out = append(out, &trace.Steps[i].Plan)
+	}
+	for i := range trace.Actions {
+		a := &trace.Actions[i]
+		if a.Plan != nil {
+			out = append(out, a.Plan)
+		}
+		for j := range a.Plans {
+			out = append(out, &a.Plans[j])
+		}
+	}
+	return out
+}
+
+// Unqualified winners are not a branch-selection instruction. Completion of
+// existing actors is safe; new dependent work needs prepared-race or a new trace.
+func ValidateRaceTail(actions []Action) error {
+	uncertain := false
+	live := map[string]bool{}
+	for _, a := range actions {
+		if a.Kind == "start-call" {
+			live[a.Actor] = true
+		}
+		if a.Kind == "join-call" {
+			delete(live, a.Actor)
+		}
+		if uncertain {
+			if a.Kind == "wait" && len(live) > 0 {
+				return fmt.Errorf("post-race Wait requires all existing calls joined")
+			}
+			switch a.Kind {
+			case "check", "wait", "probe-held", "cancel", "await-cancel", "release-call", "join-call":
+			default:
+				return fmt.Errorf("branch-dependent action %q after unordered race", a.Kind)
+			}
+		}
+		if a.Kind == "race" {
+			uncertain = true
+		}
+	}
+	return nil
 }

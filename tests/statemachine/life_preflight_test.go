@@ -56,8 +56,12 @@ func validateLifeTrace(trace m.Trace) error {
 			model.State = next
 		case "race", "prepared-race":
 			if len(a.Plans) > 0 {
-				next, _ := model.Next(a.Plans[0])
-				model.State = next
+				if a.Kind == "race" {
+					model.State.Generation++
+				} else {
+					next, _ := model.Next(a.Plans[0])
+					model.State = next
+				}
 			}
 		case "start-apply":
 			plain := append([]m.Definition(nil), trace.Catalog...)

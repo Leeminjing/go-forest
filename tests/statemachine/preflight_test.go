@@ -77,8 +77,12 @@ func validateTrace(trace m.Trace) error {
 					return fmt.Errorf("invalid write contender")
 				}
 			}
-			next, _ := model.Next(a.Plans[0])
-			model.State = next
+			if a.Kind == "race" {
+				model.State.Generation++
+			} else {
+				next, _ := model.Next(a.Plans[0])
+				model.State = next
+			}
 		case "wait-pending":
 			if !pendingOld() {
 				return fmt.Errorf("no retired graph held by a live call")

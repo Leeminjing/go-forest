@@ -253,6 +253,9 @@ func (h *harness) schedule(ctx context.Context, actions []m.Action) (err error) 
 }
 
 func validateActions(actions []m.Action) error {
+	if err := m.ValidateRaceTail(actions); err != nil {
+		return err
+	}
 	type state struct{ entered, released, joined, canceled bool }
 	actors := map[string]state{}
 	closed := false

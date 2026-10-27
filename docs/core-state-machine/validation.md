@@ -18,7 +18,7 @@ is labeled as a tool self-test, never as a Core defect.
 | A09 preparation failure | Build/Start/Readiness barriers, precommit old routing, canceled preparation, entered construction Ref child held beyond cancellation, rollback cleanup |
 | A10 replay/reduction | Exact JSON codec/replay, stable action IDs and version intent, same-fingerprint native shrinking, three replays, invalid schedule/anchor/budget counterexamples |
 | A11 platform/race | Windows default/extended; Go 1.23 Linux default/extended race3; child build/status/log evidence; additive CI job and artifacts |
-| A12 review/scope | Independent Spec/Standards review, original CI gates retained, protected paths and private document/identity audit; final result recorded after completion |
+| A12 review/scope | Independent Spec/Standards review closed both unique tool defects; original CI gates retained, protected paths and private document/identity audit; final result recorded after completion |
 
 The [test README](../../tests/statemachine/README.md) documents commands, finite
 catalog/budgets, native witnesses and reducer limits. Default skipped worker/tool
@@ -45,3 +45,23 @@ them. A candidate's old numerical Generation is not evidence of publication.
 No Core API/ABI change or version tag is planned without a confirmed reproducer
 requiring a minimal fix. Stable Adapters, TestKit, Agent Runtime and Focus-Go
 remain unchanged. Persistence/recovery and new Adapter work are outside scope.
+
+## Review corrections
+
+The [independent review](review.md) found two verification-tool defects: omitted
+operations inside concurrent plans, and speculative first-winner continuation
+(including an unsafe Wait before old calls joined). Both have exact failing
+counterexamples and passing regressions. Focused re-review reports zero remaining
+findings. Final CI rechecks the corrected source, not just the initial prototype.
+
+## Corrected-source local gate
+
+Windows root vet/full tests passed again after the review corrections
+(statemachine 4.537s). Linux Go 1.23 root vet and all-package race3 also passed
+again (statemachine 47.736s on the local bind filesystem). CLI Replay was executed
+against a saved concrete worker input and passed without seed regeneration.
+
+The added `core-state-machine` CI job uses Go 1.23, the extended profile and
+three race rounds, and always retains generated trace/native logs for seven
+days. Existing 49 jobs remain; the expanded workflow contains 50. The actual
+main workflow result is the final delivery gate, independently of local passes.

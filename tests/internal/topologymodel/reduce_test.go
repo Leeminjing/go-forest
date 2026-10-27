@@ -48,3 +48,52 @@ func TestReductionBudgetAndMissingVersionAnchorsFailClosed(t *testing.T) {
 		t.Fatal("budget exhaustion claimed minimal", result)
 	}
 }
+
+func TestReducerVisitsEveryConcurrentPlanLocation(t *testing.T) {
+	for _, race := range []bool{false, true} {
+		p := m.Plan{Ops: []m.Op{{Kind: "add-root", Tree: "target", Definition: "safe"}, {Kind: "add-root", Tree: "noise", Definition: "safe"}}}
+		action := m.Action{ID: "target-action", Kind: "apply", Plan: &p, Base: m.BaseIntent{Kind: "current"}}
+		if race {
+			action = m.Action{ID: "target-action", Kind: "prepared-race", Plans: []m.Plan{p, {Ops: []m.Op{{Kind: "add-root", Tree: "other", Definition: "safe"}}}}, Base: m.BaseIntent{Kind: "current"}}
+		}
+		trace := m.Trace{Format: m.FormatVersion, Catalog: []m.Definition{{ID: "safe", Version: "1", Hot: true, Move: true}}, Actions: []m.Action{action}}
+		predicate := func(t m.Trace) bool {
+			for _, a := range t.Actions {
+				plans := a.Plans
+				if a.Plan != nil {
+					plans = append(append([]m.Plan(nil), plans...), *a.Plan)
+				}
+				for _, p := range plans {
+					for _, o := range p.Ops {
+						if o.Tree == "target" {
+							return true
+						}
+					}
+				}
+			}
+			return false
+		}
+		result := m.Reduce(context.Background(), trace, 200, predicate)
+		if !result.Minimal || len(result.Trace.Actions) != 1 {
+			t.Fatal(result)
+		}
+		got := result.Trace.Actions[0].Plan
+		if race {
+			got = &result.Trace.Actions[0].Plans[0]
+		}
+		if len(got.Ops) != 1 || got.Ops[0].Tree != "target" {
+			t.Fatal("false concurrent minimality", result)
+		}
+	}
+}
+
+func TestReducerSimplifiesConcurrentOperationParameters(t *testing.T) {
+	trace := m.Trace{Format: m.FormatVersion, Catalog: []m.Definition{{ID: "v1", Version: "1", Hot: true}, {ID: "v2", Version: "2", Hot: true}}, Actions: []m.Action{{Kind: "apply", Plan: &m.Plan{Ops: []m.Op{{Kind: "add-root", Tree: "target", Definition: "v2", KeepChildren: true}}}, Base: m.BaseIntent{Kind: "current"}}}}
+	result := m.Reduce(context.Background(), trace, 100, func(t m.Trace) bool {
+		return len(t.Actions) == 1 && t.Actions[0].Plan != nil && len(t.Actions[0].Plan.Ops) == 1 && t.Actions[0].Plan.Ops[0].Tree == "target"
+	})
+	op := result.Trace.Actions[0].Plan.Ops[0]
+	if !result.Minimal || op.KeepChildren || op.Definition != "v1" {
+		t.Fatal(result)
+	}
+}

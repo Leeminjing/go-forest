@@ -70,6 +70,14 @@ native replay. A completed final pass plus three same-failure replays earns
 exhaustion keeps the original and best trace with an incomplete result. Automatic
 reduction has a short budget; the explicit Reduce entry supplies a longer run.
 
+Operation/parameter reduction visits ordinary step plans, action plans and every
+plan in concurrent write races. An unordered race does not select its first
+candidate as winner: new dependent work afterwards is rejected by preflight.
+Only checks and completion of existing calls may follow it. Use `prepared-race`
+when later actions require a known winning branch.
+Post-race Wait is permitted only after those existing calls have actually joined;
+otherwise a valid replacement winner could wait behind an unreachable release.
+
 `TestModelNativeReplayAndReduction` deliberately swaps a detached observation to
 verify the checker/reducer. Its trace has `TestFault=swap-resolution`: a tool
 self-test, not a Core defect. Worker/Replay/Reduce entry tests skip unless
