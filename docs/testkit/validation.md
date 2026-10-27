@@ -19,7 +19,7 @@ Core or stable Adapter implementation is changed.
 | A11 published external consumers | verify-testkit-release.py and the two original real-service published consumer scripts |
 | A12 review/preserved scope | Independent Spec/Standards review and unchanged Core/Adapters/Agent/Focus checks at final delivery |
 
-Full native Windows tests/vet and targeted reviewed regressions have passed.
-Independent Spec and Standards re-review closed every finding; see review.md.
-Final platform/race and publication gates remain separate until their executed
-results are recorded in release.md.
+Full native Windows tests/vet and Linux real-service race3 passed, alongside
+minimum Go 1.23 Linux TestKit vet/race3 and all three fixed-version external
+consumer scripts. Independent Spec/Standards re-review closed every finding.
+See review.md and release.md for separate source, publication and final CI gates.
