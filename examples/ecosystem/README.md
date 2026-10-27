@@ -56,3 +56,15 @@ transactions/cancel, ownership, precommit safety, message version switch, drain,
 server reconnect and real application-process kills at three durability barriers.
 Explicit integration fails on missing services. Offline tests skip service tests
 and are not full acceptance.
+
+The test-only conformance fixtures use published TestKit `v0.1.0` for all four
+checks, without Temporal. They add actual same-message redelivery after
+SQL-commit/pre-Ack Kill+Wait, independent message/business identities and native
+resource probes. Existing production protocols and acceptance tests remain.
+See [acceptance](../../docs/ecosystem-conformance/validation.md) and
+[execution-model comparison](../../docs/ecosystem-conformance/comparison.md).
+For the complete source/race/browser and versioned external CLI gate:
+
+```sh
+python ../../scripts/test-ecosystem.py --race --count 3 --browser --published
+```

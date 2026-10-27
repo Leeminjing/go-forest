@@ -46,7 +46,6 @@ type confBundle struct {
 	handlersMu sync.Mutex
 	handlers   map[string]*confHandler
 	defs       map[string]forest.Definition
-	current    string
 	ready      func(context.Context, *confBundle) error
 }
 type confHandler struct {
@@ -237,7 +236,6 @@ func (b *confBundle) anchor(version, tree string) error {
 		return errorsNewEvidence()
 	}
 	h.identity.Store(b.f.domain + "/" + node.InstanceID)
-	b.current = version
 	return nil
 }
 

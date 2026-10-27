@@ -65,6 +65,11 @@ func TestConformanceMessagesPinReplaceAndRebindWithSameVersionCounterexample(t *
 			if err := tk.CheckPinned(missing); !errors.Is(err, tk.ErrViolation) {
 				t.Fatal("missing stage accepted", err)
 			}
+			empty := f.pinned(t, newSeq, fresh, newer)
+			empty.Trace = tk.Trace{}
+			if err := tk.CheckPinned(empty); !errors.Is(err, tk.ErrViolation) {
+				t.Fatal("empty trace accepted", err)
+			}
 			if p, err := f.bundle.handlers["v1"].file.sample(); err != nil || !p.Usable || p.CloseCount != 0 {
 				t.Fatal("old resource prematurely closed", p, err)
 			}

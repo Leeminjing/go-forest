@@ -55,10 +55,10 @@ func TestConformanceKilledProcessRedeliveryKeepsOriginalSQLEffect(t *testing.T) 
 	if delivery.Observation.Message.StreamSequence != first.Observation.Message.StreamSequence || delivery.Observation.Message.ID != first.Observation.Message.ID || delivery.Observation.Message.Delivery <= first.Observation.Message.Delivery {
 		t.Fatal("fresh publish substituted for native redelivery", first, delivery)
 	}
-	if err = tk.CheckIdentity(tk.IdentityEvidence{Label: "real NATS process exit and original-message redelivery", Original: first.Observation.Execution, Delivery: delivery.Observation.Execution, OriginalEffect: receipt.effect(), DeliveredEffect: delivery.Observation.Receipt.effect(), Changed: []tk.IdentityField{tk.Call, tk.Attempt, tk.Process, tk.Instance}}); err != nil {
+	actual := tk.IdentityEvidence{Label: "real NATS process exit and original-message redelivery", Original: first.Observation.Execution, Delivery: delivery.Observation.Execution, OriginalEffect: receipt.effect(), DeliveredEffect: delivery.Observation.Receipt.effect(), Changed: []tk.IdentityField{tk.Call, tk.Attempt, tk.Process, tk.Instance}}
+	if err = tk.CheckIdentity(actual); err != nil {
 		t.Fatal(err)
 	}
-	actual := tk.IdentityEvidence{Original: first.Observation.Execution, Delivery: delivery.Observation.Execution, OriginalEffect: receipt.effect(), DeliveredEffect: delivery.Observation.Receipt.effect(), Changed: []tk.IdentityField{tk.Call, tk.Attempt, tk.Process, tk.Instance}}
 	for _, field := range []string{"origin", "attempt", "task"} {
 		bad := actual
 		switch field {

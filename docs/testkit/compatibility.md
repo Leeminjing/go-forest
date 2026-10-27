@@ -1,4 +1,14 @@
-# Four reusable checks, two native fixtures
+# Four reusable checks, three native execution models
+
+The original two Temporal combinations below are joined by the existing
+ecosystem's native JetStream callbacks, with no Temporal dependency. It uses
+published TestKit `v0.1.0` unchanged. CheckPinned observes actual delivery scopes;
+CheckAdmission checks the complete disabled candidate/rollback interval;
+CheckDrain distinguishes Quiesce from handler cancellation and actual join;
+CheckIdentity checks original-message redelivery against persisted SQL effect
+provenance after actual Kill+Wait. HTTP/RPC, message and Agent-step scopes stay
+separate. See the [third-mode comparison](../ecosystem-conformance/comparison.md)
+and [acceptance matrix](../ecosystem-conformance/validation.md).
 
 | Common rule | Fx × Temporal × GORM | Temporal × Eino | Semantics kept native |
 | --- | --- | --- | --- |
