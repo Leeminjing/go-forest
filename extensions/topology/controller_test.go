@@ -186,3 +186,75 @@ func TestEmptyRestoreAndNoopPreserveNativeGenerationZero(t *testing.T) {
 		t.Fatalf("empty no-op %+v %v", result, e)
 	}
 }
+
+func TestRestoreRetryKeepsItsOriginalIdentityAfterDesiredChanges(t *testing.T) {
+	ctx := context.Background()
+	var builds atomic.Int32
+	catalog, m := numberCatalog(t, &builds)
+	s, e := Open(t.TempDir(), Options{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	_, e = s.Seed(ctx, Request{ID: "seed", Expected: s.Inspect().Position, Approval: "initial"}, m)
+	if e != nil {
+		t.Fatal(e)
+	}
+	f := forest.New(forest.Options{})
+	c, e := NewController(f, s, catalog)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer c.Close(ctx)
+	request := Request{ID: "original-boot", Expected: s.Inspect().Position, Approval: "recreate original target"}
+	original, e := c.Restore(ctx, request)
+	if e != nil {
+		t.Fatal(e)
+	}
+	next := detached(m)
+	second := m.Trees[0]
+	second.ID = "second"
+	next.Trees = append(next.Trees, second)
+	proposal, e := c.Preview(next)
+	if e != nil {
+		t.Fatal(e)
+	}
+	_, e = c.Reconfigure(ctx, Request{ID: "changed-target", Expected: proposal.Expected, Approval: "different desired topology"}, proposal)
+	if e != nil {
+		t.Fatal(e)
+	}
+	position, before := s.Inspect().Position, builds.Load()
+	retried, e := c.Restore(ctx, request)
+	if e != nil || retried.Generation != original.Generation || retried.Revision != original.Revision || !retried.HistoricalOnly || builds.Load() != before || s.Inspect().Position != position {
+		t.Fatalf("changed desired rewrote request identity: %+v %v", retried, e)
+	}
+	request.Approval = "different payload"
+	if _, e = c.Restore(ctx, request); !errors.Is(e, ErrRequestConflict) {
+		t.Fatalf("different payload reused original identity: %v", e)
+	}
+	directory := filepathDir(t, s)
+	request.Approval = "recreate original target"
+	if e = c.Close(ctx); e != nil {
+		t.Fatal(e)
+	}
+	s, e = Open(directory, Options{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	_, e = s.SelectHistorical(ctx, Request{ID: "cold-choice", Expected: s.Inspect().Position, Approval: "old controller exited; choose the first historical structure"}, original.Revision)
+	if e != nil {
+		t.Fatal(e)
+	}
+	fresh := forest.New(forest.Options{})
+	nextController, e := NewController(fresh, s, catalog)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer nextController.Close(ctx)
+	retried, e = nextController.Restore(ctx, request)
+	if e != nil || !retried.HistoricalOnly || retried.Revision != original.Revision || fresh.Snapshot().Generation != 0 || builds.Load() != before {
+		t.Fatalf("historical selection rewrote original retry: %+v %v", retried, e)
+	}
+	if e = nextController.OpenAdmission(ctx); !errors.Is(e, ErrAdmissionClosed) {
+		t.Fatalf("cached retry admitted new forest: %v", e)
+	}
+}

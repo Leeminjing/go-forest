@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -31,14 +32,17 @@ func (v *fileValue) Read(context.Context) (string, error) {
 	return "", e
 }
 
-func fileCatalog(directory string, stage func(string)) (*Catalog, Manifest, error) {
-	d := forest.Definition{TypeID: "file", Version: "1", HotSwappable: true, Capabilities: []forest.CapabilityDescriptor{forest.Capability[fileCapability]("file", forest.Public)}, Build: func(_ context.Context, env *forest.BuildEnv) (forest.Lifecycle, error) {
+func fileDefinition(directory, version string, stage func(string)) forest.Definition {
+	return forest.Definition{TypeID: "file", Version: version, HotSwappable: true, Capabilities: []forest.CapabilityDescriptor{forest.Capability[fileCapability]("file", forest.Public)}, Build: func(_ context.Context, env *forest.BuildEnv) (forest.Lifecycle, error) {
 		file, e := os.CreateTemp(directory, "physical-")
 		if e != nil {
 			return nil, e
 		}
 		id, e := randomID()
 		if e == nil {
+			if version == "2" {
+				id = "v2:" + id
+			}
 			_, e = file.WriteString(id)
 		}
 		if e == nil {
@@ -68,22 +72,33 @@ func fileCatalog(directory string, stage func(string)) (*Catalog, Manifest, erro
 			return nil
 		}, OnStop: func(context.Context) error { return file.Close() }}, nil
 	}}
+}
+func fileCatalog(directory string, stage func(string)) (*Catalog, Manifest, error) {
+	d := fileDefinition(directory, "1", stage)
 	r := Registration{Definition: d, ContractKey: "file/1", ImplementationDigest: strings.Repeat("c", 64)}
-	catalog, e := NewCatalog([]Registration{r})
+	second := Registration{Definition: fileDefinition(directory, "2", stage), ContractKey: "file/1", ImplementationDigest: strings.Repeat("d", 64)}
+	catalog, e := NewCatalog([]Registration{r, second})
 	m := Empty()
 	m.Trees = append(m.Trees, Tree{ID: "file", Definition: d.Ref(), ContractKey: r.ContractKey, ImplementationDigest: r.ImplementationDigest})
 	return catalog, m, e
 }
 
 type processEvidence struct {
-	Stage      string
-	PID        int
-	SessionID  string
-	Generation uint64
-	Marker     string
-	Race       bool
-	Pending    bool
-	StoreID    string
+	Stage        string
+	PID          int
+	SessionID    string
+	Generation   uint64
+	Marker       string
+	Race         bool
+	Pending      bool
+	StoreID      string
+	Samples      []processSample
+	HistorySize  int
+	ChangedTrees int
+}
+type processSample struct {
+	Version, Marker string
+	Generation      uint64
 }
 
 type crashJournalFile struct {
@@ -163,14 +178,71 @@ func TestTopologyWorker(t *testing.T) {
 	if e = c.OpenAdmission(context.Background()); e != nil {
 		t.Fatal(e)
 	}
-	var marker string
-	e = c.Invoke(context.Background(), func(ctx context.Context) error {
-		return forest.Use[fileCapability](ctx, f, "file", "file", func(v fileCapability) error { var err error; marker, err = v.Read(ctx); return err })
-	})
-	if e != nil {
-		t.Fatal(e)
+	sample := func() processSample {
+		t.Helper()
+		if err := c.OpenAdmission(context.Background()); err != nil {
+			t.Fatal(err)
+		}
+		var out processSample
+		err := c.Invoke(context.Background(), func(ctx context.Context) error {
+			g, err := f.Generation(ctx)
+			if err != nil {
+				return err
+			}
+			snapshot := f.Snapshot()
+			if snapshot.Generation != g {
+				return errors.New("worker mixed observation generations")
+			}
+			out.Generation = g
+			out.Version = snapshot.Trees["file"].Version
+			return forest.Use[fileCapability](ctx, f, "file", "file", func(v fileCapability) error { var err error; out.Marker, err = v.Read(ctx); return err })
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		return out
 	}
-	evidence := processEvidence{Stage: "done", PID: os.Getpid(), SessionID: c.session, Generation: f.Snapshot().Generation, Marker: marker, Race: raceBuild}
+	samples := []processSample{sample()}
+	changedTrees := 0
+	switch os.Getenv("FOREST_TOPOLOGY_SCENARIO") {
+	case "write-history":
+		target := s.Inspect().Desired.Manifest
+		target.Trees[0].Definition.Version = "2"
+		target.Trees[0].ImplementationDigest = strings.Repeat("d", 64)
+		proposal, err := c.Preview(target)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, err = c.Reconfigure(context.Background(), Request{ID: "history-v2", Expected: proposal.Expected, Approval: "create second actual topology revision"}, proposal)
+		if err != nil {
+			t.Fatal(err)
+		}
+		samples = append(samples, sample())
+	case "rollback-history":
+		history := s.History()
+		if len(history) != 2 {
+			t.Fatal("worker expected two persisted revisions")
+		}
+		diff, err := Compare(history[1].Manifest, history[0].Manifest)
+		if err != nil {
+			t.Fatal(err)
+		}
+		changedTrees = len(diff.ChangedTrees)
+		proposal, err := c.PreviewRollback(history[0].ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, err = c.Rollback(context.Background(), Request{ID: "history-back", Expected: proposal.Expected, Approval: "new process, actual historical rollback through native Apply"}, proposal)
+		if err != nil {
+			t.Fatal(err)
+		}
+		samples = append(samples, sample())
+	case "":
+	default:
+		t.Fatal("unknown worker scenario")
+	}
+	last := samples[len(samples)-1]
+	evidence := processEvidence{Stage: "done", PID: os.Getpid(), SessionID: c.session, Generation: last.Generation, Marker: last.Marker, Race: raceBuild, Samples: samples, HistorySize: len(s.History()), ChangedTrees: changedTrees}
 	evidence.StoreID = s.Inspect().Position.StoreID
 	if e = c.Close(context.Background()); e != nil {
 		t.Fatal(e)
@@ -181,6 +253,10 @@ func TestTopologyWorker(t *testing.T) {
 
 func supervise(t *testing.T, directory, stage string, kill bool) processEvidence {
 	t.Helper()
+	return superviseScenario(t, directory, stage, "", kill)
+}
+func superviseScenario(t *testing.T, directory, stage, scenario string, kill bool) processEvidence {
+	t.Helper()
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 	executable, e := os.Executable()
@@ -188,7 +264,7 @@ func supervise(t *testing.T, directory, stage string, kill bool) processEvidence
 		t.Fatal(e)
 	}
 	cmd := exec.CommandContext(ctx, executable, "-test.run=^TestTopologyWorker$", "-test.v")
-	cmd.Env = append(os.Environ(), "FOREST_TOPOLOGY_WORKER="+directory, "FOREST_TOPOLOGY_STAGE="+stage, "GORACE=atexit_sleep_ms=0")
+	cmd.Env = append(os.Environ(), "FOREST_TOPOLOGY_WORKER="+directory, "FOREST_TOPOLOGY_STAGE="+stage, "FOREST_TOPOLOGY_SCENARIO="+scenario, "GORACE=atexit_sleep_ms=0")
 	hideWorker(cmd)
 	stdout, e := cmd.StdoutPipe()
 	if e != nil {
@@ -275,6 +351,57 @@ func supervise(t *testing.T, directory, stage string, kill bool) processEvidence
 		t.Fatal("worker output did not join")
 	}
 	return evidence
+}
+
+func TestPersistedHistoryRestoresComparesAndRollsBackInANewProcess(t *testing.T) {
+	directory := t.TempDir()
+	if e := os.Mkdir(filepath.Join(directory, "resources"), 0700); e != nil {
+		t.Fatal(e)
+	}
+	_, manifest, e := fileCatalog(filepath.Join(directory, "resources"), nil)
+	if e != nil {
+		t.Fatal(e)
+	}
+	s, e := Open(directory, Options{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	_, e = s.Seed(context.Background(), Request{ID: "seed", Expected: s.Inspect().Position, Approval: "initial"}, manifest)
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = s.Close(); e != nil {
+		t.Fatal(e)
+	}
+	writer := superviseScenario(t, directory, "", "write-history", false)
+	if writer.HistorySize != 2 || len(writer.Samples) != 2 || writer.Samples[0].Version != "1" || writer.Samples[1].Version != "2" || writer.Samples[1].Generation != 2 || !strings.HasPrefix(writer.Samples[1].Marker, "v2:") {
+		t.Fatalf("history writer did not really execute versions: %+v", writer)
+	}
+	s, e = Open(directory, Options{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	before := s.History()
+	if e = s.Close(); e != nil {
+		t.Fatal(e)
+	}
+	restarted := superviseScenario(t, directory, "", "rollback-history", false)
+	if restarted.SessionID == writer.SessionID || len(restarted.Samples) != 2 || restarted.Samples[0].Generation != 1 || restarted.Samples[0].Version != "2" || !strings.HasPrefix(restarted.Samples[0].Marker, "v2:") || restarted.Samples[1].Generation != 2 || restarted.Samples[1].Version != "1" || len(restarted.Samples[1].Marker) != 32 || restarted.ChangedTrees != 1 || restarted.HistorySize != 3 {
+		t.Fatalf("new process did not restore/compare/rollback: %+v", restarted)
+	}
+	if restarted.Samples[0].Marker == writer.Samples[1].Marker {
+		t.Fatal("cold restore reused old physical resource")
+	}
+	s, e = Open(directory, Options{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer s.Close()
+	after := s.History()
+	if len(after) != 3 || !reflect.DeepEqual(before, after[:2]) || after[2].ID <= after[1].ID || after[2].Digest != after[0].Digest {
+		t.Fatal("cross-process rollback changed past history or rewound revision")
+	}
+	t.Logf("joined writerPID=%d session=%s; restoredPID=%d session=%s; store=%s samples=%+v immutable-history=%d", writer.PID, writer.SessionID, restarted.PID, restarted.SessionID, restarted.StoreID, restarted.Samples, len(after))
 }
 
 func TestKillWaitRecoveryRequiresExplicitIntentResolution(t *testing.T) {

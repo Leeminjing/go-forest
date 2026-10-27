@@ -101,6 +101,7 @@ type record struct {
 type requestResult struct {
 	digest  string
 	receipt Receipt
+	request Request
 }
 type journalState struct {
 	inspection      Inspection
@@ -432,10 +433,10 @@ func (s *Store) Inspect() Inspection {
 	v := detached(s.state.inspection)
 	v.Incomplete = s.poisoned
 	if v.LastObserved != nil {
-		v.LastObserved.HistoricalOnly = v.LastObserved.SessionID != s.liveSession
+		v.LastObserved.HistoricalOnly = v.LastObserved.SessionID != s.liveSession || s.poisoned || v.Pending != nil
 	}
 	if v.LastResult != nil {
-		v.LastResult.HistoricalOnly = v.LastResult.SessionID != s.liveSession
+		v.LastResult.HistoricalOnly = v.LastResult.Outcome != "observed" || v.LastResult.SessionID != s.liveSession || s.poisoned || v.Pending != nil
 	}
 	return v
 }

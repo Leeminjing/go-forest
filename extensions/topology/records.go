@@ -47,7 +47,7 @@ func (s *journalState) reduce(r record, digest string) error {
 		s.history = append(s.history, revision)
 		s.inspection.Desired = &revision
 		receipt := Receipt{OperationID: r.Request.ID, Mode: "seed", Outcome: "selected", Revision: r.Sequence, ManifestDigest: d, Instances: []InstanceObservation{}}
-		s.requests[r.Request.ID] = requestResult{h, receipt}
+		s.requests[r.Request.ID] = requestResult{digest: h, receipt: receipt, request: *r.Request}
 		s.inspection.LastResult = detached(&receipt)
 	case "session-opened":
 		if r.Request == nil || !validRequest(*r.Request) || r.Request.Expected != pos || s.inspection.Desired == nil || s.inspection.Pending != nil || len(r.SessionID) != 32 || s.sessions[r.SessionID] {
@@ -90,7 +90,7 @@ func (s *journalState) reduce(r record, digest string) error {
 		s.inspection.Desired = &v
 		s.sessionActive = false
 		result := Receipt{OperationID: r.Request.ID, Mode: "select-historical", Outcome: "selected", Revision: r.Sequence, ManifestDigest: d, Instances: []InstanceObservation{}}
-		s.requests[r.Request.ID] = requestResult{h, result}
+		s.requests[r.Request.ID] = requestResult{digest: h, receipt: result, request: *r.Request}
 		s.inspection.LastResult = detached(&result)
 	case "intent":
 		if r.Intent == nil || !s.sessionActive || s.inspection.Pending != nil {
@@ -205,7 +205,7 @@ func (s *journalState) reduce(r record, digest string) error {
 				return ErrCorruptJournal
 			}
 		}
-		s.requests[result.OperationID] = requestResult{s.pendingHash, detached(*result)}
+		s.requests[result.OperationID] = requestResult{digest: s.pendingHash, receipt: detached(*result), request: in.Request}
 		s.inspection.LastResult = detached(result)
 		s.inspection.Pending = nil
 		s.pendingSequence = 0
@@ -228,9 +228,9 @@ func (s *journalState) reduce(r record, digest string) error {
 			s.inspection.Desired = &v
 		}
 		result := Receipt{OperationID: r.Request.ID, Mode: "resolve", Outcome: "selected", Revision: s.inspection.Desired.ID, ManifestDigest: s.inspection.Desired.Digest, Instances: []InstanceObservation{}}
-		s.requests[r.Request.ID] = requestResult{h, result}
+		s.requests[r.Request.ID] = requestResult{digest: h, receipt: result, request: *r.Request}
 		s.inspection.LastResult = detached(&result)
-		s.requests[in.Request.ID] = requestResult{s.pendingHash, Receipt{OperationID: in.Request.ID, SessionID: in.SessionID, Mode: in.Mode, Outcome: "reconciled", Revision: s.inspection.Desired.ID, ManifestDigest: s.inspection.Desired.Digest, Instances: []InstanceObservation{}}}
+		s.requests[in.Request.ID] = requestResult{digest: s.pendingHash, receipt: Receipt{OperationID: in.Request.ID, SessionID: in.SessionID, Mode: in.Mode, Outcome: "reconciled", Revision: s.inspection.Desired.ID, ManifestDigest: s.inspection.Desired.Digest, Instances: []InstanceObservation{}}, request: in.Request}
 		s.inspection.Pending = nil
 		s.pendingSequence = 0
 		s.pendingHash = ""

@@ -174,7 +174,7 @@ func (c *Controller) commit(ctx context.Context, request Request, proposal Propo
 		return Receipt{}, e
 	}
 	if r, ok, e := s.duplicate(request.ID, h); ok {
-		r.HistoricalOnly = r.SessionID != c.session
+		r = c.cachedReceipt(r)
 		return r, recordedError(r, e)
 	}
 	if e = s.checkLocked(proposal.Expected); e != nil {

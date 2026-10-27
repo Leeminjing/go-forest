@@ -134,6 +134,21 @@ func (c *Controller) Restore(ctx context.Context, request Request) (Receipt, err
 	if s.closed || s.poisoned {
 		return Receipt{}, ErrPersistenceUnknown
 	}
+	// Restore's explicit input is Request. Resolve identity from its original
+	// intent, not from whichever desired revision happens to be current now.
+	if original, ok := s.state.requests[request.ID]; ok {
+		if original.receipt.Mode != "restore" || original.request != request {
+			return Receipt{}, ErrRequestConflict
+		}
+		r := c.cachedReceipt(detached(original.receipt))
+		return r, recordedError(r, nil)
+	}
+	if pending := s.state.inspection.Pending; pending != nil && pending.Request.ID == request.ID {
+		if pending.Mode != "restore" || pending.Request != request {
+			return Receipt{}, ErrRequestConflict
+		}
+		return Receipt{}, ErrReconciliationRequired
+	}
 	desired := s.state.inspection.Desired
 	if desired == nil {
 		return Receipt{}, ErrHistoryConflict
@@ -141,10 +156,6 @@ func (c *Controller) Restore(ctx context.Context, request Request) (Receipt, err
 	emptyDigest, _ := Digest(Empty())
 	input := Intent{Request: request, SessionID: c.session, Mode: "restore", Target: detached(desired.Manifest), TargetDigest: desired.Digest, SourceRevision: desired.ID, BaseGeneration: 0, BaseDigest: emptyDigest, Plan: makePlan(Empty(), desired.Manifest, 0, false)}
 	h, _ := intentHash(input)
-	if r, ok, e := s.duplicate(request.ID, h); ok {
-		r.HistoricalOnly = r.SessionID != c.session
-		return r, recordedError(r, e)
-	}
 	if c.closed || c.closing || c.ready {
 		return Receipt{}, ErrHistoryConflict
 	}
@@ -266,6 +277,11 @@ func recordedError(r Receipt, e error) error {
 		return &Error{Stage: "recorded-" + r.FailureStage, OperationID: r.OperationID, TreeID: r.FailureTree, Cause: errors.Join(causes...)}
 	}
 	return nil
+}
+
+func (c *Controller) cachedReceipt(r Receipt) Receipt {
+	r.HistoricalOnly = r.Outcome != "observed" || r.SessionID != c.session || !c.ready || c.closed || c.closing || r.Generation != c.f.Snapshot().Generation
+	return r
 }
 
 func (c *Controller) OpenAdmission(ctx context.Context) error {

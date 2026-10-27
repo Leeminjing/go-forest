@@ -17,13 +17,14 @@ unchanged.
 | Rejections | Unsafe hot replacement, exclusive file contention, weakened capability, invalid links, missing dependencies and lifecycle cycles retain the old/empty graph |
 | Drain/identity | Cancel is not exit; actual preparing work must return; Close deadline retains both OS lock and referenced native resource until actual join |
 | Business effects | Durable business receipt remains unchanged through a topology rollback |
-| Independent review | Pending after implementation; no approval claimed yet |
+| Independent review | One Standards P2 fixed and one Spec P2 test gap closed; focused re-reviews independently pass, zero remaining findings; [review](review.md) |
 | Final platform/release | Pending final Windows/Linux/race/full CI and fixed-version external consumer |
 
-Local Windows tests and vet have passed during incremental implementation. An
-early Linux Go 1.23 three-round race run passed, including instrumented native
-subprocesses. Final-source acceptance and independent review are still required;
-these interim passes are not the final delivery gate.
+Reviewed-source Windows Go 1.23 vet/full tests passed (topology 2.819s). Initial
+Linux Go 1.23 three-round race runs passed, including instrumented subprocesses.
+The combined history test also passed in independent Windows review. Final-source
+Linux/race, full CI and fixed-version consumer remain final gates; interim passes
+are not substituted for those gates.
 
 The demo actually executes Capture → Seed → Restore → Invoke → Reconfigure →
 Rollback → second Forest Restore, yielding v1/v2/v1/v1 with in-process Generations
