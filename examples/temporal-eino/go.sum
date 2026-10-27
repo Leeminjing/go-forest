@@ -4,6 +4,8 @@ github.com/Leeminjing/go-forest/adapters/eino v0.1.0 h1:rHfGWYnUznnZLGcn75TI0vBP
 github.com/Leeminjing/go-forest/adapters/eino v0.1.0/go.mod h1:3PvuQskYNKwxA+KWddVULhpgqqvUfFOVAgQOpXuZGFE=
 github.com/Leeminjing/go-forest/adapters/temporal v0.1.0 h1:Qw4r1WWmfx8l5oMg0nP8FQsAMSsfYD08y7YzL+TqrFs=
 github.com/Leeminjing/go-forest/adapters/temporal v0.1.0/go.mod h1:cy0OuBv+WnSxipK+ZiKL3xJ4Wch0TKqAaPCgdIQ+il4=
+github.com/Leeminjing/go-forest/testkit v0.1.0 h1:cw7bFu3MAVI3yR4/gj6CRoqpAqLKJpbY/lzs5hslT7A=
+github.com/Leeminjing/go-forest/testkit v0.1.0/go.mod h1:svL1ZNXDXlwfIyIJNr+Cryeqt6czSW+8wo+nVx9DFEE=
 github.com/airbrake/gobrake v3.6.1+incompatible/go.mod h1:wM4gu3Cn0W0K7GUuVWnlXZU11AGBXMILnrdOU8Kn00o=
 github.com/bahlo/generic-list-go v0.2.0 h1:5sz/EEAK+ls5wF+NeqDpk5+iNdMDXrh3z3nPnH1Wvgk=
 github.com/bahlo/generic-list-go v0.2.0/go.mod h1:2KvAjgMlE5NNynlg/5iLrrCCZ2+5xWbdbCW3pNTGyYg=
