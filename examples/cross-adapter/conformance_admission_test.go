@@ -12,6 +12,7 @@ import (
 	"github.com/Leeminjing/go-forest/examples/cross-adapter/protocol"
 	"github.com/Leeminjing/go-forest/forest"
 	tk "github.com/Leeminjing/go-forest/testkit"
+	"go.temporal.io/api/serviceerror"
 	"go.temporal.io/sdk/client"
 	"os"
 	"testing"
@@ -59,7 +60,13 @@ func TestConformanceCandidateRollbackAndPostCommitAdmission(t *testing.T) {
 		t.Fatal(err)
 	}
 	f := forest.New(forest.Options{})
-	defer f.Close(ctx)
+	defer func() {
+		cleanup, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+		defer cancel()
+		if err := f.Close(cleanup); err != nil {
+			t.Error("original forest cleanup", err)
+		}
+	}()
 	d := forest.Definition{TypeID: "kit.original", Version: "1", Capabilities: []forest.CapabilityDescriptor{forest.Capability[conformancePing]("ping", forest.Public)}, Build: func(_ context.Context, e *forest.BuildEnv) (forest.Lifecycle, error) {
 		return forest.Hooks{}, forest.Provide(e, "ping", conformanceAlive{})
 	}}
@@ -81,7 +88,15 @@ func TestConformanceCandidateRollbackAndPostCommitAdmission(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer native.TerminateWorkflow(context.Background(), run.GetID(), run.GetRunID(), "owned conformance cleanup")
+	defer func() {
+		cleanup, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+		defer cancel()
+		err := native.TerminateWorkflow(cleanup, run.GetID(), run.GetRunID(), "owned conformance cleanup")
+		var missing *serviceerror.NotFound
+		if err != nil && !errors.As(err, &missing) {
+			t.Error("owned workflow cleanup", err)
+		}
+	}()
 	gate := tk.NewBarrier()
 	defer gate.Release()
 	var candidate *Runtime
@@ -117,14 +132,15 @@ func TestConformanceCandidateRollbackAndPostCommitAdmission(t *testing.T) {
 	if err = record(tk.Event{Stage: "candidate.begin"}); err != nil {
 		t.Fatal(err)
 	}
-	done := make(chan error, 1)
-	go func() { _, err := New(ctx, o); done <- err }()
+	done := make(chan struct{})
+	var buildErr error
+	go func() { _, buildErr = New(ctx, o); close(done) }()
 	defer func() {
 		gate.Release()
-		select {
-		case <-done:
-		case <-time.After(10 * time.Second):
-			t.Error("candidate did not join")
+		cleanup, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+		defer cancel()
+		if err := tk.Await(cleanup, done); err != nil {
+			t.Error("candidate did not join", err)
 		}
 	}()
 	if err = tk.Await(ctx, gate.Arrived()); err != nil {
@@ -144,8 +160,10 @@ func TestConformanceCandidateRollbackAndPostCommitAdmission(t *testing.T) {
 		t.Fatal(err)
 	}
 	gate.Release()
-	err = <-done
-	done <- err
+	if err = tk.Await(ctx, done); err != nil {
+		t.Fatal(err)
+	}
+	err = buildErr
 	if !errors.Is(err, boom) {
 		t.Fatal(err)
 	}
@@ -170,7 +188,13 @@ func TestConformanceCandidateRollbackAndPostCommitAdmission(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer r.Close(ctx)
+	defer func() {
+		cleanup, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+		defer cancel()
+		if err := r.Close(cleanup); err != nil {
+			t.Error("positive control cleanup", err)
+		}
+	}()
 	state, err := tf.Inspect(ctx, r.Forest, "app/worker")
 	if err != nil || state.Phase != "disabled" || state.Started != 0 {
 		t.Fatal(state, err)

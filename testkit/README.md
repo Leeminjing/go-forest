@@ -71,7 +71,11 @@ Post-commit Enable failure remains a separate native test.
 
 Drain uses unique ordered markers: `entered` (resource sample), `notified`,
 `held` (sample while work is still blocked), `released`, `exited`, `joined`
-(sample after actual native join/resource retirement). An SDK Stop return, reader
+(sample after actual native join/resource retirement). DrainEvidence.Execution
+must identify the expected real work; every event must retain that same complete
+identity. Exit evidence from another work item sharing these resources fails.
+Read callback identities from the native context again on exit, rather than
+filling every event with an expected label. An SDK Stop return, reader
 Close, timeout or status enum is not an exit witness. `ProbeError` preserves a
 sampling failure; do not turn an unknown probe error into Usable=false.
 

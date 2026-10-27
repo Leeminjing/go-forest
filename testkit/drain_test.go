@@ -42,16 +42,26 @@ func TestDrainRequiresActualExitAndPreservesBorrowedResources(t *testing.T) {
 	closed[0].Usable = false
 	closed[0].CloseCount = 1
 	events := []tk.Event{{Stage: "entered", Resources: live}, {Stage: "notified"}, {Stage: "held", Resources: live}, {Stage: "released"}, {Stage: "exited"}, {Stage: "joined", Resources: closed}}
-	good := tk.DrainEvidence{Label: "real owned file", Trace: trace(t, events...)}
+	work := tk.Execution{Scope: tk.Scope{Forest: "f", Call: "work-a", Generation: 1}, Task: "task", Step: "step", Attempt: "1", Process: "p", Instance: "i"}
+	for i := range events {
+		events[i].Execution = &work
+	}
+	good := tk.DrainEvidence{Label: "real owned file", Execution: work, Trace: trace(t, events...)}
 	if err = tk.CheckDrain(good); err != nil {
 		t.Fatal(err)
 	}
-	for _, kind := range []string{"early-close", "double-close", "borrowed-close", "no-exit", "probe-error", "counter-rollover"} {
+	for _, kind := range []string{"early-close", "double-close", "borrowed-close", "no-exit", "probe-error", "counter-rollover", "mixed-work", "missing-work"} {
 		t.Run(kind, func(t *testing.T) {
 			bad := good
 			points := good.Trace.Entries()
 			updates := []tk.Event{}
 			for _, p := range points {
+				if kind == "mixed-work" && (p.Stage == "notified" || p.Stage == "exited" || p.Stage == "joined") {
+					p.Execution.Scope.Call = "work-b"
+				}
+				if kind == "missing-work" && p.Stage == "exited" {
+					p.Execution = nil
+				}
 				if kind == "counter-rollover" {
 					if p.Stage == "entered" || p.Stage == "held" {
 						p.Resources[0].CloseCount = ^uint64(0)

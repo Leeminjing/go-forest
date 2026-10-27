@@ -7,7 +7,9 @@ import (
 	tf "github.com/Leeminjing/go-forest/adapters/temporal"
 	"github.com/Leeminjing/go-forest/examples/cross-adapter/protocol"
 	tk "github.com/Leeminjing/go-forest/testkit"
+	"go.temporal.io/sdk/activity"
 	"os"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -52,8 +54,19 @@ func TestConformanceRealDrainRetainsOriginalHandleAndBorrowedResource(t *testing
 		}
 		return []tk.Resource{{ID: "original-native-handle", Ownership: tk.Owned, Usable: open, CloseCount: uint64(closes)}, {ID: "external-file", Ownership: tk.Borrowed, Usable: true}}, nil
 	}
-	record := func(stage string, withResource bool) error {
-		e := tk.Event{Stage: stage}
+	var work tk.Execution
+	identity := func(c context.Context) (tk.Execution, error) {
+		info := activity.GetInfo(c)
+		g, err := r.Forest.Generation(c)
+		if err != nil {
+			return tk.Execution{}, err
+		}
+		task := info.WorkflowExecution.ID + "/" + info.WorkflowExecution.RunID
+		attempt := strconv.Itoa(int(info.Attempt))
+		return tk.Execution{Scope: tk.Scope{Forest: r.Process, Call: task + "/" + info.ActivityID + "/" + attempt, Generation: g}, Task: task, Step: info.ActivityID, Attempt: attempt, Process: r.Process, Instance: r.Forest.Snapshot().Trees["app/worker"].InstanceID}, nil
+	}
+	record := func(stage string, withResource bool, current tk.Execution) error {
+		e := tk.Event{Stage: stage, Execution: &current}
 		if withResource {
 			var err error
 			e.Resources, err = sample()
@@ -66,18 +79,27 @@ func TestConformanceRealDrainRetainsOriginalHandleAndBorrowedResource(t *testing
 	}
 	entered := make(chan struct{})
 	o.Child = func(c context.Context) error {
-		if err := record("entered", true); err != nil {
+		current, err := identity(c)
+		if err != nil {
+			return err
+		}
+		work = current
+		if err := record("entered", true, current); err != nil {
 			return err
 		}
 		close(entered)
 		<-c.Done()
-		if err := record("notified", false); err != nil {
+		if err := record("notified", false, current); err != nil {
 			return err
 		}
 		if err := gate.Hold(context.WithoutCancel(c)); err != nil {
 			return err
 		}
-		return record("exited", false)
+		exit, err := identity(c)
+		if err != nil {
+			return err
+		}
+		return record("exited", false, exit)
 	}
 	r, err = New(ctx, o)
 	if err != nil {
@@ -126,24 +148,24 @@ func TestConformanceRealDrainRetainsOriginalHandleAndBorrowedResource(t *testing
 		case <-time.After(5 * time.Millisecond):
 		}
 	}
-	if err = record("held", true); err != nil {
+	if err = record("held", true, work); err != nil {
 		t.Fatal(err)
 	}
-	if err = record("released", false); err != nil {
+	if err = record("released", false, work); err != nil {
 		t.Fatal(err)
 	}
 	gate.Release()
 	if err = r.Close(ctx); err != nil {
 		t.Fatal(err)
 	}
-	if err = record("joined", true); err != nil {
+	if err = record("joined", true, work); err != nil {
 		t.Fatal(err)
 	}
 	evidence, err := journal.Snapshot()
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err = tk.CheckDrain(tk.DrainEvidence{Label: "Fx child/Temporal actual drain", Trace: evidence}); err != nil {
+	if err = tk.CheckDrain(tk.DrainEvidence{Label: "Fx child/Temporal actual drain", Execution: work, Trace: evidence}); err != nil {
 		t.Fatal(err)
 	}
 }

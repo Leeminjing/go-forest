@@ -39,14 +39,22 @@ func TestOldNativeAgentKeepsGenerationAcrossReplaceAndRebind(t *testing.T) {
 			next := old
 			next.ExecutionID += "-next"
 			next.OperationID += "-next"
+			capture := &pinCapture{}
+			var r *demo.Runtime
+			var e error
 			barrier := tk.NewBarrier()
 			o.Hook = func(c context.Context, p protocol.Point) error {
+				if p.Stage == "tool.between" || p.Stage == "business.apply" {
+					if err := capture.record(c, r, p.Stage); err != nil {
+						return err
+					}
+				}
 				if p.Stage == "tool.between" && p.Input == old {
 					return barrier.Hold(c)
 				}
 				return nil
 			}
-			r, e := demo.New(ctx, o)
+			r, e = demo.New(ctx, o)
 			if e != nil {
 				t.Fatal(e)
 			}
@@ -77,11 +85,35 @@ func TestOldNativeAgentKeepsGenerationAcrossReplaceAndRebind(t *testing.T) {
 				t.Fatal(e)
 			}
 			newState := paused(t, ctx, r, newID)
+			if err := tk.CheckPinned(capture.proof(t, r.Process, newID, newID, 2)); err != nil {
+				t.Fatal(err)
+			}
+			same := next
+			same.ExecutionID += "-same-version"
+			same.OperationID += "-same-version"
+			sameID, err := r.Start(ctx, o.Queue+"-same-version", same)
+			if err != nil {
+				t.Fatal(err)
+			}
+			sameState := paused(t, ctx, r, sameID)
+			if sameState.Last.Generation != 2 || sameState.Last.Receipt.Version != "v2" {
+				t.Fatal(sameState)
+			}
+			if err = tk.CheckPinned(capture.proof(t, r.Process, sameID, sameID, 2)); err != nil {
+				t.Fatal(err)
+			}
+			if err = tk.CheckPinned(capture.proof(t, r.Process, newID, sameID, 2)); !errors.Is(err, tk.ErrViolation) {
+				t.Fatal("other task at same generation accepted", err)
+			}
+
 			if p := r.Resources(); !p.BusinessOpen || p.BusinessCloses != 0 {
 				t.Fatal("old resource prematurely released", p)
 			}
 			barrier.Release()
 			oldState := paused(t, ctx, r, id)
+			if err := tk.CheckPinned(capture.proof(t, r.Process, id, id, 1)); err != nil {
+				t.Fatal(err)
+			}
 			for _, pair := range []struct {
 				s protocol.WorkflowState
 				g uint64
@@ -90,22 +122,10 @@ func TestOldNativeAgentKeepsGenerationAcrossReplaceAndRebind(t *testing.T) {
 				if pair.s.Last.Generation != pair.g || pair.s.Last.Receipt.Version != pair.v {
 					t.Fatal(pair.s)
 				}
-				j, err := tk.NewJournal(128)
-				if err != nil {
-					t.Fatal(err)
-				}
-				call := pair.s.Last.Engine + "/step-0"
 				for _, point := range pair.s.Last.Trace {
-					if _, err = j.Record(tk.Event{Stage: point.Stage, Execution: &tk.Execution{Scope: tk.Scope{Forest: point.Process, Call: call, Generation: point.Generation}}}); err != nil {
-						t.Fatal(err)
+					if point.Generation != pair.g {
+						t.Fatal("mixed native scope", point)
 					}
-				}
-				evidence, err := j.Snapshot()
-				if err != nil {
-					t.Fatal(err)
-				}
-				if err = tk.CheckPinned(tk.PinnedEvidence{Label: call, Scope: tk.Scope{Forest: pair.s.Last.Process, Call: call, Generation: pair.g}, Required: []string{"tool.between", "business.apply"}, Trace: evidence}); err != nil {
-					t.Fatal(err)
 				}
 			}
 			out := continueRun(t, ctx, r, id, old)
@@ -113,6 +133,7 @@ func TestOldNativeAgentKeepsGenerationAcrossReplaceAndRebind(t *testing.T) {
 				t.Fatal("resume mixed effect identity with route", out)
 			}
 			_ = continueRun(t, ctx, r, newID, next)
+			_ = continueRun(t, ctx, r, sameID, same)
 			until(t, ctx, func() bool { return r.Resources().BusinessCloses == 1 })
 		})
 	}

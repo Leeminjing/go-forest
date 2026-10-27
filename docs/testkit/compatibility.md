@@ -18,3 +18,10 @@ native status, receipt/effect, invocation count, replay, checkpoint corruption a
 process recovery assertions are retained. The TestKit does not interpret Temporal
 retry errors, Eino Interrupt/Resume, Fx DI hooks or SQL Commit uncertainty, and
 does not replace the original real-service acceptance with simulated execution.
+
+Pinned evidence is now captured at actual native callbacks, with WorkflowID,
+RunID, ActivityID, Attempt and the original Context's Generation. The expected
+task comes independently from Start. Both fixtures also swap the complete traces
+of two actual tasks at the same generation and require CheckPinned to reject it.
+Drain requires the same complete execution identity at every lifecycle marker;
+another task's exit cannot discharge a still-running task's resource ownership.

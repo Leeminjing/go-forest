@@ -33,13 +33,14 @@ func TestPublishedMechanisms(t *testing.T) {
  record(tk.Event{Stage:"first",Execution:&tk.Execution{Scope:scope}})
  record(tk.Event{Stage:"second",Execution:&tk.Execution{Scope:scope}})
  if err=tk.CheckPinned(tk.PinnedEvidence{Label:"external",Scope:scope,Required:[]string{"first","second"},Trace:snapshot()});err!=nil {t.Fatal(err)}
+ work:=tk.Execution{Scope:scope,Task:"task",Step:"step",Attempt:"1",Process:"process",Instance:"instance"}
  before:=tk.Resource{ID:"original",Ownership:tk.Owned,Usable:true}
  if err=file.Close();err!=nil {t.Fatal(err)}
  if _,err=file.Read(make([]byte,1));!errors.Is(err,os.ErrClosed){t.Fatal(err)}
  after:=before;after.Usable=false;after.CloseCount=1
  j,_=tk.NewJournal(64)
- for _,e:=range []tk.Event{{Stage:"entered",Resources:[]tk.Resource{before}},{Stage:"notified"},{Stage:"held",Resources:[]tk.Resource{before}},{Stage:"released"},{Stage:"exited"},{Stage:"joined",Resources:[]tk.Resource{after}}} {record(e)}
- if err=tk.CheckDrain(tk.DrainEvidence{Label:"external actual file",Trace:snapshot()});err!=nil {t.Fatal(err)}
+ for _,e:=range []tk.Event{{Stage:"entered",Execution:&work,Resources:[]tk.Resource{before}},{Stage:"notified",Execution:&work},{Stage:"held",Execution:&work,Resources:[]tk.Resource{before}},{Stage:"released",Execution:&work},{Stage:"exited",Execution:&work},{Stage:"joined",Execution:&work,Resources:[]tk.Resource{after}}} {record(e)}
+ if err=tk.CheckDrain(tk.DrainEvidence{Label:"external actual file",Execution:work,Trace:snapshot()});err!=nil {t.Fatal(err)}
  j,_=tk.NewJournal(64)
  for _,e:=range []tk.Event{{Stage:"candidate.begin"},{Stage:"candidate.prepared",Resources:[]tk.Resource{before}},{Stage:"original.served"},{Stage:"candidate.end",Resources:[]tk.Resource{after}},{Stage:"commit"},{Stage:"enable"},{Stage:"business.enter"}} {record(e)}
  topology:=tk.Topology{Forest:"owned",Generation:0,Fingerprint:"known fixture routing"}

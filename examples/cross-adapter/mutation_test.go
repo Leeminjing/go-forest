@@ -3,7 +3,6 @@ package crossdemo_test
 import (
 	"context"
 	"errors"
-	"fmt"
 	tk "github.com/Leeminjing/go-forest/testkit"
 	"sync"
 	"sync/atomic"
@@ -25,26 +24,13 @@ func wait(t *testing.T, ctx context.Context, ch <-chan struct{}) {
 }
 func checkGeneration(t *testing.T, out protocol.Result, g uint64) {
 	t.Helper()
-	j, err := tk.NewJournal(128)
-	if err != nil {
-		t.Fatal(err)
-	}
-	label := fmt.Sprintf("%s/%s/%d", t.Name(), out.WorkerIdentity, out.Attempt)
-	domain := ""
-	if len(out.Trace) > 0 {
-		domain = out.Trace[0].Process
+	if len(out.Trace) == 0 {
+		t.Fatal("missing native trace")
 	}
 	for _, p := range out.Trace {
-		if _, err = j.Record(tk.Event{Stage: p.Stage, Execution: &tk.Execution{Scope: tk.Scope{Forest: p.Process, Call: label, Generation: p.Generation}}}); err != nil {
-			t.Fatal(err)
+		if p.Generation != g {
+			t.Fatalf("mixed native generation: %+v", out.Trace)
 		}
-	}
-	snapshot, err := j.Snapshot()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err = tk.CheckPinned(tk.PinnedEvidence{Label: label, Scope: tk.Scope{Forest: domain, Call: label, Generation: g}, Required: []string{"activity", "fx"}, Trace: snapshot}); err != nil {
-		t.Fatal(err)
 	}
 }
 
@@ -52,6 +38,9 @@ func TestOldActivityKeepsVersionWhileNewCallsUseReboundOrReplacedBusiness(t *tes
 	for _, mode := range []string{"replace", "rebind"} {
 		t.Run(mode, func(t *testing.T) {
 			ctx, o := config(t)
+			capture := &pinCapture{}
+			var r *demo.Runtime
+			var e error
 			barrier := tk.NewBarrier()
 			defer barrier.Release()
 			var stopped atomic.Int32
@@ -61,15 +50,19 @@ func TestOldActivityKeepsVersionWhileNewCallsUseReboundOrReplacedBusiness(t *tes
 				}
 			}
 			o.BetweenReads = func(call context.Context, in protocol.Request) error {
+				if err := capture.record(call, r, "before-resolution"); err != nil {
+					return err
+				}
 				if in.Payload == "hold" {
 					return barrier.Hold(call)
 				}
 				return nil
 			}
+			o.AfterCommit = func(call context.Context, _ protocol.Receipt) error { return capture.record(call, r, "after-commit") }
 			if e := demo.Setup(ctx, o.DSN); e != nil {
 				t.Fatal(e)
 			}
-			r, e := demo.New(ctx, o)
+			r, e = demo.New(ctx, o)
 			if e != nil {
 				t.Fatal(e)
 			}
@@ -105,6 +98,26 @@ func TestOldActivityKeepsVersionWhileNewCallsUseReboundOrReplacedBusiness(t *tes
 				t.Fatalf("new=%+v", out)
 			}
 			checkGeneration(t, out, 2)
+			if err := tk.CheckPinned(capture.proof(t, r.Process, id, id, 2)); err != nil {
+				t.Fatal(err)
+			}
+			same := newInput
+			same.OperationID += "-same-version"
+			sameID, err := r.Start(ctx, o.TaskQueue+"-same-version", same, false)
+			if err != nil {
+				t.Fatal(err)
+			}
+			sameOut, err := r.Result(ctx, sameID)
+			if err != nil || sameOut.VersionBefore != "v2" || sameOut.VersionAfter != "v2" {
+				t.Fatal(sameOut, err)
+			}
+			if err = tk.CheckPinned(capture.proof(t, r.Process, sameID, sameID, 2)); err != nil {
+				t.Fatal(err)
+			}
+			if err = tk.CheckPinned(capture.proof(t, r.Process, id, sameID, 2)); !errors.Is(err, tk.ErrViolation) {
+				t.Fatal("other task at same generation accepted", err)
+			}
+
 			for _, id := range []forest.TreeID{"app/fx", "app/worker", "app/client", "database"} {
 				if r.Forest.Snapshot().Trees[id].InstanceID != before.Trees[id].InstanceID {
 					t.Fatal("framework resource reconstructed", id)
@@ -125,6 +138,9 @@ func TestOldActivityKeepsVersionWhileNewCallsUseReboundOrReplacedBusiness(t *tes
 				t.Fatalf("old=%+v", old)
 			}
 			checkGeneration(t, old, 1)
+			if err := tk.CheckPinned(capture.proof(t, r.Process, oldID, oldID, 1)); err != nil {
+				t.Fatal(err)
+			}
 			if e = r.Forest.Wait(ctx); e != nil {
 				t.Fatal(e)
 			}
