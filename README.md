@@ -40,6 +40,8 @@ GORM、NATS、Telemetry 各自发布 v0.1.0，Observatory 运行观察为 v0.2.1
 
 [拓扑恢复扩展](extensions/topology/README.md) 独立保存期望结构、变更意图和历史观察，通过原生 Apply 在新森林中恢复，或以新的提交回退结构。未完成意图需要宿主核对；不恢复旧 Go 对象、Scope 或业务副作用；见 [验收记录](docs/topology/validation.md)。
 
+Topology v0.2 支持增量变更与历史回退：保留无关实例，通过 Replace/Rebind 和可解释的依赖重建范围局部更新，兼容 v0.1 日志与原收据。参见 [Gin × Business × PostgreSQL 示例](examples/topology-incremental/README.md) 及 [v0.2 验收](docs/topology/v0.2/validation.md)。
+
 ```sh
 go run ./examples/hello-forest
 go run ./examples/nesting

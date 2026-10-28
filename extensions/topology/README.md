@@ -5,8 +5,8 @@ them in a fresh Forest, and returning to historical structures through new nativ
 commits. It depends only on the standard library and Forest `v0.3.0`.
 
 ```sh
-go get github.com/Leeminjing/go-forest/extensions/topology@v0.1.0
-go run github.com/Leeminjing/go-forest/extensions/topology/cmd/demo@v0.1.0
+go get github.com/Leeminjing/go-forest/extensions/topology@v0.2.0
+go run github.com/Leeminjing/go-forest/extensions/topology/cmd/demo@v0.2.0
 ```
 
 The demo captures a root and nested provider, restores their `BindNest`, changes
@@ -158,4 +158,5 @@ Kill+Wait, including interrupted record writes, preparation, publication and
 terminal observation. Subprocesses inherit the race build. They retain each
 framework's lifecycle semantics; no stable Adapter, TestKit or Core source change
 is required. Acceptance evidence is recorded in
-[validation](../../docs/topology/validation.md).
+[v0.2 validation](../../docs/topology/v0.2/validation.md); the original
+[v0.1 acceptance](../../docs/topology/validation.md) remains historical evidence.
