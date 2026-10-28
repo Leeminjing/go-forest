@@ -15,7 +15,8 @@ def method_identity(directory, metadata, command):
     # Core identity is intentionally different. Everything else that controls
     # compilation, dimensions or timing must match before comparing samples.
     model = next((line.split(":", 1)[1].strip() for line in metadata.get("/proc/cpuinfo", "").splitlines() if line.startswith("model name")), metadata.get("cpu"))
-    identity = dict(harness=metadata['harness'], go_version=(directory/'go-version.txt').read_text(encoding='utf-8').strip(),
+    build_flags = sorted(line.strip() for line in (directory/'binary-info.txt').read_text(encoding='utf-8').splitlines() if line.startswith('\tbuild\t') and not line.startswith('\tbuild\tvcs'))
+    identity = dict(build_flags=build_flags, harness=metadata['harness'], go_version=(directory/'go-version.txt').read_text(encoding='utf-8').strip(),
                     platform=metadata['platform'], machine=metadata['machine'], cpu_model=model,
                     cpu_count=metadata['cpu_count'], cpu_quota=metadata.get('/sys/fs/cgroup/cpu.max'),
                     memory_quota=metadata.get('/sys/fs/cgroup/memory.max'), environment=metadata['environment'],

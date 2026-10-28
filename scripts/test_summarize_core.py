@@ -12,6 +12,7 @@ class PairingTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='forest-analysis-') as directory:
             path=Path(directory)
             (path/'go-version.txt').write_text('go version go1.23.12 linux/amd64\n')
+            (path/'binary-info.txt').write_text('\tbuild\tGOARCH=amd64\n\tbuild\tGOAMD64=v1\n')
             meta=dict(harness='frozen',platform='Linux',machine='x86_64',cpu_count=8,environment={'GOMAXPROCS':'4'})
             command=dict(dimensions={'FOREST_PERF_E':'1'},command=['go','test','-benchmem','-timeout=10m'])
             original=module.method_identity(path,meta,command)[0]
@@ -20,6 +21,8 @@ class PairingTests(unittest.TestCase):
             for changed in [{**meta,'environment':{'GOMAXPROCS':'8'}},{**meta,'/sys/fs/cgroup/cpu.max':'400000 100000'},{**meta,'harness':'another'}]:
                 self.assertNotEqual(original,module.method_identity(path,changed,command)[0])
             self.assertNotEqual(original,module.method_identity(path,meta,{**command,'dimensions':{'FOREST_PERF_E':'10001'}})[0])
+            (path/'binary-info.txt').write_text('\tbuild\tGOARCH=amd64\n\tbuild\tGOAMD64=v3\n')
+            self.assertNotEqual(original,module.method_identity(path,meta,command)[0])
             (path/'go-version.txt').write_text('go version go1.26.5 linux/amd64\n')
             self.assertNotEqual(original,module.method_identity(path,meta,command)[0])
 

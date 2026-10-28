@@ -350,6 +350,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - run: python scripts/test_summarize_core.py
       - run: python scripts/measure-core.py --core-ref HEAD --harness-ref HEAD --label ci-smoke --matrix smoke --count 1 --benchtime 10ms
       - uses: actions/upload-artifact@v4
         if: always()
