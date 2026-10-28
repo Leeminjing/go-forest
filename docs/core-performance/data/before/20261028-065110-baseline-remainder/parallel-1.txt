@@ -1,0 +1,46 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Leeminjing/go-forest/tests/performance
+cpu: 13th Gen Intel(R) Core(TM) i9-13900HX
+BenchmarkCalls/RefParallel           	    3655	    291965 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel           	    4034	    276304 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel           	    4159	    312551 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel           	    3818	    292147 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel           	    4537	    278477 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel           	    4782	    285892 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel           	    3970	    330302 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel           	    3801	    321172 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel           	    3948	    278049 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel           	    4268	    274406 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-2         	    8101	    155031 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-2         	    7040	    204585 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-2         	    6336	    168252 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-2         	    7099	    227449 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-2         	    6494	    174814 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-2         	    7095	    194339 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-2         	    6697	    193580 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-2         	    6777	    161524 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-2         	    7104	    167712 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-2         	    7644	    159642 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-4         	   15769	     88578 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-4         	   16948	     82109 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-4         	   16224	     75326 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-4         	   16800	     70679 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-4         	   17482	     69389 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-4         	   17232	     74378 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-4         	   12715	     88818 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-4         	   16389	     81292 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-4         	   15751	     84176 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-4         	   13066	     83996 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-8         	   16735	     71680 ns/op	   98489 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-8         	   16935	     69908 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-8         	   17604	     67346 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-8         	   16158	     77778 ns/op	   98489 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-8         	   20187	     69637 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-8         	   18031	     74127 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-8         	   18918	     56166 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-8         	   20031	     61069 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-8         	   19034	     58796 ns/op	   98488 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel-8         	   19441	     65753 ns/op	   98488 B/op	       5 allocs/op
+PASS
+ok  	github.com/Leeminjing/go-forest/tests/performance	71.530s

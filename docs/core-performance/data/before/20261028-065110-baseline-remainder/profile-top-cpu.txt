@@ -1,0 +1,71 @@
+File: perf
+Type: cpu
+Time: Oct 28, 2026 at 6:52am (UTC)
+Duration: 2.41s, Total samples = 8.38s (347.72%)
+Showing nodes accounting for 8.01s, 95.58% of 8.38s total
+Dropped 69 nodes (cum <= 0.04s)
+      flat  flat%   sum%        cum   cum%
+     1.10s 13.13% 13.13%      1.10s 13.13%  github.com/Leeminjing/go-forest/forest.sortedBindings.func1
+     1.01s 12.05% 25.18%      4.22s 50.36%  sort.partition_func
+     0.79s  9.43% 34.61%      1.24s 14.80%  runtime.findObject
+     0.75s  8.95% 43.56%      0.75s  8.95%  runtime.memmove
+     0.48s  5.73% 49.28%      2.05s 24.46%  runtime.bulkBarrierPreWrite
+     0.40s  4.77% 54.06%      0.40s  4.77%  runtime.spanOf (inline)
+     0.39s  4.65% 58.71%      1.16s 13.84%  runtime.scanobject
+     0.37s  4.42% 63.13%      3.46s 41.29%  internal/reflectlite.Swapper.func9
+     0.33s  3.94% 67.06%      1.37s 16.35%  runtime.wbBufFlush1
+     0.30s  3.58% 70.64%      0.30s  3.58%  runtime.duffcopy
+     0.28s  3.34% 73.99%      1.58s 18.85%  sort.insertionSort_func
+     0.25s  2.98% 76.97%      2.90s 34.61%  runtime.typedmemmove
+     0.18s  2.15% 79.12%      3.08s 36.75%  internal/reflectlite.typedmemmove
+     0.18s  2.15% 81.26%      0.30s  3.58%  runtime.mapiternext
+     0.16s  1.91% 83.17%      0.16s  1.91%  runtime.memclrNoHeapPointers
+     0.14s  1.67% 84.84%      0.14s  1.67%  runtime.(*mspan).divideByElemSize (inline)
+     0.13s  1.55% 86.40%      0.19s  2.27%  runtime.(*gcBits).bitp (inline)
+     0.13s  1.55% 87.95%      0.13s  1.55%  runtime.typePointers.next
+     0.11s  1.31% 89.26%      0.11s  1.31%  runtime.(*mspan).base (inline)
+     0.08s  0.95% 90.21%      0.08s  0.95%  runtime.typePointers.nextFast (inline)
+     0.07s  0.84% 91.05%      0.11s  1.31%  sort.median_func
+     0.06s  0.72% 91.77%      7.29s 86.99%  github.com/Leeminjing/go-forest/forest.Ref[go.shape.interface { Value  }].use.func1
+     0.06s  0.72% 92.48%      7.14s 85.20%  github.com/Leeminjing/go-forest/forest.sortedBindings
+     0.05s   0.6% 93.08%      0.05s   0.6%  runtime.(*mspan).heapBitsSmallForAddr
+     0.05s   0.6% 93.68%      0.05s   0.6%  runtime.addb (inline)
+     0.05s   0.6% 94.27%      0.25s  2.98%  runtime.greyobject
+     0.02s  0.24% 94.51%      2.66s 31.74%  runtime.systemstack
+     0.02s  0.24% 94.75%      0.13s  1.55%  sort.choosePivot_func
+     0.02s  0.24% 94.99%      5.96s 71.12%  sort.pdqsort_func
+     0.01s  0.12% 95.11%      0.06s  0.72%  runtime.(*gcBits).bytep (inline)
+     0.01s  0.12% 95.23%      0.20s  2.39%  runtime.(*mspan).markBitsForIndex (inline)
+     0.01s  0.12% 95.35%      1.34s 15.99%  runtime.(*wbBuf).get2 (inline)
+     0.01s  0.12% 95.47%      0.99s 11.81%  runtime.gcDrain
+     0.01s  0.12% 95.58%      0.17s  2.03%  runtime.memclrNoHeapPointersChunked
+         0     0% 95.58%      7.29s 86.99%  github.com/Leeminjing/go-forest/forest.(*Forest).Invoke
+         0     0% 95.58%      7.29s 86.99%  github.com/Leeminjing/go-forest/forest.Ref[go.shape.interface { Value  }].Use
+         0     0% 95.58%      7.29s 86.99%  github.com/Leeminjing/go-forest/forest.Ref[go.shape.interface { Value  }].use
+         0     0% 95.58%      7.29s 86.99%  github.com/Leeminjing/go-forest/forest.Use[go.shape.interface { Read  }]
+         0     0% 95.58%      7.29s 86.99%  github.com/Leeminjing/go-forest/forest.Use[go.shape.interface { Read  }].func1
+         0     0% 95.58%      7.29s 86.99%  github.com/Leeminjing/go-forest/tests/performance.(*Fixture).Pinned (inline)
+         0     0% 95.58%      7.29s 86.99%  github.com/Leeminjing/go-forest/tests/performance.(*reader).Read
+         0     0% 95.58%      7.29s 86.99%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3
+         0     0% 95.58%      7.29s 86.99%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.1
+         0     0% 95.58%      7.29s 86.99%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.1.(*Fixture).Pinned.1
+         0     0% 95.58%      7.29s 86.99%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.1.(*Fixture).Pinned.1.1
+         0     0% 95.58%      7.29s 86.99%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.4
+         0     0% 95.58%      2.90s 34.61%  reflect.typedmemmove (inline)
+         0     0% 95.58%      0.14s  1.67%  runtime.(*mspan).objIndex (inline)
+         0     0% 95.58%      0.05s   0.6%  runtime.(*mspan).typePointersOfUnchecked
+         0     0% 95.58%      0.23s  2.74%  runtime.deductAssistCredit
+         0     0% 95.58%      0.23s  2.74%  runtime.gcAssistAlloc
+         0     0% 95.58%      0.23s  2.74%  runtime.gcAssistAlloc.func1
+         0     0% 95.58%      0.23s  2.74%  runtime.gcAssistAlloc1
+         0     0% 95.58%      1.01s 12.05%  runtime.gcBgMarkWorker
+         0     0% 95.58%      0.99s 11.81%  runtime.gcBgMarkWorker.func2
+         0     0% 95.58%      0.98s 11.69%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0% 95.58%      0.23s  2.74%  runtime.gcDrainN
+         0     0% 95.58%      0.43s  5.13%  runtime.makeslice
+         0     0% 95.58%      0.45s  5.37%  runtime.mallocgc
+         0     0% 95.58%      1.37s 16.35%  runtime.wbBufFlush
+         0     0% 95.58%      1.37s 16.35%  runtime.wbBufFlush.func1
+         0     0% 95.58%      0.16s  1.91%  runtime.wbMove
+         0     0% 95.58%      5.98s 71.36%  sort.Slice
+         0     0% 95.58%      0.08s  0.95%  sort.medianAdjacent_func (inline)

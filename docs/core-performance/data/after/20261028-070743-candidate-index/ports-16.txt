@@ -1,0 +1,16 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Leeminjing/go-forest/tests/performance
+cpu: 13th Gen Intel(R) Core(TM) i9-13900HX
+BenchmarkCalls/RefPinned         	 8334249	       125.6 ns/op	      16 B/op	       1 allocs/op
+BenchmarkCalls/RefPinned         	 9633020	       121.2 ns/op	      16 B/op	       1 allocs/op
+BenchmarkCalls/RefPinned         	 9948692	       147.3 ns/op	      16 B/op	       1 allocs/op
+BenchmarkCalls/RefPinned         	 5868631	       176.2 ns/op	      16 B/op	       1 allocs/op
+BenchmarkCalls/RefPinned         	 7426604	       158.7 ns/op	      16 B/op	       1 allocs/op
+BenchmarkCalls/RefPinned         	 7553995	       160.1 ns/op	      16 B/op	       1 allocs/op
+BenchmarkCalls/RefPinned         	 7187775	       214.7 ns/op	      16 B/op	       1 allocs/op
+BenchmarkCalls/RefPinned         	 8228606	       127.3 ns/op	      16 B/op	       1 allocs/op
+BenchmarkCalls/RefPinned         	10118178	       136.2 ns/op	      16 B/op	       1 allocs/op
+BenchmarkCalls/RefPinned         	 8296124	       152.8 ns/op	      16 B/op	       1 allocs/op
+PASS
+ok  	github.com/Leeminjing/go-forest/tests/performance	14.006s

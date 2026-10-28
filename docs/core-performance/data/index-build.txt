@@ -1,0 +1,46 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Leeminjing/go-forest/forest
+cpu: 13th Gen Intel(R) Core(TM) i9-13900HX
+BenchmarkRouteIndexBuild/16         	  334017	      3557 ns/op	      2016 route-slice-B	    6232 B/op	      14 allocs/op
+BenchmarkRouteIndexBuild/16         	  338496	      3837 ns/op	      2016 route-slice-B	    6232 B/op	      14 allocs/op
+BenchmarkRouteIndexBuild/16         	  338205	      3617 ns/op	      2016 route-slice-B	    6232 B/op	      14 allocs/op
+BenchmarkRouteIndexBuild/16         	  306130	      3513 ns/op	      2016 route-slice-B	    6232 B/op	      14 allocs/op
+BenchmarkRouteIndexBuild/16         	  330045	      3536 ns/op	      2016 route-slice-B	    6232 B/op	      14 allocs/op
+BenchmarkRouteIndexBuild/16         	  351348	      3553 ns/op	      2016 route-slice-B	    6232 B/op	      14 allocs/op
+BenchmarkRouteIndexBuild/16         	  329751	      3493 ns/op	      2016 route-slice-B	    6232 B/op	      14 allocs/op
+BenchmarkRouteIndexBuild/16         	  334166	      3566 ns/op	      2016 route-slice-B	    6232 B/op	      14 allocs/op
+BenchmarkRouteIndexBuild/16         	  344256	      3615 ns/op	      2016 route-slice-B	    6232 B/op	      14 allocs/op
+BenchmarkRouteIndexBuild/16         	  322632	      4119 ns/op	      2016 route-slice-B	    6232 B/op	      14 allocs/op
+BenchmarkRouteIndexBuild/256        	   13821	     92051 ns/op	     33024 route-slice-B	   93144 B/op	      18 allocs/op
+BenchmarkRouteIndexBuild/256        	   16422	     77137 ns/op	     33024 route-slice-B	   93144 B/op	      18 allocs/op
+BenchmarkRouteIndexBuild/256        	   15790	     82632 ns/op	     33024 route-slice-B	   93144 B/op	      18 allocs/op
+BenchmarkRouteIndexBuild/256        	   15979	     73986 ns/op	     33024 route-slice-B	   93144 B/op	      18 allocs/op
+BenchmarkRouteIndexBuild/256        	   16015	     72682 ns/op	     33024 route-slice-B	   93144 B/op	      18 allocs/op
+BenchmarkRouteIndexBuild/256        	   16484	     73035 ns/op	     33024 route-slice-B	   93144 B/op	      18 allocs/op
+BenchmarkRouteIndexBuild/256        	   16180	     75133 ns/op	     33024 route-slice-B	   93144 B/op	      18 allocs/op
+BenchmarkRouteIndexBuild/256        	   16096	     76474 ns/op	     33024 route-slice-B	   93144 B/op	      18 allocs/op
+BenchmarkRouteIndexBuild/256        	   15814	     96402 ns/op	     33024 route-slice-B	   93144 B/op	      18 allocs/op
+BenchmarkRouteIndexBuild/256        	   10000	    101580 ns/op	     33024 route-slice-B	   93144 B/op	      18 allocs/op
+BenchmarkRouteIndexBuild/2048       	    1479	    870814 ns/op	    213216 route-slice-B	  803160 B/op	      22 allocs/op
+BenchmarkRouteIndexBuild/2048       	    1226	    898847 ns/op	    213216 route-slice-B	  803160 B/op	      22 allocs/op
+BenchmarkRouteIndexBuild/2048       	    1344	   1051948 ns/op	    213216 route-slice-B	  803160 B/op	      22 allocs/op
+BenchmarkRouteIndexBuild/2048       	    1252	   1008776 ns/op	    213216 route-slice-B	  803160 B/op	      22 allocs/op
+BenchmarkRouteIndexBuild/2048       	    1352	    807347 ns/op	    213216 route-slice-B	  803160 B/op	      22 allocs/op
+BenchmarkRouteIndexBuild/2048       	    1507	    842014 ns/op	    213216 route-slice-B	  803160 B/op	      22 allocs/op
+BenchmarkRouteIndexBuild/2048       	    1358	    820257 ns/op	    213216 route-slice-B	  803160 B/op	      22 allocs/op
+BenchmarkRouteIndexBuild/2048       	    1534	    838978 ns/op	    213216 route-slice-B	  803160 B/op	      22 allocs/op
+BenchmarkRouteIndexBuild/2048       	    1485	    919399 ns/op	    213216 route-slice-B	  803160 B/op	      22 allocs/op
+BenchmarkRouteIndexBuild/2048       	    1436	    903230 ns/op	    213216 route-slice-B	  803160 B/op	      22 allocs/op
+BenchmarkRouteIndexBuild/10001      	     235	   4949636 ns/op	   1048800 route-slice-B	 5235032 B/op	      28 allocs/op
+BenchmarkRouteIndexBuild/10001      	     278	   3709744 ns/op	   1048800 route-slice-B	 5235032 B/op	      28 allocs/op
+BenchmarkRouteIndexBuild/10001      	     238	   4941429 ns/op	   1048800 route-slice-B	 5235032 B/op	      28 allocs/op
+BenchmarkRouteIndexBuild/10001      	     237	   4347626 ns/op	   1048800 route-slice-B	 5235032 B/op	      28 allocs/op
+BenchmarkRouteIndexBuild/10001      	     225	   5024535 ns/op	   1048800 route-slice-B	 5235032 B/op	      28 allocs/op
+BenchmarkRouteIndexBuild/10001      	     250	   4345558 ns/op	   1048800 route-slice-B	 5235032 B/op	      28 allocs/op
+BenchmarkRouteIndexBuild/10001      	     291	   4089097 ns/op	   1048800 route-slice-B	 5235032 B/op	      28 allocs/op
+BenchmarkRouteIndexBuild/10001      	     288	   6479972 ns/op	   1048800 route-slice-B	 5235032 B/op	      28 allocs/op
+BenchmarkRouteIndexBuild/10001      	     271	   4513083 ns/op	   1048800 route-slice-B	 5235032 B/op	      28 allocs/op
+BenchmarkRouteIndexBuild/10001      	     271	   5262008 ns/op	   1048800 route-slice-B	 5235032 B/op	      28 allocs/op
+PASS
+ok  	github.com/Leeminjing/go-forest/forest	65.513s

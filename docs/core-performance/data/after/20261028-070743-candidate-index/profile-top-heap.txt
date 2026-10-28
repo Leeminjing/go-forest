@@ -1,0 +1,26 @@
+File: perf
+Type: inuse_space
+Time: Oct 28, 2026 at 7:08am (UTC)
+Showing nodes accounting for 14275.69kB, 100% of 14275.69kB total
+      flat  flat%   sum%        cum   cum%
+ 4548.98kB 31.87% 31.87%  5573.04kB 39.04%  github.com/Leeminjing/go-forest/forest.(*Forest).applyOperation
+ 3328.47kB 23.32% 55.18% 13763.66kB 96.41%  github.com/Leeminjing/go-forest/forest.(*Forest).Apply
+ 3072.84kB 21.53% 76.71%  3072.84kB 21.53%  github.com/Leeminjing/go-forest/forest.Provide
+ 1184.27kB  8.30% 85.00%  1184.27kB  8.30%  github.com/Leeminjing/go-forest/forest.(*graph).indexRoutes
+ 1024.06kB  7.17% 92.18%  1024.06kB  7.17%  github.com/Leeminjing/go-forest/forest.cloneDefinition (inline)
+  605.03kB  4.24% 96.41%   605.03kB  4.24%  github.com/Leeminjing/go-forest/forest.(*eventLog).publish
+  512.03kB  3.59%   100%   512.03kB  3.59%  flag.(*FlagSet).Var
+         0     0%   100%   512.03kB  3.59%  flag.(*FlagSet).Int
+         0     0%   100%   512.03kB  3.59%  flag.(*FlagSet).IntVar (inline)
+         0     0%   100%   512.03kB  3.59%  flag.Int (inline)
+         0     0%   100%   605.03kB  4.24%  github.com/Leeminjing/go-forest/forest.(*Forest).Apply.func1
+         0     0%   100%  3072.84kB 21.53%  github.com/Leeminjing/go-forest/forest.(*Forest).Apply.func3
+         0     0%   100%  3072.84kB 21.53%  github.com/Leeminjing/go-forest/forest.(*Forest).Apply.func3.1
+         0     0%   100%  1024.06kB  7.17%  github.com/Leeminjing/go-forest/forest.(*Forest).definition
+         0     0%   100%  3072.84kB 21.53%  github.com/Leeminjing/go-forest/forest.(*Forest).withCandidate
+         0     0%   100%  3072.84kB 21.53%  github.com/Leeminjing/go-forest/forest.safeLifecycle
+         0     0%   100% 13763.66kB 96.41%  github.com/Leeminjing/go-forest/tests/performance.New
+         0     0%   100%  3072.84kB 21.53%  github.com/Leeminjing/go-forest/tests/performance.New.func1
+         0     0%   100% 13763.66kB 96.41%  github.com/Leeminjing/go-forest/tests/performance.Profile
+         0     0%   100% 14275.69kB   100%  main.main
+         0     0%   100% 14275.69kB   100%  runtime.main

@@ -1,0 +1,147 @@
+[
+  {
+    "name": "configure",
+    "command": [
+      "go",
+      "mod",
+      "edit",
+      "-replace=github.com/Leeminjing/go-forest=/src/.scratch/core-performance/20261028-062801-baseline-complete/core"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "tidy",
+    "command": [
+      "go",
+      "mod",
+      "tidy"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "modules",
+    "command": [
+      "go",
+      "list",
+      "-m",
+      "-json",
+      "all"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "go-version",
+    "command": [
+      "go",
+      "version"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "vet",
+    "command": [
+      "go",
+      "vet",
+      "./..."
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "fixture-tests",
+    "command": [
+      "go",
+      "test",
+      "./...",
+      "-count=1"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "build-info",
+    "command": [
+      "go",
+      "build",
+      "-pgo=off",
+      "-o",
+      "/src/.scratch/core-performance/20261028-062801-baseline-complete/perf",
+      "./cmd/perf"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "binary-info",
+    "command": [
+      "go",
+      "version",
+      "-m",
+      "/src/.scratch/core-performance/20261028-062801-baseline-complete/perf"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "small",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "large",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/(DirectInterface|InvokeEnter|InvokeNested|RefPinned|RefEnter|RefParallel)$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10004",
+      "FOREST_PERF_E": "10001",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "controller-large",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/Controller",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10004",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  }
+]

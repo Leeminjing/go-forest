@@ -1,0 +1,213 @@
+[
+  {
+    "name": "configure",
+    "command": [
+      "go",
+      "mod",
+      "edit",
+      "-replace=github.com/Leeminjing/go-forest=/src/.scratch/core-performance/20261028-072725-baseline-rss/core"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "tidy",
+    "command": [
+      "go",
+      "mod",
+      "tidy"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "modules",
+    "command": [
+      "go",
+      "list",
+      "-m",
+      "-json",
+      "all"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "go-version",
+    "command": [
+      "go",
+      "version"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "vet",
+    "command": [
+      "go",
+      "vet",
+      "./..."
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "fixture-tests",
+    "command": [
+      "go",
+      "test",
+      "./...",
+      "-count=1"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "build-info",
+    "command": [
+      "go",
+      "build",
+      "-pgo=off",
+      "-o",
+      "/src/.scratch/core-performance/20261028-072725-baseline-rss/perf",
+      "./cmd/perf"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "binary-info",
+    "command": [
+      "go",
+      "version",
+      "-m",
+      "/src/.scratch/core-performance/20261028-072725-baseline-rss/perf"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-replace-0",
+    "command": [
+      "/src/.scratch/core-performance/20261028-072725-baseline-rss/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=0",
+      "-kind=replace",
+      "-out=/src/.scratch/core-performance/20261028-072725-baseline-rss/longevity-replace-0.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-replace-1",
+    "command": [
+      "/src/.scratch/core-performance/20261028-072725-baseline-rss/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=1",
+      "-kind=replace",
+      "-out=/src/.scratch/core-performance/20261028-072725-baseline-rss/longevity-replace-1.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-replace-8",
+    "command": [
+      "/src/.scratch/core-performance/20261028-072725-baseline-rss/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=8",
+      "-kind=replace",
+      "-out=/src/.scratch/core-performance/20261028-072725-baseline-rss/longevity-replace-8.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-rebind-0",
+    "command": [
+      "/src/.scratch/core-performance/20261028-072725-baseline-rss/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=0",
+      "-kind=rebind",
+      "-out=/src/.scratch/core-performance/20261028-072725-baseline-rss/longevity-rebind-0.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-rebind-1",
+    "command": [
+      "/src/.scratch/core-performance/20261028-072725-baseline-rss/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=1",
+      "-kind=rebind",
+      "-out=/src/.scratch/core-performance/20261028-072725-baseline-rss/longevity-rebind-1.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-rebind-8",
+    "command": [
+      "/src/.scratch/core-performance/20261028-072725-baseline-rss/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=8",
+      "-kind=rebind",
+      "-out=/src/.scratch/core-performance/20261028-072725-baseline-rss/longevity-rebind-8.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-mixed-0",
+    "command": [
+      "/src/.scratch/core-performance/20261028-072725-baseline-rss/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=0",
+      "-kind=mixed",
+      "-out=/src/.scratch/core-performance/20261028-072725-baseline-rss/longevity-mixed-0.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-mixed-1",
+    "command": [
+      "/src/.scratch/core-performance/20261028-072725-baseline-rss/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=1",
+      "-kind=mixed",
+      "-out=/src/.scratch/core-performance/20261028-072725-baseline-rss/longevity-mixed-1.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-mixed-8",
+    "command": [
+      "/src/.scratch/core-performance/20261028-072725-baseline-rss/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=8",
+      "-kind=mixed",
+      "-out=/src/.scratch/core-performance/20261028-072725-baseline-rss/longevity-mixed-8.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-extended-replace",
+    "command": [
+      "/src/.scratch/core-performance/20261028-072725-baseline-rss/perf",
+      "-mode=longevity",
+      "-rounds=10000",
+      "-holds=8",
+      "-kind=replace",
+      "-out=/src/.scratch/core-performance/20261028-072725-baseline-rss/longevity-extended-replace.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-extended-rebind",
+    "command": [
+      "/src/.scratch/core-performance/20261028-072725-baseline-rss/perf",
+      "-mode=longevity",
+      "-rounds=10000",
+      "-holds=8",
+      "-kind=rebind",
+      "-out=/src/.scratch/core-performance/20261028-072725-baseline-rss/longevity-extended-rebind.pprof"
+    ],
+    "dimensions": {}
+  }
+]

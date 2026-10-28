@@ -1,0 +1,20 @@
+File: perf
+Type: delay
+Time: Oct 28, 2026 at 7:09am (UTC)
+Showing nodes accounting for 4360.12ms, 100% of 4360.12ms total
+      flat  flat%   sum%        cum   cum%
+ 2359.83ms 54.12% 54.12%  2359.83ms 54.12%  sync.(*Mutex).Lock (inline)
+ 2000.29ms 45.88%   100%  2000.29ms 45.88%  sync.(*WaitGroup).Wait
+         0     0%   100%  2359.83ms 54.12%  github.com/Leeminjing/go-forest/forest.(*Forest).Invoke
+         0     0%   100%  2359.83ms 54.12%  github.com/Leeminjing/go-forest/forest.(*Forest).Invoke-fm
+         0     0%   100%  1297.82ms 29.77%  github.com/Leeminjing/go-forest/forest.(*Forest).Invoke.deferwrap2
+         0     0%   100%    71.95ms  1.65%  github.com/Leeminjing/go-forest/forest.(*Forest).notify
+         0     0%   100%  1297.82ms 29.77%  github.com/Leeminjing/go-forest/forest.(*invocation).leave
+         0     0%   100%  2359.83ms 54.12%  github.com/Leeminjing/go-forest/tests/performance.(*Fixture).Call
+         0     0%   100%  2000.29ms 45.88%  github.com/Leeminjing/go-forest/tests/performance.Profile
+         0     0%   100%  2359.83ms 54.12%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3
+         0     0%   100%  2359.83ms 54.12%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.2
+         0     0%   100%  2359.83ms 54.12%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.4
+         0     0%   100%  2000.29ms 45.88%  main.main
+         0     0%   100%  2000.29ms 45.88%  runtime.main
+         0     0%   100%  2287.88ms 52.47%  sync.(*RWMutex).Lock

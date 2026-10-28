@@ -1,0 +1,78 @@
+File: perf
+Type: cpu
+Time: Oct 28, 2026 at 7:08am (UTC)
+Duration: 2.10s, Total samples = 7.91s (376.11%)
+Showing nodes accounting for 7.37s, 93.17% of 7.91s total
+Dropped 64 nodes (cum <= 0.04s)
+      flat  flat%   sum%        cum   cum%
+     0.73s  9.23%  9.23%      0.73s  9.23%  sync.(*Mutex).Unlock (partial-inline)
+     0.61s  7.71% 16.94%      4.48s 56.64%  github.com/Leeminjing/go-forest/forest.Ref[go.shape.interface { Value  }].use.func1
+     0.52s  6.57% 23.51%      0.94s 11.88%  github.com/Leeminjing/go-forest/forest.(*invocation).acquire
+     0.52s  6.57% 30.09%      7.19s 90.90%  github.com/Leeminjing/go-forest/forest.Ref[go.shape.interface { Value  }].use
+     0.52s  6.57% 36.66%      1.10s 13.91%  runtime.mapaccess1_faststr
+     0.46s  5.82% 42.48%      0.80s 10.11%  github.com/Leeminjing/go-forest/forest.(*invocation).leave
+     0.43s  5.44% 47.91%      1.14s 14.41%  runtime.mallocgc
+     0.41s  5.18% 53.10%      0.41s  5.18%  aeshashbody
+     0.24s  3.03% 56.13%      1.44s 18.20%  runtime.growslice
+     0.20s  2.53% 58.66%      0.34s  4.30%  context.(*valueCtx).Value
+     0.20s  2.53% 61.19%      0.28s  3.54%  runtime.(*itabTableType).find
+     0.19s  2.40% 63.59%      7.45s 94.18%  github.com/Leeminjing/go-forest/forest.(*Forest).Invoke
+     0.19s  2.40% 65.99%      0.40s  5.06%  runtime.scanobject
+     0.16s  2.02% 68.02%      0.45s  5.69%  runtime.mapaccess1
+     0.15s  1.90% 69.91%      0.15s  1.90%  runtime.duffcopy
+     0.12s  1.52% 71.43%      0.12s  1.52%  runtime.nextFreeFast (inline)
+     0.11s  1.39% 72.82%      0.12s  1.52%  github.com/Leeminjing/go-forest/forest.portOf (inline)
+     0.11s  1.39% 74.21%      7.39s 93.43%  github.com/Leeminjing/go-forest/tests/performance.(*reader).Read
+     0.11s  1.39% 75.60%      0.11s  1.39%  runtime.add (inline)
+     0.10s  1.26% 76.86%      0.10s  1.26%  runtime.memequal
+     0.09s  1.14% 78.00%      7.28s 92.04%  github.com/Leeminjing/go-forest/forest.Ref[go.shape.interface { Value  }].Use
+     0.09s  1.14% 79.14%      0.09s  1.14%  memeqbody
+     0.09s  1.14% 80.28%      0.09s  1.14%  runtime.(*mspan).base (inline)
+     0.09s  1.14% 81.42%      0.10s  1.26%  runtime.deductAssistCredit
+     0.08s  1.01% 82.43%      0.15s  1.90%  runtime.(*mspan).writeHeapBitsSmall
+     0.08s  1.01% 83.44%      0.08s  1.01%  runtime.isDirectIface (inline)
+     0.07s  0.88% 84.32%      0.07s  0.88%  runtime.strhash
+     0.07s  0.88% 85.21%      0.14s  1.77%  type:.eq.github.com/Leeminjing/go-forest/forest.routeKey
+     0.06s  0.76% 85.97%      0.07s  0.88%  github.com/Leeminjing/go-forest/tests/performance.(*reader).Read.func2
+     0.06s  0.76% 86.73%      0.14s  1.77%  runtime.efaceeq
+     0.06s  0.76% 87.48%      0.08s  1.01%  runtime.findObject
+     0.05s  0.63% 88.12%      0.05s  0.63%  runtime.bucketShift (inline)
+     0.05s  0.63% 88.75%      0.05s  0.63%  runtime.roundupsize (inline)
+     0.05s  0.63% 89.38%      0.05s  0.63%  runtime.typePointers.nextFast (inline)
+     0.04s  0.51% 89.89%      0.11s  1.39%  github.com/Leeminjing/go-forest/forest.Ref[go.shape.interface { Value  }].Use.func1
+     0.04s  0.51% 90.39%      0.04s  0.51%  runtime.(*bmap).keys (inline)
+     0.03s  0.38% 90.77%      0.31s  3.92%  runtime.getitab
+     0.03s  0.38% 91.15%      0.18s  2.28%  runtime.heapSetType
+     0.02s  0.25% 91.40%      7.45s 94.18%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.4
+     0.02s  0.25% 91.66%      0.04s  0.51%  runtime.(*mheap).allocSpan
+     0.02s  0.25% 91.91%      0.05s  0.63%  runtime.(*mspan).heapBits
+     0.02s  0.25% 92.16%      0.33s  4.17%  runtime.assertE2I2
+     0.02s  0.25% 92.41%      0.07s  0.88%  runtime.sweepone
+     0.02s  0.25% 92.67%      0.13s  1.64%  type:.hash.github.com/Leeminjing/go-forest/forest.routeKey
+     0.01s  0.13% 92.79%      0.05s  0.63%  gcWriteBarrier
+     0.01s  0.13% 92.92%      0.10s  1.26%  runtime.(*mcache).refill
+     0.01s  0.13% 93.05%      0.04s  0.51%  runtime.deductSweepCredit
+     0.01s  0.13% 93.17%      0.04s  0.51%  runtime.wbBufFlush1
+         0     0% 93.17%      7.45s 94.18%  github.com/Leeminjing/go-forest/forest.Use[go.shape.interface { Read  }]
+         0     0% 93.17%      7.45s 94.18%  github.com/Leeminjing/go-forest/forest.Use[go.shape.interface { Read  }].func1
+         0     0% 93.17%      7.45s 94.18%  github.com/Leeminjing/go-forest/tests/performance.(*Fixture).Pinned (inline)
+         0     0% 93.17%      7.45s 94.18%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3
+         0     0% 93.17%      7.45s 94.18%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.1
+         0     0% 93.17%      7.45s 94.18%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.1.(*Fixture).Pinned.1
+         0     0% 93.17%      7.45s 94.18%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.1.(*Fixture).Pinned.1.1
+         0     0% 93.17%      0.12s  1.52%  runtime.(*mcache).nextFree
+         0     0% 93.17%      0.08s  1.01%  runtime.(*mcentral).cacheSpan
+         0     0% 93.17%      0.04s  0.51%  runtime.(*mcentral).grow
+         0     0% 93.17%      0.04s  0.51%  runtime.(*mheap).alloc
+         0     0% 93.17%      0.04s  0.51%  runtime.(*mheap).alloc.func1
+         0     0% 93.17%      0.04s  0.51%  runtime.bgsweep
+         0     0% 93.17%      0.05s  0.63%  runtime.bucketMask (inline)
+         0     0% 93.17%      0.42s  5.31%  runtime.gcBgMarkWorker
+         0     0% 93.17%      0.41s  5.18%  runtime.gcBgMarkWorker.func2
+         0     0% 93.17%      0.41s  5.18%  runtime.gcDrain
+         0     0% 93.17%      0.41s  5.18%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0% 93.17%      0.05s  0.63%  runtime.gcmarknewobject
+         0     0% 93.17%      0.07s  0.88%  runtime.greyobject
+         0     0% 93.17%      0.52s  6.57%  runtime.systemstack
+         0     0% 93.17%      0.04s  0.51%  runtime.wbBufFlush
+         0     0% 93.17%      0.04s  0.51%  runtime.wbBufFlush.func1

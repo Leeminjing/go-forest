@@ -1,0 +1,6 @@
+File: perf
+Type: delay
+Time: Oct 28, 2026 at 6:52am (UTC)
+Showing nodes accounting for 24.64ms, 100% of 24.64ms total
+      flat  flat%   sum%        cum   cum%
+   24.64ms   100%   100%    24.64ms   100%  runtime._LostContendedRuntimeLock

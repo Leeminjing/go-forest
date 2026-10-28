@@ -1,0 +1,21 @@
+/src/.scratch/core-performance/20261028-065110-baseline-remainder/perf: go1.23.12
+	path	github.com/Leeminjing/go-forest/tests/performance/cmd/perf
+	mod	github.com/Leeminjing/go-forest/tests/performance	(devel)	
+	dep	github.com/Leeminjing/go-forest	v0.3.0
+	=>	/src/.scratch/core-performance/20261028-065110-baseline-remainder/core	(devel)	
+	
+	dep	github.com/Leeminjing/go-forest/extensions/topology	v0.2.0	h1:fzICZiJrJ25T1QrmSliLidknKxAj/LvOUnZbTeN9/jU=
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	CGO_ENABLED=1
+	build	CGO_CFLAGS=
+	build	CGO_CPPFLAGS=
+	build	CGO_CXXFLAGS=
+	build	CGO_LDFLAGS=
+	build	GOARCH=amd64
+	build	GOOS=linux
+	build	GOAMD64=v1
+	build	vcs=git
+	build	vcs.revision=900b824444396ec503ecc64751093530df654f02
+	build	vcs.time=2026-10-28T06:51:10Z
+	build	vcs.modified=true

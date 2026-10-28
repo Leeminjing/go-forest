@@ -1,0 +1,24 @@
+[
+  {
+    "case": "unrelated-1",
+    "benchmark": "BenchmarkCalls/RefPinned",
+    "before_samples": 6,
+    "after_samples": 6,
+    "before_ns": 268.65,
+    "after_ns": 104.65,
+    "ratio_after_before": 0.3895402940629072,
+    "before_bytes": 136.0,
+    "after_bytes": 16.0
+  },
+  {
+    "case": "unrelated-2048",
+    "benchmark": "BenchmarkCalls/RefPinned",
+    "before_samples": 6,
+    "after_samples": 6,
+    "before_ns": 598390.0,
+    "after_ns": 103.15,
+    "ratio_after_before": 0.0001723792175671385,
+    "before_bytes": 196792.0,
+    "after_bytes": 16.0
+  }
+]

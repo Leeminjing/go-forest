@@ -1,0 +1,10 @@
+File: perf
+Type: delay
+Time: Oct 28, 2026 at 6:52am (UTC)
+Showing nodes accounting for 2.30s, 100% of 2.30s total
+Dropped 10 nodes (cum <= 0.01s)
+      flat  flat%   sum%        cum   cum%
+     2.30s   100%   100%      2.30s   100%  sync.(*WaitGroup).Wait
+         0     0%   100%      2.30s   100%  github.com/Leeminjing/go-forest/tests/performance.Profile
+         0     0%   100%      2.30s   100%  main.main
+         0     0%   100%      2.30s   100%  runtime.main

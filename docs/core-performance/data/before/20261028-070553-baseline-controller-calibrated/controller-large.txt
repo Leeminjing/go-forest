@@ -1,0 +1,26 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Leeminjing/go-forest/tests/performance
+cpu: 13th Gen Intel(R) Core(TM) i9-13900HX
+BenchmarkCalls/ControllerEnter         	 2945191	       381.8 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/ControllerEnter         	 3072369	       383.1 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/ControllerEnter         	 3031015	       400.3 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/ControllerEnter         	 3045715	       383.4 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/ControllerEnter         	 3007989	       396.8 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/ControllerEnter         	 2935712	       417.6 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/ControllerEnter         	 2876673	       415.7 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/ControllerEnter         	 2856684	       399.9 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/ControllerEnter         	 2939292	       395.6 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/ControllerEnter         	 3044614	       395.0 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/ControllerRef           	   20252	     57326 ns/op	   27800 B/op	      12 allocs/op
+BenchmarkCalls/ControllerRef           	   21198	     58240 ns/op	   27800 B/op	      12 allocs/op
+BenchmarkCalls/ControllerRef           	   20799	     59467 ns/op	   27800 B/op	      12 allocs/op
+BenchmarkCalls/ControllerRef           	   20300	     63519 ns/op	   27800 B/op	      12 allocs/op
+BenchmarkCalls/ControllerRef           	   18930	     59354 ns/op	   27800 B/op	      12 allocs/op
+BenchmarkCalls/ControllerRef           	   20930	     58499 ns/op	   27800 B/op	      12 allocs/op
+BenchmarkCalls/ControllerRef           	   20522	     58285 ns/op	   27800 B/op	      12 allocs/op
+BenchmarkCalls/ControllerRef           	   20692	     59155 ns/op	   27800 B/op	      12 allocs/op
+BenchmarkCalls/ControllerRef           	   20600	     58712 ns/op	   27800 B/op	      12 allocs/op
+BenchmarkCalls/ControllerRef           	   20577	     57804 ns/op	   27800 B/op	      12 allocs/op
+PASS
+ok  	github.com/Leeminjing/go-forest/tests/performance	40.653s

@@ -1,0 +1,30 @@
+{
+	"Path": "github.com/Leeminjing/go-forest/tests/performance",
+	"Main": true,
+	"Dir": "/src/.scratch/core-performance/20261028-072837-candidate-rss/harness",
+	"GoMod": "/src/.scratch/core-performance/20261028-072837-candidate-rss/harness/go.mod",
+	"GoVersion": "1.23"
+}
+{
+	"Path": "github.com/Leeminjing/go-forest",
+	"Version": "v0.3.0",
+	"Replace": {
+		"Path": "/src/.scratch/core-performance/20261028-072837-candidate-rss/core",
+		"Dir": "/src/.scratch/core-performance/20261028-072837-candidate-rss/core",
+		"GoMod": "/src/.scratch/core-performance/20261028-072837-candidate-rss/core/go.mod",
+		"GoVersion": "1.23"
+	},
+	"Dir": "/src/.scratch/core-performance/20261028-072837-candidate-rss/core",
+	"GoMod": "/src/.scratch/core-performance/20261028-072837-candidate-rss/core/go.mod",
+	"GoVersion": "1.23"
+}
+{
+	"Path": "github.com/Leeminjing/go-forest/extensions/topology",
+	"Version": "v0.2.0",
+	"Time": "2026-10-28T03:51:29Z",
+	"Dir": "/go/pkg/mod/github.com/!leeminjing/go-forest/extensions/topology@v0.2.0",
+	"GoMod": "/go/pkg/mod/cache/download/github.com/!leeminjing/go-forest/extensions/topology/@v/v0.2.0.mod",
+	"GoVersion": "1.23",
+	"Sum": "h1:fzICZiJrJ25T1QrmSliLidknKxAj/LvOUnZbTeN9/jU=",
+	"GoModSum": "h1:cWqjCMIOeqpYO9byGaVg0n1V1S0F4hSNsQRIxkPDljU="
+}

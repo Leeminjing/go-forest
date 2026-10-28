@@ -1,0 +1,155 @@
+[
+  {
+    "run": "20261028-153102-candidate-d6c522",
+    "revision": "dca628b96e96fb628997f94dfd56ac4d62fc67b6",
+    "arguments": {
+      "ref": "dca628b",
+      "module": [
+        ".",
+        "tests/performance",
+        "extensions/topology",
+        "testkit"
+      ],
+      "race": false,
+      "services": null,
+      "browser": false,
+      "count": 1
+    },
+    "proof": {
+      "go_invocations": 20,
+      "verified_Core_invocations": 12,
+      "proven_no_Core_invocations": 4
+    },
+    "complete": true
+  },
+  {
+    "run": "20261028-153219-candidate-aa2e15",
+    "revision": "dca628b96e96fb628997f94dfd56ac4d62fc67b6",
+    "arguments": {
+      "ref": "dca628b",
+      "module": null,
+      "race": false,
+      "services": "ecosystem",
+      "browser": true,
+      "count": 1
+    },
+    "proof": {
+      "go_invocations": 11,
+      "verified_Core_invocations": 11,
+      "proven_no_Core_invocations": 0
+    },
+    "complete": true
+  },
+  {
+    "run": "20261028-153507-candidate-34e6d9",
+    "revision": "dca628b96e96fb628997f94dfd56ac4d62fc67b6",
+    "arguments": {
+      "ref": "dca628b",
+      "module": null,
+      "race": false,
+      "services": "topology",
+      "browser": false,
+      "count": 1
+    },
+    "proof": {
+      "go_invocations": 4,
+      "verified_Core_invocations": 2,
+      "proven_no_Core_invocations": 0
+    },
+    "complete": true
+  },
+  {
+    "run": "20261028-153527-candidate-d72dfc",
+    "revision": "dca628b96e96fb628997f94dfd56ac4d62fc67b6",
+    "arguments": {
+      "ref": "dca628b",
+      "module": null,
+      "race": false,
+      "services": "cross-adapter",
+      "browser": false,
+      "count": 1
+    },
+    "proof": {
+      "go_invocations": 3,
+      "verified_Core_invocations": 3,
+      "proven_no_Core_invocations": 0
+    },
+    "complete": true
+  },
+  {
+    "run": "20261028-165708-candidate-781b18",
+    "revision": "dca628b96e96fb628997f94dfd56ac4d62fc67b6",
+    "arguments": {
+      "ref": "dca628b",
+      "module": null,
+      "race": false,
+      "services": "temporal-eino",
+      "browser": false,
+      "count": 1
+    },
+    "proof": {
+      "go_invocations": 3,
+      "verified_Core_invocations": 3,
+      "proven_no_Core_invocations": 0
+    },
+    "complete": true
+  },
+  {
+    "run": "20261028-165739-candidate-969a53",
+    "revision": "dca628b96e96fb628997f94dfd56ac4d62fc67b6",
+    "arguments": {
+      "ref": "dca628b",
+      "module": null,
+      "race": false,
+      "services": "temporal",
+      "browser": false,
+      "count": 1
+    },
+    "proof": {
+      "go_invocations": 5,
+      "verified_Core_invocations": 5,
+      "proven_no_Core_invocations": 0
+    },
+    "complete": true
+  },
+  {
+    "run": "20261028-165934-candidate-762900",
+    "revision": "dca628b96e96fb628997f94dfd56ac4d62fc67b6",
+    "arguments": {
+      "ref": "dca628b",
+      "module": null,
+      "race": false,
+      "services": null,
+      "browser": true,
+      "count": 1
+    },
+    "proof": {
+      "go_invocations": 3,
+      "verified_Core_invocations": 3,
+      "proven_no_Core_invocations": 0
+    },
+    "complete": true
+  },
+  {
+    "run": "20261028-170914-candidate-c4aabd",
+    "revision": "2fabc4b687e00b8af880b517923cffd6a7f613f3",
+    "arguments": {
+      "ref": "2fabc4b",
+      "module": [
+        ".",
+        "tests/performance"
+      ],
+      "race": false,
+      "services": null,
+      "browser": false,
+      "count": 1
+    },
+    "proof": {
+      "go_invocations": 12,
+      "verified_Core_invocations": 8,
+      "proven_no_Core_invocations": 0
+    },
+    "complete": true,
+    "go_version": "go version go1.23.12 windows/amd64"
+  }
+]

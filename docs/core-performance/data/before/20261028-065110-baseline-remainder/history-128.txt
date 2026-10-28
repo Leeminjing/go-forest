@@ -1,0 +1,76 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Leeminjing/go-forest/tests/performance
+cpu: 13th Gen Intel(R) Core(TM) i9-13900HX
+BenchmarkManagement/Preview         	       1	    970100 ns/op	  627504 B/op	    1338 allocs/op
+BenchmarkManagement/Preview         	       1	    556537 ns/op	  623056 B/op	    1336 allocs/op
+BenchmarkManagement/Preview         	       1	   1551298 ns/op	  620928 B/op	    1329 allocs/op
+BenchmarkManagement/Preview         	       1	    576364 ns/op	  617952 B/op	    1326 allocs/op
+BenchmarkManagement/Preview         	       1	    455269 ns/op	  627568 B/op	    1333 allocs/op
+BenchmarkManagement/Preview         	       1	    420013 ns/op	  622384 B/op	    1327 allocs/op
+BenchmarkManagement/Preview         	       1	    463905 ns/op	  623184 B/op	    1332 allocs/op
+BenchmarkManagement/Preview         	       1	    485216 ns/op	  623296 B/op	    1333 allocs/op
+BenchmarkManagement/Preview         	       1	   1905820 ns/op	  624840 B/op	    1340 allocs/op
+BenchmarkManagement/Preview         	       1	    827423 ns/op	  628376 B/op	    1340 allocs/op
+BenchmarkManagement/ApplyRebind     	       1	     77607 ns/op	   62864 B/op	     241 allocs/op
+BenchmarkManagement/ApplyRebind     	       1	     81535 ns/op	   63120 B/op	     242 allocs/op
+BenchmarkManagement/ApplyRebind     	       1	     76771 ns/op	   64144 B/op	     243 allocs/op
+BenchmarkManagement/ApplyRebind     	       1	     79223 ns/op	   63584 B/op	     244 allocs/op
+BenchmarkManagement/ApplyRebind     	       1	     93119 ns/op	   62432 B/op	     238 allocs/op
+BenchmarkManagement/ApplyRebind     	       1	     91410 ns/op	   63616 B/op	     240 allocs/op
+BenchmarkManagement/ApplyRebind     	       1	     78951 ns/op	   63648 B/op	     245 allocs/op
+BenchmarkManagement/ApplyRebind     	       1	     80091 ns/op	   63488 B/op	     244 allocs/op
+BenchmarkManagement/ApplyRebind     	       1	     78686 ns/op	   62496 B/op	     239 allocs/op
+BenchmarkManagement/ApplyRebind     	       1	     78320 ns/op	   63824 B/op	     241 allocs/op
+BenchmarkManagement/ApplyReplaceFresh         	       1	     85412 ns/op	   66848 B/op	     270 allocs/op
+BenchmarkManagement/ApplyReplaceFresh         	       1	     86606 ns/op	   65584 B/op	     263 allocs/op
+BenchmarkManagement/ApplyReplaceFresh         	       1	     85885 ns/op	   64944 B/op	     265 allocs/op
+BenchmarkManagement/ApplyReplaceFresh         	       1	     86007 ns/op	   65904 B/op	     265 allocs/op
+BenchmarkManagement/ApplyReplaceFresh         	       1	     86934 ns/op	   65904 B/op	     265 allocs/op
+BenchmarkManagement/ApplyReplaceFresh         	       1	     97748 ns/op	   64832 B/op	     264 allocs/op
+BenchmarkManagement/ApplyReplaceFresh         	       1	     85188 ns/op	   64880 B/op	     264 allocs/op
+BenchmarkManagement/ApplyReplaceFresh         	       1	     81965 ns/op	   66384 B/op	     268 allocs/op
+BenchmarkManagement/ApplyReplaceFresh         	       1	     80668 ns/op	   64624 B/op	     263 allocs/op
+BenchmarkManagement/ApplyReplaceFresh         	       1	     81150 ns/op	   65088 B/op	     265 allocs/op
+BenchmarkManagement/CommitFresh               	       1	  45259731 ns/op	12758112 B/op	  137605 allocs/op
+BenchmarkManagement/CommitFresh               	       1	  45164094 ns/op	12775080 B/op	  137633 allocs/op
+BenchmarkManagement/CommitFresh               	       1	  44023085 ns/op	12768080 B/op	  137622 allocs/op
+BenchmarkManagement/CommitFresh               	       1	  47407572 ns/op	12760680 B/op	  137617 allocs/op
+BenchmarkManagement/CommitFresh               	       1	  48025725 ns/op	12762464 B/op	  137621 allocs/op
+BenchmarkManagement/CommitFresh               	       1	  51118951 ns/op	12765408 B/op	  137626 allocs/op
+BenchmarkManagement/CommitFresh               	       1	  46674255 ns/op	12762248 B/op	  137601 allocs/op
+BenchmarkManagement/CommitFresh               	       1	  43299176 ns/op	12775376 B/op	  137631 allocs/op
+BenchmarkManagement/CommitFresh               	       1	  52578645 ns/op	12764208 B/op	  137608 allocs/op
+BenchmarkManagement/CommitFresh               	       1	  54674816 ns/op	12767336 B/op	  137615 allocs/op
+BenchmarkManagement/Noop                      	       1	      2337 ns/op	   19184 B/op	       2 allocs/op
+BenchmarkManagement/Noop                      	       1	      9122 ns/op	   19184 B/op	       2 allocs/op
+BenchmarkManagement/Noop                      	       1	      2567 ns/op	   19184 B/op	       2 allocs/op
+BenchmarkManagement/Noop                      	       1	      2532 ns/op	   19184 B/op	       2 allocs/op
+BenchmarkManagement/Noop                      	       1	      2648 ns/op	   19184 B/op	       2 allocs/op
+BenchmarkManagement/Noop                      	       1	      2385 ns/op	   19184 B/op	       2 allocs/op
+BenchmarkManagement/Noop                      	       1	      2360 ns/op	   19184 B/op	       2 allocs/op
+BenchmarkManagement/Noop                      	       1	      2508 ns/op	   19184 B/op	       2 allocs/op
+BenchmarkManagement/Noop                      	       1	      2379 ns/op	   19184 B/op	       2 allocs/op
+BenchmarkManagement/Noop                      	       1	      2163 ns/op	   19184 B/op	       2 allocs/op
+BenchmarkManagement/Snapshot                  	       1	     31841 ns/op	   52088 B/op	      88 allocs/op
+BenchmarkManagement/Snapshot                  	       1	     31125 ns/op	   50936 B/op	      87 allocs/op
+BenchmarkManagement/Snapshot                  	       1	     31663 ns/op	   52088 B/op	      88 allocs/op
+BenchmarkManagement/Snapshot                  	       1	     32464 ns/op	   52088 B/op	      88 allocs/op
+BenchmarkManagement/Snapshot                  	       1	     43165 ns/op	   50936 B/op	      87 allocs/op
+BenchmarkManagement/Snapshot                  	       1	     32135 ns/op	   50728 B/op	      86 allocs/op
+BenchmarkManagement/Snapshot                  	       1	     31944 ns/op	   50728 B/op	      86 allocs/op
+BenchmarkManagement/Snapshot                  	       1	     32357 ns/op	   50936 B/op	      87 allocs/op
+BenchmarkManagement/Snapshot                  	       1	     32073 ns/op	   51144 B/op	      88 allocs/op
+BenchmarkManagement/Snapshot                  	       1	     31406 ns/op	   51352 B/op	      89 allocs/op
+BenchmarkManagement/Wait                      	       1	      8527 ns/op	       0 B/op	       0 allocs/op
+BenchmarkManagement/Wait                      	       1	      8515 ns/op	       0 B/op	       0 allocs/op
+BenchmarkManagement/Wait                      	       1	      8231 ns/op	       0 B/op	       0 allocs/op
+BenchmarkManagement/Wait                      	       1	     17983 ns/op	       0 B/op	       0 allocs/op
+BenchmarkManagement/Wait                      	       1	      8093 ns/op	       0 B/op	       0 allocs/op
+BenchmarkManagement/Wait                      	       1	      8154 ns/op	       0 B/op	       0 allocs/op
+BenchmarkManagement/Wait                      	       1	      8361 ns/op	       0 B/op	       0 allocs/op
+BenchmarkManagement/Wait                      	       1	      7825 ns/op	       0 B/op	       0 allocs/op
+BenchmarkManagement/Wait                      	       1	      8279 ns/op	       0 B/op	       0 allocs/op
+BenchmarkManagement/Wait                      	       1	      8471 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	github.com/Leeminjing/go-forest/tests/performance	76.957s

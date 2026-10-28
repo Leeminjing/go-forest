@@ -1,0 +1,51 @@
+[
+  {
+    "side": "before",
+    "run": "20261028-062801-baseline-complete",
+    "core": "5be60184d928d9df23782d15630d6f855cfd0645",
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "matrix_complete": false
+  },
+  {
+    "side": "before",
+    "run": "20261028-065110-baseline-remainder",
+    "core": "5be60184d928d9df23782d15630d6f855cfd0645",
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "matrix_complete": true
+  },
+  {
+    "side": "before",
+    "run": "20261028-070553-baseline-controller-calibrated",
+    "core": "5be60184d928d9df23782d15630d6f855cfd0645",
+    "harness": "59f178e1f07148d0ac1e2b52e49967120412b567",
+    "matrix_complete": true
+  },
+  {
+    "side": "before",
+    "run": "20261028-072725-baseline-rss",
+    "core": "5be60184d928d9df23782d15630d6f855cfd0645",
+    "harness": "3409c53b694031a0ad28aae174800945d1f2f8c6",
+    "matrix_complete": true
+  },
+  {
+    "side": "after",
+    "run": "20261028-070743-candidate-index",
+    "core": "c44f272dde42293da158174f5bc8e1e1b0c879cf",
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "matrix_complete": true
+  },
+  {
+    "side": "after",
+    "run": "20261028-072516-candidate-controller-calibrated",
+    "core": "c44f272dde42293da158174f5bc8e1e1b0c879cf",
+    "harness": "59f178e1f07148d0ac1e2b52e49967120412b567",
+    "matrix_complete": true
+  },
+  {
+    "side": "after",
+    "run": "20261028-072837-candidate-rss",
+    "core": "c44f272dde42293da158174f5bc8e1e1b0c879cf",
+    "harness": "3409c53b694031a0ad28aae174800945d1f2f8c6",
+    "matrix_complete": true
+  }
+]

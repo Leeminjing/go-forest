@@ -1,0 +1,18 @@
+File: perf
+Type: inuse_space
+Time: Oct 28, 2026 at 6:52am (UTC)
+Showing nodes accounting for 6913.08kB, 100% of 6913.08kB total
+      flat  flat%   sum%        cum   cum%
+ 3584.32kB 51.85% 51.85%  6401.07kB 92.59%  github.com/Leeminjing/go-forest/forest.(*Forest).Apply
+ 1536.42kB 22.22% 74.07%  1536.42kB 22.22%  github.com/Leeminjing/go-forest/forest.Provide
+ 1280.33kB 18.52% 92.59%  1280.33kB 18.52%  github.com/Leeminjing/go-forest/forest.(*Forest).applyOperation
+  512.01kB  7.41%   100%   512.01kB  7.41%  github.com/Leeminjing/go-forest/tests/performance.Provider (inline)
+         0     0%   100%  1536.42kB 22.22%  github.com/Leeminjing/go-forest/forest.(*Forest).Apply.func3
+         0     0%   100%  1536.42kB 22.22%  github.com/Leeminjing/go-forest/forest.(*Forest).Apply.func3.1
+         0     0%   100%  1536.42kB 22.22%  github.com/Leeminjing/go-forest/forest.(*Forest).withCandidate
+         0     0%   100%  1536.42kB 22.22%  github.com/Leeminjing/go-forest/forest.safeLifecycle
+         0     0%   100%  6913.08kB   100%  github.com/Leeminjing/go-forest/tests/performance.New
+         0     0%   100%  1536.42kB 22.22%  github.com/Leeminjing/go-forest/tests/performance.New.func1
+         0     0%   100%  6913.08kB   100%  github.com/Leeminjing/go-forest/tests/performance.Profile
+         0     0%   100%  6913.08kB   100%  main.main
+         0     0%   100%  6913.08kB   100%  runtime.main

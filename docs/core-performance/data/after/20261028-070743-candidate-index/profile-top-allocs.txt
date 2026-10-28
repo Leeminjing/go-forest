@@ -1,0 +1,29 @@
+File: perf
+Type: alloc_space
+Time: Oct 28, 2026 at 7:08am (UTC)
+Showing nodes accounting for 1073.23MB, 97.79% of 1097.45MB total
+Dropped 20 nodes (cum <= 5.49MB)
+      flat  flat%   sum%        cum   cum%
+ 1033.52MB 94.17% 94.17%  1033.52MB 94.17%  github.com/Leeminjing/go-forest/forest.Ref[go.shape.interface { Value  }].use.func1
+   15.35MB  1.40% 95.57%    63.93MB  5.83%  github.com/Leeminjing/go-forest/tests/performance.New
+    5.76MB  0.52% 96.10%     5.76MB  0.52%  github.com/Leeminjing/go-forest/forest.(*Forest).Snapshot
+    5.60MB  0.51% 96.61%     5.60MB  0.51%  github.com/Leeminjing/go-forest/forest.lifecycleOrder.func1
+    4.84MB  0.44% 97.05%     5.84MB  0.53%  github.com/Leeminjing/go-forest/forest.(*Forest).applyOperation
+    3.04MB  0.28% 97.33%    42.32MB  3.86%  github.com/Leeminjing/go-forest/forest.(*Forest).Apply
+    2.62MB  0.24% 97.57%     8.22MB  0.75%  github.com/Leeminjing/go-forest/forest.lifecycleOrder
+    2.50MB  0.23% 97.79%    10.50MB  0.96%  github.com/Leeminjing/go-forest/forest.(*Forest).withCandidate
+         0     0% 97.79%  1033.52MB 94.17%  github.com/Leeminjing/go-forest/forest.(*Forest).Invoke
+         0     0% 97.79%  1033.52MB 94.17%  github.com/Leeminjing/go-forest/forest.Ref[go.shape.interface { Value  }].Use
+         0     0% 97.79%  1033.52MB 94.17%  github.com/Leeminjing/go-forest/forest.Ref[go.shape.interface { Value  }].use
+         0     0% 97.79%  1033.52MB 94.17%  github.com/Leeminjing/go-forest/forest.Use[go.shape.interface { Read  }]
+         0     0% 97.79%  1033.52MB 94.17%  github.com/Leeminjing/go-forest/forest.Use[go.shape.interface { Read  }].func1
+         0     0% 97.79%  1033.52MB 94.17%  github.com/Leeminjing/go-forest/tests/performance.(*Fixture).Pinned (inline)
+         0     0% 97.79%  1033.52MB 94.17%  github.com/Leeminjing/go-forest/tests/performance.(*reader).Read
+         0     0% 97.79%    63.93MB  5.83%  github.com/Leeminjing/go-forest/tests/performance.Profile
+         0     0% 97.79%  1033.52MB 94.17%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3
+         0     0% 97.79%  1033.52MB 94.17%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.1
+         0     0% 97.79%  1033.52MB 94.17%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.1.(*Fixture).Pinned.1
+         0     0% 97.79%  1033.52MB 94.17%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.1.(*Fixture).Pinned.1.1
+         0     0% 97.79%  1033.52MB 94.17%  github.com/Leeminjing/go-forest/tests/performance.Profile.func3.4
+         0     0% 97.79%    63.93MB  5.83%  main.main
+         0     0% 97.79%    63.93MB  5.83%  runtime.main

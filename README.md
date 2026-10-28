@@ -283,6 +283,10 @@ Snapshot 返回独立的结构副本和实例诊断。事件涵盖成功、失�
 
 `Close(ctx)` 停止新调用并等待退出。Context 截止只限制等待，不会释放仍在使用的资源；之后可重试。生命周期回调不得调用会等待自己的 Apply/Wait/Close。树需要为自己的资源协议和行为契约编写测试。
 
+## Core 性能测量
+
+main 的候选 Core 使用每个 Graph 独立的只读端口路由索引，旧 Scope 和候选构造仍解析各自版本。测量程序、原始对照、管理和长期资源成本见 [性能记录](docs/core-performance/results.md)；[候选 Core 验收](docs/core-performance/validation.md) 区分源码集成与固定发布版验收。
+
 ## 验证
 
 ```sh

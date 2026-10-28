@@ -1,0 +1,1180 @@
+{
+  "9df9f44f39f735a49cbe5ae2792eb828a51413d170ca672668677ec89f3859d9": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "10004",
+      "FOREST_PERF_E": "10001",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/(DirectInterface|InvokeEnter|InvokeNested|RefPinned|RefEnter|RefParallel)$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "9c77170eab8c056316dea93bab21bc60bcde8019705c9356572ef1693bb5eba4": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "ab840098d0b6566c2a0520cdc5eab1ccb38926b55f3ce64b73aa7c48affb13fd": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_HISTORY": "128"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkManagement$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "ad12e9615a90e6a84eaea13b6f022d05785d2336053c9ef571fce7cbcfcb7841": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_HISTORY": "16"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkManagement$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "1a12700a755e31f8716bd43ef0156bf87700dd63644fa3bb0364f1f5aaeac77f": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkManagement$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "4224b24a694cd76221ccb07b1fbeea6d2ac6de6c154624504d424b1a17feae21": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkManagement$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "ea5d228c3fb8c866b247272a0d8070137851d4d7553324247085d0b3f1eb28db": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkManagement$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "756fad4cb948261a036602da1892ec3aef42d40075b6c6e8663f5d8463976bbb": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "cff768dec546bf376459bcba2fc758e977f41682a891859aeb635961f1bcb1e7": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "16",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "f8706ff5d7164fa3fa8549287239f24b2bd5b750ff8e8fa26425387552ab8ee8": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "256",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "672a8f7405a92497975710d3c8ecc2c41ce825315a12dda5c6f8a93c6fb35f28": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "4",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "3a36107037817acd85cb31599573139c0e9d6d1ab694697320caed1785706977": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "64",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "e38dc05d710d12a4950705d8ad1c8bd88e96b3a688e994da40a99b2e17ded60a": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "20004",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "982a7611fd18f760cc364e6b4ba878409abad1d58183517f333bb9c7f736777f": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "2048",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "75fea9db3c73bf88b5d64b203bbc25fd1a2c91e52cfae7241491535497864323": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "256",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "5cf9dca4550d02bba9d6c18908e9f1b0bbec16eea86b69473993b903fa35f5c9": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "0",
+      "FOREST_PERF_D": "0",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "098c705875d88d0ef6d784863134b97389d7d5828a69c425977ad42111d8162e": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "2048",
+      "FOREST_PERF_E": "1024",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefParallel$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1,2,4,8"
+    ]
+  },
+  "5adad0309fa34a6730667857a52d9af2f8d8f12736ca9d1056203fd148b34754": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "2048",
+      "FOREST_PERF_E": "1024",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "4"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefParallel$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1,2,4,8"
+    ]
+  },
+  "363ca28cfad9cbaf2db243061c18208ac6799175681b77364722c8987bbb2b0e": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "16",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "607363eaf3e41082dc90a47c81756abbc11134e141c3683ebaa0305c07fa4441": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "256",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "d2d28379bd229dd3e75d5d51f77a8f5270fc72d76e73bdaa06bb8c2ec28d1967": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "10004",
+      "FOREST_PERF_E": "1",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "4f3f8db9d48a9a52151f767a9a9edba74172c45bd04f032be9af3736f1add9f9": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "10004",
+      "FOREST_PERF_E": "2048",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "d060193a8ffff1bb439c305d34314b1485fbca81b2cc8b45dd9eddb8dfbe608a": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "10004",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "1b79cfefeded6fa5c459f8ea39666454811ceb8a36249f93530f0b20005f5e79": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "a2c08caac634fb9d680d6c9c2428d54aef39b8e8",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "10004",
+      "FOREST_PERF_E": "32",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  },
+  "edcf55ddb53cd75ec2c97571843d7bd823623cfbaab6c6dacf45ce64f3085753": {
+    "build_flags": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOAMD64=v1",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux"
+    ],
+    "harness": "59f178e1f07148d0ac1e2b52e49967120412b567",
+    "go_version": "go version go1.23.12 linux/amd64",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "cpu_model": "13th Gen Intel(R) Core(TM) i9-13900HX",
+    "cpu_count": 32,
+    "cpu_quota": "800000 100000\n",
+    "memory_quota": "8589934592\n",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    },
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    },
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/Controller",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ]
+  }
+}

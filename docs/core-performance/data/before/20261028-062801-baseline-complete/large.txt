@@ -1,0 +1,66 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Leeminjing/go-forest/tests/performance
+cpu: 13th Gen Intel(R) Core(TM) i9-13900HX
+BenchmarkCalls/DirectInterface         	348259585	         3.453 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/DirectInterface         	311550105	         3.444 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/DirectInterface         	349448745	         3.479 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/DirectInterface         	342534103	         3.378 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/DirectInterface         	380450904	         3.330 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/DirectInterface         	356836030	         3.303 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/DirectInterface         	344904822	         3.231 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/DirectInterface         	369624172	         3.293 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/DirectInterface         	365157950	         3.604 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/DirectInterface         	344644712	         3.293 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/InvokeEnter             	 3054012	       420.9 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/InvokeEnter             	 2693804	       415.9 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/InvokeEnter             	 2699575	       451.4 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/InvokeEnter             	 2631283	       439.1 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/InvokeEnter             	 2718531	       448.1 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/InvokeEnter             	 2838661	       411.9 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/InvokeEnter             	 2318004	       460.6 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/InvokeEnter             	 2720499	       454.0 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/InvokeEnter             	 2541673	       444.7 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/InvokeEnter             	 2720668	       418.7 ns/op	     320 B/op	       5 allocs/op
+BenchmarkCalls/InvokeNested            	45732146	        28.34 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/InvokeNested            	42212772	        27.81 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/InvokeNested            	44676970	        27.95 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/InvokeNested            	41284072	        27.81 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/InvokeNested            	44359915	        27.79 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/InvokeNested            	41631517	        29.82 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/InvokeNested            	37126567	        30.48 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/InvokeNested            	40266266	        30.64 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/InvokeNested            	34804365	        31.86 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/InvokeNested            	37520936	        28.44 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCalls/RefPinned               	     399	   2815595 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefPinned               	     481	   2768115 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefPinned               	     430	   2905624 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefPinned               	     427	   2978740 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefPinned               	     387	   3144406 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefPinned               	     513	   2624454 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefPinned               	     452	   2629077 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefPinned               	     475	   2614093 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefPinned               	     477	   2526569 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefPinned               	     446	   2543276 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefEnter                	     445	   2603258 ns/op	  967160 B/op	      10 allocs/op
+BenchmarkCalls/RefEnter                	     484	   2586893 ns/op	  967160 B/op	      10 allocs/op
+BenchmarkCalls/RefEnter                	     488	   2512090 ns/op	  967160 B/op	      10 allocs/op
+BenchmarkCalls/RefEnter                	     462	   2571356 ns/op	  967160 B/op	      10 allocs/op
+BenchmarkCalls/RefEnter                	     448	   2591758 ns/op	  967160 B/op	      10 allocs/op
+BenchmarkCalls/RefEnter                	     435	   2476037 ns/op	  967160 B/op	      10 allocs/op
+BenchmarkCalls/RefEnter                	     481	   2413438 ns/op	  967160 B/op	      10 allocs/op
+BenchmarkCalls/RefEnter                	     506	   2385935 ns/op	  967160 B/op	      10 allocs/op
+BenchmarkCalls/RefEnter                	     508	   2514895 ns/op	  967160 B/op	      10 allocs/op
+BenchmarkCalls/RefEnter                	     525	   2663627 ns/op	  967160 B/op	      10 allocs/op
+BenchmarkCalls/RefParallel             	     453	   2594750 ns/op	  966841 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel             	     488	   2457310 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel             	     526	   2466017 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel             	     480	   2549138 ns/op	  966841 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel             	     486	   2438965 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel             	     514	   2409715 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel             	     493	   2421458 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel             	     498	   2286695 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel             	     553	   2185066 ns/op	  966840 B/op	       5 allocs/op
+BenchmarkCalls/RefParallel             	     549	   2224987 ns/op	  966840 B/op	       5 allocs/op
+PASS
+ok  	github.com/Leeminjing/go-forest/tests/performance	98.700s

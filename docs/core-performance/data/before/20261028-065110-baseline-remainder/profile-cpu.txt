@@ -1,0 +1,1 @@
+{"Mode":"profile","Kind":"cpu","Config":{"N":10004,"E":10001,"D":1,"Ports":1,"Many":false},"Calls":3072}

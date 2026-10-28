@@ -1,0 +1,1021 @@
+[
+  {
+    "name": "configure",
+    "command": [
+      "go",
+      "mod",
+      "edit",
+      "-replace=github.com/Leeminjing/go-forest=/src/.scratch/core-performance/20261028-070743-candidate-index/core"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "tidy",
+    "command": [
+      "go",
+      "mod",
+      "tidy"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "modules",
+    "command": [
+      "go",
+      "list",
+      "-m",
+      "-json",
+      "all"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "go-version",
+    "command": [
+      "go",
+      "version"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "vet",
+    "command": [
+      "go",
+      "vet",
+      "./..."
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "fixture-tests",
+    "command": [
+      "go",
+      "test",
+      "./...",
+      "-count=1"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "build-info",
+    "command": [
+      "go",
+      "build",
+      "-pgo=off",
+      "-o",
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "./cmd/perf"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "binary-info",
+    "command": [
+      "go",
+      "version",
+      "-m",
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-cpu",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=profile",
+      "-n=10004",
+      "-e=10001",
+      "-workers=4",
+      "-duration=2s",
+      "-kind=cpu",
+      "-enter=false",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/cpu.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-top-cpu",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/cpu.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-heap",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=profile",
+      "-n=10004",
+      "-e=10001",
+      "-workers=4",
+      "-duration=2s",
+      "-kind=heap",
+      "-enter=false",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/heap.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-top-heap",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/heap.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-allocs",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=profile",
+      "-n=10004",
+      "-e=10001",
+      "-workers=4",
+      "-duration=2s",
+      "-kind=allocs",
+      "-enter=false",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/allocs.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-top-allocs",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/allocs.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-block",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=profile",
+      "-n=10004",
+      "-e=10001",
+      "-workers=4",
+      "-duration=2s",
+      "-kind=block",
+      "-enter=true",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/block.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-top-block",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/block.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-mutex",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=profile",
+      "-n=10004",
+      "-e=10001",
+      "-workers=4",
+      "-duration=2s",
+      "-kind=mutex",
+      "-enter=true",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/mutex.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-top-mutex",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/mutex.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "small",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "large",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/(DirectInterface|InvokeEnter|InvokeNested|RefPinned|RefEnter|RefParallel)$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10004",
+      "FOREST_PERF_E": "10001",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "unrelated-1",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10004",
+      "FOREST_PERF_E": "1",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "unrelated-32",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10004",
+      "FOREST_PERF_E": "32",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "unrelated-256",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10004",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "unrelated-2048",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10004",
+      "FOREST_PERF_E": "2048",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "nodes-256",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "256",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "nodes-2048",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "2048",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "nodes-20004",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "20004",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "many-1",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "many-4",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "4",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "many-16",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "16",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "many-64",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "64",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "many-256",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "256",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "optional",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "0",
+      "FOREST_PERF_D": "0",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "ports-16",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "16",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "ports-256",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefPinned$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "512",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "256",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "parallel-1",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefParallel$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1,2,4,8"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "2048",
+      "FOREST_PERF_E": "1024",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "1"
+    }
+  },
+  {
+    "name": "parallel-4",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkCalls/RefParallel$",
+      "-benchmem",
+      "-benchtime=1s",
+      "-count=10",
+      "-cpu=1,2,4,8"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "2048",
+      "FOREST_PERF_E": "1024",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_PARALLEL": "4"
+    }
+  },
+  {
+    "name": "management-32",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkManagement$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16"
+    }
+  },
+  {
+    "name": "management-1024",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkManagement$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256"
+    }
+  },
+  {
+    "name": "management-10000",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkManagement$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256"
+    }
+  },
+  {
+    "name": "history-16",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkManagement$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_HISTORY": "16"
+    }
+  },
+  {
+    "name": "history-128",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-timeout=60m",
+      "-run=^$",
+      "-bench=^BenchmarkManagement$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1"
+    ],
+    "dimensions": {
+      "FOREST_PERF_HISTORY": "128"
+    }
+  },
+  {
+    "name": "longevity-replace-0",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=0",
+      "-kind=replace",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/longevity-replace-0.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-replace-1",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=1",
+      "-kind=replace",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/longevity-replace-1.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-replace-8",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=8",
+      "-kind=replace",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/longevity-replace-8.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-rebind-0",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=0",
+      "-kind=rebind",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/longevity-rebind-0.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-rebind-1",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=1",
+      "-kind=rebind",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/longevity-rebind-1.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-rebind-8",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=8",
+      "-kind=rebind",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/longevity-rebind-8.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-mixed-0",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=0",
+      "-kind=mixed",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/longevity-mixed-0.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-mixed-1",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=1",
+      "-kind=mixed",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/longevity-mixed-1.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-mixed-8",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=longevity",
+      "-rounds=1000",
+      "-holds=8",
+      "-kind=mixed",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/longevity-mixed-8.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-extended-replace",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=longevity",
+      "-rounds=10000",
+      "-holds=8",
+      "-kind=replace",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/longevity-extended-replace.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "longevity-extended-rebind",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=longevity",
+      "-rounds=10000",
+      "-holds=8",
+      "-kind=rebind",
+      "-out=/src/.scratch/core-performance/20261028-070743-candidate-index/longevity-extended-rebind.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "load-256-1000-0s",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=load",
+      "-n=10004",
+      "-e=256",
+      "-workers=4",
+      "-duration=2s",
+      "-requests=20000",
+      "-rate=1000",
+      "-holds=1",
+      "-updates=0s"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "load-256-1000-20ms",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=load",
+      "-n=10004",
+      "-e=256",
+      "-workers=4",
+      "-duration=2s",
+      "-requests=20000",
+      "-rate=1000",
+      "-holds=1",
+      "-updates=20ms"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "load-256-5000-0s",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=load",
+      "-n=10004",
+      "-e=256",
+      "-workers=4",
+      "-duration=2s",
+      "-requests=20000",
+      "-rate=5000",
+      "-holds=1",
+      "-updates=0s"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "load-256-5000-20ms",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=load",
+      "-n=10004",
+      "-e=256",
+      "-workers=4",
+      "-duration=2s",
+      "-requests=20000",
+      "-rate=5000",
+      "-holds=1",
+      "-updates=20ms"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "load-10001-1000-0s",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=load",
+      "-n=10004",
+      "-e=10001",
+      "-workers=4",
+      "-duration=2s",
+      "-requests=20000",
+      "-rate=1000",
+      "-holds=1",
+      "-updates=0s"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "load-10001-1000-20ms",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=load",
+      "-n=10004",
+      "-e=10001",
+      "-workers=4",
+      "-duration=2s",
+      "-requests=20000",
+      "-rate=1000",
+      "-holds=1",
+      "-updates=20ms"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "load-10001-5000-0s",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=load",
+      "-n=10004",
+      "-e=10001",
+      "-workers=4",
+      "-duration=2s",
+      "-requests=20000",
+      "-rate=5000",
+      "-holds=1",
+      "-updates=0s"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "load-10001-5000-20ms",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=load",
+      "-n=10004",
+      "-e=10001",
+      "-workers=4",
+      "-duration=2s",
+      "-requests=20000",
+      "-rate=5000",
+      "-holds=1",
+      "-updates=20ms"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "load-closed",
+    "command": [
+      "/src/.scratch/core-performance/20261028-070743-candidate-index/perf",
+      "-mode=load",
+      "-closed",
+      "-n=32",
+      "-e=16",
+      "-workers=4",
+      "-duration=2s",
+      "-requests=20000",
+      "-holds=0"
+    ],
+    "dimensions": {}
+  }
+]
