@@ -68,3 +68,8 @@ actual tests, cache cleanup bounds, immutable prior tags and protected repositor
 scope. The optional wording about Origin.Hash was clarified: it is checked when
 provided, while production source hashes are always required. Both saved
 platform downloads supplied the matching Origin.Hash.
+
+The delivery-source CI at
+[40705139794](https://github.com/Leeminjing/go-forest/actions/runs/40705139794)
+subsequently passed all 67 jobs, including both new fixed-v0.3.1 download jobs
+and all original candidate and published-version checks.
