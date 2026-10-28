@@ -19,7 +19,7 @@ Performance results and the added index costs are in [results](results.md).
 Windows and Linux **Go 1.23.12** ran an external project in a fresh empty module
 cache with GOWORK=off, no workspace or dependency replacements and public proxy /
 checksum database validation. The runner verifies the exact version, downloaded
-package locations, module checksum, Origin.Hash and all tagged production Forest
+package locations, module checksum, available Origin.Hash and all tagged production Forest
 source hashes before vet and actual tests. Linux also ran race3. Both passed:
 
 - A held invocation stays on its old value/generation across Replace and Rebind.
@@ -59,3 +59,12 @@ Prior tags are unchanged. Agent Runtime, Focus-Go, stable Adapters and Topology
 production files/dependency pins are not modified. The next Journal optimization
 is a separate local Spec/Design draft, not part of this release. Spec/Design
 remain ignored and absent from Git history.
+
+## Independent release review
+
+Fixed diff baseline is 3a4671b. Read-only Spec and Standards reviews reported
+zero confirmed defects. They checked downloaded metadata, source identity,
+actual tests, cache cleanup bounds, immutable prior tags and protected repository
+scope. The optional wording about Origin.Hash was clarified: it is checked when
+provided, while production source hashes are always required. Both saved
+platform downloads supplied the matching Origin.Hash.
