@@ -12,7 +12,8 @@ type Plan struct {
 	Operations     []forest.Operation `json:"operations"`
 }
 
-func makePlan(before, target Manifest, generation uint64, rebuild bool) Plan {
+// makePlanV1 is frozen for released v0.1.0 journals.
+func makePlanV1(before, target Manifest, generation uint64, rebuild bool) Plan {
 	p := Plan{BaseGeneration: generation, Operations: []forest.Operation{}}
 	if rebuild {
 		for _, t := range before.Trees {

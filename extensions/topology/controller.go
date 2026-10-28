@@ -154,7 +154,12 @@ func (c *Controller) Restore(ctx context.Context, request Request) (Receipt, err
 		return Receipt{}, ErrHistoryConflict
 	}
 	emptyDigest, _ := Digest(Empty())
-	input := Intent{Request: request, SessionID: c.session, Mode: "restore", Target: detached(desired.Manifest), TargetDigest: desired.Digest, SourceRevision: desired.ID, BaseGeneration: 0, BaseDigest: emptyDigest, Plan: makePlan(Empty(), desired.Manifest, 0, false)}
+	input := Intent{Request: request, SessionID: c.session, Mode: "restore", Target: detached(desired.Manifest), TargetDigest: desired.Digest, SourceRevision: desired.ID, BaseGeneration: 0, BaseDigest: emptyDigest}
+	plan, planning, planErr := c.catalog.plan(Empty(), desired.Manifest, 0)
+	if planErr != nil {
+		return Receipt{}, planErr
+	}
+	input.Plan, input.Planning = plan, planning
 	h, _ := intentHash(input)
 	if c.closed || c.closing || c.ready {
 		return Receipt{}, ErrHistoryConflict
@@ -244,6 +249,12 @@ func (c *Controller) applyLocked(ctx context.Context, in Intent, requestDigest s
 		result.Instances = append(result.Instances, InstanceObservation{TreeID: string(t.ID), InstanceID: t.InstanceID})
 	}
 	sort.Slice(result.Instances, func(i, j int) bool { return result.Instances[i].TreeID < result.Instances[j].TreeID })
+	if in.Planning != nil && in.Mode != "restore" {
+		if err := checkRetainedInstances(in.Planning.Impact, s.state.inspection.LastObserved, &result); err != nil {
+			c.diverged = true
+			return result, err
+		}
+	}
 	result.Noop = in.Mode != "restore" && in.BaseDigest == in.TargetDigest
 	if in.Mode != "restore" && !result.Noop {
 		result.Revision = intentSequence

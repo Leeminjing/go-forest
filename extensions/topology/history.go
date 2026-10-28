@@ -74,15 +74,16 @@ func Compare(before, after Manifest) (Diff, error) {
 }
 
 type Proposal struct {
-	Expected       Position        `json:"expected"`
-	Generation     uint64          `json:"generation"`
-	BeforeDigest   string          `json:"before_digest"`
-	Target         Manifest        `json:"target"`
-	Mode           string          `json:"mode"`
-	SourceRevision uint64          `json:"source_revision"`
-	RebuildTrees   []forest.TreeID `json:"rebuild_trees"`
-	Diff           Diff            `json:"diff"`
-	Plan           Plan            `json:"plan"`
+	Expected       Position          `json:"expected"`
+	Generation     uint64            `json:"generation"`
+	BeforeDigest   string            `json:"before_digest"`
+	Target         Manifest          `json:"target"`
+	Mode           string            `json:"mode"`
+	SourceRevision uint64            `json:"source_revision"`
+	RebuildTrees   []forest.TreeID   `json:"rebuild_trees"`
+	Diff           Diff              `json:"diff"`
+	Plan           Plan              `json:"plan"`
+	Planning       *PlanningEvidence `json:"planning,omitempty"`
 }
 
 func (c *Controller) previewLocked(target Manifest, mode string, source uint64) (Proposal, error) {
@@ -112,17 +113,9 @@ func (c *Controller) previewLocked(target Manifest, mode string, source uint64) 
 	if e != nil {
 		return Proposal{}, e
 	}
-	plan := makePlan(before, n, c.generation, true)
-	d, _ := Digest(n)
-	rebuild := []forest.TreeID{}
-	if d == c.digest {
-		plan = Plan{BaseGeneration: c.generation, Operations: []forest.Operation{}}
-	} else {
-		for _, t := range n.Trees {
-			rebuild = append(rebuild, t.ID)
-		}
-	}
-	return Proposal{Expected: s.state.inspection.Position, Generation: c.generation, BeforeDigest: c.digest, Target: n, Mode: mode, SourceRevision: source, RebuildTrees: rebuild, Diff: diff, Plan: plan}, nil
+	plan, planning, err := c.catalog.plan(before, n, c.generation)
+	p := Proposal{Expected: s.state.inspection.Position, Generation: c.generation, BeforeDigest: c.digest, Target: n, Mode: mode, SourceRevision: source, RebuildTrees: planning.Impact.RebuildTrees, Diff: diff, Plan: plan, Planning: planning}
+	return p, err
 }
 func (c *Controller) Preview(target Manifest) (Proposal, error) {
 	c.mu.Lock()
@@ -167,7 +160,7 @@ func (c *Controller) commit(ctx context.Context, request Request, proposal Propo
 	if s.closed || s.poisoned {
 		return Receipt{}, ErrPersistenceUnknown
 	}
-	in := Intent{Request: request, SessionID: c.session, Mode: mode, Target: proposal.Target, SourceRevision: proposal.SourceRevision, BaseGeneration: proposal.Generation, BaseDigest: proposal.BeforeDigest, Plan: proposal.Plan}
+	in := Intent{Request: request, SessionID: c.session, Mode: mode, Target: proposal.Target, SourceRevision: proposal.SourceRevision, BaseGeneration: proposal.Generation, BaseDigest: proposal.BeforeDigest, Plan: proposal.Plan, Planning: proposal.Planning}
 	in.TargetDigest, _ = Digest(in.Target)
 	h, e := intentHash(in)
 	if e != nil {
@@ -210,6 +203,26 @@ func (c *Controller) commit(ctx context.Context, request Request, proposal Propo
 	return c.applyLocked(ctx, in, h)
 }
 func intentHash(in Intent) (string, error) {
+	if in.Planning != nil {
+		if in.Planning.Version != 2 {
+			return "", ErrUnsupportedPlanVersion
+		}
+		data, e := json.Marshal(struct {
+			Request    Request
+			Mode       string
+			Target     Manifest
+			Source     uint64
+			Generation uint64
+			Before     string
+			Plan       Plan
+			Planning   *PlanningEvidence
+		}{in.Request, in.Mode, in.Target, in.SourceRevision, in.BaseGeneration, in.BaseDigest, in.Plan, in.Planning})
+		if e != nil {
+			return "", e
+		}
+		return hash("forest-topology/intent/v2", data), nil
+	}
+	// Exact field order, encoding and hash domain of the released legacy input.
 	data, e := json.Marshal(struct {
 		Request    Request
 		Mode       string

@@ -141,7 +141,7 @@ func run() (evidence, error) {
 	if e != nil {
 		return result, e
 	}
-	second, e := controller.Reconfigure(ctx, topology.Request{ID: "upgrade", Expected: proposal.Expected, Approval: "full rebuild of target application"}, proposal)
+	second, e := controller.Reconfigure(ctx, topology.Request{ID: "upgrade", Expected: proposal.Expected, Approval: "incremental business replacement"}, proposal)
 	if e != nil {
 		return result, e
 	}

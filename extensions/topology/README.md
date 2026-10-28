@@ -65,11 +65,36 @@ your own resource checks. Existing admitted calls retain their native Scope.
 6. Re-open admission explicitly after a successful operation. `Close` joins actual
    native cleanup before releasing storage ownership; retry Close after timeout.
 
-Online switching is **full rebuild** in one ChangePlan: remove the previous roots
-in the candidate, add every target tree, then insert bindings in target order.
-Every target instance is rebuilt. Core still enforces hot-replacement promises,
-contracts and resource lifetime. No intermediate empty graph is published.
-Identical structures are explicit no-ops, preserving instances and both versions.
+Online switching in v0.2 uses one **incremental** ChangePlan. Unchanged instances
+are retained; a surviving tree needing a new instance uses native Replace, never
+Remove+Add. Runtime changes prefer Rebind. Construction/Startup changes propagate
+to a documented rebuild closure. Unsupported hot replacement/reparenting blocks
+Preview with a populated Proposal and errors.Is/As-compatible PlanError. Actual
+capability compatibility, resource preparation and lifecycle checks remain native.
+Identical structures preserve instances, Generation and topology Revision.
+
+`Proposal.Planning` identifies version 2 and includes frozen declaration facts
+and the complete `Impact`: retained/added/rebuilt/removed/moved trees, binding
+operations, causal reasons and blockers. Preview allocates no resources. Submit
+the exact Proposal unchanged. `Journal()` retains plans/evidence for audit;
+receipts contain actual native instance observations.
+
+Binding order follows a conservative retained-prefix/reinserted-suffix rule:
+retain the longest target prefix whose old positions increase and whose original
+endpoints survive, with the same identity/consumer/port/kind. Rebind changed
+providers there; recreate the suffix in target order. Reinserted phase bindings
+may force consumers to rebuild. Every such effect is visible; there is no silent
+full-rebuild fallback or bypass of native resource/contract promises.
+
+Historical v0.1 journals and hashes retain their full-rebuild interpretation.
+New intents carry versioned planner facts so replay needs no Catalog/factories.
+Old bytes, revisions and receipts are not rewritten. Exact old request retries
+return original receipts, including failures; they cannot admit a fresh session.
+Unknown future versions fail closed. Once a v2 intent is appended, a v0.1 binary
+cannot read that directory: upgrade compatibility is not a downgrade guarantee.
+
+See [the real Gin/PostgreSQL example](../../examples/topology-incremental) for
+controlled HTTP admission, native instance/pool identity and pinned requests.
 
 For an unsafe hot rollback, explicitly shut down and join the old controller and
 all host-managed ingress. Reopen the Store, `SelectHistorical` with host approval,
@@ -117,7 +142,7 @@ no exactly-once promise.
 
 ## Limits and tests
 
-Version 1: 10,000 trees, 50,000 bindings, 4 MiB Manifest, 16 MiB record, 256 MiB /
+Manifest/frame v1 (plan semantics 1/2): 10,000 trees, 50,000 bindings, 4 MiB Manifest, 16 MiB record, 256 MiB /
 10,000-record journal, 512-byte identifiers and 4,096-byte approval notes. Reserve
 space for a terminal record before intent publication. No compression, automatic
 history deletion, distributed leasing or transparent adoption of existing graphs.

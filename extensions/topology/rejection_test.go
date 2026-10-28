@@ -53,7 +53,7 @@ func TestUnsafeTargetsLeaveTheActiveTopologyUnchanged(t *testing.T) {
 			target.Trees[0].Definition = second.Definition.Ref()
 			target.Trees[0].ImplementationDigest = second.ImplementationDigest
 			p, e := c.Preview(target)
-			if e != nil {
+			if e != nil && kind != "not-hot" {
 				t.Fatal(e)
 			}
 			_, e = c.Reconfigure(context.Background(), Request{ID: "unsafe", Expected: p.Expected, Approval: "native checks must reject"}, p)
@@ -69,7 +69,7 @@ func TestUnsafeTargetsLeaveTheActiveTopologyUnchanged(t *testing.T) {
 			}
 			after, _ := Capture(f.Snapshot(), catalog)
 			afterHash, _ := Digest(after)
-			if result := c.Status().Storage.LastResult; result == nil || result.Outcome != "failed" || result.OperationID != "unsafe" {
+			if result := c.Status().Storage.LastResult; kind != "not-hot" && (result == nil || result.Outcome != "failed" || result.OperationID != "unsafe") {
 				t.Fatalf("failed attempt not inspectable: %+v", result)
 			}
 			if beforeHash != afterHash || f.Snapshot().Generation != 1 || len(s.History()) != 1 || s.Inspect().Pending != nil {

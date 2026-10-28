@@ -63,15 +63,16 @@ type Revision struct {
 	FromRevision uint64   `json:"from_revision"`
 }
 type Intent struct {
-	Request        Request  `json:"request"`
-	SessionID      string   `json:"session_id"`
-	Mode           string   `json:"mode"`
-	Target         Manifest `json:"target"`
-	TargetDigest   string   `json:"target_digest"`
-	SourceRevision uint64   `json:"source_revision"`
-	BaseGeneration uint64   `json:"base_generation"`
-	BaseDigest     string   `json:"base_digest"`
-	Plan           Plan     `json:"plan"`
+	Request        Request           `json:"request"`
+	SessionID      string            `json:"session_id"`
+	Mode           string            `json:"mode"`
+	Target         Manifest          `json:"target"`
+	TargetDigest   string            `json:"target_digest"`
+	SourceRevision uint64            `json:"source_revision"`
+	BaseGeneration uint64            `json:"base_generation"`
+	BaseDigest     string            `json:"base_digest"`
+	Plan           Plan              `json:"plan"`
+	Planning       *PlanningEvidence `json:"planning,omitempty"`
 }
 type Inspection struct {
 	Position     Position  `json:"position"`
@@ -115,6 +116,7 @@ type journalState struct {
 	sessions        map[string]bool
 	sessionBase     Position
 	hasAttempt      bool
+	facts           map[string]DefinitionFacts
 	entries         []Entry
 }
 
@@ -124,10 +126,12 @@ type Entry struct {
 	Position                                                                            Position
 	Timestamp, Kind, SessionID, OperationID, Approval, RelatedOperationID, TargetDigest string
 	Receipt                                                                             *Receipt
+	Plan                                                                                *Plan
+	Planning                                                                            *PlanningEvidence
 }
 
 func initialState() journalState {
-	return journalState{history: []Revision{}, requests: map[string]requestResult{}, sessions: map[string]bool{}}
+	return journalState{history: []Revision{}, requests: map[string]requestResult{}, sessions: map[string]bool{}, facts: map[string]DefinitionFacts{}}
 }
 func detached[T any](v T) T {
 	data, _ := json.Marshal(v)
@@ -140,6 +144,10 @@ func (s journalState) clone() journalState {
 	n.inspection = detached(s.inspection)
 	n.history = detached(s.history)
 	n.entries = detached(s.entries)
+	n.facts = make(map[string]DefinitionFacts, len(s.facts))
+	for k, v := range s.facts {
+		n.facts[k] = detached(v)
+	}
 	n.requests = make(map[string]requestResult, len(s.requests))
 	n.sessions = make(map[string]bool, len(s.sessions))
 	for id, v := range s.sessions {

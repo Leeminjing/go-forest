@@ -114,7 +114,10 @@ func (s *journalState) reduce(r record, digest string) error {
 		if d != in.TargetDigest {
 			return ErrCorruptJournal
 		}
-		h, _ := intentHash(*in)
+		h, hashErr := intentHash(*in)
+		if hashErr != nil {
+			return hashErr
+		}
 		if h != r.RequestDigest {
 			return ErrCorruptJournal
 		}
@@ -145,9 +148,26 @@ func (s *journalState) reduce(r record, digest string) error {
 		default:
 			return ErrCorruptJournal
 		}
-		p := makePlan(before, n, in.BaseGeneration, in.Mode != "restore")
+		p := makePlanV1(before, n, in.BaseGeneration, in.Mode != "restore")
 		if in.Mode != "restore" && in.BaseDigest == d {
 			p = Plan{BaseGeneration: in.BaseGeneration, Operations: []forest.Operation{}}
+		}
+		if in.Planning != nil {
+			if in.Planning.Version != 2 {
+				return ErrUnsupportedPlanVersion
+			}
+			calculated, evidence, e := planV2(before, n, in.BaseGeneration, in.Planning.Facts)
+			if e != nil || !reflect.DeepEqual(evidence, in.Planning) {
+				return ErrCorruptJournal
+			}
+			for _, fact := range in.Planning.Facts {
+				key := factKey(fact)
+				if old, ok := s.facts[key]; ok && !reflect.DeepEqual(old, fact) {
+					return ErrCorruptJournal
+				}
+				s.facts[key] = fact
+			}
+			p = calculated
 		}
 		if !reflect.DeepEqual(p, in.Plan) {
 			return ErrCorruptJournal
@@ -182,6 +202,11 @@ func (s *journalState) reduce(r record, digest string) error {
 					return ErrCorruptJournal
 				}
 				ids[instance.InstanceID] = true
+			}
+			if in.Planning != nil && in.Mode != "restore" {
+				if e := checkRetainedInstances(in.Planning.Impact, s.inspection.LastObserved, result); e != nil {
+					return e
+				}
 			}
 			noop := in.Mode != "restore" && in.BaseDigest == in.TargetDigest
 			if result.Noop != noop {
@@ -286,6 +311,8 @@ func (s *journalState) reduce(r record, digest string) error {
 		entry.Approval = r.Intent.Request.Approval
 		entry.SessionID = r.Intent.SessionID
 		entry.TargetDigest = r.Intent.TargetDigest
+		entry.Plan = detached(&r.Intent.Plan)
+		entry.Planning = detached(r.Intent.Planning)
 	}
 	if r.Target != nil {
 		entry.TargetDigest, _ = Digest(*r.Target)

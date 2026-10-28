@@ -1,0 +1,55 @@
+// Run only from a separate module pinned to topology v0.1.0, never with replace.
+package main
+
+import (
+ "context"
+ "encoding/json"
+ "errors"
+ "fmt"
+ "os"
+ "path/filepath"
+ "strings"
+ "github.com/Leeminjing/go-forest/forest"
+ "github.com/Leeminjing/go-forest/extensions/topology"
+)
+type number interface{ Number() int }
+type value int
+func(v value)Number()int{return int(v)}
+type attempt struct{ Request topology.Request; Proposal topology.Proposal; Receipt topology.Receipt }
+type evidence struct{ Seed topology.Receipt; Boot topology.Request; BootReceipt topology.Receipt; Attempts []attempt; Position topology.Position }
+func must(err error){if err!=nil {panic(err)}}
+func main(){
+ ctx:=context.Background();dir:=os.Args[2];must(os.MkdirAll(dir,0700))
+ block:=false
+ regs:=[]topology.Registration{}
+ for _,version:=range []string{"1","2","bad"}{ version:=version
+  d:=forest.Definition{TypeID:"number",Version:version,HotSwappable:true,Capabilities:[]forest.CapabilityDescriptor{forest.Capability[number]("number",forest.Public)},Build:func(context.Context,*forest.BuildEnv)(forest.Lifecycle,error){panic("replaced below")}}
+  d.Build=func(_ context.Context,env *forest.BuildEnv)(forest.Lifecycle,error){
+   if block {fmt.Println("LEGACY_READY");var b [1]byte;_,_=os.Stdin.Read(b[:]);panic("kill barrier released")}
+   return forest.Hooks{OnStart:func(context.Context)error{if version=="bad" {return errors.New("old native startup failure")};return nil}},forest.Provide(env,"number",value(7))
+  }
+  regs=append(regs,topology.Registration{Definition:d,ContractKey:"number/1",ImplementationDigest:strings.Repeat("a",64)})
+ }
+ catalog,err:=topology.NewCatalog(regs);must(err)
+ m:=topology.Empty();m.Trees=append(m.Trees,topology.Tree{ID:"number",Definition:regs[0].Definition.Ref(),ContractKey:"number/1",ImplementationDigest:strings.Repeat("a",64)})
+ store,err:=topology.Open(dir,topology.Options{});must(err)
+ result:=evidence{Attempts:[]attempt{}}
+ result.Seed,err=store.Seed(ctx,topology.Request{ID:"seed",Expected:store.Inspect().Position,Approval:"v0.1 producer"},m);must(err)
+ c,err:=topology.NewController(forest.New(forest.Options{}),store,catalog);must(err)
+ result.Boot=topology.Request{ID:"boot",Expected:store.Inspect().Position,Approval:"old cold restore"}
+ result.BootReceipt,err=c.Restore(ctx,result.Boot);must(err)
+ change:=func(id,version string,rollback bool){
+  target:=m;target.Trees=append([]topology.Tree(nil),m.Trees...);target.Trees[0].Definition.Version=version
+  p,e:=c.Preview(target);must(e);if rollback {p,e=c.PreviewRollback(result.Seed.Revision);must(e)}
+  req:=topology.Request{ID:id,Expected:p.Expected,Approval:"v0.1 actual original request"}
+  var r topology.Receipt
+  if rollback {r,e=c.Rollback(ctx,req,p)}else{r,e=c.Reconfigure(ctx,req,p)}
+  if version=="bad" {if !errors.Is(e,forest.ErrPrepareFailed){panic(e)}}else{must(e)}
+  result.Attempts=append(result.Attempts,attempt{req,p,r})
+ }
+ if os.Args[1]=="pending" {block=true;change("pending-upgrade","2",false);panic("expected kill")}
+ change("upgrade","2",false);change("noop","2",false);change("failed","bad",false);change("rollback","1",true)
+ must(c.Close(ctx));result.Position=store.Inspect().Position
+ data,err:=json.MarshalIndent(result,"","  ");must(err);must(os.WriteFile(filepath.Join(dir,"evidence.json"),data,0600))
+ fmt.Println("LEGACY_DONE")
+}

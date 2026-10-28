@@ -11,6 +11,8 @@ import (
 )
 
 var (
+	ErrPlanBlocked            = errors.New("topology plan blocked")
+	ErrUnsupportedPlanVersion = errors.New("unsupported topology plan version")
 	ErrInvalidManifest        = errors.New("invalid topology manifest")
 	ErrCorruptJournal         = errors.New("corrupt topology journal")
 	ErrUnsupportedFormat      = errors.New("unsupported topology format")

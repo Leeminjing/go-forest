@@ -69,7 +69,7 @@ func main() {
 '''
 
 
-def main():
+def verify(versions, consumer, expected):
     with tempfile.TemporaryDirectory(prefix="forest-topology-consumer-") as temporary:
         directory = Path(temporary)
         env = dict(os.environ, GOWORK="off", GOMODCACHE=str(directory / "module-cache"))
@@ -80,9 +80,9 @@ def main():
                                   stdout=subprocess.PIPE if capture else None).stdout
 
         run("go", "mod", "init", "external.example/topology-consumer")
-        (directory / "main.go").write_text(CONSUMER, encoding="utf-8")
+        (directory / "main.go").write_text(consumer, encoding="utf-8")
         run("gofmt", "-w", "main.go")
-        run("go", "get", *(path + "@" + version for path, version in VERSIONS.items()))
+        run("go", "get", *(path + "@" + version for path, version in versions.items()))
         run("go", "mod", "tidy")
         run("go", "mod", "verify")
         payload = run("go", "list", "-m", "-json", "all", capture=True)
@@ -93,17 +93,21 @@ def main():
             payload = payload[count:]
             assert "Replace" not in item, "published dependency has replace"
             modules[item["Path"]] = item
-        for path, version in VERSIONS.items():
+        for path, version in versions.items():
             item = modules[path]
             assert item["Version"] == version, item
             assert not Path(item["Dir"]).is_relative_to(ROOT), item
             print(path + "@" + version + ": fixed external download", flush=True)
         run("go", "vet", "./...")
         evidence = json.loads(run("go", "run", ".", capture=True))
-        assert evidence == {"Values": [1, 2, 1, 1], "Generations": [1, 2, 3],
-                            "ColdGeneration": 1, "NewSession": True}, evidence
+        assert evidence == expected, evidence
         print(json.dumps(evidence), flush=True)
         print("PASS: Capture/Seed/Restore/Invoke/Reconfigure/Rollback/new session", flush=True)
+
+
+def main():
+    verify(VERSIONS, CONSUMER, {"Values": [1, 2, 1, 1], "Generations": [1, 2, 3],
+                                "ColdGeneration": 1, "NewSession": True})
 
 
 if __name__ == "__main__":

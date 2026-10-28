@@ -137,6 +137,7 @@ func TestTopologyWorker(t *testing.T) {
 		t.Skip("supervised subprocess role")
 	}
 	stage := os.Getenv("FOREST_TOPOLOGY_STAGE")
+	armed := os.Getenv("FOREST_TOPOLOGY_SCENARIO") != "incremental-crash"
 	resources := filepath.Join(directory, "resources")
 	s, e := Open(directory, Options{})
 	if e != nil {
@@ -145,7 +146,7 @@ func TestTopologyWorker(t *testing.T) {
 	f := forest.New(forest.Options{})
 	var c *Controller
 	report := func(name string) {
-		if name != stage {
+		if name != stage || !armed {
 			return
 		}
 		session := ""
@@ -205,6 +206,26 @@ func TestTopologyWorker(t *testing.T) {
 	samples := []processSample{sample()}
 	changedTrees := 0
 	switch os.Getenv("FOREST_TOPOLOGY_SCENARIO") {
+	case "incremental-crash":
+		armed = true
+		target := s.Inspect().Desired.Manifest
+		for i := range target.Trees {
+			if target.Trees[i].ID == "file" {
+				target.Trees[i].Definition.Version = "2"
+				target.Trees[i].ImplementationDigest = strings.Repeat("d", 64)
+			}
+		}
+		p, err := c.Preview(target)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(p.RebuildTrees, []forest.TreeID{"file"}) {
+			t.Fatal("crash fixture did not preserve its stable resource")
+		}
+		_, err = c.Reconfigure(context.Background(), Request{ID: "crashed-incremental", Expected: p.Expected, Approval: "incremental crash-window acceptance"}, p)
+		if err != nil {
+			t.Fatal(err)
+		}
 	case "write-history":
 		target := s.Inspect().Desired.Manifest
 		target.Trees[0].Definition.Version = "2"
