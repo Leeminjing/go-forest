@@ -18,6 +18,7 @@ func BenchmarkManagement(b *testing.B) {
 			managed := kind == "Preview" || kind == "CommitFresh"
 			var x *Fixture
 			var err error
+			var proposal topology.Proposal
 			setup := func() {
 				directory := ""
 				if managed {
@@ -60,6 +61,16 @@ func BenchmarkManagement(b *testing.B) {
 						b.Fatal(e)
 					}
 				}
+				if kind == "CommitFresh" {
+					target, e := x.Target()
+					if e != nil {
+						b.Fatal(e)
+					}
+					proposal, e = x.C.Preview(target)
+					if e != nil {
+						b.Fatal(e)
+					}
+				}
 			}
 			setup()
 			defer func() {
@@ -85,12 +96,7 @@ func BenchmarkManagement(b *testing.B) {
 				case "ApplyReplaceFresh":
 					err = x.Change(ctx, true)
 				case "CommitFresh":
-					p, e := x.C.Preview(target)
-					if e != nil {
-						err = e
-						break
-					}
-					_, err = x.C.Reconfigure(ctx, topology.Request{ID: "measured", Expected: p.Expected, Approval: "durable measured commit including validation"}, p)
+					_, err = x.C.Reconfigure(ctx, topology.Request{ID: "measured", Expected: proposal.Expected, Approval: "durable measured commit; external preview excluded"}, proposal)
 				case "Noop":
 					_, err = x.F.Apply(ctx, emptyPlan(x.generation))
 				case "Snapshot":

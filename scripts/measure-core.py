@@ -93,7 +93,8 @@ def main():
     binary = directory / ("perf.exe" if os.name == "nt" else "perf")
     run("build-info", "go", "build", "-pgo=off", "-o", str(binary), "./cmd/perf")
     run("binary-info", "go", "version", "-m", str(binary))
-    metadata = {"core": core_sha, "harness": harness_sha, "arguments": vars(args),
+    (directory / "runner.py").write_bytes(Path(__file__).read_bytes())
+    metadata = {"runner_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), "core": core_sha, "harness": harness_sha, "arguments": vars(args),
                 "core_files": manifest(core, ["forest/*.go", "go.mod", "go.sum"]),
                 "harness_files": manifest(harness, ["*.go", "cmd/**/*.go", "go.mod", "go.sum"]),
                 "platform": platform.platform(), "machine": platform.machine(), "cpu": platform.processor(),

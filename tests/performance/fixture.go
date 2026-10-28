@@ -227,7 +227,11 @@ func (x *Fixture) Target() (topology.Manifest, error) {
 	m, e := topology.Capture(x.F.Snapshot(), x.Catalog)
 	for i := range m.Trees {
 		if m.Trees[i].ID == Provider(0) {
-			m.Trees[i].Definition.Version = "2"
+			if m.Trees[i].Definition.Version == "1" {
+				m.Trees[i].Definition.Version = "2"
+			} else {
+				m.Trees[i].Definition.Version = "1"
+			}
 		}
 	}
 	return m, e
