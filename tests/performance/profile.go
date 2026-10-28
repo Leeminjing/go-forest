@@ -17,7 +17,7 @@ func emptyPlan(g uint64) forest.ChangePlan { return forest.ChangePlan{BaseGenera
 
 // Profile excludes fixture construction and captures only real pinned reads.
 // Each kind runs separately; these instrumented runs are not benchmark results.
-func Profile(cfg Config, kind, path string, duration time.Duration, workers int) (uint64, error) {
+func Profile(cfg Config, kind, path string, duration time.Duration, workers int, enter bool) (uint64, error) {
 	if duration <= 0 || workers < 1 {
 		return 0, fmt.Errorf("invalid profiling duration/workers")
 	}
@@ -41,13 +41,30 @@ func Profile(cfg Config, kind, path string, duration time.Duration, workers int)
 	for i := 0; i < workers; i++ {
 		go func() {
 			defer joined.Done()
-			err := x.Pinned(context.Background(), func(ctx context.Context, r Runner) error {
+			invoke := func(fn func(context.Context, Runner) error) error { return x.Pinned(context.Background(), fn) }
+			if enter {
+				invoke = func(fn func(context.Context, Runner) error) error { return fn(context.Background(), nil) }
+			}
+			signaled := false
+			defer func() {
+				if !signaled {
+					ready.Done()
+				}
+			}()
+			err := invoke(func(ctx context.Context, r Runner) error {
 				ready.Done()
+				signaled = true
 				<-start
 				var local uint64
 				for time.Now().Before(deadline) {
 					for batch := 0; batch < 256; batch++ {
-						got, e := r.Read(ctx)
+						var got uint64
+						var e error
+						if enter {
+							got, e = x.Call(ctx)
+						} else {
+							got, e = r.Read(ctx)
+						}
 						if !checkedResult(x, got, e) {
 							return fmt.Errorf("profile read: %d %w", got, e)
 						}

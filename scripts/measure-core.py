@@ -121,7 +121,7 @@ def main():
     if args.profiles:
         for kind in ["cpu", "heap", "allocs", "block", "mutex"]:
             run("profile-" + kind, str(binary), "-mode=profile", "-n=10004", "-e=10001",
-                "-workers=4", "-duration=2s", "-kind=" + kind, "-out=" + str(directory / (kind + ".pprof")))
+                "-workers=4", "-duration=2s", "-kind=" + kind, "-enter=" + str(kind in ["block", "mutex"]).lower(), "-out=" + str(directory / (kind + ".pprof")))
             run("profile-top-" + kind, "go", "tool", "pprof", "-top", str(binary), str(directory / (kind + ".pprof")))
     (directory / "COMPLETE").write_text("all commands succeeded\n", encoding="utf-8")
     print("saved immutable run: " + str(directory), flush=True)
