@@ -139,26 +139,6 @@ func detached[T any](v T) T {
 	_ = json.Unmarshal(data, &out)
 	return out
 }
-func (s journalState) clone() journalState {
-	n := s
-	n.inspection = detached(s.inspection)
-	n.history = detached(s.history)
-	n.entries = detached(s.entries)
-	n.facts = make(map[string]DefinitionFacts, len(s.facts))
-	for k, v := range s.facts {
-		n.facts[k] = detached(v)
-	}
-	n.requests = make(map[string]requestResult, len(s.requests))
-	n.sessions = make(map[string]bool, len(s.sessions))
-	for id, v := range s.sessions {
-		n.sessions[id] = v
-	}
-	for id, r := range s.requests {
-		r.receipt = detached(r.receipt)
-		n.requests[id] = r
-	}
-	return n
-}
 
 type journalFile interface {
 	ReadAt([]byte, int64) (int, error)
@@ -355,11 +335,11 @@ func (s *Store) scan(anchor *Position) error {
 		if e = strict(data[16:], &r, maxFrameBytes); e != nil {
 			return bad(e)
 		}
-		next := s.state.clone()
-		if e = next.reduce(r, digest); e != nil {
+		next, e := s.state.prepareRecord(r, digest)
+		if e != nil {
 			return bad(e)
 		}
-		s.state = next
+		next.publish(&s.state)
 		if anchor != nil && r.Sequence == anchor.Sequence {
 			if s.state.inspection.Position != *anchor {
 				return bad(ErrHistoryConflict)
@@ -396,8 +376,8 @@ func (s *Store) appendLocked(ctx context.Context, r record, reserve int64) error
 	if r.Sequence > maxRecords || s.end+int64(len(data))+reserve > maxJournalBytes || (reserve > 0 && r.Sequence >= maxRecords) {
 		return fmt.Errorf("%w: journal capacity", ErrInvalidManifest)
 	}
-	next := s.state.clone()
-	if e = next.reduce(r, digest); e != nil {
+	next, e := s.state.prepareRecord(r, digest)
+	if e != nil {
 		return e
 	}
 	for len(data) > 0 {
@@ -417,7 +397,7 @@ func (s *Store) appendLocked(ctx context.Context, r record, reserve int64) error
 		return &Error{Stage: "sync", Sequence: r.Sequence, Offset: s.end, Cause: errors.Join(ErrPersistenceUnknown, e)}
 	}
 	// No cancellation check can undo a completed Sync. Report its actual result.
-	s.state = next
+	next.publish(&s.state)
 	info, e := s.file.Stat()
 	if e != nil {
 		s.poisoned = true

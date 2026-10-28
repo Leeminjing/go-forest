@@ -8,52 +8,56 @@ import (
 	"github.com/Leeminjing/go-forest/forest"
 )
 
-// reduce validates both newly appended and replayed records. It never infers
+// prepareRecord validates both newly appended and replayed records. It never infers
 // a missing terminal record from an intent, desired hash or process death.
-func (s *journalState) reduce(r record, digest string) error {
+func (current *journalState) prepareRecord(r record, digest string) (preparedRecord, error) {
+	next := *current
+	s := &next // read old immutable values; writes below target only this delta
+	change := preparedRecord{}
+
 	if _, e := time.Parse(time.RFC3339Nano, r.Timestamp); e != nil {
-		return ErrCorruptJournal
+		return preparedRecord{}, ErrCorruptJournal
 	}
 	pos := s.inspection.Position
 	if r.Sequence != pos.Sequence+1 || r.PreviousDigest != pos.Digest || !validDigest(digest) {
-		return ErrCorruptJournal
+		return preparedRecord{}, ErrCorruptJournal
 	}
 	if r.Sequence == 1 {
 		if r.Kind != "genesis" || len(r.StoreID) != 32 {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 	} else if r.StoreID != pos.StoreID || r.Kind == "genesis" {
-		return ErrCorruptJournal
+		return preparedRecord{}, ErrCorruptJournal
 	}
 	switch r.Kind {
 	case "genesis":
 		if r.Request != nil || r.Target != nil || r.Intent != nil || r.Receipt != nil || r.SessionID != "" {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 	case "seed":
 		if len(s.history) != 0 || r.Request == nil || !validRequest(*r.Request) || r.Target == nil {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		n, e := Normalize(*r.Target)
 		if e != nil {
-			return e
+			return preparedRecord{}, e
 		}
 		h, _ := requestHash("seed", *r.Request, n, 0)
 		if h != r.RequestDigest || r.Request.Expected != pos {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		d, _ := Digest(n)
 		revision := Revision{ID: r.Sequence, Source: "desired-only", Manifest: n, Digest: d}
-		s.history = append(s.history, revision)
+		change.revision = &revision
 		s.inspection.Desired = &revision
 		receipt := Receipt{OperationID: r.Request.ID, Mode: "seed", Outcome: "selected", Revision: r.Sequence, ManifestDigest: d, Instances: []InstanceObservation{}}
-		s.requests[r.Request.ID] = requestResult{digest: h, receipt: receipt, request: *r.Request}
+		change.requests = append(change.requests, requestWrite{key: r.Request.ID, value: requestResult{digest: h, receipt: receipt, request: *r.Request}})
 		s.inspection.LastResult = detached(&receipt)
 	case "session-opened":
 		if r.Request == nil || !validRequest(*r.Request) || r.Request.Expected != pos || s.inspection.Desired == nil || s.inspection.Pending != nil || len(r.SessionID) != 32 || s.sessions[r.SessionID] {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
-		s.sessions[r.SessionID] = true
+		change.session = r.SessionID
 		s.inspection.SessionID = r.SessionID
 		s.sessionActive = true
 		s.sessionBase = pos
@@ -62,14 +66,14 @@ func (s *journalState) reduce(r record, digest string) error {
 		s.runtimeDigest, _ = Digest(Empty())
 	case "selected":
 		if r.Request == nil || !validRequest(*r.Request) || r.Request.Expected != pos || r.Target == nil || s.inspection.Pending != nil {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		if _, ok := s.requests[r.Request.ID]; ok {
-			return ErrRequestConflict
+			return preparedRecord{}, ErrRequestConflict
 		}
 		n, e := Normalize(*r.Target)
 		if e != nil {
-			return e
+			return preparedRecord{}, e
 		}
 		d, _ := Digest(n)
 		found := false
@@ -79,57 +83,57 @@ func (s *journalState) reduce(r record, digest string) error {
 			}
 		}
 		if !found {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		h, _ := requestHash("select-historical", *r.Request, n, r.FromRevision)
 		if h != r.RequestDigest {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		v := Revision{ID: r.Sequence, Source: "host-selected", Manifest: n, Digest: d, FromRevision: r.FromRevision}
-		s.history = append(s.history, v)
+		change.revision = &v
 		s.inspection.Desired = &v
 		s.sessionActive = false
 		result := Receipt{OperationID: r.Request.ID, Mode: "select-historical", Outcome: "selected", Revision: r.Sequence, ManifestDigest: d, Instances: []InstanceObservation{}}
-		s.requests[r.Request.ID] = requestResult{digest: h, receipt: result, request: *r.Request}
+		change.requests = append(change.requests, requestWrite{key: r.Request.ID, value: requestResult{digest: h, receipt: result, request: *r.Request}})
 		s.inspection.LastResult = detached(&result)
 	case "intent":
 		if r.Intent == nil || !s.sessionActive || s.inspection.Pending != nil {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		in := r.Intent
 		if in.SessionID != s.inspection.SessionID || !validRequest(in.Request) || in.BaseGeneration != s.generation || in.BaseDigest != s.runtimeDigest {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		if in.Request.Expected != pos && !(in.Mode == "restore" && !s.hasAttempt && in.Request.Expected == s.sessionBase) {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		if _, ok := s.requests[in.Request.ID]; ok {
-			return ErrRequestConflict
+			return preparedRecord{}, ErrRequestConflict
 		}
 		n, e := Normalize(in.Target)
 		if e != nil {
-			return e
+			return preparedRecord{}, e
 		}
 		d, _ := Digest(n)
 		if d != in.TargetDigest {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		h, hashErr := intentHash(*in)
 		if hashErr != nil {
-			return hashErr
+			return preparedRecord{}, hashErr
 		}
 		if h != r.RequestDigest {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		before := Empty()
 		switch in.Mode {
 		case "restore":
 			if s.generation != 0 || s.inspection.Desired == nil || d != s.inspection.Desired.Digest || in.SourceRevision != s.inspection.Desired.ID {
-				return ErrCorruptJournal
+				return preparedRecord{}, ErrCorruptJournal
 			}
 		case "reconfigure", "rollback":
 			if s.inspection.LastObserved == nil || s.inspection.LastObserved.SessionID != in.SessionID || s.inspection.Desired == nil {
-				return ErrCorruptJournal
+				return preparedRecord{}, ErrCorruptJournal
 			}
 			before = s.inspection.Desired.Manifest
 			if in.Mode == "rollback" {
@@ -140,13 +144,13 @@ func (s *journalState) reduce(r record, digest string) error {
 					}
 				}
 				if !found {
-					return ErrCorruptJournal
+					return preparedRecord{}, ErrCorruptJournal
 				}
 			} else if in.SourceRevision != 0 {
-				return ErrCorruptJournal
+				return preparedRecord{}, ErrCorruptJournal
 			}
 		default:
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		p := makePlanV1(before, n, in.BaseGeneration, in.Mode != "restore")
 		if in.Mode != "restore" && in.BaseDigest == d {
@@ -154,23 +158,36 @@ func (s *journalState) reduce(r record, digest string) error {
 		}
 		if in.Planning != nil {
 			if in.Planning.Version != 2 {
-				return ErrUnsupportedPlanVersion
+				return preparedRecord{}, ErrUnsupportedPlanVersion
 			}
 			calculated, evidence, e := planV2(before, n, in.BaseGeneration, in.Planning.Facts)
 			if e != nil || !reflect.DeepEqual(evidence, in.Planning) {
-				return ErrCorruptJournal
+				return preparedRecord{}, ErrCorruptJournal
 			}
 			for _, fact := range in.Planning.Facts {
 				key := factKey(fact)
 				if old, ok := s.facts[key]; ok && !reflect.DeepEqual(old, fact) {
-					return ErrCorruptJournal
+					return preparedRecord{}, ErrCorruptJournal
 				}
-				s.facts[key] = fact
+				if _, known := s.facts[key]; !known {
+					seen := false
+					for _, pending := range change.facts {
+						if pending.key == key {
+							if !reflect.DeepEqual(pending.value, fact) {
+								return preparedRecord{}, ErrCorruptJournal
+							}
+							seen = true
+						}
+					}
+					if !seen {
+						change.facts = append(change.facts, factWrite{key: key, value: detached(fact)})
+					}
+				}
 			}
 			p = calculated
 		}
 		if !reflect.DeepEqual(p, in.Plan) {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		s.inspection.Pending = detached(in)
 		s.pendingSequence = r.Sequence
@@ -179,58 +196,58 @@ func (s *journalState) reduce(r record, digest string) error {
 	case "apply-observed", "apply-failed":
 		in := s.inspection.Pending
 		if in == nil || r.Receipt == nil || r.SessionID != in.SessionID {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		result := r.Receipt
 		if result.OperationID != in.Request.ID || result.SessionID != in.SessionID || result.Mode != in.Mode || result.HistoricalOnly {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		if r.Kind == "apply-observed" {
 			expected := in.BaseGeneration
 			if len(in.Plan.Operations) > 0 {
 				if expected == ^uint64(0) {
-					return ErrCorruptJournal
+					return preparedRecord{}, ErrCorruptJournal
 				}
 				expected++
 			}
 			if result.Generation != expected || result.ManifestDigest != in.TargetDigest || result.Outcome != "observed" || result.FailureKind != "" || len(result.FailureCodes) != 0 || result.FailureStage != "" || result.FailureTree != "" || result.Conflict != nil || len(result.Instances) != len(in.Target.Trees) {
-				return ErrCorruptJournal
+				return preparedRecord{}, ErrCorruptJournal
 			}
 			ids := map[string]bool{}
 			for i, instance := range result.Instances {
 				if instance.TreeID != string(in.Target.Trees[i].ID) || !validID(instance.InstanceID) || ids[instance.InstanceID] {
-					return ErrCorruptJournal
+					return preparedRecord{}, ErrCorruptJournal
 				}
 				ids[instance.InstanceID] = true
 			}
 			if in.Planning != nil && in.Mode != "restore" {
 				if e := checkRetainedInstances(in.Planning.Impact, s.inspection.LastObserved, result); e != nil {
-					return e
+					return preparedRecord{}, e
 				}
 			}
 			noop := in.Mode != "restore" && in.BaseDigest == in.TargetDigest
 			if result.Noop != noop {
-				return ErrCorruptJournal
+				return preparedRecord{}, ErrCorruptJournal
 			}
 			revision := s.inspection.Desired.ID
 			if in.Mode != "restore" && !noop {
 				revision = s.pendingSequence
 				v := Revision{ID: revision, Source: "apply-observed", Manifest: detached(in.Target), Digest: in.TargetDigest, FromRevision: in.SourceRevision}
-				s.history = append(s.history, v)
+				change.revision = &v
 				s.inspection.Desired = &v
 			}
 			if result.Revision != revision {
-				return ErrCorruptJournal
+				return preparedRecord{}, ErrCorruptJournal
 			}
 			s.generation = expected
 			s.runtimeDigest = in.TargetDigest
 			s.inspection.LastObserved = detached(result)
 		} else {
 			if result.Outcome != "failed" || result.Generation != in.BaseGeneration || result.ManifestDigest != in.BaseDigest || result.Revision != s.inspection.Desired.ID || !validFailureCodes(result.FailureCodes) || result.FailureKind != result.FailureCodes[0] || !validID(result.FailureStage) || len(result.Instances) != 0 || result.Noop {
-				return ErrCorruptJournal
+				return preparedRecord{}, ErrCorruptJournal
 			}
 		}
-		s.requests[result.OperationID] = requestResult{digest: s.pendingHash, receipt: detached(*result), request: in.Request}
+		change.requests = append(change.requests, requestWrite{key: result.OperationID, value: requestResult{digest: s.pendingHash, receipt: detached(*result), request: in.Request}})
 		s.inspection.LastResult = detached(result)
 		s.inspection.Pending = nil
 		s.pendingSequence = 0
@@ -238,35 +255,35 @@ func (s *journalState) reduce(r record, digest string) error {
 	case "resolved":
 		in := s.inspection.Pending
 		if in == nil || r.Request == nil || !validRequest(*r.Request) || r.Request.Expected != pos || r.PendingID != in.Request.ID || (r.Choice != "previous" && r.Choice != "target") {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		if _, ok := s.requests[r.Request.ID]; ok || r.Request.ID == in.Request.ID {
-			return ErrRequestConflict
+			return preparedRecord{}, ErrRequestConflict
 		}
 		h, _ := requestHash("resolve/"+r.Choice+"/"+r.PendingID, *r.Request, Empty(), 0)
 		if h != r.RequestDigest {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		if r.Choice == "target" {
 			v := Revision{ID: r.Sequence, Source: "host-selected", Manifest: detached(in.Target), Digest: in.TargetDigest, FromRevision: s.pendingSequence}
-			s.history = append(s.history, v)
+			change.revision = &v
 			s.inspection.Desired = &v
 		}
 		result := Receipt{OperationID: r.Request.ID, Mode: "resolve", Outcome: "selected", Revision: s.inspection.Desired.ID, ManifestDigest: s.inspection.Desired.Digest, Instances: []InstanceObservation{}}
-		s.requests[r.Request.ID] = requestResult{digest: h, receipt: result, request: *r.Request}
+		change.requests = append(change.requests, requestWrite{key: r.Request.ID, value: requestResult{digest: h, receipt: result, request: *r.Request}})
 		s.inspection.LastResult = detached(&result)
-		s.requests[in.Request.ID] = requestResult{digest: s.pendingHash, receipt: Receipt{OperationID: in.Request.ID, SessionID: in.SessionID, Mode: in.Mode, Outcome: "reconciled", Revision: s.inspection.Desired.ID, ManifestDigest: s.inspection.Desired.Digest, Instances: []InstanceObservation{}}, request: in.Request}
+		change.requests = append(change.requests, requestWrite{key: in.Request.ID, value: requestResult{digest: s.pendingHash, receipt: Receipt{OperationID: in.Request.ID, SessionID: in.SessionID, Mode: in.Mode, Outcome: "reconciled", Revision: s.inspection.Desired.ID, ManifestDigest: s.inspection.Desired.Digest, Instances: []InstanceObservation{}}, request: in.Request}})
 		s.inspection.Pending = nil
 		s.pendingSequence = 0
 		s.pendingHash = ""
 		s.sessionActive = false
 	case "session-closed":
 		if !s.sessionActive || r.SessionID != s.inspection.SessionID {
-			return ErrCorruptJournal
+			return preparedRecord{}, ErrCorruptJournal
 		}
 		s.sessionActive = false
 	default:
-		return fmt.Errorf("%w: record kind %q", ErrUnsupportedFormat, r.Kind)
+		return preparedRecord{}, fmt.Errorf("%w: record kind %q", ErrUnsupportedFormat, r.Kind)
 	}
 	// Known fields on the wrong record kind must not be silently ignored.
 	allowed := record{Sequence: r.Sequence, StoreID: r.StoreID, PreviousDigest: r.PreviousDigest, Kind: r.Kind, Timestamp: r.Timestamp}
@@ -298,7 +315,7 @@ func (s *journalState) reduce(r record, digest string) error {
 		allowed.SessionID = r.SessionID
 	}
 	if !reflect.DeepEqual(allowed, r) {
-		return ErrCorruptJournal
+		return preparedRecord{}, ErrCorruptJournal
 	}
 	s.inspection.Position = Position{StoreID: r.StoreID, Sequence: r.Sequence, Digest: digest}
 	entry := Entry{Position: s.inspection.Position, Timestamp: r.Timestamp, Kind: r.Kind, SessionID: r.SessionID, RelatedOperationID: r.PendingID}
@@ -322,6 +339,7 @@ func (s *journalState) reduce(r record, digest string) error {
 		entry.Receipt = detached(r.Receipt)
 		entry.TargetDigest = r.Receipt.ManifestDigest
 	}
-	s.entries = append(s.entries, entry)
-	return nil
+	change.entry = entry
+	change.next = next
+	return change, nil
 }
