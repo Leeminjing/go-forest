@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -25,6 +26,7 @@ type proof struct {
 	Arguments []string
 	Core      *module
 	UsesCore  bool
+	Checked   bool
 	Error     string
 	PID       int
 }
@@ -37,6 +39,26 @@ func main() {
 	}
 	p := proof{Arguments: os.Args[1:], PID: os.Getpid()}
 	p.Directory, _ = os.Getwd()
+	args := os.Args[1:]
+	queryArgs := args
+	var argumentErr error
+	if len(queryArgs) > 0 && strings.HasPrefix(queryArgs[0], "-C") {
+		var dir string
+		if queryArgs[0] == "-C" && len(queryArgs) > 1 {
+			dir, queryArgs = queryArgs[1], queryArgs[2:]
+		} else if strings.HasPrefix(queryArgs[0], "-C=") {
+			dir, queryArgs = strings.TrimPrefix(queryArgs[0], "-C="), queryArgs[1:]
+		} else {
+			argumentErr = fmt.Errorf("unsupported Go directory flag")
+		}
+		if !filepath.IsAbs(dir) {
+			dir = filepath.Join(p.Directory, dir)
+		}
+		p.Directory = dir
+	}
+	if len(queryArgs) > 0 && strings.HasPrefix(queryArgs[0], "-") {
+		argumentErr = fmt.Errorf("unrecognized global Go flag")
+	}
 	verify := func() error {
 		raw, e := os.ReadFile(os.Getenv("FOREST_CANDIDATE_MANIFEST"))
 		if e != nil {
@@ -57,20 +79,24 @@ func main() {
 			}
 		}
 		args := []string{"list", "-m", "-json"}
-		for i, a := range os.Args[1:] {
+		for i, a := range queryArgs {
 			if len(a) > 9 && a[:9] == "-modfile=" {
 				args = append(args, a)
-			} else if a == "-modfile" && i+2 < len(os.Args) {
-				args = append(args, a, os.Args[i+2])
+			} else if a == "-modfile" && i+1 < len(queryArgs) {
+				args = append(args, a, queryArgs[i+1])
 			}
 		}
 		args = append(args, "github.com/Leeminjing/go-forest")
 		query := exec.Command(real, args...)
+		query.Dir = p.Directory
 		raw, e = query.Output()
 		if e != nil {
 			// A stdlib-only module, such as TestKit, has no Core to replace. Prove
 			// absence using the complete module list rather than swallowing an error.
-			all, e2 := exec.Command(real, "list", "-m", "-json", "all").Output()
+			allArgs := append(append([]string{}, args[:len(args)-1]...), "all")
+			allQuery := exec.Command(real, allArgs...)
+			allQuery.Dir = p.Directory
+			all, e2 := allQuery.Output()
 			if e2 != nil {
 				return fmt.Errorf("Core resolution failed: %w", e)
 			}
@@ -106,14 +132,14 @@ func main() {
 		}
 		return nil
 	}
-	args := os.Args[1:]
-	compiles := len(args) > 0 && (args[0] == "test" || args[0] == "build" || args[0] == "run" || args[0] == "vet" || args[0] == "list")
-	var err error
-	if compiles {
+	compiles := len(queryArgs) > 0 && (queryArgs[0] == "test" || queryArgs[0] == "build" || queryArgs[0] == "run" || queryArgs[0] == "vet" || queryArgs[0] == "list")
+	err := argumentErr
+	if compiles && err == nil {
+		p.Checked = true
 		err = verify()
-		if err != nil {
-			p.Error = err.Error()
-		}
+	}
+	if err != nil {
+		p.Error = err.Error()
 	}
 	_ = os.MkdirAll(logs, 0700)
 	file, e := os.CreateTemp(logs, fmt.Sprintf("go-%d-%d-*.json", os.Getpid(), time.Now().UnixNano()))

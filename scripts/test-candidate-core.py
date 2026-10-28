@@ -86,12 +86,20 @@ def main():
             slug = name.replace("/", "-").replace(".", "root")
             run(slug + "-tidy", [str(guard), "mod", "tidy"], module)
             run(slug + "-modules", [str(guard), "list", "-m", "-json", "all"], module)
+            run(slug + "-deps", [str(guard), "list", "-deps", "-json", "./..."], module)
+            raw = (directory / (slug + "-deps.log")).read_text(encoding="utf-8")
+            decoder = json.JSONDecoder()
+            while raw.strip():
+                package, length = decoder.raw_decode(raw.lstrip()); raw = raw.lstrip()[length:]
+                if package.get("ImportPath", "").startswith("github.com/Leeminjing/go-forest/") and package.get("Module", {}).get("Path") == "github.com/Leeminjing/go-forest":
+                    if not Path(package["Dir"]).resolve().is_relative_to(source.resolve()):
+                        raise RuntimeError("package compiled outside candidate Core: " + package["ImportPath"])
             run(slug + "-vet", [str(guard), "vet", "./..."], module)
             run(slug + "-test", [str(guard), "test", *(["-race"] if args.race else []), "./...", "-count=" + str(args.count), "-timeout=600s"], module)
     proofs = [json.loads(p.read_text(encoding="utf-8")) for p in logs.glob("*.json")]
-    if not any(p["UsesCore"] for p in proofs) or any(p["Error"] for p in proofs):
+    if not any(p.get("Checked") for p in proofs) or any(p["Error"] for p in proofs):
         raise RuntimeError("missing or failed candidate Core build provenance")
-    (directory / "proof-summary.json").write_text(json.dumps({"go_invocations": len(proofs), "verified_Core_invocations": sum(p["UsesCore"] for p in proofs)}, indent=2), encoding="utf-8")
+    (directory / "proof-summary.json").write_text(json.dumps({"go_invocations": len(proofs), "verified_Core_invocations": sum(p["UsesCore"] for p in proofs), "proven_no_Core_invocations": sum(p.get("Checked", False) and not p["UsesCore"] for p in proofs)}, indent=2), encoding="utf-8")
     (directory / "COMPLETE").write_text("candidate regression and dependency guard passed\n", encoding="utf-8")
     print("saved candidate evidence: " + str(directory), flush=True)
 

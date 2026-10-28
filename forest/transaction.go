@@ -53,6 +53,9 @@ func (f *Forest) Apply(ctx context.Context, plan ChangePlan) (generation uint64,
 	if err != nil {
 		return generation, err
 	}
+	// Preparation resolves against the complete candidate, including concurrent
+	// callbacks. Build once before any Factory/Start; never mutate after this.
+	candidate.indexRoutes()
 	var created []*instance
 	committed := false
 	defer func() {

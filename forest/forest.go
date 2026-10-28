@@ -20,8 +20,14 @@ type graph struct {
 	generation uint64
 	nodes      map[TreeID]*node
 	bindings   map[string]Binding
+	routes     map[routeKey][]Binding
 	nextOrder  uint64
 	refs       int
+}
+
+type routeKey struct {
+	consumer TreeID
+	port     PortID
 }
 
 type Forest struct {

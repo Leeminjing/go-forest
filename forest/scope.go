@@ -175,10 +175,7 @@ func (r Ref[T]) use(ctx context.Context, many bool, fn func([]T) error) error {
 			return failure("resolve-phase", r.consumer, r.port, ErrBindingUnavailable)
 		}
 		var values []T
-		for _, b := range sortedBindings(s.graph) {
-			if b.Consumer != r.consumer || b.Port != r.port {
-				continue
-			}
+		for _, b := range s.graph.routes[routeKey{consumer: r.consumer, port: r.port}] {
 			provider := s.graph.nodes[b.Provider]
 			if provider == nil || provider.instance == nil {
 				return ErrBindingUnavailable

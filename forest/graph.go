@@ -114,6 +114,17 @@ func sortedIDs(g *graph) []TreeID {
 	sort.Slice(ids, func(i, j int) bool { return ids[i] < ids[j] })
 	return ids
 }
+
+// indexRoutes owns its map and slices for this graph alone. Store descriptors,
+// not capability objects: resolution must still check this graph's instances.
+func (g *graph) indexRoutes() {
+	g.routes = make(map[routeKey][]Binding)
+	for _, b := range sortedBindings(g) {
+		key := routeKey{consumer: b.Consumer, port: b.Port}
+		g.routes[key] = append(g.routes[key], b)
+	}
+}
+
 func sortedBindings(g *graph) []Binding {
 	bs := make([]Binding, 0, len(g.bindings))
 	for _, b := range g.bindings {
