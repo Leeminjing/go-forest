@@ -3,6 +3,8 @@ package topology
 import (
 	"context"
 	"errors"
+	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -174,6 +176,76 @@ func TestLateRecordValidationPreservesExactPrefix(t *testing.T) {
 			}
 			if !reflect.DeepEqual(*detail.Prefix, want) {
 				t.Fatalf("late %s contaminated verified prefix", kind)
+			}
+		})
+	}
+}
+
+type syncEffectFile struct {
+	journalFile
+	cancel   context.CancelFunc
+	failStat bool
+	synced   bool
+}
+
+func (f *syncEffectFile) Sync() error {
+	if e := f.journalFile.Sync(); e != nil {
+		return e
+	}
+	f.synced = true
+	if f.cancel != nil {
+		f.cancel()
+	}
+	return nil
+}
+func (f *syncEffectFile) Stat() (os.FileInfo, error) {
+	if f.synced && f.failStat {
+		return nil, io.ErrClosedPipe
+	}
+	return f.journalFile.Stat()
+}
+
+func TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure(t *testing.T) {
+	for _, statFail := range []bool{false, true} {
+		t.Run(fmt.Sprint("stat-", statFail), func(t *testing.T) {
+			dir := t.TempDir()
+			s, e := Open(dir, Options{})
+			if e != nil {
+				t.Fatal(e)
+			}
+			seed, e := s.Seed(context.Background(), Request{ID: "seed", Expected: s.Inspect().Position, Approval: "initial"}, Empty())
+			if e != nil {
+				t.Fatal(e)
+			}
+			before := s.Inspect().Position
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+			s.file = &syncEffectFile{journalFile: s.file, cancel: cancel, failStat: statFail}
+			result, e := s.SelectHistorical(ctx, Request{ID: "after-sync", Expected: before, Approval: "completed synchronization is not undone"}, seed.Revision)
+			if ctx.Err() != context.Canceled {
+				t.Fatal("real Sync did not trigger cancellation")
+			}
+			if statFail {
+				if !errors.Is(e, ErrPersistenceUnknown) {
+					t.Fatal(e)
+				}
+			} else if e != nil || result.Revision != before.Sequence+1 {
+				t.Fatal(result, e)
+			}
+			after := s.Inspect()
+			if after.Position.Sequence != before.Sequence+1 || after.Incomplete != statFail || len(s.History()) != 2 {
+				t.Fatal("synced state was discarded or falsely confirmed", after)
+			}
+			if e = s.Close(); e != nil {
+				t.Fatal(e)
+			}
+			reopened, e := Open(dir, Options{})
+			if e != nil {
+				t.Fatal(e)
+			}
+			defer reopened.Close()
+			if reopened.Inspect().Position != after.Position || len(reopened.History()) != 2 {
+				t.Fatal("reopen lost completed durable selection")
 			}
 		})
 	}

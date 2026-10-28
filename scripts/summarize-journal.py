@@ -1,5 +1,5 @@
 """Pair successful frozen-input Journal observations without mixing environments."""
-import argparse,csv,hashlib,json,re,shutil,statistics,zipfile
+import argparse,csv,hashlib,json,re,shutil,statistics,zipfile,subprocess,sys
 from pathlib import Path
 
 PATTERN=re.compile(r'^(Benchmark\S+)\s+(\d+)\s+([\d.]+) ns/op\s+(\d+) B/op\s+(\d+) allocs/op$',re.M)
@@ -46,6 +46,7 @@ def main():
  if not inputs.exists():raise RuntimeError('run on the originating host or relocate input_directory explicitly')
  for name,meta in a['inputs'].items():
   if hashlib.sha256((inputs/(name+'.journal')).read_bytes()).hexdigest()!=meta['sha256']:raise RuntimeError('relocated input bytes differ')
+ subprocess.run([sys.executable,str(Path(__file__).with_name('inspect-journal-inputs.py')),'--inputs',str(inputs),'--out',str(out/'corpus-details.json')],check=True)
  with zipfile.ZipFile(out/'inputs.zip','x',zipfile.ZIP_DEFLATED,compresslevel=9) as archive:
   for file in sorted(inputs.iterdir()):
    if file.is_file():archive.write(file,file.name)
