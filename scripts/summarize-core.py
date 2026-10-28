@@ -32,7 +32,7 @@ def main():
     args = parser.parse_args()
     output = Path(args.out).resolve()
     output.mkdir(parents=True)  # preserve an earlier analysis instead of overwriting it
-    (output/".gitattributes").write_bytes(b"* -text\n")  # raw evidence must survive CRLF settings byte-for-byte
+    (output/".gitattributes").write_bytes(b"* -text -whitespace\n")  # raw evidence must survive CRLF settings byte-for-byte
     rows, sources, samples, methods = [], [], {}, {}
     for side, directories in [('before', args.before), ('after', args.after)]:
         for name in directories:
