@@ -249,3 +249,114 @@ jobs:
         with:
           name: ecosystem-screenshots
           path: .scratch/ecosystem/*.png
+  candidate-core:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.x'
+          cache-dependency-path: '**/go.sum'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - if: runner.os == 'Linux'
+        run: python scripts/test-candidate-core.py --race --count 3
+      - if: runner.os == 'Windows'
+        run: python scripts/test-candidate-core.py --count 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: candidate-core-${{ matrix.os }}
+          path: |
+            .scratch/core-performance/*candidate*/metadata.json
+            .scratch/core-performance/*candidate*/commands.json
+            .scratch/core-performance/*candidate*/core-files.json
+            .scratch/core-performance/*candidate*/proof-summary.json
+            .scratch/core-performance/*candidate*/go-invocations/*.json
+            .scratch/core-performance/*candidate*/*.log
+            .scratch/core-performance/*candidate*/COMPLETE
+          retention-days: 14
+  candidate-services:
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [ecosystem, cross-adapter, temporal-eino, temporal, topology]
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.x'
+          cache-dependency-path: '**/go.sum'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - if: matrix.service == 'ecosystem'
+        run: |
+          pip install -r extensions/observatory/tests/requirements.txt
+          python -m playwright install --with-deps chromium
+      - if: matrix.service == 'ecosystem'
+        run: python scripts/test-candidate-core.py --services ecosystem --race --count 3 --browser
+      - if: matrix.service != 'ecosystem'
+        run: python scripts/test-candidate-core.py --services ${{ matrix.service }} --race --count 3
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: candidate-service-${{ matrix.service }}
+          path: |
+            .scratch/core-performance/*candidate*/metadata.json
+            .scratch/core-performance/*candidate*/commands.json
+            .scratch/core-performance/*candidate*/core-files.json
+            .scratch/core-performance/*candidate*/proof-summary.json
+            .scratch/core-performance/*candidate*/go-invocations/*.json
+            .scratch/core-performance/*candidate*/*.log
+            .scratch/core-performance/*candidate*/COMPLETE
+          retention-days: 14
+  candidate-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r extensions/observatory/tests/requirements.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: python scripts/test-candidate-core.py --browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: candidate-browser
+          path: .scratch/core-performance/*candidate*/*.log
+          retention-days: 14
+  performance-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/measure-core.py --core-ref HEAD --harness-ref HEAD --label ci-smoke --matrix smoke --count 1 --benchtime 10ms
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: performance-smoke
+          path: |
+            .scratch/core-performance/*ci-smoke/*.json
+            .scratch/core-performance/*ci-smoke/*.txt
+            .scratch/core-performance/*ci-smoke/COMPLETE
+          retention-days: 14
