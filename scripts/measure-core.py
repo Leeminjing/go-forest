@@ -52,6 +52,7 @@ def main():
     parser.add_argument("--profiles", action="store_true")
     parser.add_argument("--extras", action="store_true")
     parser.add_argument("--extra-group", action="append", choices=["management", "longevity", "load"], help="limit supplemental workloads")
+    parser.add_argument("--no-calls", action="store_true", help="run only requested profiles/supplemental workloads")
     parser.add_argument("--only", default="", help="optional comma-separated call cases")
     parser.add_argument("--skip", default="", help="comma-separated already recorded call cases; starts a new run")
     args = parser.parse_args()
@@ -124,7 +125,7 @@ def main():
         cases += [(f"ports-{p}", 1024, 512, 1, False, p, "BenchmarkCalls/RefPinned$", "1", 1) for p in [16, 256]]
         cases += [(f"parallel-{w}", 2048, 1024, 1, False, 1, "BenchmarkCalls/RefParallel$", "1,2,4,8", w) for w in [1, 4]]
     for name, n, edges, degree, many, ports, regex, cpus, parallel in cases:
-        if name in args.skip.split(",") or (args.only and name not in args.only.split(",")):
+        if args.no_calls or name in args.skip.split(",") or (args.only and name not in args.only.split(",")):
             continue
         dims = {"FOREST_PERF_N": str(n), "FOREST_PERF_E": str(edges), "FOREST_PERF_D": str(degree),
                 "FOREST_PERF_MANY": str(int(many)), "FOREST_PERF_PORTS": str(ports), "FOREST_PERF_PARALLEL": str(parallel)}
