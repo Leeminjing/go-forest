@@ -42,6 +42,24 @@ func BenchmarkCalls(b *testing.B) {
 			b.Error(e)
 		}
 	})
+	// Controller calls are read-only. Reuse one restored fixture across benchmark
+	// calibration; rebuilding ten thousand trees is setup, not the measured call.
+	var managed *Fixture
+	ensureManaged := func() *Fixture {
+		if managed == nil {
+			var err error
+			managed, err = New(cfg, b.TempDir())
+			if err != nil {
+				b.Fatal(err)
+			}
+			b.Cleanup(func() {
+				if err := managed.Close(ctx); err != nil {
+					b.Error(err)
+				}
+			})
+		}
+		return managed
+	}
 	b.Run("DirectInterface", func(b *testing.B) {
 		values := []Value{}
 		for i := 0; i < cfg.D; i++ {
@@ -124,15 +142,7 @@ func BenchmarkCalls(b *testing.B) {
 		}
 	})
 	b.Run("ControllerEnter", func(b *testing.B) {
-		managed, err := New(cfg, b.TempDir())
-		if err != nil {
-			b.Fatal(err)
-		}
-		b.Cleanup(func() {
-			if err := managed.Close(ctx); err != nil {
-				b.Error(err)
-			}
-		})
+		managed := ensureManaged()
 		b.ReportAllocs()
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
@@ -142,15 +152,7 @@ func BenchmarkCalls(b *testing.B) {
 		}
 	})
 	b.Run("ControllerRef", func(b *testing.B) {
-		managed, err := New(cfg, b.TempDir())
-		if err != nil {
-			b.Fatal(err)
-		}
-		b.Cleanup(func() {
-			if err := managed.Close(ctx); err != nil {
-				b.Error(err)
-			}
-		})
+		managed := ensureManaged()
 		b.ReportAllocs()
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
