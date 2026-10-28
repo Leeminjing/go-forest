@@ -2,6 +2,7 @@ package performance
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"runtime"
@@ -17,7 +18,7 @@ func emptyPlan(g uint64) forest.ChangePlan { return forest.ChangePlan{BaseGenera
 
 // Profile excludes fixture construction and captures only real pinned reads.
 // Each kind runs separately; these instrumented runs are not benchmark results.
-func Profile(cfg Config, kind, path string, duration time.Duration, workers int, enter bool) (uint64, error) {
+func Profile(cfg Config, kind, path string, duration time.Duration, workers int, enter bool) (completed uint64, err error) {
 	if duration <= 0 || workers < 1 {
 		return 0, fmt.Errorf("invalid profiling duration/workers")
 	}
@@ -25,12 +26,12 @@ func Profile(cfg Config, kind, path string, duration time.Duration, workers int,
 	if err != nil {
 		return 0, err
 	}
-	defer x.Close(context.Background())
+	defer func() { err = errors.Join(err, x.Close(context.Background())) }()
 	output, err := os.Create(path)
 	if err != nil {
 		return 0, err
 	}
-	defer output.Close()
+	defer func() { err = errors.Join(err, output.Close()) }()
 	start := make(chan struct{})
 	var ready, joined sync.WaitGroup
 	ready.Add(workers)

@@ -50,6 +50,7 @@ def main():
     parser.add_argument("--count", type=int, default=10)
     parser.add_argument("--benchtime", default="1s")
     parser.add_argument("--profiles", action="store_true")
+    parser.add_argument("--extras", action="store_true")
     args = parser.parse_args()
     if args.count < 1 or not args.label.replace("-", "").replace("_", "").isalnum():
         parser.error("invalid count/label")
@@ -99,7 +100,7 @@ def main():
     metadata = {"runner_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), "core": core_sha, "harness": harness_sha, "arguments": vars(args),
                 "core_files": manifest(core, ["forest/*.go", "go.mod", "go.sum"]),
                 "harness_files": manifest(harness, ["*.go", "cmd/**/*.go", "go.mod", "go.sum"]),
-                "platform": platform.platform(), "machine": platform.machine(), "cpu": platform.processor(),
+                "limits": ["Topology rejects the 10004-node/10001-binding combined Manifest at its existing 4 MiB bound; controller-large uses N=10004/E=256; Core large remains N=10004/E=10001"], "platform": platform.platform(), "machine": platform.machine(), "cpu": platform.processor(),
                 "cpu_count": os.cpu_count(), "environment": {k: environment.get(k) for k in ["GOMAXPROCS", "GOGC", "GOMEMLIMIT", "GOWORK", "GOTOOLCHAIN"]}}
     for path in ["/sys/fs/cgroup/cpu.max", "/sys/fs/cgroup/memory.max", "/proc/cpuinfo"]:
         if Path(path).exists():
@@ -107,7 +108,7 @@ def main():
     (directory / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     cases = [("small", 32, 16, 1, False, 1, "BenchmarkCalls", "1", 1)]
     if args.matrix == "study":
-        cases += [("large", 10004, 10001, 1, False, 1, "BenchmarkCalls", "1", 1)]
+        cases += [("large", 10004, 10001, 1, False, 1, "BenchmarkCalls/(DirectInterface|InvokeEnter|InvokeNested|RefPinned|RefEnter|RefParallel)$", "1", 1), ("controller-large",10004,256,1,False,1,"BenchmarkCalls/Controller", "1",1)]
         cases += [(f"unrelated-{e}", 10004, e, 1, False, 1, "BenchmarkCalls/RefPinned$", "1", 1) for e in [1, 32, 256, 2048]]
         cases += [(f"nodes-{n}", n, 16, 1, False, 1, "BenchmarkCalls/RefPinned$", "1", 1) for n in [256, 2048, 20004]]
         cases += [(f"many-{d}", 1024, 512, d, True, 1, "BenchmarkCalls/RefPinned$", "1", 1) for d in [1, 4, 16, 64, 256]]
@@ -125,6 +126,25 @@ def main():
             run("profile-" + kind, str(binary), "-mode=profile", "-n=10004", "-e=10001",
                 "-workers=4", "-duration=2s", "-kind=" + kind, "-enter=" + str(kind in ["block", "mutex"]).lower(), "-out=" + str(directory / (kind + ".pprof")))
             run("profile-top-" + kind, "go", "tool", "pprof", "-top", str(binary), str(directory / (kind + ".pprof")))
+    if args.extras:
+        for n, edges in [(32, 16), (1024, 256), (10004, 256)]:
+            dims = {"FOREST_PERF_N": str(n), "FOREST_PERF_E": str(edges)}
+            run(f"management-{n}", "go", "test", "-pgo=off", "-run=^$", "-bench=^BenchmarkManagement$", "-benchmem", "-benchtime=1x", "-count=" + str(args.count), "-cpu=1", env=dims)
+        for history in [16, 128]:
+            run(f"history-{history}", "go", "test", "-pgo=off", "-run=^$", "-bench=^BenchmarkManagement$", "-benchmem", "-benchtime=1x", "-count=" + str(args.count), "-cpu=1", env={"FOREST_PERF_HISTORY": str(history)})
+        for kind in ["replace", "rebind", "mixed"]:
+            for holds in [0, 1, 8]:
+                name = f"longevity-{kind}-{holds}"
+                run(name, str(binary), "-mode=longevity", "-rounds=1000", "-holds=" + str(holds), "-kind=" + kind, "-out=" + str(directory / (name + ".pprof")))
+        for kind in ["replace", "rebind"]:
+            name = "longevity-extended-" + kind
+            run(name, str(binary), "-mode=longevity", "-rounds=10000", "-holds=8", "-kind=" + kind, "-out=" + str(directory / (name + ".pprof")))
+        for edges in [256, 10001]:
+            for rate in [1000, 5000]:
+                for update in ["0s", "20ms"]:
+                    name = f"load-{edges}-{rate}-{update}"
+                    run(name, str(binary), "-mode=load", "-n=10004", "-e=" + str(edges), "-workers=4", "-duration=2s", "-requests=20000", "-rate=" + str(rate), "-holds=1", "-updates=" + update)
+        run("load-closed", str(binary), "-mode=load", "-closed", "-n=32", "-e=16", "-workers=4", "-duration=2s", "-requests=20000", "-holds=0")
     (directory / "COMPLETE").write_text("all commands succeeded\n", encoding="utf-8")
     print("saved immutable run: " + str(directory), flush=True)
 
