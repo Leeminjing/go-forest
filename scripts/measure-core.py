@@ -51,6 +51,7 @@ def main():
     parser.add_argument("--benchtime", default="1s")
     parser.add_argument("--profiles", action="store_true")
     parser.add_argument("--extras", action="store_true")
+    parser.add_argument("--skip", default="", help="comma-separated already recorded call cases; starts a new run")
     args = parser.parse_args()
     if args.count < 1 or not args.label.replace("-", "").replace("_", "").isalnum():
         parser.error("invalid count/label")
@@ -100,7 +101,7 @@ def main():
     metadata = {"runner_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), "core": core_sha, "harness": harness_sha, "arguments": vars(args),
                 "core_files": manifest(core, ["forest/*.go", "go.mod", "go.sum"]),
                 "harness_files": manifest(harness, ["*.go", "cmd/**/*.go", "go.mod", "go.sum"]),
-                "limits": ["Topology rejects the 10004-node/10001-binding combined Manifest at its existing 4 MiB bound; controller-large uses N=10004/E=256; Core large remains N=10004/E=10001"], "platform": platform.platform(), "machine": platform.machine(), "cpu": platform.processor(),
+                "limits": ["Topology rejects N=10004 at its existing 10000-tree bound; controller-large uses N=10000/E=256; Core large remains N=10004/E=10001"], "platform": platform.platform(), "machine": platform.machine(), "cpu": platform.processor(),
                 "cpu_count": os.cpu_count(), "environment": {k: environment.get(k) for k in ["GOMAXPROCS", "GOGC", "GOMEMLIMIT", "GOWORK", "GOTOOLCHAIN"]}}
     for path in ["/sys/fs/cgroup/cpu.max", "/sys/fs/cgroup/memory.max", "/proc/cpuinfo"]:
         if Path(path).exists():
@@ -108,7 +109,7 @@ def main():
     (directory / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     cases = [("small", 32, 16, 1, False, 1, "BenchmarkCalls", "1", 1)]
     if args.matrix == "study":
-        cases += [("large", 10004, 10001, 1, False, 1, "BenchmarkCalls/(DirectInterface|InvokeEnter|InvokeNested|RefPinned|RefEnter|RefParallel)$", "1", 1), ("controller-large",10004,256,1,False,1,"BenchmarkCalls/Controller", "1",1)]
+        cases += [("large", 10004, 10001, 1, False, 1, "BenchmarkCalls/(DirectInterface|InvokeEnter|InvokeNested|RefPinned|RefEnter|RefParallel)$", "1", 1), ("controller-large",10000,256,1,False,1,"BenchmarkCalls/Controller", "1",1)]
         cases += [(f"unrelated-{e}", 10004, e, 1, False, 1, "BenchmarkCalls/RefPinned$", "1", 1) for e in [1, 32, 256, 2048]]
         cases += [(f"nodes-{n}", n, 16, 1, False, 1, "BenchmarkCalls/RefPinned$", "1", 1) for n in [256, 2048, 20004]]
         cases += [(f"many-{d}", 1024, 512, d, True, 1, "BenchmarkCalls/RefPinned$", "1", 1) for d in [1, 4, 16, 64, 256]]
@@ -116,6 +117,8 @@ def main():
         cases += [(f"ports-{p}", 1024, 512, 1, False, p, "BenchmarkCalls/RefPinned$", "1", 1) for p in [16, 256]]
         cases += [(f"parallel-{w}", 2048, 1024, 1, False, 1, "BenchmarkCalls/RefParallel$", "1,2,4,8", w) for w in [1, 4]]
     for name, n, edges, degree, many, ports, regex, cpus, parallel in cases:
+        if name in args.skip.split(","):
+            continue
         dims = {"FOREST_PERF_N": str(n), "FOREST_PERF_E": str(edges), "FOREST_PERF_D": str(degree),
                 "FOREST_PERF_MANY": str(int(many)), "FOREST_PERF_PORTS": str(ports), "FOREST_PERF_PARALLEL": str(parallel)}
         print(args.label + ": " + name, flush=True)
@@ -127,7 +130,7 @@ def main():
                 "-workers=4", "-duration=2s", "-kind=" + kind, "-enter=" + str(kind in ["block", "mutex"]).lower(), "-out=" + str(directory / (kind + ".pprof")))
             run("profile-top-" + kind, "go", "tool", "pprof", "-top", str(binary), str(directory / (kind + ".pprof")))
     if args.extras:
-        for n, edges in [(32, 16), (1024, 256), (10004, 256)]:
+        for n, edges in [(32, 16), (1024, 256), (10000, 256)]:
             dims = {"FOREST_PERF_N": str(n), "FOREST_PERF_E": str(edges)}
             run(f"management-{n}", "go", "test", "-pgo=off", "-run=^$", "-bench=^BenchmarkManagement$", "-benchmem", "-benchtime=1x", "-count=" + str(args.count), "-cpu=1", env=dims)
         for history in [16, 128]:
