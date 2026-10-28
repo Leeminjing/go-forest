@@ -51,6 +51,7 @@ def main():
     parser.add_argument("--benchtime", default="1s")
     parser.add_argument("--profiles", action="store_true")
     parser.add_argument("--extras", action="store_true")
+    parser.add_argument("--only", default="", help="optional comma-separated call cases")
     parser.add_argument("--skip", default="", help="comma-separated already recorded call cases; starts a new run")
     args = parser.parse_args()
     if args.count < 1 or not args.label.replace("-", "").replace("_", "").isalnum():
@@ -72,7 +73,7 @@ def main():
         config = dict(environment, **(env or {}))
         with (directory / (name + ".txt")).open("x", encoding="utf-8") as output:
             result = subprocess.run(command, cwd=harness, env=config, text=True,
-                                    stdout=output, stderr=subprocess.STDOUT, timeout=3600)
+                                    stdout=output, stderr=subprocess.STDOUT, timeout=7200)
         (directory / "commands.json").write_text(json.dumps(commands, indent=2), encoding="utf-8")
         if result.returncode:
             raise RuntimeError(name + " failed; raw log: " + str(directory / (name + ".txt")))
@@ -107,6 +108,11 @@ def main():
         if Path(path).exists():
             metadata[path] = Path(path).read_text()
     (directory / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    if args.profiles:
+        for kind in ["cpu", "heap", "allocs", "block", "mutex"]:
+            run("profile-" + kind, str(binary), "-mode=profile", "-n=10004", "-e=10001",
+                "-workers=4", "-duration=2s", "-kind=" + kind, "-enter=" + str(kind in ["block", "mutex"]).lower(), "-out=" + str(directory / (kind + ".pprof")))
+            run("profile-top-" + kind, "go", "tool", "pprof", "-top", str(binary), str(directory / (kind + ".pprof")))
     cases = [("small", 32, 16, 1, False, 1, "BenchmarkCalls", "1", 1)]
     if args.matrix == "study":
         cases += [("large", 10004, 10001, 1, False, 1, "BenchmarkCalls/(DirectInterface|InvokeEnter|InvokeNested|RefPinned|RefEnter|RefParallel)$", "1", 1), ("controller-large",10000,256,1,False,1,"BenchmarkCalls/Controller", "1",1)]
@@ -117,24 +123,19 @@ def main():
         cases += [(f"ports-{p}", 1024, 512, 1, False, p, "BenchmarkCalls/RefPinned$", "1", 1) for p in [16, 256]]
         cases += [(f"parallel-{w}", 2048, 1024, 1, False, 1, "BenchmarkCalls/RefParallel$", "1,2,4,8", w) for w in [1, 4]]
     for name, n, edges, degree, many, ports, regex, cpus, parallel in cases:
-        if name in args.skip.split(","):
+        if name in args.skip.split(",") or (args.only and name not in args.only.split(",")):
             continue
         dims = {"FOREST_PERF_N": str(n), "FOREST_PERF_E": str(edges), "FOREST_PERF_D": str(degree),
                 "FOREST_PERF_MANY": str(int(many)), "FOREST_PERF_PORTS": str(ports), "FOREST_PERF_PARALLEL": str(parallel)}
         print(args.label + ": " + name, flush=True)
-        run(name, "go", "test", "-pgo=off", "-run=^$", "-bench=^" + regex, "-benchmem",
+        run(name, "go", "test", "-pgo=off", "-timeout=60m", "-run=^$", "-bench=^" + regex, "-benchmem",
             "-benchtime=" + args.benchtime, "-count=" + str(args.count), "-cpu=" + cpus, env=dims)
-    if args.profiles:
-        for kind in ["cpu", "heap", "allocs", "block", "mutex"]:
-            run("profile-" + kind, str(binary), "-mode=profile", "-n=10004", "-e=10001",
-                "-workers=4", "-duration=2s", "-kind=" + kind, "-enter=" + str(kind in ["block", "mutex"]).lower(), "-out=" + str(directory / (kind + ".pprof")))
-            run("profile-top-" + kind, "go", "tool", "pprof", "-top", str(binary), str(directory / (kind + ".pprof")))
     if args.extras:
         for n, edges in [(32, 16), (1024, 256), (10000, 256)]:
             dims = {"FOREST_PERF_N": str(n), "FOREST_PERF_E": str(edges)}
-            run(f"management-{n}", "go", "test", "-pgo=off", "-run=^$", "-bench=^BenchmarkManagement$", "-benchmem", "-benchtime=1x", "-count=" + str(args.count), "-cpu=1", env=dims)
+            run(f"management-{n}", "go", "test", "-pgo=off", "-timeout=60m", "-run=^$", "-bench=^BenchmarkManagement$", "-benchmem", "-benchtime=1x", "-count=" + str(args.count), "-cpu=1", env=dims)
         for history in [16, 128]:
-            run(f"history-{history}", "go", "test", "-pgo=off", "-run=^$", "-bench=^BenchmarkManagement$", "-benchmem", "-benchtime=1x", "-count=" + str(args.count), "-cpu=1", env={"FOREST_PERF_HISTORY": str(history)})
+            run(f"history-{history}", "go", "test", "-pgo=off", "-timeout=60m", "-run=^$", "-bench=^BenchmarkManagement$", "-benchmem", "-benchtime=1x", "-count=" + str(args.count), "-cpu=1", env={"FOREST_PERF_HISTORY": str(history)})
         for kind in ["replace", "rebind", "mixed"]:
             for holds in [0, 1, 8]:
                 name = f"longevity-{kind}-{holds}"
