@@ -23,7 +23,7 @@ type routingFixture struct {
 	providers        []Definition
 }
 
-func newRoutingFixture(t *testing.T, extra int) *routingFixture {
+func newRoutingFixture(t testing.TB, extra int) *routingFixture {
 	t.Helper()
 	x := &routingFixture{f: New(Options{})}
 	for i := 1; i <= 3; i++ {
@@ -297,5 +297,26 @@ func TestRoutesOwnTheirDescriptorsAndRetiredDiagnosticsDropImplementations(t *te
 	})
 	if e != nil {
 		t.Fatal(e)
+	}
+}
+
+// BenchmarkRouteIndexBuild times only index construction using descriptors from
+// a real validated Forest. Two destination ports match the read benchmark's
+// fixed target plus unrelated Many-port workload. Clone/validation are excluded.
+func BenchmarkRouteIndexBuild(b *testing.B) {
+	for _, edges := range []int{16, 256, 2048, 10001} {
+		b.Run(fmt.Sprint(edges), func(b *testing.B) {
+			x := newRoutingFixture(b, edges-3)
+			bindings := x.f.current.Load().bindings
+			b.ReportAllocs()
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				candidate := &graph{bindings: bindings}
+				candidate.indexRoutes()
+				if len(candidate.routes) != 3 {
+					b.Fatal("incorrect route groups")
+				}
+			}
+		})
 	}
 }
