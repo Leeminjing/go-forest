@@ -77,6 +77,7 @@ type Proposal struct {
 	Expected       Position          `json:"expected"`
 	Generation     uint64            `json:"generation"`
 	BeforeDigest   string            `json:"before_digest"`
+	TargetDigest   string            `json:"target_digest,omitempty"`
 	Target         Manifest          `json:"target"`
 	Mode           string            `json:"mode"`
 	SourceRevision uint64            `json:"source_revision"`
@@ -114,7 +115,8 @@ func (c *Controller) previewLocked(target Manifest, mode string, source uint64) 
 		return Proposal{}, e
 	}
 	plan, planning, err := c.catalog.plan(before, n, c.generation)
-	p := Proposal{Expected: s.state.inspection.Position, Generation: c.generation, BeforeDigest: c.digest, Target: n, Mode: mode, SourceRevision: source, RebuildTrees: planning.Impact.RebuildTrees, Diff: diff, Plan: plan, Planning: planning}
+	targetDigest, _ := Digest(n)
+	p := Proposal{TargetDigest: targetDigest, Expected: s.state.inspection.Position, Generation: c.generation, BeforeDigest: c.digest, Target: n, Mode: mode, SourceRevision: source, RebuildTrees: planning.Impact.RebuildTrees, Diff: diff, Plan: plan, Planning: planning}
 	return p, err
 }
 func (c *Controller) Preview(target Manifest) (Proposal, error) {
@@ -161,7 +163,11 @@ func (c *Controller) commit(ctx context.Context, request Request, proposal Propo
 		return Receipt{}, ErrPersistenceUnknown
 	}
 	in := Intent{Request: request, SessionID: c.session, Mode: mode, Target: proposal.Target, SourceRevision: proposal.SourceRevision, BaseGeneration: proposal.Generation, BaseDigest: proposal.BeforeDigest, Plan: proposal.Plan, Planning: proposal.Planning}
-	in.TargetDigest, _ = Digest(in.Target)
+	if in.Planning != nil {
+		in.TargetDigest = proposal.TargetDigest
+	} else {
+		in.TargetDigest, _ = Digest(in.Target)
+	}
 	h, e := intentHash(in)
 	if e != nil {
 		return Receipt{}, e
@@ -208,15 +214,16 @@ func intentHash(in Intent) (string, error) {
 			return "", ErrUnsupportedPlanVersion
 		}
 		data, e := json.Marshal(struct {
-			Request    Request
-			Mode       string
-			Target     Manifest
-			Source     uint64
-			Generation uint64
-			Before     string
-			Plan       Plan
-			Planning   *PlanningEvidence
-		}{in.Request, in.Mode, in.Target, in.SourceRevision, in.BaseGeneration, in.BaseDigest, in.Plan, in.Planning})
+			Request      Request
+			Mode         string
+			Target       Manifest
+			TargetDigest string
+			Source       uint64
+			Generation   uint64
+			Before       string
+			Plan         Plan
+			Planning     *PlanningEvidence
+		}{in.Request, in.Mode, in.Target, in.TargetDigest, in.SourceRevision, in.BaseGeneration, in.BaseDigest, in.Plan, in.Planning})
 		if e != nil {
 			return "", e
 		}

@@ -25,8 +25,12 @@ Windows Gin/PostgreSQL acceptance passed with native Generations 1/2/3, business
 instances 1/4/5 and stable db=2/gin=3 in the observed run; actual pointer values
 are per-process diagnostic evidence, never durable identities.
 
-Linux real-service race, independent review, full remote CI and new fixed-version
-external acceptance are final gates, not inferred from these initial passes.
+Linux Go 1.25 real-service race passed all three rounds, with actual HTTP, SQL,
+admission and identity evidence. A separate Windows Go 1.25 run also passed.
+Independent Standards review closed with zero findings; Spec review closed its
+one target-digest observability finding and independently repeated real Windows
+PostgreSQL acceptance. See [review](review.md). Full remote CI and new fixed-version
+external acceptance remain final gates, not inferred from these source passes.
 Windows hosted CI explicitly uses compile-only mode for the new example (its real
 PostgreSQL case is skipped there); the local Windows run above actually used a
 PostgreSQL server. Linux hosted CI runs the real service/race test. Existing jobs

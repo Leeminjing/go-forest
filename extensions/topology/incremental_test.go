@@ -2,6 +2,7 @@ package topology
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"reflect"
@@ -11,6 +12,42 @@ import (
 
 	"github.com/Leeminjing/go-forest/forest"
 )
+
+func TestPreviewPublishesTargetDigestAndRejectsTamperedClaim(t *testing.T) {
+	catalog, m := orderedFixture(t, forest.Runtime)
+	c, s, _, _ := managed(t, catalog, m)
+	target := detached(m)
+	target.Trees[0].Definition.Version = "2"
+	p, e := c.Preview(target)
+	if e != nil {
+		t.Fatal(e)
+	}
+	encoded, _ := json.Marshal(p)
+	var fields map[string]json.RawMessage
+	_ = json.Unmarshal(encoded, &fields)
+	expected, _ := Digest(target)
+	var got string
+	_ = json.Unmarshal(fields["target_digest"], &got)
+	if got != expected {
+		t.Fatalf("preview target digest = %q want %q", got, expected)
+	}
+	// Alter only an audit claim, retaining all actual target operations.
+	fields["target_digest"] = json.RawMessage(`"` + strings.Repeat("b", 64) + `"`)
+	altered, _ := json.Marshal(fields)
+	var bad Proposal
+	_ = json.Unmarshal(altered, &bad)
+	position := s.Inspect().Position
+	req := Request{ID: "digest", Expected: p.Expected, Approval: "exact target claim"}
+	if _, e = c.Reconfigure(context.Background(), req, bad); e == nil || s.Inspect().Position != position {
+		t.Fatal("tampered preview accepted", e)
+	}
+	if _, e = c.Reconfigure(context.Background(), req, p); e != nil {
+		t.Fatal(e)
+	}
+	if _, e = c.Reconfigure(context.Background(), req, bad); !errors.Is(e, ErrRequestConflict) {
+		t.Fatal("tampered retry lost identity conflict", e)
+	}
+}
 
 func orderedFixture(t *testing.T, phase forest.Phase) (*Catalog, Manifest) {
 	t.Helper()
