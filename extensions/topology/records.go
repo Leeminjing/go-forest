@@ -169,19 +169,10 @@ func (current *journalState) prepareRecord(r record, digest string) (preparedRec
 				if old, ok := s.facts[key]; ok && !reflect.DeepEqual(old, fact) {
 					return preparedRecord{}, ErrCorruptJournal
 				}
+				// planV2 already requires strictly increasing, unique fact
+				// keys. Only previously unknown immutable facts need storage.
 				if _, known := s.facts[key]; !known {
-					seen := false
-					for _, pending := range change.facts {
-						if pending.key == key {
-							if !reflect.DeepEqual(pending.value, fact) {
-								return preparedRecord{}, ErrCorruptJournal
-							}
-							seen = true
-						}
-					}
-					if !seen {
-						change.facts = append(change.facts, factWrite{key: key, value: detached(fact)})
-					}
+					change.facts = append(change.facts, factWrite{key: key, value: detached(fact)})
 				}
 			}
 			p = calculated
