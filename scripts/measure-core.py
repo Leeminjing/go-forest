@@ -29,7 +29,9 @@ def archive(ref, destination):
             path = (destination / member.name).resolve()
             if not path.is_relative_to(destination.resolve()) or not (member.isfile() or member.isdir()):
                 raise RuntimeError("unsupported archive entry: " + member.name)
-        source.extractall(destination, filter="data")
+        # Every entry was checked above; destination is a new owned directory.
+        # Go 1.23 images include Python versions predating the filter keyword.
+        source.extractall(destination)
     tarpath.unlink()
     return sha
 
