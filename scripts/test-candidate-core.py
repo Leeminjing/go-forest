@@ -63,7 +63,21 @@ def main():
             raise RuntimeError(name + " failed: " + str(directory / (name + ".log")))
 
     metadata = {"revision": revision, "source": str(source), "manifest_changes": changes, "arguments": vars(args)}
+    if args.services in ["temporal", "cross-adapter", "temporal-eino"]:
+        platform = "windows_amd64.zip" if os.name == "nt" else "linux_amd64.tar.gz"
+        cache = Path(".scratch/temporal/cli") / platform.split(".")[0] / ("temporal_cli_1.9.1_" + platform)
+        archive = ROOT / cache
+        if archive.exists():
+            expected = runpy.run_path(str(source / "scripts/temporal-service.py"))["HASHES"][platform]
+            actual = hashlib.sha256(archive.read_bytes()).hexdigest()
+            if actual != expected:
+                raise RuntimeError("cached Temporal release archive checksum mismatch")
+            (source / cache).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(archive, source / cache)  # native helper rechecks and extracts it
+            metadata["temporal_archive_sha256"] = actual
     (directory / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    run("go-version", [str(guard), "version"], source)
+    run("go-build-environment", [str(guard), "env", "-json", "GOOS", "GOARCH", "GOAMD64", "GOTOOLCHAIN", "GOFLAGS", "CGO_ENABLED"], source)
     if args.services:
         scripts = {"ecosystem": "test-ecosystem.py", "cross-adapter": "test-cross-adapter.py", "temporal-eino": "test-temporal-eino.py", "temporal": "test-temporal.py", "topology": "test-topology-incremental.py"}
         command = [sys.executable, str(source / "scripts" / scripts[args.services]), "--count", str(args.count)]
