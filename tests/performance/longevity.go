@@ -8,6 +8,7 @@ import (
 	"runtime"
 	"runtime/pprof"
 	"strconv"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -19,6 +20,8 @@ type MemorySample struct {
 	Stage                                                                           string
 	Generation                                                                      uint64
 	Active, Stopped, Draining, Diagnostics, OpenResources, HeldVersions, Goroutines int
+	RSSBytes                                                                        uint64
+	RSSAvailable                                                                    bool
 	HeapAlloc, HeapInuse, TotalAlloc                                                uint64
 	SnapshotNS, WaitNS                                                              int64
 }
@@ -170,6 +173,7 @@ func Longevity(rounds, holds int, kind, directory, profilePath string) (out Long
 		var m runtime.MemStats
 		runtime.ReadMemStats(&m)
 		row.HeapAlloc, row.HeapInuse, row.TotalAlloc = m.HeapAlloc, m.HeapInuse, m.TotalAlloc
+		row.RSSBytes, row.RSSAvailable = residentMemory()
 		out.Samples = append(out.Samples, row)
 		return nil
 	}
@@ -251,4 +255,22 @@ func Longevity(rounds, holds int, kind, directory, profilePath string) (out Long
 	}
 	f = nil
 	return out, nil
+}
+
+// residentMemory is a process measure, not Go heap size. Platforms without
+// procfs report unavailable rather than a fabricated zero-byte resident set.
+func residentMemory() (uint64, bool) {
+	raw, err := os.ReadFile("/proc/self/statm")
+	if err != nil {
+		return 0, false
+	}
+	fields := strings.Fields(string(raw))
+	if len(fields) < 2 {
+		return 0, false
+	}
+	pages, err := strconv.ParseUint(fields[1], 10, 64)
+	if err != nil {
+		return 0, false
+	}
+	return pages * uint64(os.Getpagesize()), true
 }

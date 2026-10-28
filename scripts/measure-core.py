@@ -51,6 +51,7 @@ def main():
     parser.add_argument("--benchtime", default="1s")
     parser.add_argument("--profiles", action="store_true")
     parser.add_argument("--extras", action="store_true")
+    parser.add_argument("--extra-group", action="append", choices=["management", "longevity", "load"], help="limit supplemental workloads")
     parser.add_argument("--only", default="", help="optional comma-separated call cases")
     parser.add_argument("--skip", default="", help="comma-separated already recorded call cases; starts a new run")
     args = parser.parse_args()
@@ -131,24 +132,28 @@ def main():
         run(name, "go", "test", "-pgo=off", "-timeout=60m", "-run=^$", "-bench=^" + regex, "-benchmem",
             "-benchtime=" + args.benchtime, "-count=" + str(args.count), "-cpu=" + cpus, env=dims)
     if args.extras:
-        for n, edges in [(32, 16), (1024, 256), (10000, 256)]:
-            dims = {"FOREST_PERF_N": str(n), "FOREST_PERF_E": str(edges)}
-            run(f"management-{n}", "go", "test", "-pgo=off", "-timeout=60m", "-run=^$", "-bench=^BenchmarkManagement$", "-benchmem", "-benchtime=1x", "-count=" + str(args.count), "-cpu=1", env=dims)
-        for history in [16, 128]:
-            run(f"history-{history}", "go", "test", "-pgo=off", "-timeout=60m", "-run=^$", "-bench=^BenchmarkManagement$", "-benchmem", "-benchtime=1x", "-count=" + str(args.count), "-cpu=1", env={"FOREST_PERF_HISTORY": str(history)})
-        for kind in ["replace", "rebind", "mixed"]:
-            for holds in [0, 1, 8]:
-                name = f"longevity-{kind}-{holds}"
-                run(name, str(binary), "-mode=longevity", "-rounds=1000", "-holds=" + str(holds), "-kind=" + kind, "-out=" + str(directory / (name + ".pprof")))
-        for kind in ["replace", "rebind"]:
-            name = "longevity-extended-" + kind
-            run(name, str(binary), "-mode=longevity", "-rounds=10000", "-holds=8", "-kind=" + kind, "-out=" + str(directory / (name + ".pprof")))
-        for edges in [256, 10001]:
-            for rate in [1000, 5000]:
-                for update in ["0s", "20ms"]:
-                    name = f"load-{edges}-{rate}-{update}"
-                    run(name, str(binary), "-mode=load", "-n=10004", "-e=" + str(edges), "-workers=4", "-duration=2s", "-requests=20000", "-rate=" + str(rate), "-holds=1", "-updates=" + update)
-        run("load-closed", str(binary), "-mode=load", "-closed", "-n=32", "-e=16", "-workers=4", "-duration=2s", "-requests=20000", "-holds=0")
+        groups = args.extra_group or ["management", "longevity", "load"]
+        if "management" in groups:
+            for n, edges in [(32, 16), (1024, 256), (10000, 256)]:
+                dims = {"FOREST_PERF_N": str(n), "FOREST_PERF_E": str(edges)}
+                run(f"management-{n}", "go", "test", "-pgo=off", "-timeout=60m", "-run=^$", "-bench=^BenchmarkManagement$", "-benchmem", "-benchtime=1x", "-count=" + str(args.count), "-cpu=1", env=dims)
+            for history in [16, 128]:
+                run(f"history-{history}", "go", "test", "-pgo=off", "-timeout=60m", "-run=^$", "-bench=^BenchmarkManagement$", "-benchmem", "-benchtime=1x", "-count=" + str(args.count), "-cpu=1", env={"FOREST_PERF_HISTORY": str(history)})
+        if "longevity" in groups:
+            for kind in ["replace", "rebind", "mixed"]:
+                for holds in [0, 1, 8]:
+                    name = f"longevity-{kind}-{holds}"
+                    run(name, str(binary), "-mode=longevity", "-rounds=1000", "-holds=" + str(holds), "-kind=" + kind, "-out=" + str(directory / (name + ".pprof")))
+            for kind in ["replace", "rebind"]:
+                name = "longevity-extended-" + kind
+                run(name, str(binary), "-mode=longevity", "-rounds=10000", "-holds=8", "-kind=" + kind, "-out=" + str(directory / (name + ".pprof")))
+        if "load" in groups:
+            for edges in [256, 10001]:
+                for rate in [1000, 5000]:
+                    for update in ["0s", "20ms"]:
+                        name = f"load-{edges}-{rate}-{update}"
+                        run(name, str(binary), "-mode=load", "-n=10004", "-e=" + str(edges), "-workers=4", "-duration=2s", "-requests=20000", "-rate=" + str(rate), "-holds=1", "-updates=" + update)
+            run("load-closed", str(binary), "-mode=load", "-closed", "-n=32", "-e=16", "-workers=4", "-duration=2s", "-requests=20000", "-holds=0")
     (directory / "COMPLETE").write_text("all commands succeeded\n", encoding="utf-8")
     print("saved immutable run: " + str(directory), flush=True)
 

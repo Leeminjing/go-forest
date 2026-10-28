@@ -301,8 +301,8 @@ func TestRoutesOwnTheirDescriptorsAndRetiredDiagnosticsDropImplementations(t *te
 }
 
 // BenchmarkRouteIndexBuild times only index construction using descriptors from
-// a real validated Forest. Two destination ports match the read benchmark's
-// fixed target plus unrelated Many-port workload. Clone/validation are excluded.
+// a real validated Forest: two small fixed ports and one unrelated Many port.
+// Clone/validation are excluded from this construction-only measurement.
 func BenchmarkRouteIndexBuild(b *testing.B) {
 	for _, edges := range []int{16, 256, 2048, 10001} {
 		b.Run(fmt.Sprint(edges), func(b *testing.B) {
