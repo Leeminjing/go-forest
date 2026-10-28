@@ -3,10 +3,12 @@
 package main
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -72,9 +74,11 @@ func main() {
 			if e2 != nil {
 				return fmt.Errorf("Core resolution failed: %w", e)
 			}
-			var decoded any
-			_ = decoded
-			if containsCore(all) {
+			found, decodeErr := containsCore(all)
+			if decodeErr != nil {
+				return decodeErr
+			}
+			if found {
 				return fmt.Errorf("Core resolution failed in a Core-using module: %w", e)
 			}
 			return nil
@@ -137,20 +141,19 @@ func main() {
 		os.Exit(1)
 	}
 }
-func containsCore(raw []byte) bool {
-	// The exact quoted module path cannot be a prefix match for extensions.
-	needle := []byte(`"Path": "github.com/Leeminjing/go-forest"`)
-	for i := 0; i+len(needle) <= len(raw); i++ {
-		match := true
-		for j := range needle {
-			if raw[i+j] != needle[j] {
-				match = false
-				break
-			}
+func containsCore(raw []byte) (bool, error) {
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	for {
+		var m module
+		err := decoder.Decode(&m)
+		if err == io.EOF {
+			return false, nil
 		}
-		if match {
-			return true
+		if err != nil {
+			return false, err
+		}
+		if m.Path == "github.com/Leeminjing/go-forest" {
+			return true, nil
 		}
 	}
-	return false
 }
