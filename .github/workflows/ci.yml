@@ -135,6 +135,19 @@ jobs:
         run: python scripts/test-topology-incremental.py --race --count 3
       - if: runner.os == 'Windows'
         run: python scripts/test-topology-incremental.py --compile-only
+  topology-v2-published:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/verify-topology-v2-release.py
+      - run: python scripts/test-topology-incremental.py --published --race --count 3
   topology-published:
     runs-on: ubuntu-latest
     steps:

@@ -4,6 +4,8 @@ github.com/Leeminjing/go-forest/adapters/gin v0.1.0 h1:cvDAQw/juYuQh1wJ8wOSNKNYL
 github.com/Leeminjing/go-forest/adapters/gin v0.1.0/go.mod h1:iS6+AjKD06qraCoVEzGR19PDbgi5n0NPCgqBizlJjCI=
 github.com/Leeminjing/go-forest/adapters/gorm v0.1.0 h1:DgrECqi1fZSCb0b19A+ONj13BEnZWAAzOoYB2EpjCAE=
 github.com/Leeminjing/go-forest/adapters/gorm v0.1.0/go.mod h1:JTSiiLdwS4vV0KoUFpaldCPL7uRumEKUVrPX5NwiahU=
+github.com/Leeminjing/go-forest/extensions/topology v0.2.0 h1:fzICZiJrJ25T1QrmSliLidknKxAj/LvOUnZbTeN9/jU=
+github.com/Leeminjing/go-forest/extensions/topology v0.2.0/go.mod h1:cWqjCMIOeqpYO9byGaVg0n1V1S0F4hSNsQRIxkPDljU=
 github.com/bytedance/gopkg v0.1.3 h1:TPBSwH8RsouGCBcMBktLt1AymVo2TVsBVCY4b6TnZ/M=
 github.com/bytedance/gopkg v0.1.3/go.mod h1:576VvJ+eJgyCzdjS+c4+77QF3p7ubbtiKARP3TxducM=
 github.com/bytedance/sonic v1.15.0 h1:/PXeWFaR5ElNcVE84U0dOHjiMHQOwNIx3K4ymzh/uSE=

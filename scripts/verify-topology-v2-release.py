@@ -65,7 +65,8 @@ def main():
             "github.com/Leeminjing/go-forest/extensions/topology": "v0.2.0"},
            CONSUMER.replace("LEGACY_DATA", legacy),
            {"Values": [1, 2, 1, 2, 2], "Generations": [1, 2, 3, 4],
-            "ColdGeneration": 1, "NewSession": True})
+            "ColdGeneration": 1, "NewSession": True},
+           label="legacy replay / retained instances / Replace / Rebind / rollback / new session")
 
 
 if __name__ == "__main__":

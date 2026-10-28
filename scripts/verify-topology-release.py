@@ -69,7 +69,7 @@ func main() {
 '''
 
 
-def verify(versions, consumer, expected):
+def verify(versions, consumer, expected, label="Capture/Seed/Restore/Invoke/Reconfigure/Rollback/new session"):
     with tempfile.TemporaryDirectory(prefix="forest-topology-consumer-") as temporary:
         directory = Path(temporary)
         env = dict(os.environ, GOWORK="off", GOMODCACHE=str(directory / "module-cache"))
@@ -102,7 +102,7 @@ def verify(versions, consumer, expected):
         evidence = json.loads(run("go", "run", ".", capture=True))
         assert evidence == expected, evidence
         print(json.dumps(evidence), flush=True)
-        print("PASS: Capture/Seed/Restore/Invoke/Reconfigure/Rollback/new session", flush=True)
+        print("PASS: " + label, flush=True)
 
 
 def main():

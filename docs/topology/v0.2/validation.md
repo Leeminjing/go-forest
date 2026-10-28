@@ -30,7 +30,11 @@ admission and identity evidence. A separate Windows Go 1.25 run also passed.
 Independent Standards review closed with zero findings; Spec review closed its
 one target-digest observability finding and independently repeated real Windows
 PostgreSQL acceptance. See [review](review.md). Full remote CI and new fixed-version
-external acceptance remain final gates, not inferred from these source passes.
+external acceptance were checked separately: all 55 source jobs passed before
+tag publication, and exact v0.2.0 empty-module consumers ran on Windows/Linux
+Go 1.23 without replace. See [release](release.md). The expanded main CI includes
+56 jobs, including a new v0.2 fixed-consumer and real PostgreSQL/race gate; its
+actual final outcome is independently verified before delivery.
 Windows hosted CI explicitly uses compile-only mode for the new example (its real
 PostgreSQL case is skipped there); the local Windows run above actually used a
 PostgreSQL server. Linux hosted CI runs the real service/race test. Existing jobs
