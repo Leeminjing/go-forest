@@ -307,7 +307,12 @@ func BenchmarkRouteIndexBuild(b *testing.B) {
 	for _, edges := range []int{16, 256, 2048, 10001} {
 		b.Run(fmt.Sprint(edges), func(b *testing.B) {
 			x := newRoutingFixture(b, edges-3)
-			bindings := x.f.current.Load().bindings
+			current := x.f.current.Load()
+			bindings := current.bindings
+			var sliceBytes uintptr
+			for _, route := range current.routes {
+				sliceBytes += uintptr(cap(route)) * reflect.TypeFor[Binding]().Size()
+			}
 			b.ReportAllocs()
 			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
@@ -317,6 +322,8 @@ func BenchmarkRouteIndexBuild(b *testing.B) {
 					b.Fatal("incorrect route groups")
 				}
 			}
+			b.StopTimer()
+			b.ReportMetric(float64(sliceBytes), "route-slice-B") // descriptor backing arrays only
 		})
 	}
 }
