@@ -7,12 +7,12 @@
 本仓库实现单进程内存森林，Go 1.23+。v0.1 提供动态组合运行时；v0.2 在独立 `forest/compose` 包中增加可复用、可递归组合的模板。v0.3 在可选扩展 `bridge/httpjson` 中增加跨进程能力调用，各个 Forest 仍独立管理自己的拓扑与版本。正式模块路径为 `github.com/Leeminjing/go-forest`。
 
 ```sh
-go get github.com/Leeminjing/go-forest@v0.3.0
+go get github.com/Leeminjing/go-forest@v0.3.1
 ```
 
 应用导入 `github.com/Leeminjing/go-forest/forest`。发布版本遵循 Go 模块的语义版本标签约定。
 
-v0.3.0 包含核心、组合层与可选桥接扩展。桥接应用导入 `github.com/Leeminjing/go-forest/bridge/httpjson`；单进程应用可以只导入 forest 或 forest/compose。
+v0.3.1 在 v0.3.0 核心、组合层与可选桥接扩展之上，发布兼容的版本内路由索引优化。桥接应用导入 `github.com/Leeminjing/go-forest/bridge/httpjson`；单进程应用可以只导入 forest 或 forest/compose。
 
 ## 多框架生态适配
 
@@ -285,7 +285,7 @@ Snapshot 返回独立的结构副本和实例诊断。事件涵盖成功、失�
 
 ## Core 性能测量
 
-main 的候选 Core 使用每个 Graph 独立的只读端口路由索引，旧 Scope 和候选构造仍解析各自版本。测量程序、原始对照、管理和长期资源成本见 [性能记录](docs/core-performance/results.md)；[候选 Core 验收](docs/core-performance/validation.md) 区分源码集成与固定发布版验收。
+Core v0.3.1 使用每个 Graph 独立的只读端口路由索引，旧 Scope 和候选构造仍解析各自版本。测量程序、原始对照、管理和长期资源成本见 [性能记录](docs/core-performance/results.md)；[候选 Core 验收](docs/core-performance/validation.md) 区分源码集成与固定发布版验收。v0.3.1 的正式下载与执行结果见 [Core 补丁发布记录](docs/core-performance/release.md)。
 
 ## 验证
 

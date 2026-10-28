@@ -1,0 +1,14 @@
+{
+  ".gitattributes": "e97602ab9cac70102245345c5ab0fc9830df8b17f1072b188265a662a3a547ae",
+  "linux-consumer.go.sum": "9d0c52e234df46dfbda70b97226f0c75503bf31ab773e9ed64eecd4b6032f435",
+  "linux-go-version.txt": "9f161eff18f3e12a2e622b6f0fd90d1f36e4b9b89d8516cfc67ce4442c478c6a",
+  "linux-metadata.json": "01ff2f16a8cbf01a09dbc7f74266162527438faa7504a0b720c366a2e1d80550",
+  "linux-test.txt": "0b67745f5dfdc5b3291143a5166fd9ff6c2013b64c286765f6de6337c013bd0c",
+  "linux-verify.txt": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd",
+  "tags.json": "a478bc4c37603902caba80e4dd61245aae1aa11c1d029625216519e819df9e0f",
+  "windows-consumer.go.sum": "9d0c52e234df46dfbda70b97226f0c75503bf31ab773e9ed64eecd4b6032f435",
+  "windows-go-version.txt": "82d678d9e8811512dded31e36a25c07f7b0e082eeec574212bcb0fb7455843eb",
+  "windows-metadata.json": "d16c70f56925bc8c27e05503a784f910574c8c8ab2360960dad455cad12430d0",
+  "windows-test.txt": "9872f61017ff6d62c047ff6115b06dc6df41003c9af61e276fb66ef1d0f09750",
+  "windows-verify.txt": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd"
+}

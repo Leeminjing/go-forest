@@ -1,0 +1,7 @@
+=== RUN   TestPublishedCorePinsOldCallsAndDrainsAfterActualReturn
+--- PASS: TestPublishedCorePinsOldCallsAndDrainsAfterActualReturn (0.00s)
+=== RUN   TestPublishedLookupAllocationDoesNotGrowWithUnrelatedBindings
+    consumer_test.go:192: actual published lookup allocations: 16 -> 16 B/op
+--- PASS: TestPublishedLookupAllocationDoesNotGrowWithUnrelatedBindings (2.65s)
+PASS
+ok  	example.com/forest-core-release-consumer	2.885s
