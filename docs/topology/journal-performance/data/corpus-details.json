@@ -1,0 +1,178 @@
+{
+  "n10000-h0": {
+    "bytes": 2031010,
+    "sha256": "d95e54eda1be3f7db1bbb10bc6871d834552bb5514f51019e9535f4fb79fb116",
+    "records": 2,
+    "requests": 1,
+    "sessions": 0,
+    "record_kinds": {
+      "genesis": 1,
+      "seed": 1
+    },
+    "unique_tree_ids": 10000,
+    "unique_binding_ids": 0,
+    "head_digest": "cbd9a8157f15194ee29da0b41540ded26e3d7756181f2a7fa2d14458793f8237"
+  },
+  "n10000-h4": {
+    "bytes": 10153797,
+    "sha256": "8a1460ccd20ac73ca000d8eeecb7ebc18b634ce679d0661de079c0c5f6b5c9d1",
+    "records": 6,
+    "requests": 5,
+    "sessions": 0,
+    "record_kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "selected": 4
+    },
+    "unique_tree_ids": 10000,
+    "unique_binding_ids": 0,
+    "head_digest": "26f9405bac89dae9d2fb5ecdf342077a6e24f5a44defd86c0a5c69535fc01b2f"
+  },
+  "n1024-h0": {
+    "bytes": 208882,
+    "sha256": "78b68552ad16812a64a3467b44807bed713348883f0d2b9c6cf016b35474514c",
+    "records": 2,
+    "requests": 1,
+    "sessions": 0,
+    "record_kinds": {
+      "genesis": 1,
+      "seed": 1
+    },
+    "unique_tree_ids": 1024,
+    "unique_binding_ids": 0,
+    "head_digest": "22ceb4dd2ea20fdf3841c96a433d69d252828690b2515a39d7081570bb2391e1"
+  },
+  "n1024-h16": {
+    "bytes": 3546002,
+    "sha256": "a8e71470acafa428606a33e34847d8813d4d7b55d74dc636416191fb78f732a2",
+    "records": 18,
+    "requests": 17,
+    "sessions": 0,
+    "record_kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "selected": 16
+    },
+    "unique_tree_ids": 1024,
+    "unique_binding_ids": 0,
+    "head_digest": "5b5a02d18b78d1255bce7904582df0a610dead2d30a61e573ccdd4a8ef8c46d6"
+  },
+  "n128-h0": {
+    "bytes": 26994,
+    "sha256": "6f54132b7bdf18726bea3627cfe098f2e7e42e4aabb760adad2478fac924a1ba",
+    "records": 2,
+    "requests": 1,
+    "sessions": 0,
+    "record_kinds": {
+      "genesis": 1,
+      "seed": 1
+    },
+    "unique_tree_ids": 128,
+    "unique_binding_ids": 0,
+    "head_digest": "78d7007157c874a883675639ce6e7a160356c47f38ddeaef3d43100d4c3fab59"
+  },
+  "n128-h16": {
+    "bytes": 453904,
+    "sha256": "63be5976f5c5ec302546249e17b5f7d3561d22722e2bd9614e206ddf47a30292",
+    "records": 18,
+    "requests": 17,
+    "sessions": 0,
+    "record_kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "selected": 16
+    },
+    "unique_tree_ids": 128,
+    "unique_binding_ids": 0,
+    "head_digest": "cae202492704445ca5f66323fe7a106b0d4fcc2354dae69abd224cb15c323102"
+  },
+  "n128-h64": {
+    "bytes": 1734683,
+    "sha256": "bdad94930ed296a61e48c9fbc0fd1b01228960c8a33e66c2ef740475e3b369d6",
+    "records": 66,
+    "requests": 65,
+    "sessions": 0,
+    "record_kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "selected": 64
+    },
+    "unique_tree_ids": 128,
+    "unique_binding_ids": 0,
+    "head_digest": "6b478266134dbeff47d304a59f4c739d48f6b8b4ffdce7d1a045dcddbfb92625"
+  },
+  "n8-h0": {
+    "bytes": 2634,
+    "sha256": "a1914c0194205cf3fcbc612b29b5527fc97ff76d4ec72dc68587e7015e8ed88a",
+    "records": 2,
+    "requests": 1,
+    "sessions": 0,
+    "record_kinds": {
+      "genesis": 1,
+      "seed": 1
+    },
+    "unique_tree_ids": 8,
+    "unique_binding_ids": 0,
+    "head_digest": "4b62cd35d258351be8e3b74cb80f3b2b962822eb25224d042fcd7f11f9e65170"
+  },
+  "n8-h1024": {
+    "bytes": 2383165,
+    "sha256": "0e042552bf39c98948de3108e75323cdad8ebd281a1a72508a7e2c6b79b590f8",
+    "records": 1026,
+    "requests": 1025,
+    "sessions": 0,
+    "record_kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "selected": 1024
+    },
+    "unique_tree_ids": 8,
+    "unique_binding_ids": 0,
+    "head_digest": "8adf5f585b0fbfd6df4faf3b3cc2a3f7dcfde027f391453cb902a30bfdfc5801"
+  },
+  "n8-h16": {
+    "bytes": 39785,
+    "sha256": "980a6ffbec87647587b82c7ad8e09d4a21843f98ca89ec8e7d3b68892f709fb3",
+    "records": 18,
+    "requests": 17,
+    "sessions": 0,
+    "record_kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "selected": 16
+    },
+    "unique_tree_ids": 8,
+    "unique_binding_ids": 0,
+    "head_digest": "52a0b482d639b55f58916c0a6b41082bd0302100cc658987e1d6a52ade59048f"
+  },
+  "n8-h256": {
+    "bytes": 597591,
+    "sha256": "6d9d1dee63a64a218fb2fdf9b1994eb40bc7c007fdfdc23a0e830c15a0cdda6e",
+    "records": 258,
+    "requests": 257,
+    "sessions": 0,
+    "record_kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "selected": 256
+    },
+    "unique_tree_ids": 8,
+    "unique_binding_ids": 0,
+    "head_digest": "d6c9b2dc810c0e1b35ca6ffea15244b9c9ed9fb4489226b96f1192e08a07ee04"
+  },
+  "n8-h64": {
+    "bytes": 151284,
+    "sha256": "bdf7490f3896b94b85ec1a40ca7d9422f934d0e55e4b684b2b2ec002e8d50cdc",
+    "records": 66,
+    "requests": 65,
+    "sessions": 0,
+    "record_kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "selected": 64
+    },
+    "unique_tree_ids": 8,
+    "unique_binding_ids": 0,
+    "head_digest": "65e774da6288fd39eeca7ba3bb1ea1e4fd5dee261d1741e7d737f69e255fb80d"
+  }
+}

@@ -1,0 +1,21 @@
+/src/.scratch/topology-journal/20261028-150326-candidate-final/journal: go1.23.12
+	path	github.com/Leeminjing/go-forest/tests/performance/cmd/journal
+	mod	github.com/Leeminjing/go-forest/tests/performance	(devel)	
+	dep	github.com/Leeminjing/go-forest	v0.3.1	h1:k9Q3jg6ZHJ2rFVIsTF/DbMrgkze3A+zODE0RuufagpY=
+	dep	github.com/Leeminjing/go-forest/extensions/topology	v0.2.0
+	=>	/src/.scratch/topology-journal/20261028-150326-candidate-final/source/extensions/topology	(devel)	
+	
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	CGO_ENABLED=1
+	build	CGO_CFLAGS=
+	build	CGO_CPPFLAGS=
+	build	CGO_CXXFLAGS=
+	build	CGO_LDFLAGS=
+	build	GOARCH=amd64
+	build	GOOS=linux
+	build	GOAMD64=v1
+	build	vcs=git
+	build	vcs.revision=3d0334938c641a4721f8716f3d39d196648388ff
+	build	vcs.time=2026-10-28T15:01:47Z
+	build	vcs.modified=false

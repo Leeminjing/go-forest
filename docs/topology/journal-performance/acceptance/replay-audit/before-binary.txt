@@ -1,0 +1,13 @@
+C:\Users\brubing\AppData\Local\Temp\forest-replay-audit-iql1edua\audit.exe: go1.23.12
+	path	github.com/Leeminjing/go-forest/tests/performance/cmd/audit
+	mod	github.com/Leeminjing/go-forest/tests/performance	(devel)	
+	dep	github.com/Leeminjing/go-forest	v0.3.1	h1:k9Q3jg6ZHJ2rFVIsTF/DbMrgkze3A+zODE0RuufagpY=
+	dep	github.com/Leeminjing/go-forest/extensions/topology	v0.2.0
+	=>	D:\go-forest\.scratch\topology-journal\20261028-143205-baseline\source\extensions\topology	(devel)	
+	
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	CGO_ENABLED=0
+	build	GOARCH=amd64
+	build	GOOS=windows
+	build	GOAMD64=v1

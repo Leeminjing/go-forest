@@ -1,0 +1,22 @@
+{
+  "correctness_source": "3d03349",
+  "measured_production": "6cff55a",
+  "baseline": "ea90a93",
+  "harness": "ad828d9",
+  "runtime": "unchanged since final measured runtime",
+  "windows_topology": "Go1.23.12 GOWORK=off go vet ./...; go test ./... -count=1 -v",
+  "linux_topology": "golang:1.23 (Go1.23.12), go vet ./...; go test -race ./... -count=3 -timeout=240s -v",
+  "windows_service": "Go1.26.5 python scripts/test-topology-incremental.py --count 1; real PostgreSQL17",
+  "linux_service": "golang:1.25, private modfile topology=/src/extensions/topology; vet; go test -race ./... -count=3 -timeout=240s -v; actual PostgreSQL17",
+  "exit_statuses": {
+    "windows_topology": 0,
+    "linux_topology": 0,
+    "windows_service": 0,
+    "linux_service": 0,
+    "projection_audit": 0,
+    "interleaved": 0
+  },
+  "final_topology_test_file_sha256": "9dc017f1a5e792b56621f76d7180ff08ac205b542ae407361d557b8a76f786d0",
+  "additional_ownership_tests": "Windows Go1.23.12 full test/vet and Linux Go1.23.12 full test/vet/race count3: exit0",
+  "final_harness": "Windows Go1.23.12 vet/test ./...: exit0"
+}

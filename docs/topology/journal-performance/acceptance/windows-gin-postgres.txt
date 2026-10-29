@@ -1,0 +1,8 @@
+30ffc977dca9df198da6eb0c895209cc50f68357d0c6fab88840da66aa5a3e87
+SOURCE acceptance: only topology is replaced with the current checkout
+=== RUN   TestRealGinAndPostgresKeepNativeInstancesAcrossChangeAndRollback
+    application_test.go:46: actual Gin/PostgreSQL evidence: {Old:{Versions:[1 1] Generations:[1 1] Values:[41 41] Pools:[3330012725664 3330012725664]} New:{Versions:[2 2] Generations:[2 2] Values:[41 41] Pools:[3330012725664 3330012725664]} Rollback:{Versions:[1 1] Generations:[3 3] Values:[41 41] Pools:[3330012725664 3330012725664]} Before:map[business:instance-1 db:instance-2 gin:instance-3] After:map[business:instance-4 db:instance-2 gin:instance-3] Reverted:map[business:instance-5 db:instance-2 gin:instance-3] Counts:map[business-1:{Builds:2 Starts:2 Stops:2} business-2:{Builds:1 Starts:1 Stops:1} db:{Builds:1 Starts:1 Stops:1} gin:{Builds:1 Starts:1 Stops:1}] EndpointBefore:3330012659712 EndpointAfter:3330012659712 EndpointRollback:3330012659712 Engine:3330010252608 Pool:3330012725664 ClosedBeforeOpen:503 ClosedDuringPrepare:503 BusinessCallsBeforeBlocked:1 BusinessCallsAfterBlocked:1 ReceiptVersion:2 PoolClosed:true}
+--- PASS: TestRealGinAndPostgresKeepNativeInstancesAcrossChangeAndRollback (0.14s)
+PASS
+ok  	github.com/Leeminjing/go-forest/examples/topology-incremental	26.276s
+?   	github.com/Leeminjing/go-forest/examples/topology-incremental/cmd/demo	[no test files]

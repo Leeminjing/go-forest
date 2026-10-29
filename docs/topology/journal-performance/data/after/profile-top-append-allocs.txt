@@ -1,0 +1,54 @@
+File: journal
+Type: alloc_space
+Time: Oct 28, 2026 at 3:12pm (UTC)
+Showing nodes accounting for 672.64MB, 99.38% of 676.86MB total
+Dropped 15 nodes (cum <= 3.38MB)
+      flat  flat%   sum%        cum   cum%
+  196.21MB 28.99% 28.99%   277.02MB 40.93%  github.com/Leeminjing/go-forest/extensions/topology.Normalize
+  125.20MB 18.50% 47.48%   133.87MB 19.78%  encoding/json.Marshal
+   77.50MB 11.45% 58.94%   103.50MB 15.29%  encoding/json.(*scanner).error (inline)
+   76.45MB 11.30% 70.23%    76.95MB 11.37%  github.com/Leeminjing/go-forest/extensions/topology.hash
+   47.41MB  7.00% 77.23%    47.41MB  7.00%  encoding/json.(*Decoder).refill
+   35.50MB  5.24% 82.48%    35.50MB  5.24%  encoding/json.(*decodeState).literalStore
+   29.50MB  4.36% 86.84%   159.51MB 23.57%  encoding/json.(*Decoder).Token
+   22.76MB  3.36% 90.20%    22.76MB  3.36%  reflect.growslice
+   17.45MB  2.58% 92.78%   668.49MB 98.76%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).scan
+      11MB  1.63% 94.40%       26MB  3.84%  encoding/json.quoteChar
+      11MB  1.63% 96.03%       11MB  1.63%  unicode/utf8.AppendRune (inline)
+    8.67MB  1.28% 97.31%     8.67MB  1.28%  bytes.growSlice
+       7MB  1.03% 98.34%        7MB  1.03%  encoding/hex.DecodeString
+       4MB  0.59% 98.93%       15MB  2.22%  strconv.quoteWith (inline)
+       1MB  0.15% 99.08%   160.51MB 23.71%  github.com/Leeminjing/go-forest/extensions/topology.strict.func1
+    0.50MB 0.074% 99.16%   394.96MB 58.35%  github.com/Leeminjing/go-forest/extensions/topology.(*journalState).prepareRecord
+    0.50MB 0.074% 99.23%    46.17MB  6.82%  github.com/Leeminjing/go-forest/extensions/topology.requestHash
+    0.50MB 0.074% 99.30%   217.21MB 32.09%  github.com/Leeminjing/go-forest/extensions/topology.Encode
+    0.50MB 0.074% 99.38%    33.76MB  4.99%  encoding/json.(*decodeState).object
+         0     0% 99.38%     6.14MB  0.91%  bytes.(*Buffer).WriteString
+         0     0% 99.38%     8.67MB  1.28%  bytes.(*Buffer).grow
+         0     0% 99.38%   209.16MB 30.90%  encoding/json.(*Decoder).Decode
+         0     0% 99.38%   150.91MB 22.30%  encoding/json.(*Decoder).readValue
+         0     0% 99.38%    32.76MB  4.84%  encoding/json.(*decodeState).array
+         0     0% 99.38%    59.26MB  8.75%  encoding/json.(*decodeState).unmarshal
+         0     0% 99.38%    59.26MB  8.75%  encoding/json.(*decodeState).value
+         0     0% 99.38%     8.67MB  1.28%  encoding/json.(*encodeState).marshal
+         0     0% 99.38%     8.67MB  1.28%  encoding/json.(*encodeState).reflectValue
+         0     0% 99.38%     8.67MB  1.28%  encoding/json.arrayEncoder.encode
+         0     0% 99.38%     8.67MB  1.28%  encoding/json.sliceEncoder.encode
+         0     0% 99.38%   103.50MB 15.29%  encoding/json.stateEndTop
+         0     0% 99.38%   103.50MB 15.29%  encoding/json.stateEndValue
+         0     0% 99.38%     8.67MB  1.28%  encoding/json.structEncoder.encode
+         0     0% 99.38%     6.65MB  0.98%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).SelectHistorical
+         0     0% 99.38%     5.12MB  0.76%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).appendLocked
+         0     0% 99.38%   253.63MB 37.47%  github.com/Leeminjing/go-forest/extensions/topology.Digest
+         0     0% 99.38%   668.49MB 98.76%  github.com/Leeminjing/go-forest/extensions/topology.Open
+         0     0% 99.38%   240.16MB 35.48%  github.com/Leeminjing/go-forest/extensions/topology.strict
+         0     0% 99.38%        7MB  1.03%  github.com/Leeminjing/go-forest/extensions/topology.validDigest
+         0     0% 99.38%   676.86MB   100%  github.com/Leeminjing/go-forest/tests/performance.JournalProfile
+         0     0% 99.38%     6.65MB  0.98%  github.com/Leeminjing/go-forest/tests/performance.appendSelection
+         0     0% 99.38%   676.86MB   100%  main.main
+         0     0% 99.38%    22.76MB  3.36%  reflect.Value.Grow
+         0     0% 99.38%    22.76MB  3.36%  reflect.Value.grow
+         0     0% 99.38%   676.86MB   100%  runtime.main
+         0     0% 99.38%       15MB  2.22%  strconv.Quote (inline)
+         0     0% 99.38%       11MB  1.63%  strconv.appendEscapedRune
+         0     0% 99.38%       11MB  1.63%  strconv.appendQuotedWith

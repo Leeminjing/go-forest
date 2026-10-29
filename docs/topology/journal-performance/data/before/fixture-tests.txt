@@ -1,0 +1,3 @@
+?   	github.com/Leeminjing/go-forest/tests/performance/cmd/journal	[no test files]
+?   	github.com/Leeminjing/go-forest/tests/performance/cmd/perf	[no test files]
+ok  	github.com/Leeminjing/go-forest/tests/performance	0.128s

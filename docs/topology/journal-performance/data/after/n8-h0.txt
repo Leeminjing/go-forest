@@ -1,0 +1,56 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Leeminjing/go-forest/tests/performance
+cpu: 13th Gen Intel(R) Core(TM) i9-13900HX
+BenchmarkJournal/Append         	       1	   5143209 ns/op	   63680 B/op	     362 allocs/op
+BenchmarkJournal/Append         	       1	   3087111 ns/op	   52528 B/op	     221 allocs/op
+BenchmarkJournal/Append         	       1	   2958992 ns/op	   52528 B/op	     221 allocs/op
+BenchmarkJournal/Append         	       1	   3305559 ns/op	   52528 B/op	     221 allocs/op
+BenchmarkJournal/Append         	       1	   3513777 ns/op	   52544 B/op	     222 allocs/op
+BenchmarkJournal/Append         	       1	   3310755 ns/op	   52528 B/op	     221 allocs/op
+BenchmarkJournal/Append         	       1	   3265845 ns/op	   52528 B/op	     221 allocs/op
+BenchmarkJournal/Append         	       1	  31400669 ns/op	   52528 B/op	     221 allocs/op
+BenchmarkJournal/Append         	       1	  52191990 ns/op	   52528 B/op	     221 allocs/op
+BenchmarkJournal/Append         	       1	   8195950 ns/op	   52544 B/op	     222 allocs/op
+BenchmarkJournal/Open           	       1	    673746 ns/op	   73280 B/op	    1555 allocs/op
+BenchmarkJournal/Open           	       1	    646488 ns/op	   72960 B/op	    1553 allocs/op
+BenchmarkJournal/Open           	       1	    347349 ns/op	   73120 B/op	    1554 allocs/op
+BenchmarkJournal/Open           	       1	    408242 ns/op	   72960 B/op	    1553 allocs/op
+BenchmarkJournal/Open           	       1	    383515 ns/op	   72960 B/op	    1553 allocs/op
+BenchmarkJournal/Open           	       1	    381161 ns/op	   72960 B/op	    1553 allocs/op
+BenchmarkJournal/Open           	       1	    405751 ns/op	   73120 B/op	    1554 allocs/op
+BenchmarkJournal/Open           	       1	    676578 ns/op	   72960 B/op	    1553 allocs/op
+BenchmarkJournal/Open           	       1	    399646 ns/op	   72960 B/op	    1553 allocs/op
+BenchmarkJournal/Open           	       1	    357589 ns/op	   73120 B/op	    1554 allocs/op
+BenchmarkJournal/Inspect        	       1	     45433 ns/op	    6400 B/op	      61 allocs/op
+BenchmarkJournal/Inspect        	       1	     47761 ns/op	    6400 B/op	      61 allocs/op
+BenchmarkJournal/Inspect        	       1	     45030 ns/op	    6400 B/op	      61 allocs/op
+BenchmarkJournal/Inspect        	       1	     47359 ns/op	    6400 B/op	      61 allocs/op
+BenchmarkJournal/Inspect        	       1	     44693 ns/op	    6400 B/op	      61 allocs/op
+BenchmarkJournal/Inspect        	       1	     44417 ns/op	    6400 B/op	      61 allocs/op
+BenchmarkJournal/Inspect        	       1	     47650 ns/op	    6400 B/op	      61 allocs/op
+BenchmarkJournal/Inspect        	       1	    118499 ns/op	    6400 B/op	      61 allocs/op
+BenchmarkJournal/Inspect        	       1	     43726 ns/op	    6400 B/op	      61 allocs/op
+BenchmarkJournal/Inspect        	       1	     45391 ns/op	    6400 B/op	      61 allocs/op
+BenchmarkJournal/History        	       1	     43286 ns/op	    7056 B/op	      63 allocs/op
+BenchmarkJournal/History        	       1	     34815 ns/op	    5080 B/op	      52 allocs/op
+BenchmarkJournal/History        	       1	     35094 ns/op	    5080 B/op	      52 allocs/op
+BenchmarkJournal/History        	       1	     40026 ns/op	    5080 B/op	      52 allocs/op
+BenchmarkJournal/History        	       1	     34984 ns/op	    5080 B/op	      52 allocs/op
+BenchmarkJournal/History        	       1	     35891 ns/op	    5080 B/op	      52 allocs/op
+BenchmarkJournal/History        	       1	     35704 ns/op	    5080 B/op	      52 allocs/op
+BenchmarkJournal/History        	       1	     34922 ns/op	    5080 B/op	      52 allocs/op
+BenchmarkJournal/History        	       1	     32807 ns/op	    5080 B/op	      52 allocs/op
+BenchmarkJournal/History        	       1	     36358 ns/op	    5080 B/op	      52 allocs/op
+BenchmarkJournal/Journal        	       1	     77649 ns/op	    9896 B/op	     141 allocs/op
+BenchmarkJournal/Journal        	       1	     24504 ns/op	    2136 B/op	      23 allocs/op
+BenchmarkJournal/Journal        	       1	     22619 ns/op	    2136 B/op	      23 allocs/op
+BenchmarkJournal/Journal        	       1	     22232 ns/op	    2136 B/op	      23 allocs/op
+BenchmarkJournal/Journal        	       1	     21068 ns/op	    2136 B/op	      23 allocs/op
+BenchmarkJournal/Journal        	       1	     24596 ns/op	    2136 B/op	      23 allocs/op
+BenchmarkJournal/Journal        	       1	     23428 ns/op	    2136 B/op	      23 allocs/op
+BenchmarkJournal/Journal        	       1	     33630 ns/op	    2136 B/op	      23 allocs/op
+BenchmarkJournal/Journal        	       1	     28221 ns/op	    2136 B/op	      23 allocs/op
+BenchmarkJournal/Journal        	       1	     23216 ns/op	    2136 B/op	      23 allocs/op
+PASS
+ok  	github.com/Leeminjing/go-forest/tests/performance	0.373s

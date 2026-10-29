@@ -1,0 +1,21 @@
+File: journal
+Type: alloc_space
+Time: Oct 28, 2026 at 3:12pm (UTC)
+Active filters:
+   focus=appendLocked
+Showing nodes accounting for 5.12MB, 0.76% of 676.86MB total
+      flat  flat%   sum%        cum   cum%
+    2.55MB  0.38%  0.38%     3.06MB  0.45%  github.com/Leeminjing/go-forest/extensions/topology.Normalize
+    1.54MB  0.23%   0.6%     1.54MB  0.23%  github.com/Leeminjing/go-forest/extensions/topology.hash
+    1.03MB  0.15%  0.76%     1.03MB  0.15%  encoding/json.Marshal
+         0     0%  0.76%     5.12MB  0.76%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).SelectHistorical
+         0     0%  0.76%     5.12MB  0.76%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).appendLocked
+         0     0%  0.76%     4.09MB   0.6%  github.com/Leeminjing/go-forest/extensions/topology.(*journalState).prepareRecord
+         0     0%  0.76%     3.06MB  0.45%  github.com/Leeminjing/go-forest/extensions/topology.Digest
+         0     0%  0.76%     3.06MB  0.45%  github.com/Leeminjing/go-forest/extensions/topology.Encode
+         0     0%  0.76%     1.03MB  0.15%  github.com/Leeminjing/go-forest/extensions/topology.frame
+         0     0%  0.76%     1.03MB  0.15%  github.com/Leeminjing/go-forest/extensions/topology.requestHash
+         0     0%  0.76%     5.12MB  0.76%  github.com/Leeminjing/go-forest/tests/performance.JournalProfile
+         0     0%  0.76%     5.12MB  0.76%  github.com/Leeminjing/go-forest/tests/performance.appendSelection
+         0     0%  0.76%     5.12MB  0.76%  main.main
+         0     0%  0.76%     5.12MB  0.76%  runtime.main

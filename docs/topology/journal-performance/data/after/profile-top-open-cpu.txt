@@ -1,0 +1,170 @@
+File: journal
+Type: cpu
+Time: Oct 28, 2026 at 3:12pm (UTC)
+Duration: 2.33s, Total samples = 2.41s (103.39%)
+Showing nodes accounting for 2.02s, 83.82% of 2.41s total
+Dropped 99 nodes (cum <= 0.01s)
+      flat  flat%   sum%        cum   cum%
+     0.17s  7.05%  7.05%      0.51s 21.16%  runtime.mallocgc
+     0.16s  6.64% 13.69%      0.64s 26.56%  encoding/json.(*Decoder).readValue
+     0.12s  4.98% 18.67%      0.12s  4.98%  runtime.nextFreeFast (inline)
+     0.11s  4.56% 23.24%      0.12s  4.98%  encoding/json.(*decodeState).rescanLiteral
+     0.09s  3.73% 26.97%      0.09s  3.73%  runtime.memmove
+     0.08s  3.32% 30.29%      0.08s  3.32%  crypto/sha256.block
+     0.07s  2.90% 33.20%      0.08s  3.32%  encoding/json.appendString[go.shape.string]
+     0.07s  2.90% 36.10%      0.23s  9.54%  encoding/json.structEncoder.encode
+     0.07s  2.90% 39.00%      0.07s  2.90%  encoding/json.unquoteBytes
+     0.07s  2.90% 41.91%      0.07s  2.90%  runtime.futex
+     0.06s  2.49% 44.40%      0.06s  2.49%  internal/runtime/syscall.Syscall6
+     0.05s  2.07% 46.47%      0.22s  9.13%  runtime.concatstrings
+     0.04s  1.66% 48.13%      0.04s  1.66%  aeshashbody
+     0.04s  1.66% 49.79%      0.04s  1.66%  encoding/json.stateInString
+     0.04s  1.66% 51.45%      0.04s  1.66%  reflect.Value.Field
+     0.04s  1.66% 53.11%      0.05s  2.07%  runtime.mapaccess1_faststr
+     0.04s  1.66% 54.77%      0.04s  1.66%  runtime.procyield
+     0.03s  1.24% 56.02%      0.08s  3.32%  encoding/json.indirect
+     0.03s  1.24% 57.26%      0.04s  1.66%  runtime.(*mspan).writeHeapBitsSmall
+     0.03s  1.24% 58.51%      0.17s  7.05%  runtime.mapassign_faststr
+     0.03s  1.24% 59.75%      0.03s  1.24%  runtime.publicationBarrier
+     0.03s  1.24% 61.00%      0.05s  2.07%  strconv.appendQuotedWith
+     0.03s  1.24% 62.24%      0.03s  1.24%  strings.ToLower
+     0.02s  0.83% 63.07%      0.02s  0.83%  bytes.(*Buffer).WriteByte
+     0.02s  0.83% 63.90%      0.02s  0.83%  encoding/hex.Decode
+     0.02s  0.83% 64.73%      0.03s  1.24%  encoding/json.stateBeginValue
+     0.02s  0.83% 65.56%      0.45s 18.67%  encoding/json.stateEndValue
+     0.02s  0.83% 66.39%      0.02s  0.83%  reflect.ValueOf (inline)
+     0.02s  0.83% 67.22%      0.02s  0.83%  reflect.flag.kind (inline)
+     0.02s  0.83% 68.05%      0.05s  2.07%  runtime.(*mheap).freeSpanLocked
+     0.02s  0.83% 68.88%      0.02s  0.83%  runtime.add (inline)
+     0.02s  0.83% 69.71%      0.02s  0.83%  runtime.divRoundUp (inline)
+     0.02s  0.83% 70.54%      0.02s  0.83%  runtime.findObject
+     0.02s  0.83% 71.37%      0.03s  1.24%  runtime.intstring
+     0.02s  0.83% 72.20%      0.02s  0.83%  runtime.memclrNoHeapPointers
+     0.02s  0.83% 73.03%      0.02s  0.83%  runtime.strhash
+     0.02s  0.83% 73.86%      0.02s  0.83%  runtime.usleep
+     0.02s  0.83% 74.69%      0.03s  1.24%  strings.IndexRune
+     0.01s  0.41% 75.10%      0.23s  9.54%  encoding/json.(*decodeState).literalStore
+     0.01s  0.41% 75.52%      0.17s  7.05%  encoding/json.(*decodeState).object
+     0.01s  0.41% 75.93%      0.03s  1.24%  encoding/json.(*decodeState).scanWhile
+     0.01s  0.41% 76.35%      0.20s  8.30%  encoding/json.quoteChar
+     0.01s  0.41% 76.76%      0.43s 17.84%  encoding/json.stateEndTop
+     0.01s  0.41% 77.18%      0.10s  4.15%  encoding/json.stringEncoder
+     0.01s  0.41% 77.59%      0.49s 20.33%  github.com/Leeminjing/go-forest/extensions/topology.Normalize
+     0.01s  0.41% 78.01%      0.99s 41.08%  github.com/Leeminjing/go-forest/extensions/topology.strict.func1
+     0.01s  0.41% 78.42%      0.04s  1.66%  github.com/Leeminjing/go-forest/extensions/topology.validID
+     0.01s  0.41% 78.84%      0.03s  1.24%  reflect.Value.Elem
+     0.01s  0.41% 79.25%      0.02s  0.83%  runtime.(*mcache).prepareForSweep
+     0.01s  0.41% 79.67%      0.05s  2.07%  runtime.(*mcache).refill
+     0.01s  0.41% 80.08%      0.02s  0.83%  runtime.(*mcentral).cacheSpan
+     0.01s  0.41% 80.50%      0.02s  0.83%  runtime.(*pageAlloc).update
+     0.01s  0.41% 80.91%      0.07s  2.90%  runtime.(*sweepLocked).sweep
+     0.01s  0.41% 81.33%      0.16s  6.64%  runtime.concatstring4
+     0.01s  0.41% 81.74%      0.05s  2.07%  runtime.lock2
+     0.01s  0.41% 82.16%      0.02s  0.83%  runtime.makeSpanClass (inline)
+     0.01s  0.41% 82.57%      0.02s  0.83%  runtime.mapiterinit
+     0.01s  0.41% 82.99%      0.02s  0.83%  runtime.rand
+     0.01s  0.41% 83.40%      0.08s  3.32%  runtime.sweepone
+     0.01s  0.41% 83.82%      0.03s  1.24%  runtime.typedmemmove
+         0     0% 83.82%      0.08s  3.32%  crypto/sha256.(*digest).Write
+         0     0% 83.82%      0.08s  3.32%  crypto/sha256.Sum256
+         0     0% 83.82%      0.03s  1.24%  encoding/hex.DecodeString
+         0     0% 83.82%      1.09s 45.23%  encoding/json.(*Decoder).Decode
+         0     0% 83.82%      0.91s 37.76%  encoding/json.(*Decoder).Token
+         0     0% 83.82%      0.16s  6.64%  encoding/json.(*decodeState).array
+         0     0% 83.82%      0.45s 18.67%  encoding/json.(*decodeState).unmarshal
+         0     0% 83.82%      0.41s 17.01%  encoding/json.(*decodeState).value
+         0     0% 83.82%      0.23s  9.54%  encoding/json.(*encodeState).marshal
+         0     0% 83.82%      0.23s  9.54%  encoding/json.(*encodeState).reflectValue
+         0     0% 83.82%      0.42s 17.43%  encoding/json.(*scanner).error (inline)
+         0     0% 83.82%      0.28s 11.62%  encoding/json.Marshal
+         0     0% 83.82%      0.02s  0.83%  encoding/json.Unmarshal
+         0     0% 83.82%      0.22s  9.13%  encoding/json.arrayEncoder.encode
+         0     0% 83.82%      0.22s  9.13%  encoding/json.sliceEncoder.encode
+         0     0% 83.82%      2.06s 85.48%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).scan
+         0     0% 83.82%      0.70s 29.05%  github.com/Leeminjing/go-forest/extensions/topology.(*journalState).prepareRecord
+         0     0% 83.82%      0.46s 19.09%  github.com/Leeminjing/go-forest/extensions/topology.Digest
+         0     0% 83.82%      0.42s 17.43%  github.com/Leeminjing/go-forest/extensions/topology.Encode
+         0     0% 83.82%      2.06s 85.48%  github.com/Leeminjing/go-forest/extensions/topology.Open
+         0     0% 83.82%      0.03s  1.24%  github.com/Leeminjing/go-forest/extensions/topology.detached[go.shape.*uint8]
+         0     0% 83.82%      0.09s  3.73%  github.com/Leeminjing/go-forest/extensions/topology.hash
+         0     0% 83.82%      0.03s  1.24%  github.com/Leeminjing/go-forest/extensions/topology.requestHash
+         0     0% 83.82%      1.29s 53.53%  github.com/Leeminjing/go-forest/extensions/topology.strict
+         0     0% 83.82%      0.06s  2.49%  github.com/Leeminjing/go-forest/extensions/topology.validDigest
+         0     0% 83.82%      2.10s 87.14%  github.com/Leeminjing/go-forest/tests/performance.JournalProfile
+         0     0% 83.82%      0.04s  1.66%  github.com/Leeminjing/go-forest/tests/performance.copyJournal
+         0     0% 83.82%      0.03s  1.24%  internal/poll.(*FD).Pread
+         0     0% 83.82%      0.03s  1.24%  internal/poll.(*FD).Write
+         0     0% 83.82%      0.03s  1.24%  internal/poll.ignoringEINTRIO (inline)
+         0     0% 83.82%      0.02s  0.83%  internal/reflectlite.Swapper
+         0     0% 83.82%      2.10s 87.14%  main.main
+         0     0% 83.82%      0.03s  1.24%  os.(*File).ReadAt
+         0     0% 83.82%      0.03s  1.24%  os.(*File).Write
+         0     0% 83.82%      0.03s  1.24%  os.(*File).pread (inline)
+         0     0% 83.82%      0.03s  1.24%  os.(*File).write (inline)
+         0     0% 83.82%      0.04s  1.66%  os.WriteFile
+         0     0% 83.82%      0.06s  2.49%  runtime.(*mcache).nextFree
+         0     0% 83.82%      0.05s  2.07%  runtime.(*mheap).freeSpan (inline)
+         0     0% 83.82%      0.03s  1.24%  runtime.(*pageAlloc).free
+         0     0% 83.82%      0.05s  2.07%  runtime.(*sweepLocked).sweep.(*mheap).freeSpan.func3
+         0     0% 83.82%      0.02s  0.83%  runtime.acquirep
+         0     0% 83.82%      0.09s  3.73%  runtime.bgsweep
+         0     0% 83.82%      0.07s  2.90%  runtime.concatstring3
+         0     0% 83.82%      0.03s  1.24%  runtime.convTstring
+         0     0% 83.82%      0.04s  1.66%  runtime.evacuate_faststr
+         0     0% 83.82%      0.06s  2.49%  runtime.findRunnable
+         0     0% 83.82%      0.07s  2.90%  runtime.futexwakeup
+         0     0% 83.82%      0.08s  3.32%  runtime.gcBgMarkWorker
+         0     0% 83.82%      0.04s  1.66%  runtime.gcBgMarkWorker.func2
+         0     0% 83.82%      0.04s  1.66%  runtime.gcDrain
+         0     0% 83.82%      0.02s  0.83%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0% 83.82%      0.02s  0.83%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0% 83.82%      0.04s  1.66%  runtime.gcMarkDone
+         0     0% 83.82%      0.03s  1.24%  runtime.gcMarkTermination
+         0     0% 83.82%      0.02s  0.83%  runtime.gcMarkTermination.func3
+         0     0% 83.82%      0.03s  1.24%  runtime.gcStart
+         0     0% 83.82%      0.02s  0.83%  runtime.gcStart.func3
+         0     0% 83.82%      0.02s  0.83%  runtime.gcstopm
+         0     0% 83.82%      0.08s  3.32%  runtime.gopreempt_m (inline)
+         0     0% 83.82%      0.08s  3.32%  runtime.goschedImpl
+         0     0% 83.82%      0.04s  1.66%  runtime.growWork_faststr
+         0     0% 83.82%      0.06s  2.49%  runtime.growslice
+         0     0% 83.82%      0.03s  1.24%  runtime.hashGrow
+         0     0% 83.82%      0.04s  1.66%  runtime.heapSetType
+         0     0% 83.82%      0.05s  2.07%  runtime.lock (inline)
+         0     0% 83.82%      0.05s  2.07%  runtime.lockWithRank (inline)
+         0     0% 83.82%      2.10s 87.14%  runtime.main
+         0     0% 83.82%      0.03s  1.24%  runtime.makeBucketArray
+         0     0% 83.82%      0.04s  1.66%  runtime.makeslice
+         0     0% 83.82%      0.05s  2.07%  runtime.mcall
+         0     0% 83.82%      0.08s  3.32%  runtime.morestack
+         0     0% 83.82%      0.02s  0.83%  runtime.newarray
+         0     0% 83.82%      0.16s  6.64%  runtime.newobject (partial-inline)
+         0     0% 83.82%      0.08s  3.32%  runtime.newstack
+         0     0% 83.82%      0.07s  2.90%  runtime.notewakeup
+         0     0% 83.82%      0.05s  2.07%  runtime.park_m
+         0     0% 83.82%      0.16s  6.64%  runtime.rawstring (inline)
+         0     0% 83.82%      0.16s  6.64%  runtime.rawstringtmp
+         0     0% 83.82%      0.02s  0.83%  runtime.runqgrab
+         0     0% 83.82%      0.02s  0.83%  runtime.runqsteal
+         0     0% 83.82%      0.04s  1.66%  runtime.scanobject
+         0     0% 83.82%      0.07s  2.90%  runtime.schedule
+         0     0% 83.82%      0.07s  2.90%  runtime.slicebytetostring
+         0     0% 83.82%      0.04s  1.66%  runtime.startTheWorldWithSema
+         0     0% 83.82%      0.06s  2.49%  runtime.startm
+         0     0% 83.82%      0.02s  0.83%  runtime.stealWork
+         0     0% 83.82%      0.02s  0.83%  runtime.stopm
+         0     0% 83.82%      0.17s  7.05%  runtime.systemstack
+         0     0% 83.82%      0.06s  2.49%  runtime.wakep
+         0     0% 83.82%      0.02s  0.83%  sort.Slice
+         0     0% 83.82%      0.09s  3.73%  strconv.Quote (inline)
+         0     0% 83.82%      0.02s  0.83%  strconv.appendEscapedRune
+         0     0% 83.82%      0.09s  3.73%  strconv.quoteWith (inline)
+         0     0% 83.82%      0.03s  1.24%  strings.ContainsRune (inline)
+         0     0% 83.82%      0.02s  0.83%  syscall.Pread (inline)
+         0     0% 83.82%      0.06s  2.49%  syscall.RawSyscall6
+         0     0% 83.82%      0.03s  1.24%  syscall.Syscall
+         0     0% 83.82%      0.03s  1.24%  syscall.Syscall6
+         0     0% 83.82%      0.03s  1.24%  syscall.Write (inline)
+         0     0% 83.82%      0.02s  0.83%  syscall.pread
+         0     0% 83.82%      0.03s  1.24%  syscall.write
+         0     0% 83.82%      0.02s  0.83%  unicode/utf8.AppendRune (inline)

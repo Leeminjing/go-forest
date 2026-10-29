@@ -1,0 +1,849 @@
+[
+  {
+    "name": "configure",
+    "command": [
+      "go",
+      "mod",
+      "edit",
+      "-replace=github.com/Leeminjing/go-forest/extensions/topology=/src/.scratch/topology-journal/20261028-150326-candidate-final/source/extensions/topology"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "tidy",
+    "command": [
+      "go",
+      "mod",
+      "tidy"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "modules",
+    "command": [
+      "go",
+      "list",
+      "-m",
+      "-json",
+      "all"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "go-version",
+    "command": [
+      "go",
+      "version"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "vet",
+    "command": [
+      "go",
+      "vet",
+      "./..."
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "fixture-tests",
+    "command": [
+      "go",
+      "test",
+      "./...",
+      "-count=1",
+      "-timeout=120s"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "build",
+    "command": [
+      "go",
+      "build",
+      "-pgo=off",
+      "-o",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "./cmd/journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "binary-info",
+    "command": [
+      "go",
+      "version",
+      "-m",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "input-n8-h0",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=info",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h0.journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "input-n8-h16",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=info",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h16.journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "input-n8-h64",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=info",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h64.journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "input-n8-h256",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=info",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h256.journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "input-n8-h1024",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=info",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h1024.journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "input-n128-h0",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=info",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h0.journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "input-n128-h16",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=info",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h16.journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "input-n128-h64",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=info",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h64.journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "input-n1024-h0",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=info",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n1024-h0.journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "input-n1024-h16",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=info",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n1024-h16.journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "input-n10000-h0",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=info",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n10000-h0.journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "input-n10000-h4",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=info",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n10000-h4.journal"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "n8-h0",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkJournal$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_JOURNAL_INPUT": "/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h0.journal"
+    }
+  },
+  {
+    "name": "memory-n8-h0-open",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=open",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h0.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n8-h0-open.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "memory-n8-h0-append",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=append",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h0.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n8-h0-append.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "n8-h16",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkJournal$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_JOURNAL_INPUT": "/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h16.journal"
+    }
+  },
+  {
+    "name": "memory-n8-h16-open",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=open",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h16.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n8-h16-open.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "memory-n8-h16-append",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=append",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h16.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n8-h16-append.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "n8-h64",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkJournal$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_JOURNAL_INPUT": "/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h64.journal"
+    }
+  },
+  {
+    "name": "memory-n8-h64-open",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=open",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h64.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n8-h64-open.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "memory-n8-h64-append",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=append",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h64.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n8-h64-append.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "n8-h256",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkJournal$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_JOURNAL_INPUT": "/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h256.journal"
+    }
+  },
+  {
+    "name": "memory-n8-h256-open",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=open",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h256.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n8-h256-open.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "memory-n8-h256-append",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=append",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h256.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n8-h256-append.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "n8-h1024",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkJournal$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_JOURNAL_INPUT": "/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h1024.journal"
+    }
+  },
+  {
+    "name": "memory-n8-h1024-open",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=open",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h1024.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n8-h1024-open.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "memory-n8-h1024-append",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=append",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n8-h1024.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n8-h1024-append.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "n128-h0",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkJournal$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_JOURNAL_INPUT": "/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h0.journal"
+    }
+  },
+  {
+    "name": "memory-n128-h0-open",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=open",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h0.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n128-h0-open.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "memory-n128-h0-append",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=append",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h0.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n128-h0-append.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "n128-h16",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkJournal$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_JOURNAL_INPUT": "/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h16.journal"
+    }
+  },
+  {
+    "name": "memory-n128-h16-open",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=open",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h16.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n128-h16-open.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "memory-n128-h16-append",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=append",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h16.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n128-h16-append.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "n128-h64",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkJournal$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_JOURNAL_INPUT": "/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h64.journal"
+    }
+  },
+  {
+    "name": "memory-n128-h64-open",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=open",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h64.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n128-h64-open.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "memory-n128-h64-append",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=append",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h64.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n128-h64-append.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "n1024-h0",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkJournal$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_JOURNAL_INPUT": "/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n1024-h0.journal"
+    }
+  },
+  {
+    "name": "memory-n1024-h0-open",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=open",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n1024-h0.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n1024-h0-open.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "memory-n1024-h0-append",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=append",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n1024-h0.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n1024-h0-append.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "n1024-h16",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkJournal$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_JOURNAL_INPUT": "/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n1024-h16.journal"
+    }
+  },
+  {
+    "name": "memory-n1024-h16-open",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=open",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n1024-h16.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n1024-h16-open.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "memory-n1024-h16-append",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=append",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n1024-h16.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n1024-h16-append.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "n10000-h0",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkJournal$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_JOURNAL_INPUT": "/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n10000-h0.journal"
+    }
+  },
+  {
+    "name": "memory-n10000-h0-open",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=open",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n10000-h0.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n10000-h0-open.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "memory-n10000-h0-append",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=append",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n10000-h0.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n10000-h0-append.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "n10000-h4",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkJournal$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_JOURNAL_INPUT": "/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n10000-h4.journal"
+    }
+  },
+  {
+    "name": "memory-n10000-h4-open",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=open",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n10000-h4.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n10000-h4-open.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "memory-n10000-h4-append",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=memory",
+      "-operation=append",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n10000-h4.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/n10000-h4-append.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-open-cpu",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=profile",
+      "-operation=open",
+      "-kind=cpu",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h64.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/open-cpu.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-top-open-cpu",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/open-cpu.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-open-allocs",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=profile",
+      "-operation=open",
+      "-kind=allocs",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h64.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/open-allocs.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-top-open-allocs",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/open-allocs.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-append-cpu",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=profile",
+      "-operation=append",
+      "-kind=cpu",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h64.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/append-cpu.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-top-append-cpu",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/append-cpu.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-focus-cpu",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "-focus=appendLocked",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/append-cpu.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-append-allocs",
+    "command": [
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "-mode=profile",
+      "-operation=append",
+      "-kind=allocs",
+      "-input=/src/.scratch/topology-journal/20261028-143205-baseline/inputs/n128-h64.journal",
+      "-out=/src/.scratch/topology-journal/20261028-150326-candidate-final/append-allocs.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-top-append-allocs",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/append-allocs.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "profile-focus-allocs",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "-focus=appendLocked",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/journal",
+      "/src/.scratch/topology-journal/20261028-150326-candidate-final/append-allocs.pprof"
+    ],
+    "dimensions": {}
+  },
+  {
+    "name": "management-32",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkManagement$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16"
+    }
+  },
+  {
+    "name": "management-1024",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkManagement$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256"
+    }
+  },
+  {
+    "name": "management-10000",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-run=^$",
+      "-bench=^BenchmarkManagement$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256"
+    }
+  }
+]

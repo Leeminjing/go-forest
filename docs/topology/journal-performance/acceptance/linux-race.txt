@@ -1,0 +1,716 @@
+go version go1.23.12 linux/amd64
+go: downloading github.com/Leeminjing/go-forest v0.3.0
+?   	github.com/Leeminjing/go-forest/extensions/topology/cmd/demo	[no test files]
+=== RUN   TestColdHistoricalSelectionRequiresAnExitedController
+--- PASS: TestColdHistoricalSelectionRequiresAnExitedController (0.05s)
+=== RUN   TestRollbackKeepsNativeFilesAndDoesNotUndoBusinessEffects
+--- PASS: TestRollbackKeepsNativeFilesAndDoesNotUndoBusinessEffects (0.06s)
+=== RUN   TestConcurrentChangesCannotOverwriteTheSameHistoryPosition
+--- PASS: TestConcurrentChangesCannotOverwriteTheSameHistoryPosition (0.02s)
+=== RUN   TestPreparingCandidateIsObservableAndCancellationIsNotCleanup
+--- PASS: TestPreparingCandidateIsObservableAndCancellationIsNotCleanup (0.02s)
+=== RUN   TestColdRestoreUsesFreshForestAndExplicitAdmission
+--- PASS: TestColdRestoreUsesFreshForestAndExplicitAdmission (0.03s)
+=== RUN   TestMissingCatalogDoesNotBuildOrPublish
+--- PASS: TestMissingCatalogDoesNotBuildOrPublish (0.01s)
+=== RUN   TestHistoricalReceiptDoesNotRestoreOrAdmitANewForest
+--- PASS: TestHistoricalReceiptDoesNotRestoreOrAdmitANewForest (0.03s)
+=== RUN   TestEmptyRestoreAndNoopPreserveNativeGenerationZero
+--- PASS: TestEmptyRestoreAndNoopPreserveNativeGenerationZero (0.02s)
+=== RUN   TestRestoreRetryKeepsItsOriginalIdentityAfterDesiredChanges
+--- PASS: TestRestoreRetryKeepsItsOriginalIdentityAfterDesiredChanges (0.03s)
+=== RUN   TestCloseDeadlineDoesNotWaitForAnUncooperativePreparation
+--- PASS: TestCloseDeadlineDoesNotWaitForAnUncooperativePreparation (0.04s)
+=== RUN   TestPartialProgressWritesFormCompleteDurableRecords
+--- PASS: TestPartialProgressWritesFormCompleteDurableRecords (0.01s)
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/intent/write
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/intent/partial
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/intent/sync
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/apply-observed/write
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/apply-observed/sync
+--- PASS: TestPersistenceFailuresNeverBlindlyReapply (0.07s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/intent/write (0.01s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/intent/partial (0.01s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/intent/sync (0.02s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/apply-observed/write (0.02s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/apply-observed/sync (0.01s)
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/intent-synced
+    incremental_fault_test.go:66: incremental intent-synced: Kill+Wait PID=2787, fresh PID=2793 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/build
+    incremental_fault_test.go:66: incremental build: Kill+Wait PID=2799, fresh PID=2805 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/start
+    incremental_fault_test.go:66: incremental start: Kill+Wait PID=2811, fresh PID=2817 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/ready
+    incremental_fault_test.go:66: incremental ready: Kill+Wait PID=2824, fresh PID=2830 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/apply-returned
+    incremental_fault_test.go:66: incremental apply-returned: Kill+Wait PID=2836, fresh PID=2843 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/observation-synced
+    incremental_fault_test.go:66: incremental observation-synced: Kill+Wait PID=2849, fresh PID=2856 native Generation=1
+--- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent (0.54s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/intent-synced (0.08s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/build (0.09s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/start (0.09s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/ready (0.09s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/apply-returned (0.09s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/observation-synced (0.09s)
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/write
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/partial
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/sync
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/write
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/partial
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/sync
+--- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree (0.17s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/write (0.03s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/partial (0.02s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/sync (0.03s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/write (0.03s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/partial (0.03s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/sync (0.03s)
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/version
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/facts
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/impact
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/plan
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/erase
+--- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted (0.21s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/version (0.04s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/facts (0.04s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/impact (0.04s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/plan (0.04s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/erase (0.04s)
+=== RUN   TestPreviewPublishesTargetDigestAndRejectsTamperedClaim
+--- PASS: TestPreviewPublishesTargetDigestAndRejectsTamperedClaim (0.04s)
+=== RUN   TestIncrementalRuntimeRebindAndManyOrder
+--- PASS: TestIncrementalRuntimeRebindAndManyOrder (0.05s)
+=== RUN   TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges
+=== RUN   TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges/1
+=== RUN   TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges/2
+--- PASS: TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges (0.10s)
+    --- PASS: TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges/1 (0.05s)
+    --- PASS: TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges/2 (0.05s)
+=== RUN   TestIncrementalBlockedClosureIsObservableAndDoesNotWrite
+--- PASS: TestIncrementalBlockedClosureIsObservableAndDoesNotWrite (0.02s)
+=== RUN   TestIncrementalNestPreservationExpansionAndMove
+=== RUN   TestIncrementalNestPreservationExpansionAndMove/true
+=== RUN   TestIncrementalNestPreservationExpansionAndMove/false
+--- PASS: TestIncrementalNestPreservationExpansionAndMove (0.08s)
+    --- PASS: TestIncrementalNestPreservationExpansionAndMove/true (0.04s)
+    --- PASS: TestIncrementalNestPreservationExpansionAndMove/false (0.04s)
+=== RUN   TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers
+=== RUN   TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers/1
+=== RUN   TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers/2
+--- PASS: TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers (0.07s)
+    --- PASS: TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers/1 (0.03s)
+    --- PASS: TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers/2 (0.03s)
+=== RUN   TestIncrementalOptionalPhaseBindingAdditionAndRemoval
+=== RUN   TestIncrementalOptionalPhaseBindingAdditionAndRemoval/1
+=== RUN   TestIncrementalOptionalPhaseBindingAdditionAndRemoval/2
+--- PASS: TestIncrementalOptionalPhaseBindingAdditionAndRemoval (0.08s)
+    --- PASS: TestIncrementalOptionalPhaseBindingAdditionAndRemoval/1 (0.04s)
+    --- PASS: TestIncrementalOptionalPhaseBindingAdditionAndRemoval/2 (0.04s)
+=== RUN   TestIncrementalBindNestClassificationAndUnsafeMove
+=== RUN   TestIncrementalBindNestClassificationAndUnsafeMove/true
+=== RUN   TestIncrementalBindNestClassificationAndUnsafeMove/false
+--- PASS: TestIncrementalBindNestClassificationAndUnsafeMove (0.05s)
+    --- PASS: TestIncrementalBindNestClassificationAndUnsafeMove/true (0.03s)
+    --- PASS: TestIncrementalBindNestClassificationAndUnsafeMove/false (0.02s)
+=== RUN   TestIncrementalReplaceRetainsUnchangedNonHotResource
+--- PASS: TestIncrementalReplaceRetainsUnchangedNonHotResource (0.02s)
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/truncated
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/bit-flip
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/duplicate
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/missing-middle
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/unknown-kind
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/unknown-version
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/oversized-frame
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/old-backup
+--- PASS: TestCorruptOrOutdatedJournalFailsClosed (0.16s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/truncated (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/bit-flip (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/duplicate (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/missing-middle (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/unknown-kind (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/unknown-version (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/oversized-frame (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/old-backup (0.02s)
+=== RUN   TestInvalidRecordCannotContaminateVerifiedPrefix
+--- PASS: TestInvalidRecordCannotContaminateVerifiedPrefix (0.01s)
+=== RUN   TestExpectedAnchorDoesNotInitializeAnUnknownDirectory
+--- PASS: TestExpectedAnchorDoesNotInitializeAnUnknownDirectory (0.00s)
+=== RUN   TestJournalSeedCASLockAndDetachedHistory
+--- PASS: TestJournalSeedCASLockAndDetachedHistory (0.01s)
+=== RUN   TestReleasedV1JournalRetriesAndMixedVersionHistory
+--- PASS: TestReleasedV1JournalRetriesAndMixedVersionHistory (0.06s)
+=== RUN   TestReleasedV1PendingIntentStillRequiresHostResolution
+--- PASS: TestReleasedV1PendingIntentStillRequiresHostResolution (0.02s)
+=== RUN   TestManifestPreservesBindingIdentityAndRelativeOrder
+--- PASS: TestManifestPreservesBindingIdentityAndRelativeOrder (0.00s)
+=== RUN   TestDecodeRejectsAmbiguousAndUnsupportedInput
+--- PASS: TestDecodeRejectsAmbiguousAndUnsupportedInput (0.00s)
+=== RUN   TestTopologyWorker
+    process_test.go:137: supervised subprocess role
+--- SKIP: TestTopologyWorker (0.00s)
+=== RUN   TestPersistedHistoryRestoresComparesAndRollsBackInANewProcess
+    process_test.go:425: joined writerPID=2863 session=ec4b5c7b0eecf4ff5db4ddaa0a5017ba; restoredPID=2869 session=ec945461fcd51c92e0b3195bf74269d2; store=25e2e607a0dc4e3b18f886b5e641de3b samples=[{Version:2 Marker:v2:b4139a05596630e1f224bff95880eaa8 Generation:1} {Version:1 Marker:a8ece129c17339971e225053989c1a39 Generation:2}] immutable-history=3
+--- PASS: TestPersistedHistoryRestoresComparesAndRollsBackInANewProcess (0.10s)
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/before-intent
+    process_test.go:524: Kill+Wait stage=before-intent store=5858189a0cd1acf96a724f1a2cbdae13 oldPID=2876 oldSession=93d8df5a7021156e2d0170d8411e7a83 newPID=2882 newSession=82bb214c0904b5669b7567df49f8ed7c generation=1 physicalMarker=76e7481a5677dbeae6ec40949a9f319a race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-partial
+    process_test.go:489: partial-record Kill+Wait: preservedStore=87ca15e7f4f71e8a7f065c9a4773c220 newStore=f1cc57412eff50faa9686fc7cf954a2d oldPID=2888 newPID=2894
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-written
+    process_test.go:524: Kill+Wait stage=intent-written store=5c2494e8286d25375feed42952253726 oldPID=2900 oldSession=f997259b068b9cbdfb59f09d3a0b4dc4 newPID=2906 newSession=893e75b5cf6a7f69da621bce3e477aee generation=1 physicalMarker=be433361a5aa36dc7a05e38a8b594506 race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-synced
+    process_test.go:524: Kill+Wait stage=intent-synced store=a6c99fa1002e857db031e661a3bf5820 oldPID=2912 oldSession=ab78eae6d94bcec987a6ae5a02a9133f newPID=2918 newSession=81121c050f2082b57da804c9a2d93540 generation=1 physicalMarker=35c45753232105ec10d86a5ead109674 race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/build
+    process_test.go:524: Kill+Wait stage=build store=717a4111ac59056521e84e7001fd883d oldPID=2925 oldSession=8446fd549ac863c04c0ba5a5ef6bb23e newPID=2931 newSession=e1b0a11ee65ca0a598d7ee5cc94c6565 generation=1 physicalMarker=1d387876237e4b7ab2af971bd3658ab4 race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/start
+    process_test.go:524: Kill+Wait stage=start store=b7b04bfaae6516eea4790f1f36c98074 oldPID=2937 oldSession=78e32af9eec87b2f805bf6390a7e633c newPID=2944 newSession=f81a9148d3861305f725f7a6c92e6ba5 generation=1 physicalMarker=2c03428211d46073e22005c785fad778 race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/ready
+    process_test.go:524: Kill+Wait stage=ready store=2df99c9eb6457e39dfb2fe8c02f472bd oldPID=2950 oldSession=d8e768cf776acba5255abb8a0d230321 newPID=2957 newSession=6a18fa96bf14c8a28e2a7a7061cf1999 generation=1 physicalMarker=225edb15489d4b91dd2967b3476eca82 race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/apply-returned
+    process_test.go:524: Kill+Wait stage=apply-returned store=a5b1c9613e5a17ac47bb64f4d7d2b782 oldPID=2964 oldSession=ea8b0d4162c5769b19178697f7299fb2 newPID=2970 newSession=e7bd263b5bf70b98dd6833053ab95064 generation=1 physicalMarker=2c0c0f5d41ab8439246691d1e35152e5 race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/observation-synced
+    process_test.go:524: Kill+Wait stage=observation-synced store=fe271ebd9b5c707ca7ecd1f9c267c7c8 oldPID=2977 oldSession=355f49f2413e5451a7e440231daa8e2c newPID=2983 newSession=e4ce47d44f1cb0b64b1b87df8c3fe378 generation=1 physicalMarker=533efb84136b1f6941dd52415ae77668 race=true
+--- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution (0.56s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/before-intent (0.05s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-partial (0.06s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-written (0.06s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-synced (0.06s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/build (0.06s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/start (0.06s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/ready (0.06s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/apply-returned (0.06s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/observation-synced (0.07s)
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/not-hot
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/start-failed
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/exclusive
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/weakened-contract
+--- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged (0.08s)
+    --- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/not-hot (0.02s)
+    --- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/start-failed (0.02s)
+    --- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/exclusive (0.02s)
+    --- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/weakened-contract (0.02s)
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/missing-version
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/identity
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/cycle
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/missing-parent
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/invalid-link
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/required-port
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/phase-cycle
+--- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction (0.06s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/missing-version (0.00s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/identity (0.01s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/cycle (0.00s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/missing-parent (0.00s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/invalid-link (0.01s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/required-port (0.01s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/phase-cycle (0.01s)
+=== RUN   TestDetectedOutOfBandMutationStopsManagedWrites
+--- PASS: TestDetectedOutOfBandMutationStopsManagedWrites (0.02s)
+=== RUN   TestRestoreAndRollbackPreserveNestOrderAndAllDependencyPhases
+--- PASS: TestRestoreAndRollbackPreserveNestOrderAndAllDependencyPhases (0.06s)
+=== RUN   TestCloseRetainsLockAndRealResourceUntilEnteredCallJoins
+--- PASS: TestCloseRetainsLockAndRealResourceUntilEnteredCallJoins (0.04s)
+=== RUN   TestHistoricalRollbackIsANewCommitAndPinsOldScope
+--- PASS: TestHistoricalRollbackIsANewCommitAndPinsOldScope (0.03s)
+=== RUN   TestConfirmedFactsDoNotBorrowMutableProposalPorts
+--- PASS: TestConfirmedFactsDoNotBorrowMutableProposalPorts (0.04s)
+=== RUN   TestJournalQueriesRemainDeeplyDetached
+--- PASS: TestJournalQueriesRemainDeeplyDetached (0.03s)
+=== RUN   TestFailedSyncKeepsConfirmedStateUntilReopen
+--- PASS: TestFailedSyncKeepsConfirmedStateUntilReopen (0.01s)
+=== RUN   TestLateRecordValidationPreservesExactPrefix
+=== RUN   TestLateRecordValidationPreservesExactPrefix/intent
+=== RUN   TestLateRecordValidationPreservesExactPrefix/apply-observed
+--- PASS: TestLateRecordValidationPreservesExactPrefix (0.10s)
+    --- PASS: TestLateRecordValidationPreservesExactPrefix/intent (0.05s)
+    --- PASS: TestLateRecordValidationPreservesExactPrefix/apply-observed (0.06s)
+=== RUN   TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure
+=== RUN   TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure/stat-false
+=== RUN   TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure/stat-true
+--- PASS: TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure (0.02s)
+    --- PASS: TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure/stat-false (0.01s)
+    --- PASS: TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure/stat-true (0.01s)
+=== RUN   TestColdHistoricalSelectionRequiresAnExitedController
+--- PASS: TestColdHistoricalSelectionRequiresAnExitedController (0.05s)
+=== RUN   TestRollbackKeepsNativeFilesAndDoesNotUndoBusinessEffects
+--- PASS: TestRollbackKeepsNativeFilesAndDoesNotUndoBusinessEffects (0.06s)
+=== RUN   TestConcurrentChangesCannotOverwriteTheSameHistoryPosition
+--- PASS: TestConcurrentChangesCannotOverwriteTheSameHistoryPosition (0.02s)
+=== RUN   TestPreparingCandidateIsObservableAndCancellationIsNotCleanup
+--- PASS: TestPreparingCandidateIsObservableAndCancellationIsNotCleanup (0.02s)
+=== RUN   TestColdRestoreUsesFreshForestAndExplicitAdmission
+--- PASS: TestColdRestoreUsesFreshForestAndExplicitAdmission (0.03s)
+=== RUN   TestMissingCatalogDoesNotBuildOrPublish
+--- PASS: TestMissingCatalogDoesNotBuildOrPublish (0.00s)
+=== RUN   TestHistoricalReceiptDoesNotRestoreOrAdmitANewForest
+--- PASS: TestHistoricalReceiptDoesNotRestoreOrAdmitANewForest (0.03s)
+=== RUN   TestEmptyRestoreAndNoopPreserveNativeGenerationZero
+--- PASS: TestEmptyRestoreAndNoopPreserveNativeGenerationZero (0.02s)
+=== RUN   TestRestoreRetryKeepsItsOriginalIdentityAfterDesiredChanges
+--- PASS: TestRestoreRetryKeepsItsOriginalIdentityAfterDesiredChanges (0.03s)
+=== RUN   TestCloseDeadlineDoesNotWaitForAnUncooperativePreparation
+--- PASS: TestCloseDeadlineDoesNotWaitForAnUncooperativePreparation (0.04s)
+=== RUN   TestPartialProgressWritesFormCompleteDurableRecords
+--- PASS: TestPartialProgressWritesFormCompleteDurableRecords (0.01s)
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/intent/write
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/intent/partial
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/intent/sync
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/apply-observed/write
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/apply-observed/sync
+--- PASS: TestPersistenceFailuresNeverBlindlyReapply (0.08s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/intent/write (0.01s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/intent/partial (0.01s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/intent/sync (0.02s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/apply-observed/write (0.02s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/apply-observed/sync (0.02s)
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/intent-synced
+    incremental_fault_test.go:66: incremental intent-synced: Kill+Wait PID=2990, fresh PID=2996 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/build
+    incremental_fault_test.go:66: incremental build: Kill+Wait PID=3003, fresh PID=3009 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/start
+    incremental_fault_test.go:66: incremental start: Kill+Wait PID=3015, fresh PID=3021 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/ready
+    incremental_fault_test.go:66: incremental ready: Kill+Wait PID=3027, fresh PID=3033 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/apply-returned
+    incremental_fault_test.go:66: incremental apply-returned: Kill+Wait PID=3040, fresh PID=3046 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/observation-synced
+    incremental_fault_test.go:66: incremental observation-synced: Kill+Wait PID=3052, fresh PID=3058 native Generation=1
+--- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent (0.54s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/intent-synced (0.09s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/build (0.09s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/start (0.09s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/ready (0.09s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/apply-returned (0.08s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/observation-synced (0.09s)
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/write
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/partial
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/sync
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/write
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/partial
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/sync
+--- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree (0.16s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/write (0.02s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/partial (0.02s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/sync (0.02s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/write (0.03s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/partial (0.03s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/sync (0.03s)
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/version
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/facts
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/impact
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/plan
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/erase
+--- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted (0.21s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/version (0.04s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/facts (0.04s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/impact (0.04s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/plan (0.04s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/erase (0.05s)
+=== RUN   TestPreviewPublishesTargetDigestAndRejectsTamperedClaim
+--- PASS: TestPreviewPublishesTargetDigestAndRejectsTamperedClaim (0.03s)
+=== RUN   TestIncrementalRuntimeRebindAndManyOrder
+--- PASS: TestIncrementalRuntimeRebindAndManyOrder (0.05s)
+=== RUN   TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges
+=== RUN   TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges/1
+=== RUN   TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges/2
+--- PASS: TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges (0.10s)
+    --- PASS: TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges/1 (0.05s)
+    --- PASS: TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges/2 (0.05s)
+=== RUN   TestIncrementalBlockedClosureIsObservableAndDoesNotWrite
+--- PASS: TestIncrementalBlockedClosureIsObservableAndDoesNotWrite (0.02s)
+=== RUN   TestIncrementalNestPreservationExpansionAndMove
+=== RUN   TestIncrementalNestPreservationExpansionAndMove/true
+=== RUN   TestIncrementalNestPreservationExpansionAndMove/false
+--- PASS: TestIncrementalNestPreservationExpansionAndMove (0.08s)
+    --- PASS: TestIncrementalNestPreservationExpansionAndMove/true (0.04s)
+    --- PASS: TestIncrementalNestPreservationExpansionAndMove/false (0.04s)
+=== RUN   TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers
+=== RUN   TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers/1
+=== RUN   TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers/2
+--- PASS: TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers (0.06s)
+    --- PASS: TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers/1 (0.03s)
+    --- PASS: TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers/2 (0.03s)
+=== RUN   TestIncrementalOptionalPhaseBindingAdditionAndRemoval
+=== RUN   TestIncrementalOptionalPhaseBindingAdditionAndRemoval/1
+=== RUN   TestIncrementalOptionalPhaseBindingAdditionAndRemoval/2
+--- PASS: TestIncrementalOptionalPhaseBindingAdditionAndRemoval (0.07s)
+    --- PASS: TestIncrementalOptionalPhaseBindingAdditionAndRemoval/1 (0.03s)
+    --- PASS: TestIncrementalOptionalPhaseBindingAdditionAndRemoval/2 (0.03s)
+=== RUN   TestIncrementalBindNestClassificationAndUnsafeMove
+=== RUN   TestIncrementalBindNestClassificationAndUnsafeMove/true
+=== RUN   TestIncrementalBindNestClassificationAndUnsafeMove/false
+--- PASS: TestIncrementalBindNestClassificationAndUnsafeMove (0.05s)
+    --- PASS: TestIncrementalBindNestClassificationAndUnsafeMove/true (0.03s)
+    --- PASS: TestIncrementalBindNestClassificationAndUnsafeMove/false (0.02s)
+=== RUN   TestIncrementalReplaceRetainsUnchangedNonHotResource
+--- PASS: TestIncrementalReplaceRetainsUnchangedNonHotResource (0.02s)
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/truncated
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/bit-flip
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/duplicate
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/missing-middle
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/unknown-kind
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/unknown-version
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/oversized-frame
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/old-backup
+--- PASS: TestCorruptOrOutdatedJournalFailsClosed (0.16s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/truncated (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/bit-flip (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/duplicate (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/missing-middle (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/unknown-kind (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/unknown-version (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/oversized-frame (0.02s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/old-backup (0.02s)
+=== RUN   TestInvalidRecordCannotContaminateVerifiedPrefix
+--- PASS: TestInvalidRecordCannotContaminateVerifiedPrefix (0.01s)
+=== RUN   TestExpectedAnchorDoesNotInitializeAnUnknownDirectory
+--- PASS: TestExpectedAnchorDoesNotInitializeAnUnknownDirectory (0.00s)
+=== RUN   TestJournalSeedCASLockAndDetachedHistory
+--- PASS: TestJournalSeedCASLockAndDetachedHistory (0.01s)
+=== RUN   TestReleasedV1JournalRetriesAndMixedVersionHistory
+--- PASS: TestReleasedV1JournalRetriesAndMixedVersionHistory (0.06s)
+=== RUN   TestReleasedV1PendingIntentStillRequiresHostResolution
+--- PASS: TestReleasedV1PendingIntentStillRequiresHostResolution (0.02s)
+=== RUN   TestManifestPreservesBindingIdentityAndRelativeOrder
+--- PASS: TestManifestPreservesBindingIdentityAndRelativeOrder (0.00s)
+=== RUN   TestDecodeRejectsAmbiguousAndUnsupportedInput
+--- PASS: TestDecodeRejectsAmbiguousAndUnsupportedInput (0.00s)
+=== RUN   TestTopologyWorker
+    process_test.go:137: supervised subprocess role
+--- SKIP: TestTopologyWorker (0.00s)
+=== RUN   TestPersistedHistoryRestoresComparesAndRollsBackInANewProcess
+    process_test.go:425: joined writerPID=3065 session=be86752f331c7c2130ab12b597b10221; restoredPID=3072 session=abe5137707d336b9ea988ee6f3b9f7cc; store=80fda6439f5b3f31e81d65e993ab0ece samples=[{Version:2 Marker:v2:31790ce67e454c66d7e6ec0eb6dd0620 Generation:1} {Version:1 Marker:5bca09b2275badb736f13a9b0ecfd87a Generation:2}] immutable-history=3
+--- PASS: TestPersistedHistoryRestoresComparesAndRollsBackInANewProcess (0.10s)
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/before-intent
+    process_test.go:524: Kill+Wait stage=before-intent store=48a5dd278434b384b8ea71c8dceccc47 oldPID=3079 oldSession=7f3890f4c31948f8bb4b1cc825ae6b8a newPID=3085 newSession=b6477cf1ce4c8a14760cd636f2beae40 generation=1 physicalMarker=29475fa1a292d571868a9b400704f6ee race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-partial
+    process_test.go:489: partial-record Kill+Wait: preservedStore=39a8e735be4d69c9ca68acf256d8743e newStore=2d915c5e34337926d86ed5e8b5ff85de oldPID=3092 newPID=3098
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-written
+    process_test.go:524: Kill+Wait stage=intent-written store=06b30a0e96d56484cd6dd952528875f5 oldPID=3104 oldSession=282edb7d38e81e18aafc40690b4b3299 newPID=3110 newSession=38491eac14c6a5c61c8b1edcc1460c34 generation=1 physicalMarker=0c73117739d0dd43f3b63e44eec4a4cd race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-synced
+    process_test.go:524: Kill+Wait stage=intent-synced store=15f5705a46314ec7a36d5db1c156a2b6 oldPID=3116 oldSession=32e87768a66e73e76dd299734823d8d9 newPID=3122 newSession=0fb8d0ff2e524202997931dc97efb3a9 generation=1 physicalMarker=4ca1669626308d599e7d7fcc46ea19cc race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/build
+    process_test.go:524: Kill+Wait stage=build store=cc7e36f9c53f9402c2563e9b7f517cfd oldPID=3128 oldSession=5b269c01a787237394ed5ac4f0289b3a newPID=3134 newSession=4872132ed3b3d5bd3a90d33ca7ee2c0b generation=1 physicalMarker=42aad8107fc0fb92dbae132d76d226e4 race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/start
+    process_test.go:524: Kill+Wait stage=start store=ea7844d01e79d201a75279d5afef8d82 oldPID=3140 oldSession=14a1cd0bd972f1b4b246ff7f66a5ed7a newPID=3147 newSession=cf420e939d9b66a32365ef28740a9f64 generation=1 physicalMarker=cabcfdcd022d0c7e12e9125a03e6a51a race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/ready
+    process_test.go:524: Kill+Wait stage=ready store=d74e6f5a4c5aec9c5e0fea88f823fe43 oldPID=3154 oldSession=922dd37ea03f6c7f0be6d1d0abca6cbd newPID=3160 newSession=0e15b4ca7f35d7677005b27e717541a2 generation=1 physicalMarker=da376463ef14b502266273c5ebab739e race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/apply-returned
+    process_test.go:524: Kill+Wait stage=apply-returned store=05bb64ee3e741a8198e0b79a61251241 oldPID=3166 oldSession=a6cfc1e3668efcbd6d2315de7ae4fc9b newPID=3173 newSession=23b58c58abfde9e59b9745762761526c generation=1 physicalMarker=7faf6995cee5b4fb924d800bb75231d8 race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/observation-synced
+    process_test.go:524: Kill+Wait stage=observation-synced store=eb59811415d4d708f2e4b11bbd909bbc oldPID=3179 oldSession=6abf254abd870c3793355f91467882f1 newPID=3185 newSession=82ea1c5b027d7292b3430ae072ab02ac generation=1 physicalMarker=927fe709276cc9ce5b56f9befbfca695 race=true
+--- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution (0.55s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/before-intent (0.05s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-partial (0.06s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-written (0.06s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-synced (0.06s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/build (0.07s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/start (0.06s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/ready (0.06s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/apply-returned (0.06s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/observation-synced (0.06s)
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/not-hot
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/start-failed
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/exclusive
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/weakened-contract
+--- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged (0.08s)
+    --- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/not-hot (0.02s)
+    --- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/start-failed (0.02s)
+    --- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/exclusive (0.02s)
+    --- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/weakened-contract (0.02s)
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/missing-version
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/identity
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/cycle
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/missing-parent
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/invalid-link
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/required-port
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/phase-cycle
+--- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction (0.06s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/missing-version (0.00s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/identity (0.00s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/cycle (0.00s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/missing-parent (0.00s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/invalid-link (0.01s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/required-port (0.01s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/phase-cycle (0.01s)
+=== RUN   TestDetectedOutOfBandMutationStopsManagedWrites
+--- PASS: TestDetectedOutOfBandMutationStopsManagedWrites (0.02s)
+=== RUN   TestRestoreAndRollbackPreserveNestOrderAndAllDependencyPhases
+--- PASS: TestRestoreAndRollbackPreserveNestOrderAndAllDependencyPhases (0.06s)
+=== RUN   TestCloseRetainsLockAndRealResourceUntilEnteredCallJoins
+--- PASS: TestCloseRetainsLockAndRealResourceUntilEnteredCallJoins (0.04s)
+=== RUN   TestHistoricalRollbackIsANewCommitAndPinsOldScope
+--- PASS: TestHistoricalRollbackIsANewCommitAndPinsOldScope (0.04s)
+=== RUN   TestConfirmedFactsDoNotBorrowMutableProposalPorts
+--- PASS: TestConfirmedFactsDoNotBorrowMutableProposalPorts (0.04s)
+=== RUN   TestJournalQueriesRemainDeeplyDetached
+--- PASS: TestJournalQueriesRemainDeeplyDetached (0.03s)
+=== RUN   TestFailedSyncKeepsConfirmedStateUntilReopen
+--- PASS: TestFailedSyncKeepsConfirmedStateUntilReopen (0.01s)
+=== RUN   TestLateRecordValidationPreservesExactPrefix
+=== RUN   TestLateRecordValidationPreservesExactPrefix/intent
+=== RUN   TestLateRecordValidationPreservesExactPrefix/apply-observed
+--- PASS: TestLateRecordValidationPreservesExactPrefix (0.10s)
+    --- PASS: TestLateRecordValidationPreservesExactPrefix/intent (0.05s)
+    --- PASS: TestLateRecordValidationPreservesExactPrefix/apply-observed (0.05s)
+=== RUN   TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure
+=== RUN   TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure/stat-false
+=== RUN   TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure/stat-true
+--- PASS: TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure (0.02s)
+    --- PASS: TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure/stat-false (0.01s)
+    --- PASS: TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure/stat-true (0.01s)
+=== RUN   TestColdHistoricalSelectionRequiresAnExitedController
+--- PASS: TestColdHistoricalSelectionRequiresAnExitedController (0.05s)
+=== RUN   TestRollbackKeepsNativeFilesAndDoesNotUndoBusinessEffects
+--- PASS: TestRollbackKeepsNativeFilesAndDoesNotUndoBusinessEffects (0.05s)
+=== RUN   TestConcurrentChangesCannotOverwriteTheSameHistoryPosition
+--- PASS: TestConcurrentChangesCannotOverwriteTheSameHistoryPosition (0.03s)
+=== RUN   TestPreparingCandidateIsObservableAndCancellationIsNotCleanup
+--- PASS: TestPreparingCandidateIsObservableAndCancellationIsNotCleanup (0.02s)
+=== RUN   TestColdRestoreUsesFreshForestAndExplicitAdmission
+--- PASS: TestColdRestoreUsesFreshForestAndExplicitAdmission (0.03s)
+=== RUN   TestMissingCatalogDoesNotBuildOrPublish
+--- PASS: TestMissingCatalogDoesNotBuildOrPublish (0.00s)
+=== RUN   TestHistoricalReceiptDoesNotRestoreOrAdmitANewForest
+--- PASS: TestHistoricalReceiptDoesNotRestoreOrAdmitANewForest (0.04s)
+=== RUN   TestEmptyRestoreAndNoopPreserveNativeGenerationZero
+--- PASS: TestEmptyRestoreAndNoopPreserveNativeGenerationZero (0.02s)
+=== RUN   TestRestoreRetryKeepsItsOriginalIdentityAfterDesiredChanges
+--- PASS: TestRestoreRetryKeepsItsOriginalIdentityAfterDesiredChanges (0.03s)
+=== RUN   TestCloseDeadlineDoesNotWaitForAnUncooperativePreparation
+--- PASS: TestCloseDeadlineDoesNotWaitForAnUncooperativePreparation (0.04s)
+=== RUN   TestPartialProgressWritesFormCompleteDurableRecords
+--- PASS: TestPartialProgressWritesFormCompleteDurableRecords (0.01s)
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/intent/write
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/intent/partial
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/intent/sync
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/apply-observed/write
+=== RUN   TestPersistenceFailuresNeverBlindlyReapply/apply-observed/sync
+--- PASS: TestPersistenceFailuresNeverBlindlyReapply (0.06s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/intent/write (0.01s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/intent/partial (0.01s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/intent/sync (0.01s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/apply-observed/write (0.02s)
+    --- PASS: TestPersistenceFailuresNeverBlindlyReapply/apply-observed/sync (0.01s)
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/intent-synced
+    incremental_fault_test.go:66: incremental intent-synced: Kill+Wait PID=3191, fresh PID=3198 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/build
+    incremental_fault_test.go:66: incremental build: Kill+Wait PID=3204, fresh PID=3211 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/start
+    incremental_fault_test.go:66: incremental start: Kill+Wait PID=3218, fresh PID=3224 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/ready
+    incremental_fault_test.go:66: incremental ready: Kill+Wait PID=3231, fresh PID=3237 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/apply-returned
+    incremental_fault_test.go:66: incremental apply-returned: Kill+Wait PID=3244, fresh PID=3250 native Generation=1
+=== RUN   TestIncrementalKillWaitRetainsPendingVersionedIntent/observation-synced
+    incremental_fault_test.go:66: incremental observation-synced: Kill+Wait PID=3257, fresh PID=3263 native Generation=1
+--- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent (0.54s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/intent-synced (0.09s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/build (0.09s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/start (0.09s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/ready (0.09s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/apply-returned (0.09s)
+    --- PASS: TestIncrementalKillWaitRetainsPendingVersionedIntent/observation-synced (0.09s)
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/write
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/partial
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/sync
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/write
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/partial
+=== RUN   TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/sync
+--- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree (0.16s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/write (0.02s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/partial (0.02s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/intent/sync (0.02s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/write (0.03s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/partial (0.03s)
+    --- PASS: TestIncrementalPersistenceFailureDoesNotReapplyOrRebuildStableTree/apply-observed/sync (0.03s)
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/version
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/facts
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/impact
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/plan
+=== RUN   TestVersionedPlanningEvidenceCannotBeReinterpreted/erase
+--- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted (0.24s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/version (0.05s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/facts (0.06s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/impact (0.04s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/plan (0.04s)
+    --- PASS: TestVersionedPlanningEvidenceCannotBeReinterpreted/erase (0.05s)
+=== RUN   TestPreviewPublishesTargetDigestAndRejectsTamperedClaim
+--- PASS: TestPreviewPublishesTargetDigestAndRejectsTamperedClaim (0.06s)
+=== RUN   TestIncrementalRuntimeRebindAndManyOrder
+--- PASS: TestIncrementalRuntimeRebindAndManyOrder (0.08s)
+=== RUN   TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges
+=== RUN   TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges/1
+=== RUN   TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges/2
+--- PASS: TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges (0.18s)
+    --- PASS: TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges/1 (0.09s)
+    --- PASS: TestIncrementalPhaseConsumersRebuildForProviderAndPhysicalOrderChanges/2 (0.09s)
+=== RUN   TestIncrementalBlockedClosureIsObservableAndDoesNotWrite
+--- PASS: TestIncrementalBlockedClosureIsObservableAndDoesNotWrite (0.04s)
+=== RUN   TestIncrementalNestPreservationExpansionAndMove
+=== RUN   TestIncrementalNestPreservationExpansionAndMove/true
+=== RUN   TestIncrementalNestPreservationExpansionAndMove/false
+--- PASS: TestIncrementalNestPreservationExpansionAndMove (0.17s)
+    --- PASS: TestIncrementalNestPreservationExpansionAndMove/true (0.08s)
+    --- PASS: TestIncrementalNestPreservationExpansionAndMove/false (0.09s)
+=== RUN   TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers
+=== RUN   TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers/1
+=== RUN   TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers/2
+--- PASS: TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers (0.13s)
+    --- PASS: TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers/1 (0.06s)
+    --- PASS: TestIncrementalPhaseDependencyClosurePropagatesThroughConsumers/2 (0.06s)
+=== RUN   TestIncrementalOptionalPhaseBindingAdditionAndRemoval
+=== RUN   TestIncrementalOptionalPhaseBindingAdditionAndRemoval/1
+=== RUN   TestIncrementalOptionalPhaseBindingAdditionAndRemoval/2
+--- PASS: TestIncrementalOptionalPhaseBindingAdditionAndRemoval (0.14s)
+    --- PASS: TestIncrementalOptionalPhaseBindingAdditionAndRemoval/1 (0.07s)
+    --- PASS: TestIncrementalOptionalPhaseBindingAdditionAndRemoval/2 (0.07s)
+=== RUN   TestIncrementalBindNestClassificationAndUnsafeMove
+=== RUN   TestIncrementalBindNestClassificationAndUnsafeMove/true
+=== RUN   TestIncrementalBindNestClassificationAndUnsafeMove/false
+--- PASS: TestIncrementalBindNestClassificationAndUnsafeMove (0.11s)
+    --- PASS: TestIncrementalBindNestClassificationAndUnsafeMove/true (0.06s)
+    --- PASS: TestIncrementalBindNestClassificationAndUnsafeMove/false (0.05s)
+=== RUN   TestIncrementalReplaceRetainsUnchangedNonHotResource
+--- PASS: TestIncrementalReplaceRetainsUnchangedNonHotResource (0.05s)
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/truncated
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/bit-flip
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/duplicate
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/missing-middle
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/unknown-kind
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/unknown-version
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/oversized-frame
+=== RUN   TestCorruptOrOutdatedJournalFailsClosed/old-backup
+--- PASS: TestCorruptOrOutdatedJournalFailsClosed (0.29s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/truncated (0.04s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/bit-flip (0.03s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/duplicate (0.04s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/missing-middle (0.04s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/unknown-kind (0.03s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/unknown-version (0.03s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/oversized-frame (0.03s)
+    --- PASS: TestCorruptOrOutdatedJournalFailsClosed/old-backup (0.03s)
+=== RUN   TestInvalidRecordCannotContaminateVerifiedPrefix
+--- PASS: TestInvalidRecordCannotContaminateVerifiedPrefix (0.01s)
+=== RUN   TestExpectedAnchorDoesNotInitializeAnUnknownDirectory
+--- PASS: TestExpectedAnchorDoesNotInitializeAnUnknownDirectory (0.00s)
+=== RUN   TestJournalSeedCASLockAndDetachedHistory
+--- PASS: TestJournalSeedCASLockAndDetachedHistory (0.01s)
+=== RUN   TestReleasedV1JournalRetriesAndMixedVersionHistory
+--- PASS: TestReleasedV1JournalRetriesAndMixedVersionHistory (0.08s)
+=== RUN   TestReleasedV1PendingIntentStillRequiresHostResolution
+--- PASS: TestReleasedV1PendingIntentStillRequiresHostResolution (0.02s)
+=== RUN   TestManifestPreservesBindingIdentityAndRelativeOrder
+--- PASS: TestManifestPreservesBindingIdentityAndRelativeOrder (0.00s)
+=== RUN   TestDecodeRejectsAmbiguousAndUnsupportedInput
+--- PASS: TestDecodeRejectsAmbiguousAndUnsupportedInput (0.00s)
+=== RUN   TestTopologyWorker
+    process_test.go:137: supervised subprocess role
+--- SKIP: TestTopologyWorker (0.00s)
+=== RUN   TestPersistedHistoryRestoresComparesAndRollsBackInANewProcess
+    process_test.go:425: joined writerPID=3270 session=b9079704c992b3ce738d44119522a632; restoredPID=3276 session=1e1b28acc24d0ba2ac60d129d914aeda; store=79c718970f22dc40b3ca7e4ca35948c9 samples=[{Version:2 Marker:v2:8032a5c04db5a98605f795ce5679672a Generation:1} {Version:1 Marker:d1b39335b5d32e7c2c5e8d79710dbc7f Generation:2}] immutable-history=3
+--- PASS: TestPersistedHistoryRestoresComparesAndRollsBackInANewProcess (0.15s)
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/before-intent
+    process_test.go:524: Kill+Wait stage=before-intent store=3c4506875a8cb70f1e3086c5a038068e oldPID=3283 oldSession=258680d7d5b3b44d5a4c4adbb8b908d5 newPID=3290 newSession=93547eca043dab07f01a336caffc341f generation=1 physicalMarker=edecce4bd08715b014083f94a12b8d79 race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-partial
+    process_test.go:489: partial-record Kill+Wait: preservedStore=40eac1c0bc8db3ff4a1c357f7083acef newStore=80dc71840a5d24bac282089c951b6543 oldPID=3296 newPID=3303
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-written
+    process_test.go:524: Kill+Wait stage=intent-written store=4c7b1f7e3405149e0ec0914f61fd2d37 oldPID=3310 oldSession=ca565ba0cb8687e5261c08be700cac23 newPID=3316 newSession=f8689e117d9ef49a9b1500479610427d generation=1 physicalMarker=cbd1fd746e5a78149ad52d30f547f97e race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-synced
+    process_test.go:524: Kill+Wait stage=intent-synced store=85215cf4383401ce87355a4a7b9f58f9 oldPID=3322 oldSession=6e95c92d7ff8c5714bead8f7e21cbe1c newPID=3329 newSession=7a54baf60aef473dbb28f6a273ef2629 generation=1 physicalMarker=b1b1ea26d545788c9e91547e10771a2a race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/build
+    process_test.go:524: Kill+Wait stage=build store=f432d2ec0543ad553bbaad903e54508e oldPID=3335 oldSession=5906c5e2d82d32a96884c384fe42da6d newPID=3341 newSession=0c3752d249cd5646200a52522e7ac4b1 generation=1 physicalMarker=ca746a7b63f61911fce5419dcc2488a3 race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/start
+    process_test.go:524: Kill+Wait stage=start store=5820e91295bf46007a0b77691efcb18e oldPID=3348 oldSession=756620f6ae69abe5a89ec8ece8beafcf newPID=3354 newSession=d4d05178089f10247ed5c841f17aee67 generation=1 physicalMarker=2f2322da9409aae21942e1a9a6e5b96f race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/ready
+    process_test.go:524: Kill+Wait stage=ready store=e47403e419c564dffb99ccefbb2fa72b oldPID=3360 oldSession=1989756aebbe8b8f153e5430287a5bc6 newPID=3366 newSession=2d19c3b051576e9678aea4632062353f generation=1 physicalMarker=dea9fe445cf042569a055cfebb661cb5 race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/apply-returned
+    process_test.go:524: Kill+Wait stage=apply-returned store=39a30bc5453e81b7d2697cfa051772ae oldPID=3372 oldSession=d1fc2d90ef110d4d38e9a1b042e4216a newPID=3378 newSession=f1ef99f38c270b89e4cae0a37d14d4c1 generation=1 physicalMarker=c1929c5c2aa8737c8b9281e75d7f9930 race=true
+=== RUN   TestKillWaitRecoveryRequiresExplicitIntentResolution/observation-synced
+    process_test.go:524: Kill+Wait stage=observation-synced store=bdf63e514bded508be48c5ddbffd0eb3 oldPID=3385 oldSession=be3e07ea0a98675cc97ee39a8320f67f newPID=3391 newSession=bddb0a5b35b8348725b9ed91207631bc generation=1 physicalMarker=fc539bdae09732c90eb9dfb09ba512c9 race=true
+--- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution (0.78s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/before-intent (0.07s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-partial (0.08s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-written (0.08s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/intent-synced (0.09s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/build (0.09s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/start (0.09s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/ready (0.09s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/apply-returned (0.09s)
+    --- PASS: TestKillWaitRecoveryRequiresExplicitIntentResolution/observation-synced (0.10s)
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/not-hot
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/start-failed
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/exclusive
+=== RUN   TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/weakened-contract
+--- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged (0.17s)
+    --- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/not-hot (0.03s)
+    --- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/start-failed (0.05s)
+    --- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/exclusive (0.05s)
+    --- PASS: TestUnsafeTargetsLeaveTheActiveTopologyUnchanged/weakened-contract (0.04s)
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/missing-version
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/identity
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/cycle
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/missing-parent
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/invalid-link
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/required-port
+=== RUN   TestManifestAndRegistryRejectionsOccurBeforeConstruction/phase-cycle
+--- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction (0.13s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/missing-version (0.02s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/identity (0.01s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/cycle (0.00s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/missing-parent (0.00s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/invalid-link (0.03s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/required-port (0.03s)
+    --- PASS: TestManifestAndRegistryRejectionsOccurBeforeConstruction/phase-cycle (0.03s)
+=== RUN   TestDetectedOutOfBandMutationStopsManagedWrites
+--- PASS: TestDetectedOutOfBandMutationStopsManagedWrites (0.03s)
+=== RUN   TestRestoreAndRollbackPreserveNestOrderAndAllDependencyPhases
+--- PASS: TestRestoreAndRollbackPreserveNestOrderAndAllDependencyPhases (0.10s)
+=== RUN   TestCloseRetainsLockAndRealResourceUntilEnteredCallJoins
+--- PASS: TestCloseRetainsLockAndRealResourceUntilEnteredCallJoins (0.06s)
+=== RUN   TestHistoricalRollbackIsANewCommitAndPinsOldScope
+--- PASS: TestHistoricalRollbackIsANewCommitAndPinsOldScope (0.07s)
+=== RUN   TestConfirmedFactsDoNotBorrowMutableProposalPorts
+--- PASS: TestConfirmedFactsDoNotBorrowMutableProposalPorts (0.09s)
+=== RUN   TestJournalQueriesRemainDeeplyDetached
+--- PASS: TestJournalQueriesRemainDeeplyDetached (0.05s)
+=== RUN   TestFailedSyncKeepsConfirmedStateUntilReopen
+--- PASS: TestFailedSyncKeepsConfirmedStateUntilReopen (0.01s)
+=== RUN   TestLateRecordValidationPreservesExactPrefix
+=== RUN   TestLateRecordValidationPreservesExactPrefix/intent
+=== RUN   TestLateRecordValidationPreservesExactPrefix/apply-observed
+--- PASS: TestLateRecordValidationPreservesExactPrefix (0.17s)
+    --- PASS: TestLateRecordValidationPreservesExactPrefix/intent (0.09s)
+    --- PASS: TestLateRecordValidationPreservesExactPrefix/apply-observed (0.08s)
+=== RUN   TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure
+=== RUN   TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure/stat-false
+=== RUN   TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure/stat-true
+--- PASS: TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure (0.03s)
+    --- PASS: TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure/stat-false (0.02s)
+    --- PASS: TestCompletedSyncPublishesDespiteCancellationOrLaterStatFailure/stat-true (0.02s)
+PASS
+ok  	github.com/Leeminjing/go-forest/extensions/topology	11.949s

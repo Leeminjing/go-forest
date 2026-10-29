@@ -1,0 +1,59 @@
+File: journal
+Type: cpu
+Time: Oct 28, 2026 at 2:49pm (UTC)
+Duration: 7.64s, Total samples = 8.03s (105.13%)
+Active filters:
+   focus=appendLocked
+Showing nodes accounting for 0.19s, 2.37% of 8.03s total
+      flat  flat%   sum%        cum   cum%
+     0.04s   0.5%   0.5%      0.04s   0.5%  encoding/json.stateInString
+     0.02s  0.25%  0.75%      0.02s  0.25%  reflect.Value.Field
+     0.01s  0.12%  0.87%      0.05s  0.62%  encoding/json.(*decodeState).literalStore
+     0.01s  0.12%     1%      0.10s  1.25%  encoding/json.(*decodeState).object
+     0.01s  0.12%  1.12%      0.01s  0.12%  encoding/json.(*decodeState).rescanLiteral
+     0.01s  0.12%  1.25%      0.02s  0.25%  encoding/json.cachedTypeFields
+     0.01s  0.12%  1.37%      0.03s  0.37%  encoding/json.indirect
+     0.01s  0.12%  1.49%      0.03s  0.37%  encoding/json.structEncoder.encode
+     0.01s  0.12%  1.62%      0.01s  0.12%  internal/runtime/syscall.Syscall6
+     0.01s  0.12%  1.74%      0.01s  0.12%  reflect.(*rtype).String
+     0.01s  0.12%  1.87%      0.01s  0.12%  reflect.(*rtype).ptrTo
+     0.01s  0.12%  1.99%      0.01s  0.12%  runtime.memclrNoHeapPointers
+     0.01s  0.12%  2.12%      0.01s  0.12%  runtime.memmove
+     0.01s  0.12%  2.24%      0.02s  0.25%  sync.(*Map).Load
+     0.01s  0.12%  2.37%      0.01s  0.12%  sync.(*entry).load (inline)
+         0     0%  2.37%      0.01s  0.12%  bytes.(*Buffer).Write
+         0     0%  2.37%      0.01s  0.12%  bytes.(*Buffer).grow
+         0     0%  2.37%      0.01s  0.12%  bytes.growSlice
+         0     0%  2.37%      0.10s  1.25%  encoding/json.(*decodeState).array
+         0     0%  2.37%      0.10s  1.25%  encoding/json.(*decodeState).unmarshal
+         0     0%  2.37%      0.10s  1.25%  encoding/json.(*decodeState).value
+         0     0%  2.37%      0.04s   0.5%  encoding/json.(*encodeState).marshal
+         0     0%  2.37%      0.04s   0.5%  encoding/json.(*encodeState).reflectValue
+         0     0%  2.37%      0.04s   0.5%  encoding/json.Marshal
+         0     0%  2.37%      0.14s  1.74%  encoding/json.Unmarshal
+         0     0%  2.37%      0.03s  0.37%  encoding/json.arrayEncoder.encode
+         0     0%  2.37%      0.04s   0.5%  encoding/json.checkValid
+         0     0%  2.37%      0.03s  0.37%  encoding/json.sliceEncoder.encode
+         0     0%  2.37%      0.01s  0.12%  encoding/json.stringEncoder
+         0     0%  2.37%      0.01s  0.12%  encoding/json.typeEncoder
+         0     0%  2.37%      0.01s  0.12%  encoding/json.valueEncoder
+         0     0%  2.37%      0.19s  2.37%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).SelectHistorical
+         0     0%  2.37%      0.19s  2.37%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).appendLocked
+         0     0%  2.37%      0.17s  2.12%  github.com/Leeminjing/go-forest/extensions/topology.detached[go.shape.[]github.com/Leeminjing/go-forest/extensions/topology.Revision]
+         0     0%  2.37%      0.01s  0.12%  github.com/Leeminjing/go-forest/extensions/topology.detached[go.shape.f86a019d4cc35b7d2def75f8ee96fa6e09625d3d350d98d04852b4bf5b6358a8]
+         0     0%  2.37%      0.18s  2.24%  github.com/Leeminjing/go-forest/extensions/topology.journalState.clone
+         0     0%  2.37%      0.19s  2.37%  github.com/Leeminjing/go-forest/tests/performance.JournalProfile
+         0     0%  2.37%      0.19s  2.37%  github.com/Leeminjing/go-forest/tests/performance.appendSelection
+         0     0%  2.37%      0.01s  0.12%  internal/poll.(*FD).Fsync
+         0     0%  2.37%      0.01s  0.12%  internal/poll.(*FD).Fsync.func1 (inline)
+         0     0%  2.37%      0.01s  0.12%  internal/poll.ignoringEINTR (inline)
+         0     0%  2.37%      0.19s  2.37%  main.main
+         0     0%  2.37%      0.01s  0.12%  os.(*File).Sync
+         0     0%  2.37%      0.01s  0.12%  reflect.(*rtype).Name
+         0     0%  2.37%      0.01s  0.12%  reflect.Value.Addr
+         0     0%  2.37%      0.01s  0.12%  reflect.ptrTo (inline)
+         0     0%  2.37%      0.19s  2.37%  runtime.main
+         0     0%  2.37%      0.01s  0.12%  runtime.slicebytetostring
+         0     0%  2.37%      0.01s  0.12%  syscall.Fsync
+         0     0%  2.37%      0.01s  0.12%  syscall.RawSyscall6
+         0     0%  2.37%      0.01s  0.12%  syscall.Syscall

@@ -1,0 +1,76 @@
+go: downloading github.com/Leeminjing/go-forest/adapters/gin v0.1.0
+go: downloading github.com/Leeminjing/go-forest/adapters/gorm v0.1.0
+go: downloading github.com/gin-gonic/gin v1.12.0
+go: downloading gorm.io/driver/postgres v1.6.3
+go: downloading gorm.io/gorm v1.31.2
+go: downloading github.com/jinzhu/inflection v1.0.0
+go: downloading github.com/jinzhu/now v1.1.5
+go: downloading golang.org/x/text v0.34.0
+go: downloading github.com/jackc/pgx/v5 v5.10.0
+go: downloading github.com/gin-contrib/sse v1.1.0
+go: downloading github.com/mattn/go-isatty v0.0.20
+go: downloading golang.org/x/net v0.51.0
+go: downloading github.com/quic-go/quic-go v0.59.0
+go: downloading go.mongodb.org/mongo-driver/v2 v2.5.0
+go: downloading google.golang.org/protobuf v1.36.10
+go: downloading github.com/go-playground/validator/v10 v10.30.1
+go: downloading github.com/goccy/go-yaml v1.19.2
+go: downloading github.com/pelletier/go-toml/v2 v2.2.4
+go: downloading github.com/ugorji/go/codec v1.3.1
+go: downloading github.com/json-iterator/go v1.1.12
+go: downloading github.com/modern-go/reflect2 v1.0.2
+go: downloading github.com/bytedance/sonic v1.15.0
+go: downloading github.com/goccy/go-json v0.10.5
+go: downloading github.com/jackc/pgpassfile v1.0.0
+go: downloading github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761
+go: downloading golang.org/x/sys v0.41.0
+go: downloading github.com/quic-go/qpack v0.6.0
+go: downloading github.com/gabriel-vasile/mimetype v1.4.12
+go: downloading github.com/go-playground/universal-translator v0.18.1
+go: downloading github.com/leodido/go-urn v1.4.0
+go: downloading golang.org/x/crypto v0.48.0
+go: downloading gorm.io/driver/sqlite v1.6.0
+go: downloading github.com/stretchr/testify v1.11.1
+go: downloading go.uber.org/mock v0.6.0
+go: downloading github.com/google/go-cmp v0.7.0
+go: downloading github.com/go-playground/assert/v2 v2.2.0
+go: downloading github.com/go-playground/locales v0.14.1
+go: downloading github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+go: downloading github.com/jackc/puddle/v2 v2.2.2
+go: downloading github.com/davecgh/go-spew v1.1.1
+go: downloading github.com/mattn/go-sqlite3 v1.14.22
+go: downloading github.com/pmezard/go-difflib v1.0.0
+go: downloading github.com/bytedance/gopkg v0.1.3
+go: downloading github.com/cloudwego/base64x v0.1.6
+go: downloading golang.org/x/arch v0.22.0
+go: downloading golang.org/x/sync v0.19.0
+go: downloading gopkg.in/yaml.v3 v3.0.1
+go: downloading github.com/klauspost/cpuid/v2 v2.3.0
+go: downloading github.com/bytedance/sonic/loader v0.5.0
+go: downloading github.com/twitchyliquid64/golang-asm v0.15.1
+go version go1.25.14 linux/amd64
+{
+	"Path": "github.com/Leeminjing/go-forest/extensions/topology",
+	"Version": "v0.2.0",
+	"Replace": {
+		"Path": "/src/extensions/topology",
+		"Dir": "/src/extensions/topology",
+		"GoMod": "/src/extensions/topology/go.mod",
+		"GoVersion": "1.23"
+	},
+	"Dir": "/src/extensions/topology",
+	"GoMod": "/src/extensions/topology/go.mod",
+	"GoVersion": "1.23"
+}
+=== RUN   TestRealGinAndPostgresKeepNativeInstancesAcrossChangeAndRollback
+    application_test.go:46: actual Gin/PostgreSQL evidence: {Old:{Versions:[1 1] Generations:[1 1] Values:[41 41] Pools:[824637875216 824637875216]} New:{Versions:[2 2] Generations:[2 2] Values:[41 41] Pools:[824637875216 824637875216]} Rollback:{Versions:[1 1] Generations:[3 3] Values:[41 41] Pools:[824637875216 824637875216]} Before:map[business:instance-1 db:instance-2 gin:instance-3] After:map[business:instance-4 db:instance-2 gin:instance-3] Reverted:map[business:instance-5 db:instance-2 gin:instance-3] Counts:map[business-1:{Builds:2 Starts:2 Stops:2} business-2:{Builds:1 Starts:1 Stops:1} db:{Builds:1 Starts:1 Stops:1} gin:{Builds:1 Starts:1 Stops:1}] EndpointBefore:824634863552 EndpointAfter:824634863552 EndpointRollback:824634863552 Engine:824634782080 Pool:824637875216 ClosedBeforeOpen:503 ClosedDuringPrepare:503 BusinessCallsBeforeBlocked:1 BusinessCallsAfterBlocked:1 ReceiptVersion:2 PoolClosed:true}
+--- PASS: TestRealGinAndPostgresKeepNativeInstancesAcrossChangeAndRollback (0.21s)
+=== RUN   TestRealGinAndPostgresKeepNativeInstancesAcrossChangeAndRollback
+    application_test.go:46: actual Gin/PostgreSQL evidence: {Old:{Versions:[1 1] Generations:[1 1] Values:[41 41] Pools:[824638631584 824638631584]} New:{Versions:[2 2] Generations:[2 2] Values:[41 41] Pools:[824638631584 824638631584]} Rollback:{Versions:[1 1] Generations:[3 3] Values:[41 41] Pools:[824638631584 824638631584]} Before:map[business:instance-1 db:instance-2 gin:instance-3] After:map[business:instance-4 db:instance-2 gin:instance-3] Reverted:map[business:instance-5 db:instance-2 gin:instance-3] Counts:map[business-1:{Builds:2 Starts:2 Stops:2} business-2:{Builds:1 Starts:1 Stops:1} db:{Builds:1 Starts:1 Stops:1} gin:{Builds:1 Starts:1 Stops:1}] EndpointBefore:824638661376 EndpointAfter:824638661376 EndpointRollback:824638661376 Engine:824639501120 Pool:824638631584 ClosedBeforeOpen:503 ClosedDuringPrepare:503 BusinessCallsBeforeBlocked:1 BusinessCallsAfterBlocked:1 ReceiptVersion:2 PoolClosed:true}
+--- PASS: TestRealGinAndPostgresKeepNativeInstancesAcrossChangeAndRollback (0.07s)
+=== RUN   TestRealGinAndPostgresKeepNativeInstancesAcrossChangeAndRollback
+    application_test.go:46: actual Gin/PostgreSQL evidence: {Old:{Versions:[1 1] Generations:[1 1] Values:[41 41] Pools:[824637222560 824637222560]} New:{Versions:[2 2] Generations:[2 2] Values:[41 41] Pools:[824637222560 824637222560]} Rollback:{Versions:[1 1] Generations:[3 3] Values:[41 41] Pools:[824637222560 824637222560]} Before:map[business:instance-1 db:instance-2 gin:instance-3] After:map[business:instance-4 db:instance-2 gin:instance-3] Reverted:map[business:instance-5 db:instance-2 gin:instance-3] Counts:map[business-1:{Builds:2 Starts:2 Stops:2} business-2:{Builds:1 Starts:1 Stops:1} db:{Builds:1 Starts:1 Stops:1} gin:{Builds:1 Starts:1 Stops:1}] EndpointBefore:824634397280 EndpointAfter:824634397280 EndpointRollback:824634397280 Engine:824638578112 Pool:824637222560 ClosedBeforeOpen:503 ClosedDuringPrepare:503 BusinessCallsBeforeBlocked:1 BusinessCallsAfterBlocked:1 ReceiptVersion:2 PoolClosed:true}
+--- PASS: TestRealGinAndPostgresKeepNativeInstancesAcrossChangeAndRollback (0.07s)
+PASS
+ok  	github.com/Leeminjing/go-forest/examples/topology-incremental	1.384s
+?   	github.com/Leeminjing/go-forest/examples/topology-incremental/cmd/demo	[no test files]

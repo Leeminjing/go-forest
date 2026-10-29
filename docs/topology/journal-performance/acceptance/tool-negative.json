@@ -1,0 +1,24 @@
+[
+  {
+    "tool": "repeat-journal.py",
+    "exit": 1,
+    "error": "RuntimeError: interleaved input differs from frozen primary corpus",
+    "complete": false
+  },
+  {
+    "tool": "audit-journal-replay.py",
+    "exit": 1,
+    "error": "RuntimeError: frozen input inventory differs",
+    "complete": false
+  },
+  {
+    "frozen_interleaved_input_sha256": "0e042552bf39c98948de3108e75323cdad8ebd281a1a72508a7e2c6b79b590f8",
+    "match": true
+  },
+  {
+    "tool": "summarize-journal.py",
+    "exit": 1,
+    "error": "RuntimeError: incompatible pair: harness",
+    "comparison": false
+  }
+]

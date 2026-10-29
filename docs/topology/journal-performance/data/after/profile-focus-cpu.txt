@@ -1,0 +1,41 @@
+File: journal
+Type: cpu
+Time: Oct 28, 2026 at 3:12pm (UTC)
+Duration: 3.03s, Total samples = 3.20s (105.48%)
+Active filters:
+   focus=appendLocked
+Showing nodes accounting for 0.04s, 1.25% of 3.20s total
+      flat  flat%   sum%        cum   cum%
+     0.01s  0.31%  0.31%      0.01s  0.31%  internal/runtime/syscall.Syscall6
+     0.01s  0.31%  0.62%      0.01s  0.31%  reflect.Value.Field
+     0.01s  0.31%  0.94%      0.01s  0.31%  runtime.mapiterinit
+     0.01s  0.31%  1.25%      0.01s  0.31%  runtime.memclrNoHeapPointers
+         0     0%  1.25%      0.01s  0.31%  encoding/json.(*encodeState).marshal
+         0     0%  1.25%      0.01s  0.31%  encoding/json.(*encodeState).reflectValue
+         0     0%  1.25%      0.01s  0.31%  encoding/json.Marshal
+         0     0%  1.25%      0.01s  0.31%  encoding/json.arrayEncoder.encode
+         0     0%  1.25%      0.01s  0.31%  encoding/json.ptrEncoder.encode
+         0     0%  1.25%      0.01s  0.31%  encoding/json.sliceEncoder.encode
+         0     0%  1.25%      0.01s  0.31%  encoding/json.structEncoder.encode
+         0     0%  1.25%      0.04s  1.25%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).SelectHistorical
+         0     0%  1.25%      0.04s  1.25%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).appendLocked
+         0     0%  1.25%      0.02s  0.62%  github.com/Leeminjing/go-forest/extensions/topology.(*journalState).prepareRecord
+         0     0%  1.25%      0.02s  0.62%  github.com/Leeminjing/go-forest/extensions/topology.Digest
+         0     0%  1.25%      0.02s  0.62%  github.com/Leeminjing/go-forest/extensions/topology.Encode
+         0     0%  1.25%      0.02s  0.62%  github.com/Leeminjing/go-forest/extensions/topology.Normalize
+         0     0%  1.25%      0.01s  0.31%  github.com/Leeminjing/go-forest/extensions/topology.frame
+         0     0%  1.25%      0.04s  1.25%  github.com/Leeminjing/go-forest/tests/performance.JournalProfile
+         0     0%  1.25%      0.04s  1.25%  github.com/Leeminjing/go-forest/tests/performance.appendSelection
+         0     0%  1.25%      0.01s  0.31%  internal/poll.(*FD).Fsync
+         0     0%  1.25%      0.01s  0.31%  internal/poll.(*FD).Fsync.func1 (inline)
+         0     0%  1.25%      0.01s  0.31%  internal/poll.ignoringEINTR (inline)
+         0     0%  1.25%      0.04s  1.25%  main.main
+         0     0%  1.25%      0.01s  0.31%  os.(*File).Sync
+         0     0%  1.25%      0.01s  0.31%  runtime.(*hmap).newoverflow
+         0     0%  1.25%      0.04s  1.25%  runtime.main
+         0     0%  1.25%      0.01s  0.31%  runtime.mallocgc
+         0     0%  1.25%      0.01s  0.31%  runtime.mapassign_faststr
+         0     0%  1.25%      0.01s  0.31%  runtime.newobject (inline)
+         0     0%  1.25%      0.01s  0.31%  syscall.Fsync
+         0     0%  1.25%      0.01s  0.31%  syscall.RawSyscall6
+         0     0%  1.25%      0.01s  0.31%  syscall.Syscall

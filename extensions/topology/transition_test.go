@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/Leeminjing/go-forest/forest"
@@ -177,7 +178,61 @@ func TestLateRecordValidationPreservesExactPrefix(t *testing.T) {
 			if !reflect.DeepEqual(*detail.Prefix, want) {
 				t.Fatalf("late %s contaminated verified prefix", kind)
 			}
+			detail.Prefix.Desired.Manifest.Trees[0].ID = "caller"
+			_, again := Open(dir, Options{})
+			var repeated *Error
+			if !errors.As(again, &repeated) || repeated.Prefix == nil || !reflect.DeepEqual(*repeated.Prefix, want) {
+				t.Fatal("caller mutation changed a subsequent verified error prefix", again)
+			}
 		})
+	}
+}
+
+func TestFailedReceiptAndCachedRetryRemainDeeplyDetached(t *testing.T) {
+	// A constructor can return a typed native failure. Exercise real Apply and
+	// durable failed-receipt recording, rather than manufacturing stored state.
+	definition := forest.Definition{TypeID: "fails", Version: "1", Build: func(context.Context, *forest.BuildEnv) (forest.Lifecycle, error) {
+		return nil, &forest.GenerationConflict{Expected: 12, Actual: 13}
+	}}
+	catalog, e := NewCatalog([]Registration{{Definition: definition, ContractKey: "fails", ImplementationDigest: strings.Repeat("a", 64)}})
+	if e != nil {
+		t.Fatal(e)
+	}
+	c, store, _, _ := managed(t, catalog, Empty())
+	target := Empty()
+	target.Trees = append(target.Trees, Tree{ID: "failure", Definition: definition.Ref(), ContractKey: "fails", ImplementationDigest: strings.Repeat("a", 64)})
+	proposal, e := c.Preview(target)
+	if e != nil {
+		t.Fatal(e)
+	}
+	request := Request{ID: "failing-constructor", Expected: proposal.Expected, Approval: "record native failure"}
+	result, e := c.Reconfigure(context.Background(), request, proposal)
+	if !errors.Is(e, forest.ErrGenerationConflict) || result.Conflict == nil || len(result.FailureCodes) == 0 {
+		t.Fatalf("missing actual failed receipt: %+v %v", result, e)
+	}
+	want := detached(result)
+	inspection, history, journal := store.Inspect(), store.History(), store.Journal()
+	mutate := func(r *Receipt) { r.Conflict.Expected = 999; r.FailureCodes[0] = "caller" }
+	mutate(&result)
+	for i := 0; i < 2; i++ {
+		retry, e := c.Reconfigure(context.Background(), request, proposal)
+		// HistoricalOnly is a documented projection of a failed cached receipt.
+		want.HistoricalOnly = true
+		if !errors.Is(e, forest.ErrGenerationConflict) || !reflect.DeepEqual(retry, want) {
+			t.Fatalf("cached receipt changed: %+v %v", retry, e)
+		}
+		mutate(&retry)
+	}
+	query := store.Inspect()
+	mutate(query.LastResult)
+	entries := store.Journal()
+	for i := range entries {
+		if entries[i].Receipt != nil && entries[i].Receipt.Conflict != nil {
+			mutate(entries[i].Receipt)
+		}
+	}
+	if !reflect.DeepEqual(inspection, store.Inspect()) || !reflect.DeepEqual(history, store.History()) || !reflect.DeepEqual(journal, store.Journal()) {
+		t.Fatal("returned error receipt or cached retry mutated confirmed state")
 	}
 }
 
