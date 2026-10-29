@@ -1,0 +1,5 @@
+go: downloading github.com/Leeminjing/go-forest/extensions/topology v0.2.1
+go: external.example/topology-patch-consumer tested by
+	external.example/topology-patch-consumer.test imports
+	github.com/Leeminjing/go-forest/extensions/topology: github.com/Leeminjing/go-forest/extensions/topology@v0.2.1: verifying module: github.com/Leeminjing/go-forest/extensions/topology@v0.2.1: reading https://sum.golang.org/lookup/github.com/!leeminjing/go-forest/extensions/topology@v0.2.1: 404 Not Found
+	server response: not found: github.com/Leeminjing/go-forest/extensions/topology@v0.2.1: invalid version: unknown revision extensions/topology/v0.2.1

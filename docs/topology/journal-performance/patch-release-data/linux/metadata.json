@@ -1,0 +1,39 @@
+{
+  "module": "github.com/Leeminjing/go-forest/extensions/topology",
+  "version": "v0.2.1",
+  "tag": "extensions/topology/v0.2.1",
+  "target": "205924b5968fcf59dc391bf103de113e1cd682ba",
+  "go": "go version go1.23.12 linux/amd64",
+  "module_sum": "h1:wdqBbRLkGlvE/wQiJhk5EWjXk3/GXjB/JFnFUaaVR8o=",
+  "go_mod_sum": "h1:cWqjCMIOeqpYO9byGaVg0n1V1S0F4hSNsQRIxkPDljU=",
+  "origin": {
+    "VCS": "git",
+    "URL": "https://github.com/Leeminjing/go-forest",
+    "Subdir": "extensions/topology",
+    "Hash": "205924b5968fcf59dc391bf103de113e1cd682ba",
+    "Ref": "refs/tags/extensions/topology/v0.2.1"
+  },
+  "source_sha256": {
+    "catalog.go": "d52e97d46d4a93e8460dedf0455898275220bd04116f25eec14c5e456aebb837",
+    "controller.go": "f2160433721740477834ec3abebee299e1cfd050663e500b5ccb02185ef42141",
+    "errors.go": "6f2b2021181d4fd6fc7515b392e8fd47c05ca50cbe5acae1bcf5bf0cb321300c",
+    "go.mod": "a998508ff8ec3de198fae4542582f61e69f0486f0d1a550595987c91f82b7989",
+    "go.sum": "0f37c7e4396e02a0218b9f5079afa60a508e87006d720b90eac03055a8d6e248",
+    "history.go": "bc9adf2a2cac7b4b7093f1eff60fce70ccde7077ccba37f0da7d756cad4a9655",
+    "incremental.go": "d4bd3715db758748a6534156ec529c65c67e8146863c8e0fd5165e0411de0b21",
+    "journal.go": "d544fb096f454138fe5f605e9d3c73f686f917e26457cf72edd9101e25f5d732",
+    "lock_linux.go": "863be09688be899d8e6351c4f7cef4729384264c83e96d0cff5d2cef91e15ba4",
+    "lock_unsupported.go": "da69d4cece5036d2d57dec77bb9cbb299278f6e1aa2e9cde94f6242141273c76",
+    "lock_windows.go": "46752c386c40fba9e35471ce8e639f2b8341e8858abaf71318f866e1f04ac0b3",
+    "manifest.go": "05d6dc60d321575945866ff4ab93bea74f36603c86646f4137731a7a2ee9c277",
+    "planner.go": "7308522ce561ad177a23486e80d5af4906933c9cbe4c86938f5ddc2eaa0c47d8",
+    "records.go": "6c1f1852d445fc2f234ede9c6486e10340134b11af0349fa73a381f03340cf6b",
+    "transition.go": "75d491bb3f5ee54fc277addbf10adf854b1e4bbd1367562ff79a476460138619"
+  },
+  "GOWORK": "off",
+  "replace": false,
+  "fresh_cache": true,
+  "race": true,
+  "count": 3,
+  "public_index_wait": 1800
+}

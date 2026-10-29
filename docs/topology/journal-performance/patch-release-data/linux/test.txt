@@ -1,0 +1,20 @@
+=== RUN   TestPublishedIncrementalResourcesAndColdRecovery
+{"Values":[1,2,1,2,2],"Generations":[1,2,3,4],"ColdGeneration":1,"NewSession":true}
+--- PASS: TestPublishedIncrementalResourcesAndColdRecovery (0.10s)
+=== RUN   TestReleasedLegacyRequestsKeepOriginalReceipts
+    legacy_test.go:121: original boot and 4 request receipts preserved; constructors=0; sequence=14
+--- PASS: TestReleasedLegacyRequestsKeepOriginalReceipts (0.02s)
+=== RUN   TestPublishedIncrementalResourcesAndColdRecovery
+{"Values":[1,2,1,2,2],"Generations":[1,2,3,4],"ColdGeneration":1,"NewSession":true}
+--- PASS: TestPublishedIncrementalResourcesAndColdRecovery (0.10s)
+=== RUN   TestReleasedLegacyRequestsKeepOriginalReceipts
+    legacy_test.go:121: original boot and 4 request receipts preserved; constructors=0; sequence=14
+--- PASS: TestReleasedLegacyRequestsKeepOriginalReceipts (0.01s)
+=== RUN   TestPublishedIncrementalResourcesAndColdRecovery
+{"Values":[1,2,1,2,2],"Generations":[1,2,3,4],"ColdGeneration":1,"NewSession":true}
+--- PASS: TestPublishedIncrementalResourcesAndColdRecovery (0.10s)
+=== RUN   TestReleasedLegacyRequestsKeepOriginalReceipts
+    legacy_test.go:121: original boot and 4 request receipts preserved; constructors=0; sequence=14
+--- PASS: TestReleasedLegacyRequestsKeepOriginalReceipts (0.01s)
+PASS
+ok  	external.example/topology-patch-consumer	1.353s

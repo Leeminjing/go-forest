@@ -1,0 +1,17 @@
+{
+	"Path": "github.com/Leeminjing/go-forest/extensions/topology",
+	"Version": "v0.2.1",
+	"Info": "/tmp/forest-topology-published-6jci8lpc/cache/cache/download/github.com/!leeminjing/go-forest/extensions/topology/@v/v0.2.1.info",
+	"GoMod": "/tmp/forest-topology-published-6jci8lpc/cache/cache/download/github.com/!leeminjing/go-forest/extensions/topology/@v/v0.2.1.mod",
+	"Zip": "/tmp/forest-topology-published-6jci8lpc/cache/cache/download/github.com/!leeminjing/go-forest/extensions/topology/@v/v0.2.1.zip",
+	"Dir": "/tmp/forest-topology-published-6jci8lpc/cache/github.com/!leeminjing/go-forest/extensions/topology@v0.2.1",
+	"Sum": "h1:wdqBbRLkGlvE/wQiJhk5EWjXk3/GXjB/JFnFUaaVR8o=",
+	"GoModSum": "h1:cWqjCMIOeqpYO9byGaVg0n1V1S0F4hSNsQRIxkPDljU=",
+	"Origin": {
+		"VCS": "git",
+		"URL": "https://github.com/Leeminjing/go-forest",
+		"Subdir": "extensions/topology",
+		"Hash": "205924b5968fcf59dc391bf103de113e1cd682ba",
+		"Ref": "refs/tags/extensions/topology/v0.2.1"
+	}
+}

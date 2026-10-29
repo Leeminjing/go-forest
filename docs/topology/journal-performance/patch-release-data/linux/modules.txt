@@ -1,0 +1,27 @@
+{
+	"Path": "external.example/topology-patch-consumer",
+	"Main": true,
+	"Dir": "/tmp/forest-topology-published-6jci8lpc/consumer",
+	"GoMod": "/tmp/forest-topology-published-6jci8lpc/consumer/go.mod",
+	"GoVersion": "1.23"
+}
+{
+	"Path": "github.com/Leeminjing/go-forest",
+	"Version": "v0.3.1",
+	"Time": "2026-10-28T09:13:03Z",
+	"Dir": "/tmp/forest-topology-published-6jci8lpc/cache/github.com/!leeminjing/go-forest@v0.3.1",
+	"GoMod": "/tmp/forest-topology-published-6jci8lpc/cache/cache/download/github.com/!leeminjing/go-forest/@v/v0.3.1.mod",
+	"GoVersion": "1.23",
+	"Sum": "h1:k9Q3jg6ZHJ2rFVIsTF/DbMrgkze3A+zODE0RuufagpY=",
+	"GoModSum": "h1:UejDPb4g0Q8YdwTVz0OyFLXw1WowR/DizszTlKhGkVc="
+}
+{
+	"Path": "github.com/Leeminjing/go-forest/extensions/topology",
+	"Version": "v0.2.1",
+	"Time": "2026-10-29T02:53:07Z",
+	"Dir": "/tmp/forest-topology-published-6jci8lpc/cache/github.com/!leeminjing/go-forest/extensions/topology@v0.2.1",
+	"GoMod": "/tmp/forest-topology-published-6jci8lpc/cache/cache/download/github.com/!leeminjing/go-forest/extensions/topology/@v/v0.2.1.mod",
+	"GoVersion": "1.23",
+	"Sum": "h1:wdqBbRLkGlvE/wQiJhk5EWjXk3/GXjB/JFnFUaaVR8o=",
+	"GoModSum": "h1:cWqjCMIOeqpYO9byGaVg0n1V1S0F4hSNsQRIxkPDljU="
+}

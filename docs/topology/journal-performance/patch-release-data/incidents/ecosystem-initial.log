@@ -1,0 +1,155 @@
+Unable to find image 'postgres:18' locally
+18: Pulling from library/postgres
+6fc242d221a6: Pulling fs layer
+d06edb2e3f43: Pulling fs layer
+3795839385bc: Pulling fs layer
+cea4f0db46a6: Pulling fs layer
+9b1a18996a22: Pulling fs layer
+fbc84e711712: Pulling fs layer
+879995175298: Pulling fs layer
+d89068781d71: Pulling fs layer
+ef90fb83cca5: Pulling fs layer
+7e6d71cb0490: Pulling fs layer
+7c25aa4e8a77: Pulling fs layer
+00ff7a4924f2: Pulling fs layer
+d0fbcb0db440: Pulling fs layer
+cea4f0db46a6: Waiting
+9b1a18996a22: Waiting
+fbc84e711712: Waiting
+879995175298: Waiting
+d89068781d71: Waiting
+ef90fb83cca5: Waiting
+7e6d71cb0490: Waiting
+7c25aa4e8a77: Waiting
+00ff7a4924f2: Waiting
+d0fbcb0db440: Waiting
+d06edb2e3f43: Verifying Checksum
+d06edb2e3f43: Download complete
+3795839385bc: Verifying Checksum
+3795839385bc: Download complete
+6fc242d221a6: Verifying Checksum
+6fc242d221a6: Download complete
+cea4f0db46a6: Verifying Checksum
+cea4f0db46a6: Download complete
+9b1a18996a22: Verifying Checksum
+9b1a18996a22: Download complete
+fbc84e711712: Verifying Checksum
+fbc84e711712: Download complete
+879995175298: Verifying Checksum
+879995175298: Download complete
+d89068781d71: Verifying Checksum
+d89068781d71: Download complete
+7e6d71cb0490: Download complete
+7c25aa4e8a77: Verifying Checksum
+7c25aa4e8a77: Download complete
+00ff7a4924f2: Verifying Checksum
+00ff7a4924f2: Download complete
+d0fbcb0db440: Verifying Checksum
+d0fbcb0db440: Download complete
+ef90fb83cca5: Verifying Checksum
+ef90fb83cca5: Download complete
+6fc242d221a6: Pull complete
+d06edb2e3f43: Pull complete
+3795839385bc: Pull complete
+cea4f0db46a6: Pull complete
+9b1a18996a22: Pull complete
+fbc84e711712: Pull complete
+879995175298: Pull complete
+d89068781d71: Pull complete
+ef90fb83cca5: Pull complete
+7e6d71cb0490: Pull complete
+7c25aa4e8a77: Pull complete
+00ff7a4924f2: Pull complete
+d0fbcb0db440: Pull complete
+Digest: sha256:979bccfde35445db618c65107d27d08c6c21339d8dc3ad4c830c6633947be0e4
+Status: Downloaded newer image for postgres:18
+Unable to find image 'nats:2.12.4' locally
+2.12.4: Pulling from library/nats
+2f8912005071: Pulling fs layer
+2e5b11b6a135: Pulling fs layer
+2e5b11b6a135: Verifying Checksum
+2e5b11b6a135: Download complete
+2f8912005071: Verifying Checksum
+2f8912005071: Download complete
+2f8912005071: Pull complete
+2e5b11b6a135: Pull complete
+Digest: sha256:c9abdce88a85ed5fcc8e9fc6b284d2601f5d1c1d0d58ddd67cfdc411768bfd7f
+Status: Downloaded newer image for nats:2.12.4
+CHECK adapters/gorm
+go: downloading gorm.io/gorm v1.31.2
+go: downloading gorm.io/driver/postgres v1.6.3
+go: downloading github.com/jackc/pgx/v5 v5.10.0
+go: downloading github.com/jinzhu/now v1.1.5
+go: downloading github.com/jackc/pgpassfile v1.0.0
+go: downloading github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761
+go: downloading golang.org/x/text v0.29.0
+go: downloading github.com/jinzhu/inflection v1.0.0
+go: downloading github.com/jackc/puddle/v2 v2.2.2
+go: downloading golang.org/x/sync v0.17.0
+ok  	github.com/Leeminjing/go-forest/adapters/gorm	2.387s
+CHECK adapters/nats
+go: downloading github.com/nats-io/nats.go v1.55.0
+go: downloading github.com/klauspost/compress v1.20.0
+go: downloading github.com/nats-io/nkeys v0.4.16
+go: downloading github.com/nats-io/nuid v1.0.1
+go: downloading golang.org/x/crypto v0.57.0
+ok  	github.com/Leeminjing/go-forest/adapters/nats	7.787s
+CHECK extensions/telemetry
+ok  	github.com/Leeminjing/go-forest/extensions/telemetry	1.019s
+CHECK extensions/observatory
+go: downloading github.com/gin-gonic/gin v1.12.0
+go: downloading github.com/Leeminjing/go-forest/adapters/gin v0.1.0
+go: downloading github.com/Leeminjing/go-forest/extensions/observe v0.1.0
+go: downloading github.com/gin-contrib/sse v1.1.0
+go: downloading github.com/mattn/go-isatty v0.0.20
+go: downloading golang.org/x/net v0.51.0
+go: downloading github.com/quic-go/quic-go v0.59.0
+go: downloading github.com/goccy/go-yaml v1.19.2
+go: downloading github.com/pelletier/go-toml/v2 v2.2.4
+go: downloading github.com/ugorji/go/codec v1.3.1
+go: downloading go.mongodb.org/mongo-driver/v2 v2.5.0
+go: downloading google.golang.org/protobuf v1.36.10
+go: downloading github.com/go-playground/validator/v10 v10.30.1
+go: downloading golang.org/x/sys v0.41.0
+go: downloading github.com/quic-go/qpack v0.6.0
+go: downloading github.com/gabriel-vasile/mimetype v1.4.12
+go: downloading github.com/go-playground/universal-translator v0.18.1
+go: downloading github.com/leodido/go-urn v1.4.0
+go: downloading golang.org/x/crypto v0.48.0
+go: downloading golang.org/x/text v0.34.0
+go: downloading github.com/go-playground/locales v0.14.1
+ok  	github.com/Leeminjing/go-forest/extensions/observatory	2.645s
+?   	github.com/Leeminjing/go-forest/extensions/observatory/cmd/demo	[no test files]
+?   	github.com/Leeminjing/go-forest/extensions/observatory/internal/demo	[no test files]
+?   	github.com/Leeminjing/go-forest/extensions/observatory/internal/demo/business	[no test files]
+CHECK examples/ecosystem
+go: downloading github.com/Leeminjing/go-forest-agent v0.2.0
+go: downloading github.com/Leeminjing/go-forest/adapters/gorm v0.1.0
+go: downloading github.com/Leeminjing/go-forest/adapters/grpc v0.1.0
+go: downloading github.com/Leeminjing/go-forest/adapters/nats v0.1.0
+go: downloading github.com/Leeminjing/go-forest/extensions/observatory v0.2.1
+go: downloading github.com/Leeminjing/go-forest/extensions/telemetry v0.1.0
+go: downloading google.golang.org/grpc v1.84.0
+go: downloading github.com/Leeminjing/go-forest/testkit v0.1.0
+go: downloading golang.org/x/net v0.58.0
+go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20260706201446-f0a921348800
+go: downloading google.golang.org/protobuf v1.36.11
+go: downloading golang.org/x/text v0.42.0
+go: downloading golang.org/x/sync v0.23.0
+--- FAIL: TestConformanceQuiesceNotifiesAdmissionWithoutCancelingAcceptedWork (120.01s)
+    conformance_drain_test.go:107: context deadline exceeded
+FAIL
+FAIL	github.com/Leeminjing/go-forest/examples/ecosystem	229.689s
+?   	github.com/Leeminjing/go-forest/examples/ecosystem/cmd/demo	[no test files]
+FAIL
+Traceback (most recent call last):
+  File "/home/runner/work/go-forest/go-forest/.scratch/core-performance/20261029-033052-candidate-7a9b9c/source/scripts/test-ecosystem.py", line 94, in <module>
+    main()
+  File "/home/runner/work/go-forest/go-forest/.scratch/core-performance/20261029-033052-candidate-7a9b9c/source/scripts/test-ecosystem.py", line 82, in main
+    run("go", "test", *( ["-race"] if args.race else [] ), "./...", "-count=" + str(args.count), "-timeout=" + ("600s" if module == "examples/ecosystem" else "180s"), cwd=ROOT / module, env=env)
+  File "/home/runner/work/go-forest/go-forest/.scratch/core-performance/20261029-033052-candidate-7a9b9c/source/scripts/test-ecosystem.py", line 20, in run
+    return subprocess.run(args, check=True, text=True, encoding="utf-8", stdout=subprocess.PIPE if capture else None, **kw).stdout
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '('go', 'test', '-race', './...', '-count=3', '-timeout=600s')' returned non-zero exit status 1.

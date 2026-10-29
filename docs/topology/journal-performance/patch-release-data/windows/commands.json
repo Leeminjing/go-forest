@@ -1,0 +1,75 @@
+[
+  {
+    "name": "go-version",
+    "command": [
+      "C:/Users/brubing/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.23.12.windows-amd64/bin/go.exe",
+      "version"
+    ]
+  },
+  {
+    "name": "download",
+    "command": [
+      "C:/Users/brubing/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.23.12.windows-amd64/bin/go.exe",
+      "mod",
+      "download",
+      "-json",
+      "github.com/Leeminjing/go-forest/extensions/topology@v0.2.1"
+    ]
+  },
+  {
+    "name": "tidy",
+    "command": [
+      "C:/Users/brubing/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.23.12.windows-amd64/bin/go.exe",
+      "mod",
+      "tidy"
+    ]
+  },
+  {
+    "name": "verify",
+    "command": [
+      "C:/Users/brubing/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.23.12.windows-amd64/bin/go.exe",
+      "mod",
+      "verify"
+    ]
+  },
+  {
+    "name": "modules",
+    "command": [
+      "C:/Users/brubing/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.23.12.windows-amd64/bin/go.exe",
+      "list",
+      "-m",
+      "-json",
+      "all"
+    ]
+  },
+  {
+    "name": "packages",
+    "command": [
+      "C:/Users/brubing/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.23.12.windows-amd64/bin/go.exe",
+      "list",
+      "-test",
+      "-deps",
+      "-json",
+      "./..."
+    ]
+  },
+  {
+    "name": "vet",
+    "command": [
+      "C:/Users/brubing/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.23.12.windows-amd64/bin/go.exe",
+      "vet",
+      "./..."
+    ]
+  },
+  {
+    "name": "test",
+    "command": [
+      "C:/Users/brubing/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.23.12.windows-amd64/bin/go.exe",
+      "test",
+      "./...",
+      "-v",
+      "-count=1",
+      "-timeout=120s"
+    ]
+  }
+]

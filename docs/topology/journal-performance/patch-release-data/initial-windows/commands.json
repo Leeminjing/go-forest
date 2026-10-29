@@ -1,0 +1,19 @@
+[
+  {
+    "name": "go-version",
+    "command": [
+      "C:/Users/brubing/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.23.12.windows-amd64/bin/go.exe",
+      "version"
+    ]
+  },
+  {
+    "name": "download",
+    "command": [
+      "C:/Users/brubing/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.23.12.windows-amd64/bin/go.exe",
+      "mod",
+      "download",
+      "-json",
+      "github.com/Leeminjing/go-forest/extensions/topology@v0.2.1"
+    ]
+  }
+]

@@ -1,0 +1,19 @@
+[
+  {
+    "name": "go-version",
+    "command": [
+      "/usr/local/go/bin/go",
+      "version"
+    ]
+  },
+  {
+    "name": "download",
+    "command": [
+      "/usr/local/go/bin/go",
+      "mod",
+      "download",
+      "-json",
+      "github.com/Leeminjing/go-forest/extensions/topology@v0.2.1"
+    ]
+  }
+]

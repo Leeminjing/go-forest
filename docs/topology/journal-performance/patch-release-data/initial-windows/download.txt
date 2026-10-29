@@ -1,0 +1,13 @@
+{
+	"Path": "github.com/Leeminjing/go-forest/extensions/topology",
+	"Version": "v0.2.1",
+	"Error": "github.com/Leeminjing/go-forest/extensions/topology@v0.2.1: verifying go.mod: github.com/Leeminjing/go-forest/extensions/topology@v0.2.1/go.mod: reading https://sum.golang.org/lookup/github.com/!leeminjing/go-forest/extensions/topology@v0.2.1: 404 Not Found\n\tserver response: not found: github.com/Leeminjing/go-forest/extensions/topology@v0.2.1: invalid version: unknown revision extensions/topology/v0.2.1",
+	"Info": "C:\\Users\\brubing\\AppData\\Local\\Temp\\forest-topology-published-53hnk5ys\\cache\\cache\\download\\github.com\\!leeminjing\\go-forest\\extensions\\topology\\@v\\v0.2.1.info",
+	"Origin": {
+		"VCS": "git",
+		"URL": "https://github.com/Leeminjing/go-forest",
+		"Subdir": "extensions/topology",
+		"Hash": "205924b5968fcf59dc391bf103de113e1cd682ba",
+		"Ref": "refs/tags/extensions/topology/v0.2.1"
+	}
+}
