@@ -410,3 +410,30 @@ jobs:
             .scratch/topology-journal/*ci-smoke/*.txt
             .scratch/topology-journal/*ci-smoke/COMPLETE
           retention-days: 14
+  topology-patch-published:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - if: runner.os == 'Linux'
+        run: python scripts/verify-topology-patch-release.py --race --count 3 --wait-seconds 1800
+      - if: runner.os == 'Windows'
+        run: python scripts/verify-topology-patch-release.py --count 1 --wait-seconds 1800
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: topology-patch-published-${{ matrix.os }}
+          path: .scratch/topology-patch-release/**
+          retention-days: 14

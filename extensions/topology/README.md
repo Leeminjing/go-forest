@@ -5,8 +5,8 @@ them in a fresh Forest, and returning to historical structures through new nativ
 commits. It depends only on the standard library and Forest `v0.3.0`.
 
 ```sh
-go get github.com/Leeminjing/go-forest/extensions/topology@v0.2.0
-go run github.com/Leeminjing/go-forest/extensions/topology/cmd/demo@v0.2.0
+go get github.com/Leeminjing/go-forest/extensions/topology@v0.2.1
+go run github.com/Leeminjing/go-forest/extensions/topology/cmd/demo@v0.2.1
 ```
 
 The demo captures a root and nested provider, restores their `BindNest`, changes
@@ -15,6 +15,11 @@ the provider and rolls back, then creates a second Forest/session. It prints:
 ```json
 {"Before":"v1","After":"v2","Rollback":"v1","Cold":"v1","Generations":[1,2,3],"ColdGeneration":1,"NewSession":true}
 ```
+
+The compatible v0.2.1 Journal patch prepares each record's state changes once
+instead of repeatedly cloning all history during append/replay. Log formats,
+original receipts, reconciliation and Write/Sync rules are unchanged. See the
+[measurements and limits](../../docs/topology/journal-performance/results.md).
 
 ## Host responsibilities
 

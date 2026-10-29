@@ -1,0 +1,526 @@
+{
+  "Seed": {
+    "operation_id": "seed",
+    "session_id": "",
+    "mode": "seed",
+    "outcome": "selected",
+    "revision": 2,
+    "generation": 0,
+    "manifest_digest": "c13076cd2f78926577c5d167b6e75c4159a812e99dc049129e183506b082865b",
+    "instances": [],
+    "noop": false,
+    "historical_only": false,
+    "failure_kind": "",
+    "failure_codes": null,
+    "failure_stage": "",
+    "failure_tree": "",
+    "conflict": null
+  },
+  "Boot": {
+    "id": "boot",
+    "expected": {
+      "store_id": "9e3b6bb701295642791ef61e9f99636c",
+      "sequence": 2,
+      "digest": "0d47827313888b79165cdfbe679e3ac37ca2a0060d99b165765f4abe48989ecd"
+    },
+    "approval": "old cold restore"
+  },
+  "BootReceipt": {
+    "operation_id": "boot",
+    "session_id": "a546e102b0d94671ee948e54f810258f",
+    "mode": "restore",
+    "outcome": "observed",
+    "revision": 2,
+    "generation": 1,
+    "manifest_digest": "c13076cd2f78926577c5d167b6e75c4159a812e99dc049129e183506b082865b",
+    "instances": [
+      {
+        "tree_id": "number",
+        "instance_id": "instance-1"
+      }
+    ],
+    "noop": false,
+    "historical_only": false,
+    "failure_kind": "",
+    "failure_codes": null,
+    "failure_stage": "",
+    "failure_tree": "",
+    "conflict": null
+  },
+  "Attempts": [
+    {
+      "Request": {
+        "id": "upgrade",
+        "expected": {
+          "store_id": "9e3b6bb701295642791ef61e9f99636c",
+          "sequence": 5,
+          "digest": "cb68b53486a89d500d563bbe96beeba0691b08d02332993ae68a15c818eb660d"
+        },
+        "approval": "v0.1 actual original request"
+      },
+      "Proposal": {
+        "expected": {
+          "store_id": "9e3b6bb701295642791ef61e9f99636c",
+          "sequence": 5,
+          "digest": "cb68b53486a89d500d563bbe96beeba0691b08d02332993ae68a15c818eb660d"
+        },
+        "generation": 1,
+        "before_digest": "c13076cd2f78926577c5d167b6e75c4159a812e99dc049129e183506b082865b",
+        "target": {
+          "version": 1,
+          "trees": [
+            {
+              "id": "number",
+              "parent_id": "",
+              "definition": {
+                "TypeID": "number",
+                "Version": "2"
+              },
+              "contract_key": "number/1",
+              "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          ],
+          "bindings": []
+        },
+        "mode": "reconfigure",
+        "source_revision": 0,
+        "rebuild_trees": [
+          "number"
+        ],
+        "diff": {
+          "added_trees": [],
+          "removed_trees": [],
+          "changed_trees": [
+            {
+              "before": {
+                "id": "number",
+                "parent_id": "",
+                "definition": {
+                  "TypeID": "number",
+                  "Version": "1"
+                },
+                "contract_key": "number/1",
+                "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "after": {
+                "id": "number",
+                "parent_id": "",
+                "definition": {
+                  "TypeID": "number",
+                  "Version": "2"
+                },
+                "contract_key": "number/1",
+                "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            }
+          ],
+          "added_bindings": [],
+          "removed_bindings": [],
+          "changed_bindings": []
+        },
+        "plan": {
+          "base_generation": 1,
+          "operations": [
+            {
+              "Kind": "remove-subtree",
+              "Tree": "number",
+              "Parent": "",
+              "Definition": {
+                "TypeID": "",
+                "Version": ""
+              },
+              "Binding": {
+                "ID": "",
+                "Consumer": "",
+                "Port": "",
+                "Provider": "",
+                "Capability": ""
+              },
+              "KeepChildren": false
+            },
+            {
+              "Kind": "add-root",
+              "Tree": "number",
+              "Parent": "",
+              "Definition": {
+                "TypeID": "number",
+                "Version": "2"
+              },
+              "Binding": {
+                "ID": "",
+                "Consumer": "",
+                "Port": "",
+                "Provider": "",
+                "Capability": ""
+              },
+              "KeepChildren": false
+            }
+          ]
+        }
+      },
+      "Receipt": {
+        "operation_id": "upgrade",
+        "session_id": "a546e102b0d94671ee948e54f810258f",
+        "mode": "reconfigure",
+        "outcome": "observed",
+        "revision": 6,
+        "generation": 2,
+        "manifest_digest": "4f7d88cfd48de1688f9021bfd141bbfbdb89f5074a61f89255b3d61495653620",
+        "instances": [
+          {
+            "tree_id": "number",
+            "instance_id": "instance-2"
+          }
+        ],
+        "noop": false,
+        "historical_only": false,
+        "failure_kind": "",
+        "failure_codes": null,
+        "failure_stage": "",
+        "failure_tree": "",
+        "conflict": null
+      }
+    },
+    {
+      "Request": {
+        "id": "noop",
+        "expected": {
+          "store_id": "9e3b6bb701295642791ef61e9f99636c",
+          "sequence": 7,
+          "digest": "a84abc5c8456cc3ca6d2b3dccaa635dbb8d86fc704e25cba738ad61adfe7e0a6"
+        },
+        "approval": "v0.1 actual original request"
+      },
+      "Proposal": {
+        "expected": {
+          "store_id": "9e3b6bb701295642791ef61e9f99636c",
+          "sequence": 7,
+          "digest": "a84abc5c8456cc3ca6d2b3dccaa635dbb8d86fc704e25cba738ad61adfe7e0a6"
+        },
+        "generation": 2,
+        "before_digest": "4f7d88cfd48de1688f9021bfd141bbfbdb89f5074a61f89255b3d61495653620",
+        "target": {
+          "version": 1,
+          "trees": [
+            {
+              "id": "number",
+              "parent_id": "",
+              "definition": {
+                "TypeID": "number",
+                "Version": "2"
+              },
+              "contract_key": "number/1",
+              "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          ],
+          "bindings": []
+        },
+        "mode": "reconfigure",
+        "source_revision": 0,
+        "rebuild_trees": [],
+        "diff": {
+          "added_trees": [],
+          "removed_trees": [],
+          "changed_trees": [],
+          "added_bindings": [],
+          "removed_bindings": [],
+          "changed_bindings": []
+        },
+        "plan": {
+          "base_generation": 2,
+          "operations": []
+        }
+      },
+      "Receipt": {
+        "operation_id": "noop",
+        "session_id": "a546e102b0d94671ee948e54f810258f",
+        "mode": "reconfigure",
+        "outcome": "observed",
+        "revision": 6,
+        "generation": 2,
+        "manifest_digest": "4f7d88cfd48de1688f9021bfd141bbfbdb89f5074a61f89255b3d61495653620",
+        "instances": [
+          {
+            "tree_id": "number",
+            "instance_id": "instance-2"
+          }
+        ],
+        "noop": true,
+        "historical_only": false,
+        "failure_kind": "",
+        "failure_codes": null,
+        "failure_stage": "",
+        "failure_tree": "",
+        "conflict": null
+      }
+    },
+    {
+      "Request": {
+        "id": "failed",
+        "expected": {
+          "store_id": "9e3b6bb701295642791ef61e9f99636c",
+          "sequence": 9,
+          "digest": "6d59929bf76a4d10b82ec98ae6e9254a8dcfd109d1b866c87cc320774281ea70"
+        },
+        "approval": "v0.1 actual original request"
+      },
+      "Proposal": {
+        "expected": {
+          "store_id": "9e3b6bb701295642791ef61e9f99636c",
+          "sequence": 9,
+          "digest": "6d59929bf76a4d10b82ec98ae6e9254a8dcfd109d1b866c87cc320774281ea70"
+        },
+        "generation": 2,
+        "before_digest": "4f7d88cfd48de1688f9021bfd141bbfbdb89f5074a61f89255b3d61495653620",
+        "target": {
+          "version": 1,
+          "trees": [
+            {
+              "id": "number",
+              "parent_id": "",
+              "definition": {
+                "TypeID": "number",
+                "Version": "bad"
+              },
+              "contract_key": "number/1",
+              "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          ],
+          "bindings": []
+        },
+        "mode": "reconfigure",
+        "source_revision": 0,
+        "rebuild_trees": [
+          "number"
+        ],
+        "diff": {
+          "added_trees": [],
+          "removed_trees": [],
+          "changed_trees": [
+            {
+              "before": {
+                "id": "number",
+                "parent_id": "",
+                "definition": {
+                  "TypeID": "number",
+                  "Version": "2"
+                },
+                "contract_key": "number/1",
+                "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "after": {
+                "id": "number",
+                "parent_id": "",
+                "definition": {
+                  "TypeID": "number",
+                  "Version": "bad"
+                },
+                "contract_key": "number/1",
+                "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            }
+          ],
+          "added_bindings": [],
+          "removed_bindings": [],
+          "changed_bindings": []
+        },
+        "plan": {
+          "base_generation": 2,
+          "operations": [
+            {
+              "Kind": "remove-subtree",
+              "Tree": "number",
+              "Parent": "",
+              "Definition": {
+                "TypeID": "",
+                "Version": ""
+              },
+              "Binding": {
+                "ID": "",
+                "Consumer": "",
+                "Port": "",
+                "Provider": "",
+                "Capability": ""
+              },
+              "KeepChildren": false
+            },
+            {
+              "Kind": "add-root",
+              "Tree": "number",
+              "Parent": "",
+              "Definition": {
+                "TypeID": "number",
+                "Version": "bad"
+              },
+              "Binding": {
+                "ID": "",
+                "Consumer": "",
+                "Port": "",
+                "Provider": "",
+                "Capability": ""
+              },
+              "KeepChildren": false
+            }
+          ]
+        }
+      },
+      "Receipt": {
+        "operation_id": "failed",
+        "session_id": "a546e102b0d94671ee948e54f810258f",
+        "mode": "reconfigure",
+        "outcome": "failed",
+        "revision": 6,
+        "generation": 2,
+        "manifest_digest": "4f7d88cfd48de1688f9021bfd141bbfbdb89f5074a61f89255b3d61495653620",
+        "instances": [],
+        "noop": false,
+        "historical_only": false,
+        "failure_kind": "prepare",
+        "failure_codes": [
+          "prepare"
+        ],
+        "failure_stage": "start",
+        "failure_tree": "number",
+        "conflict": null
+      }
+    },
+    {
+      "Request": {
+        "id": "rollback",
+        "expected": {
+          "store_id": "9e3b6bb701295642791ef61e9f99636c",
+          "sequence": 11,
+          "digest": "8850cc80160f18f4ae9cf3b28923b41684d3f73d5dc49ce2b6551825a54e6d38"
+        },
+        "approval": "v0.1 actual original request"
+      },
+      "Proposal": {
+        "expected": {
+          "store_id": "9e3b6bb701295642791ef61e9f99636c",
+          "sequence": 11,
+          "digest": "8850cc80160f18f4ae9cf3b28923b41684d3f73d5dc49ce2b6551825a54e6d38"
+        },
+        "generation": 2,
+        "before_digest": "4f7d88cfd48de1688f9021bfd141bbfbdb89f5074a61f89255b3d61495653620",
+        "target": {
+          "version": 1,
+          "trees": [
+            {
+              "id": "number",
+              "parent_id": "",
+              "definition": {
+                "TypeID": "number",
+                "Version": "1"
+              },
+              "contract_key": "number/1",
+              "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          ],
+          "bindings": []
+        },
+        "mode": "rollback",
+        "source_revision": 2,
+        "rebuild_trees": [
+          "number"
+        ],
+        "diff": {
+          "added_trees": [],
+          "removed_trees": [],
+          "changed_trees": [
+            {
+              "before": {
+                "id": "number",
+                "parent_id": "",
+                "definition": {
+                  "TypeID": "number",
+                  "Version": "2"
+                },
+                "contract_key": "number/1",
+                "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "after": {
+                "id": "number",
+                "parent_id": "",
+                "definition": {
+                  "TypeID": "number",
+                  "Version": "1"
+                },
+                "contract_key": "number/1",
+                "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            }
+          ],
+          "added_bindings": [],
+          "removed_bindings": [],
+          "changed_bindings": []
+        },
+        "plan": {
+          "base_generation": 2,
+          "operations": [
+            {
+              "Kind": "remove-subtree",
+              "Tree": "number",
+              "Parent": "",
+              "Definition": {
+                "TypeID": "",
+                "Version": ""
+              },
+              "Binding": {
+                "ID": "",
+                "Consumer": "",
+                "Port": "",
+                "Provider": "",
+                "Capability": ""
+              },
+              "KeepChildren": false
+            },
+            {
+              "Kind": "add-root",
+              "Tree": "number",
+              "Parent": "",
+              "Definition": {
+                "TypeID": "number",
+                "Version": "1"
+              },
+              "Binding": {
+                "ID": "",
+                "Consumer": "",
+                "Port": "",
+                "Provider": "",
+                "Capability": ""
+              },
+              "KeepChildren": false
+            }
+          ]
+        }
+      },
+      "Receipt": {
+        "operation_id": "rollback",
+        "session_id": "a546e102b0d94671ee948e54f810258f",
+        "mode": "rollback",
+        "outcome": "observed",
+        "revision": 12,
+        "generation": 3,
+        "manifest_digest": "c13076cd2f78926577c5d167b6e75c4159a812e99dc049129e183506b082865b",
+        "instances": [
+          {
+            "tree_id": "number",
+            "instance_id": "instance-4"
+          }
+        ],
+        "noop": false,
+        "historical_only": false,
+        "failure_kind": "",
+        "failure_codes": null,
+        "failure_stage": "",
+        "failure_tree": "",
+        "conflict": null
+      }
+    }
+  ],
+  "Position": {
+    "store_id": "9e3b6bb701295642791ef61e9f99636c",
+    "sequence": 14,
+    "digest": "dde4a1ed79675b6541d7d96eefae2eb1ded488f9c0522ad017a2e0fe302738c7"
+  }
+}
