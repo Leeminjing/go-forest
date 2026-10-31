@@ -1,0 +1,17 @@
+{
+  "original_candidate": "855f765d59f44ad14e396404c3c16ca836e84459",
+  "original_ci_run": 41167346986,
+  "controlled_copy_sha256": "03682a259aff37b03df574132adea7d532bfa828e97be7c27b3d203ca1b115c7",
+  "go": "go version go1.26.5 windows/amd64",
+  "green_command": [
+    "go",
+    "test",
+    "-modfile=<owned green.mod with only Core source override>",
+    "-run=^TestEarlyConsumerErrorJoinsProducerAndRetainsOldStreamGeneration$",
+    "-count=100",
+    "-timeout=180s"
+  ],
+  "server": "real Temporal CLI 1.9.1; owned process terminated and Wait completed after verification",
+  "native_engines": "native Eino v0.9.22 and published Eino Adapter v0.1.0; no engine/runtime changes",
+  "result": "controlled old schedule deterministically failed; corrected test passed 100 repetitions"
+}

@@ -162,6 +162,25 @@ func TestEarlyConsumerErrorJoinsProducerAndRetainsOldStreamGeneration(t *testing
 	case <-ctx.Done():
 		t.Fatal(ctx.Err())
 	}
+	// Producer entry only proves that Send was received, not that the visit
+	// callback has returned. Observe the actual join before asserting its state.
+	until(t, ctx, func() bool {
+		joining := false
+		if e := r.Forest.Invoke(ctx, func(c context.Context) error {
+			return forest.Use[grapher](c, r.Forest, "app/graph", "graph", func(g grapher) error {
+				joining = g.Status().Joining > 0
+				return nil
+			})
+		}); e != nil {
+			t.Fatal(e)
+		}
+		select {
+		case e := <-done:
+			t.Fatal("consumer return released producer before joining", e)
+		default:
+		}
+		return joining
+	})
 	if e = r.Switch(ctx, "rebind"); e != nil {
 		t.Fatal(e)
 	}

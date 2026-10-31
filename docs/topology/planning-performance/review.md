@@ -37,3 +37,9 @@ also verified all then-published artifact digests and 1,300 timing rows.
 
 Final finding count: Standards 0 open; Spec 0 open. This is evidence within the
 tested scope, not a proof of every possible workload or concurrent execution.
+
+Both reviewers also examined the final CI's native Eino test synchronization
+correction. They confirmed that waiting for observed Joining closes a real
+producer/visitor scheduling gap, checks the call remains blocked, and preserves
+all original post-switch, resource, generation and error assertions without a
+runtime change or longer timeout. No additional finding remained.

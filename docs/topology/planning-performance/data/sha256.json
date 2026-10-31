@@ -55,6 +55,30 @@
     "bytes": 1362,
     "sha256": "2710ce92d77a557bbab9103648a003607c657eb0f5bfbf4d4a3541bd75ae58db"
   },
+  "acceptance/temporal-eino-ci-failure.txt": {
+    "bytes": 4665,
+    "sha256": "6cf896cd91a2aa487091b4bd7b4e411736dad244337ea98a58713570f7c2b557"
+  },
+  "acceptance/temporal-eino-controlled-red.txt": {
+    "bytes": 218,
+    "sha256": "18b98cf3d7eb2c9818fe50c34caf4efd2986394a78d149cc14406e831123a818"
+  },
+  "acceptance/temporal-eino-controlled-test.txt": {
+    "bytes": 2607,
+    "sha256": "d07091a01afe45375a357eae9c83b5588c45cd016d09f562ce39bd02099b29c9"
+  },
+  "acceptance/temporal-eino-failed-run.json": {
+    "bytes": 191563,
+    "sha256": "d78ff2b4a23effba6553755d6cab71cdf1a9579abf89ade2c81996e7d11756f8"
+  },
+  "acceptance/temporal-eino-repro-identity.json": {
+    "bytes": 801,
+    "sha256": "ce53052cf133bee7cf63abf90c9e7794fd23affd9b3099b67941dfa8466e3d71"
+  },
+  "acceptance/temporal-eino-targeted-green.txt": {
+    "bytes": 72,
+    "sha256": "1c0c0b903019a4c7995d424bac4c33741b971252fdb3a9688ae917b574f481d3"
+  },
   "acceptance/windows-gin-postgres.txt": {
     "bytes": 3191,
     "sha256": "46b5326518ef7d486eb74d0417c595b33ba55849d2080d5383138b6dd071beab"

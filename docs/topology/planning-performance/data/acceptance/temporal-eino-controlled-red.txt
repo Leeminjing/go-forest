@@ -1,0 +1,5 @@
+--- FAIL: TestEarlyConsumerErrorJoinsProducerAndRetainsOldStreamGeneration (0.06s)
+    management_test.go:188: producer not joining
+FAIL
+exit status 1
+FAIL	github.com/Leeminjing/go-forest/examples/temporal-eino	0.386s

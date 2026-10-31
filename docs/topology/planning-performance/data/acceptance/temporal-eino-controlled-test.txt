@@ -1,0 +1,105 @@
+func TestEarlyConsumerErrorJoinsProducerAndRetainsOldStreamGeneration(t *testing.T) {
+	ctx, o := config(t)
+	entered, release := make(chan struct{}), make(chan struct{})
+	var once, free sync.Once
+	var mu sync.Mutex
+	var points []protocol.Point
+	o.Hook = func(c context.Context, p protocol.Point) error {
+		if p.Stage == "stream.producer" {
+			once.Do(func() { close(entered) })
+			<-release
+		}
+		if p.Stage == "business.observe" {
+			mu.Lock()
+			points = append(points, p)
+			mu.Unlock()
+		}
+		return nil
+	}
+	r, e := demo.New(ctx, o)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer r.Close(ctx)
+	defer free.Do(func() { close(release) })
+	raw, _ := json.Marshal(input(o))
+	consumerError := errors.New("consumer failed")
+ consumerMayReturn := make(chan struct{})
+ defer close(consumerMayReturn)
+	done := make(chan error, 1)
+	go func() {
+		done <- r.Forest.Invoke(ctx, func(c context.Context) error {
+			return forest.Use[grapher](c, r.Forest, "app/graph", "graph", func(g grapher) error {
+				return g.Stream(c, string(raw), ef.GraphCall{}, func(reader *schema.StreamReader[string]) error {
+					first, e := reader.Recv()
+					if e != nil {
+						return e
+					}
+					if first != "v1/" {
+						return protocol.ErrConflict
+					}
+					<-consumerMayReturn
+					return consumerError
+				})
+			})
+		})
+	}()
+	select {
+	case <-entered:
+	case <-ctx.Done():
+		t.Fatal(ctx.Err())
+	}
+	if e = r.Switch(ctx, "rebind"); e != nil {
+		t.Fatal(e)
+	}
+	select {
+	case e = <-done:
+		t.Fatal("consumer return released producer", e)
+	default:
+	}
+	if e = r.Forest.Invoke(ctx, func(c context.Context) error {
+		return forest.Use[grapher](c, r.Forest, "app/graph", "graph", func(g grapher) error {
+			if g.Status().Joining == 0 {
+				return errors.New("producer not joining")
+			}
+			out, e := g.Invoke(c, string(raw), ef.GraphCall{})
+			if e == nil && out != "v2/v2" {
+				return protocol.ErrConflict
+			}
+			return e
+		})
+	}); e != nil {
+		t.Fatal(e)
+	}
+	if p := r.Resources(); p.BusinessCloses != 0 {
+		t.Fatal("old stream resource stopped", p)
+	}
+	free.Do(func() { close(release) })
+	select {
+	case e = <-done:
+		if !errors.Is(e, consumerError) {
+			t.Fatal(e)
+		}
+	case <-ctx.Done():
+		t.Fatal(ctx.Err())
+	}
+	mu.Lock()
+	defer mu.Unlock()
+	seenOld, seenNew := 0, 0
+	for _, p := range points {
+		if p.Version == "v1" {
+			seenOld++
+			if p.Generation != 1 {
+				t.Fatal(p)
+			}
+		} else {
+			seenNew++
+			if p.Version != "v2" || p.Generation != 2 {
+				t.Fatal(p)
+			}
+		}
+	}
+	if seenOld != 2 || seenNew != 2 {
+		t.Fatal(points)
+	}
+}

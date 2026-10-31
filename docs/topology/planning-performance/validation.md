@@ -68,6 +68,29 @@ platform selection. This is separate from the earlier intermittent NATS drain
 timeout in the v0.2.1 release record; that older issue has no confirmed root
 cause or fix in this change.
 
+## Native Eino fixture ordering correction
+
+Final packaging CI `41167346986` completed 70 jobs successfully and failed the
+Temporal/Eino candidate integration at `management_test.go`: "producer not
+joining" after 0.01 seconds. The test treated producer entry after Send as proof
+that the consuming visitor had already returned. A legal scheduling delay can
+leave the visitor active at that instant; Joining is then correctly zero.
+
+An owned module copy with a gated visitor reproduced this exact old assertion
+deterministically against a real Temporal 1.9.1 service and native Eino. The
+minimal test-only correction waits for the actual Joining status while checking
+that the held producer/call has not finished. It uses the existing bounded
+predicate helper and context, and keeps every subsequent generation, version,
+error, resource-retention and real-exit assertion. No timeout, Core, stable
+Adapter or example production code changed. The corrected actual-service test
+passed 100 native Windows repetitions; both independent reviewers confirmed
+that acceptance strength was retained. The full final source CI is rerun.
+
+The failed service log, controlled original test and failure, targeted result,
+source identity and complete failed-run job record are kept under
+`data/acceptance/temporal-eino-*`. This fixture has no Topology dependency; the
+measured Topology production files and all performance observations are unchanged.
+
 ## Baseline storage incident
 
 The first baseline archive attempt failed with EIO when D: had about 56 MiB

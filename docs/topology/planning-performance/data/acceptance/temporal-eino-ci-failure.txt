@@ -1,0 +1,68 @@
+READY: owned real Temporal; /home/runner/work/go-forest/go-forest/.scratch/core-performance/20261031-041202-candidate-08dc92/source/.scratch/temporal-eino/acceptance-4065111455e6/environment.json
+go: downloading github.com/Leeminjing/go-forest/adapters/temporal v0.1.0
+go: downloading github.com/Leeminjing/go-forest/adapters/eino v0.1.0
+go: downloading github.com/cloudwego/eino v0.9.22
+go: downloading go.temporal.io/sdk v1.50.0
+go: downloading go.temporal.io/api v1.63.5
+go: downloading github.com/Leeminjing/go-forest/testkit v0.1.0
+go: downloading github.com/eino-contrib/jsonschema v1.0.3
+go: downloading github.com/nikolalohinski/gonja v1.5.3
+go: downloading github.com/slongfield/pyfmt v0.0.0-20220222012616-ea85ff4c361f
+go: downloading github.com/wk8/go-ordered-map/v2 v2.1.8
+go: downloading github.com/google/uuid v1.6.0
+go: downloading github.com/nexus-rpc/sdk-go v0.7.0
+go: downloading github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a
+go: downloading github.com/golang/mock v1.6.0
+go: downloading github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.2
+go: downloading github.com/robfig/cron v1.2.0
+go: downloading github.com/stretchr/testify v1.10.0
+go: downloading golang.org/x/sync v0.22.0
+go: downloading golang.org/x/time v0.3.0
+go: downloading google.golang.org/grpc v1.83.2
+go: downloading google.golang.org/protobuf v1.36.11
+go: downloading github.com/gogo/protobuf v1.3.2
+go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20260526163538-3dc84a4a5aaa
+go: downloading github.com/goph/emperror v0.17.2
+go: downloading github.com/pkg/errors v0.9.1
+go: downloading github.com/sirupsen/logrus v1.9.3
+go: downloading github.com/grpc-ecosystem/grpc-gateway/v2 v2.22.0
+go: downloading google.golang.org/genproto/googleapis/api v0.0.0-20260526163538-3dc84a4a5aaa
+go: downloading github.com/nexus-rpc/nexus-proto-annotations v0.1.0
+go: downloading github.com/bahlo/generic-list-go v0.2.0
+go: downloading github.com/buger/jsonparser v1.1.1
+go: downloading github.com/mailru/easyjson v0.7.7
+go: downloading github.com/stretchr/objx v0.5.2
+go: downloading golang.org/x/net v0.58.0
+go: downloading golang.org/x/arch v0.11.0
+go: downloading github.com/dustin/go-humanize v1.0.1
+go: downloading github.com/pelletier/go-toml/v2 v2.0.9
+go: downloading github.com/yargevad/filepathx v1.0.0
+go: downloading golang.org/x/exp v0.0.0-20240325151524-a685a6edb6d8
+go: downloading golang.org/x/sys v0.47.0
+go: downloading github.com/klauspost/cpuid/v2 v2.2.9
+go: downloading golang.org/x/text v0.41.0
+--- FAIL: TestEarlyConsumerErrorJoinsProducerAndRetainsOldStreamGeneration (0.01s)
+    management_test.go:185: producer not joining
+FAIL
+FAIL	github.com/Leeminjing/go-forest/examples/temporal-eino	138.858s
+?   	github.com/Leeminjing/go-forest/examples/temporal-eino/cmd/demo	[no test files]
+?   	github.com/Leeminjing/go-forest/examples/temporal-eino/flow	[no test files]
+?   	github.com/Leeminjing/go-forest/examples/temporal-eino/internal/activitybridge	[no test files]
+?   	github.com/Leeminjing/go-forest/examples/temporal-eino/internal/business	[no test files]
+?   	github.com/Leeminjing/go-forest/examples/temporal-eino/internal/nativeeino	[no test files]
+?   	github.com/Leeminjing/go-forest/examples/temporal-eino/internal/observe	[no test files]
+?   	github.com/Leeminjing/go-forest/examples/temporal-eino/internal/state	[no test files]
+?   	github.com/Leeminjing/go-forest/examples/temporal-eino/internal/steps	[no test files]
+?   	github.com/Leeminjing/go-forest/examples/temporal-eino/protocol	[no test files]
+FAIL
+Traceback (most recent call last):
+  File "/home/runner/work/go-forest/go-forest/.scratch/core-performance/20261031-041202-candidate-08dc92/source/scripts/test-temporal-eino.py", line 89, in <module>
+    main()
+  File "/home/runner/work/go-forest/go-forest/.scratch/core-performance/20261031-041202-candidate-08dc92/source/scripts/test-temporal-eino.py", line 72, in main
+    run("go", "test", *(["-race"] if args.race else []), "./...", "-count=" + str(args.count), "-timeout=600s", cwd=module, env=env)
+  File "/home/runner/work/go-forest/go-forest/.scratch/core-performance/20261031-041202-candidate-08dc92/source/scripts/test-temporal-eino.py", line 20, in run
+    return subprocess.run(args, check=True, text=True, encoding="utf-8", **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '('go', 'test', '-race', './...', '-count=3', '-timeout=600s')' returned non-zero exit status 1.
