@@ -97,20 +97,20 @@ func (c *Controller) freshContext(ctx context.Context) error {
 	return ctx.Err()
 }
 func (c *Controller) shutAdmission() { c.gate.Lock(); c.admission = false; c.gate.Unlock() }
-func (c *Controller) actual() (Manifest, error) {
+func (c *Controller) actual() (*canonicalManifest, error) {
 	if c.diverged {
-		return Manifest{}, ErrManagedForestDiverged
+		return nil, ErrManagedForestDiverged
 	}
 	snapshot := c.f.Snapshot()
-	m, e := Capture(snapshot, c.catalog)
+	m, _, e := captureCanonical(snapshot, c.catalog)
 	if e != nil {
 		c.diverged = true
-		return Manifest{}, errors.Join(ErrManagedForestDiverged, e)
+		return nil, errors.Join(ErrManagedForestDiverged, e)
 	}
-	d, _ := Digest(m)
+	d := m.sum()
 	if snapshot.Generation != c.generation || d != c.digest {
 		c.diverged = true
-		return Manifest{}, ErrManagedForestDiverged
+		return nil, ErrManagedForestDiverged
 	}
 	return m, nil
 }
@@ -235,11 +235,11 @@ func (c *Controller) applyLocked(ctx context.Context, in Intent, requestDigest s
 		return result, wrapped
 	}
 	snapshot := c.f.Snapshot()
-	actual, err := Capture(snapshot, c.catalog)
+	actual, _, err := captureCanonical(snapshot, c.catalog)
 	if err != nil {
 		return result, errors.Join(ErrManagedForestDiverged, err)
 	}
-	d, _ := Digest(actual)
+	d := actual.sum()
 	c.generation = snapshot.Generation
 	c.digest = d
 	if generation != snapshot.Generation || d != in.TargetDigest {

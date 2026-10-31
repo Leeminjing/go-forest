@@ -14,6 +14,7 @@ func (current *journalState) prepareRecord(r record, digest string) (preparedRec
 	next := *current
 	s := &next // read old immutable values; writes below target only this delta
 	change := preparedRecord{}
+	var targetCanonical *canonicalManifest
 
 	if _, e := time.Parse(time.RFC3339Nano, r.Timestamp); e != nil {
 		return preparedRecord{}, ErrCorruptJournal
@@ -38,15 +39,17 @@ func (current *journalState) prepareRecord(r record, digest string) (preparedRec
 		if len(s.history) != 0 || r.Request == nil || !validRequest(*r.Request) || r.Target == nil {
 			return preparedRecord{}, ErrCorruptJournal
 		}
-		n, e := Normalize(*r.Target)
+		canonical, e := canonicalize(*r.Target)
 		if e != nil {
 			return preparedRecord{}, e
 		}
+		targetCanonical = canonical
+		n := canonical.value
 		h, _ := requestHash("seed", *r.Request, n, 0)
 		if h != r.RequestDigest || r.Request.Expected != pos {
 			return preparedRecord{}, ErrCorruptJournal
 		}
-		d, _ := Digest(n)
+		d := canonical.sum()
 		revision := Revision{ID: r.Sequence, Source: "desired-only", Manifest: n, Digest: d}
 		change.revision = &revision
 		s.inspection.Desired = &revision
@@ -71,11 +74,13 @@ func (current *journalState) prepareRecord(r record, digest string) (preparedRec
 		if _, ok := s.requests[r.Request.ID]; ok {
 			return preparedRecord{}, ErrRequestConflict
 		}
-		n, e := Normalize(*r.Target)
+		canonical, e := canonicalize(*r.Target)
 		if e != nil {
 			return preparedRecord{}, e
 		}
-		d, _ := Digest(n)
+		targetCanonical = canonical
+		n := canonical.value
+		d := canonical.sum()
 		found := false
 		for _, v := range s.history {
 			if v.ID == r.FromRevision && v.Digest == d {
@@ -110,11 +115,13 @@ func (current *journalState) prepareRecord(r record, digest string) (preparedRec
 		if _, ok := s.requests[in.Request.ID]; ok {
 			return preparedRecord{}, ErrRequestConflict
 		}
-		n, e := Normalize(in.Target)
+		canonical, e := canonicalize(in.Target)
 		if e != nil {
 			return preparedRecord{}, e
 		}
-		d, _ := Digest(n)
+		targetCanonical = canonical
+		n := canonical.value
+		d := canonical.sum()
 		if d != in.TargetDigest {
 			return preparedRecord{}, ErrCorruptJournal
 		}
@@ -160,7 +167,11 @@ func (current *journalState) prepareRecord(r record, digest string) (preparedRec
 			if in.Planning.Version != 2 {
 				return preparedRecord{}, ErrUnsupportedPlanVersion
 			}
-			calculated, evidence, e := planV2(before, n, in.BaseGeneration, in.Planning.Facts)
+			prior, err := canonicalize(before)
+			if err != nil {
+				return preparedRecord{}, ErrCorruptJournal
+			}
+			calculated, evidence, e := planV2Canonical(prior, canonical, in.BaseGeneration, in.Planning.Facts)
 			if e != nil || !reflect.DeepEqual(evidence, in.Planning) {
 				return preparedRecord{}, ErrCorruptJournal
 			}
@@ -323,7 +334,7 @@ func (current *journalState) prepareRecord(r record, digest string) (preparedRec
 		entry.Planning = detached(r.Intent.Planning)
 	}
 	if r.Target != nil {
-		entry.TargetDigest, _ = Digest(*r.Target)
+		entry.TargetDigest = targetCanonical.sum()
 	}
 	if r.Receipt != nil {
 		entry.OperationID = r.Receipt.OperationID

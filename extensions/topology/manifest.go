@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"sort"
 	"strings"
 	"unicode/utf8"
 
@@ -57,69 +56,18 @@ func hash(domain string, data []byte) string {
 
 // Normalize returns an isolated, canonical value. It does not build any tree.
 func Normalize(m Manifest) (Manifest, error) {
-	if m.Version != FormatVersion {
-		return Manifest{}, ErrUnsupportedFormat
+	n, e := canonicalize(m)
+	if e != nil {
+		return Manifest{}, e
 	}
-	if len(m.Trees) > 10000 || len(m.Bindings) > 50000 {
-		return Manifest{}, ErrInvalidManifest
-	}
-	n := Empty()
-	n.Trees = append(n.Trees, m.Trees...)
-	n.Bindings = append(n.Bindings, m.Bindings...)
-	sort.Slice(n.Trees, func(i, j int) bool { return n.Trees[i].ID < n.Trees[j].ID })
-	sort.Slice(n.Bindings, func(i, j int) bool { return n.Bindings[i].Ordinal < n.Bindings[j].Ordinal })
-	nodes := map[forest.TreeID]Tree{}
-	for _, t := range n.Trees {
-		if !validID(string(t.ID)) || (t.ParentID != "" && !validID(string(t.ParentID))) || !validID(t.Definition.TypeID) || !validID(t.Definition.Version) || !validID(t.ContractKey) || !validDigest(t.ImplementationDigest) {
-			return Manifest{}, fmt.Errorf("%w: tree %q", ErrInvalidManifest, t.ID)
-		}
-		if _, ok := nodes[t.ID]; ok {
-			return Manifest{}, ErrInvalidManifest
-		}
-		nodes[t.ID] = t
-	}
-	// A color walk is iterative so valid deep forests do not consume the Go stack.
-	done := map[forest.TreeID]bool{}
-	for _, t := range n.Trees {
-		path := map[forest.TreeID]bool{}
-		for id := t.ID; id != "" && !done[id]; id = nodes[id].ParentID {
-			if _, ok := nodes[id]; !ok {
-				return Manifest{}, fmt.Errorf("%w: missing parent %q", ErrInvalidManifest, id)
-			}
-			if path[id] {
-				return Manifest{}, fmt.Errorf("%w: Nest cycle", ErrInvalidManifest)
-			}
-			path[id] = true
-		}
-		for id := range path {
-			done[id] = true
-		}
-	}
-	ids := map[string]bool{}
-	for i, b := range n.Bindings {
-		if !validID(b.ID) || !validID(string(b.Consumer)) || !validID(string(b.Provider)) || !validID(string(b.Port)) || !validID(string(b.Capability)) || ids[b.ID] || b.Ordinal != uint64(i+1) || (b.Kind != "link" && b.Kind != "nest") {
-			return Manifest{}, ErrInvalidManifest
-		}
-		if _, ok := nodes[b.Consumer]; !ok {
-			return Manifest{}, ErrInvalidManifest
-		}
-		if _, ok := nodes[b.Provider]; !ok {
-			return Manifest{}, ErrInvalidManifest
-		}
-		ids[b.ID] = true
-	}
-	data, err := json.Marshal(n)
-	if err != nil || len(data) > MaxManifestBytes {
-		return Manifest{}, ErrInvalidManifest
-	}
-	return n, nil
+	return n.value, nil
 }
 func Encode(m Manifest) ([]byte, error) {
-	n, e := Normalize(m)
+	n, e := canonicalize(m)
 	if e != nil {
 		return nil, e
 	}
-	return json.Marshal(n)
+	return n.encoded, nil
 }
 func Decode(data []byte) (Manifest, error) {
 	var m Manifest
@@ -129,11 +77,11 @@ func Decode(data []byte) (Manifest, error) {
 	return Normalize(m)
 }
 func Digest(m Manifest) (string, error) {
-	data, e := Encode(m)
+	n, e := canonicalize(m)
 	if e != nil {
 		return "", e
 	}
-	return hash("forest-topology/manifest/v1", data), nil
+	return n.sum(), nil
 }
 
 // strict rejects duplicate object keys as well as unknown fields and trailing

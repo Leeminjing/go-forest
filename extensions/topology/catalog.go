@@ -68,17 +68,35 @@ func (c *Catalog) register(f *forest.Forest) error {
 	return nil
 }
 func Capture(s forest.Snapshot, c *Catalog) (Manifest, error) {
+	n, partial, err := captureCanonical(s, c)
+	if err != nil {
+		return partial, err
+	}
+	return n.value, nil
+}
+
+func (c *Catalog) checkCanonical(m *canonicalManifest) error {
+	if c != nil && m.checked == c {
+		return nil
+	}
+	if err := c.check(m.value); err != nil {
+		return err
+	}
+	m.checked = c
+	return nil
+}
+func captureCanonical(s forest.Snapshot, c *Catalog) (*canonicalManifest, Manifest, error) {
 	if c == nil {
-		return Manifest{}, ErrDefinitionUnavailable
+		return nil, Manifest{}, ErrDefinitionUnavailable
 	}
 	m := Empty()
 	for id, t := range s.Trees {
 		r, ok := c.entries[forest.DefinitionRef{TypeID: t.TypeID, Version: t.Version}]
 		if !ok {
-			return m, fmt.Errorf("%w: %s", ErrDefinitionUnavailable, id)
+			return nil, m, fmt.Errorf("%w: %s", ErrDefinitionUnavailable, id)
 		}
 		if id != t.ID || !reflect.DeepEqual(t.Ports, r.Definition.Ports) || !reflect.DeepEqual(t.Capabilities, r.Definition.Capabilities) {
-			return m, fmt.Errorf("%w: %s", ErrDefinitionMismatch, id)
+			return nil, m, fmt.Errorf("%w: %s", ErrDefinitionMismatch, id)
 		}
 		m.Trees = append(m.Trees, Tree{ID: id, ParentID: t.ParentID, Definition: r.Definition.Ref(), ContractKey: r.ContractKey, ImplementationDigest: r.ImplementationDigest})
 	}
@@ -90,7 +108,7 @@ func Capture(s forest.Snapshot, c *Catalog) (Manifest, error) {
 	}{{s.Links, false}, {s.NestBindings, true}} {
 		for id, b := range group.values {
 			if id != b.ID || b.Local != group.local || b.Order == 0 || seenOrder[b.Order] {
-				return m, ErrInvalidManifest
+				return nil, m, ErrInvalidManifest
 			}
 			seenOrder[b.Order] = true
 			all = append(all, b.Binding)
@@ -104,5 +122,10 @@ func Capture(s forest.Snapshot, c *Catalog) (Manifest, error) {
 		}
 		m.Bindings = append(m.Bindings, Binding{ID: b.ID, Consumer: b.Consumer, Port: b.Port, Provider: b.Provider, Capability: b.Capability, Kind: kind, Ordinal: uint64(i + 1)})
 	}
-	return Normalize(m)
+	n, err := canonicalize(m)
+	if err != nil {
+		return nil, Manifest{}, err
+	}
+	n.checked = c
+	return n, Manifest{}, nil
 }

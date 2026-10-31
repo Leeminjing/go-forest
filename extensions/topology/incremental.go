@@ -75,26 +75,38 @@ func factKey(f DefinitionFacts) string {
 	}{f.Definition, f.ContractKey, f.ImplementationDigest})
 	return string(b)
 }
-func treeFactKey(t Tree) string {
-	return factKey(DefinitionFacts{Definition: t.Definition, ContractKey: t.ContractKey, ImplementationDigest: t.ImplementationDigest})
+func (c *Catalog) plan(before, target Manifest, g uint64) (Plan, *PlanningEvidence, error) {
+	a, err := canonicalize(before)
+	if err != nil {
+		return Plan{}, &PlanningEvidence{}, err
+	}
+	b, err := canonicalize(target)
+	if err != nil {
+		return Plan{}, &PlanningEvidence{}, err
+	}
+	return c.planCanonical(a, b, g)
 }
 
-func (c *Catalog) plan(before, target Manifest, g uint64) (Plan, *PlanningEvidence, error) {
-	for _, m := range []Manifest{before, target} {
-		if e := c.check(m); e != nil {
+func (c *Catalog) planCanonical(before, target *canonicalManifest, g uint64) (Plan, *PlanningEvidence, error) {
+	for _, m := range []*canonicalManifest{before, target} {
+		if e := c.checkCanonical(m); e != nil {
 			return Plan{}, &PlanningEvidence{}, e
 		}
 	}
 	seen := map[string]DefinitionFacts{}
-	for _, m := range []Manifest{before, target} {
-		for _, t := range m.Trees {
+	for _, m := range []*canonicalManifest{before, target} {
+		for _, t := range m.value.Trees {
+			key := before.treeKey(t)
+			if _, ok := seen[key]; ok {
+				continue
+			}
 			r := c.entries[t.Definition]
 			f := DefinitionFacts{Definition: t.Definition, ContractKey: t.ContractKey, ImplementationDigest: t.ImplementationDigest, HotSwappable: r.Definition.HotSwappable, PreserveChildren: r.Definition.PreserveChildren, Reparentable: r.Definition.Reparentable, Ports: []PortFacts{}}
 			for _, p := range r.Definition.Ports {
 				f.Ports = append(f.Ports, PortFacts{p.ID, p.Phase})
 			}
 			sort.Slice(f.Ports, func(i, j int) bool { return f.Ports[i].ID < f.Ports[j].ID })
-			seen[factKey(f)] = f
+			seen[key] = f
 		}
 	}
 	keys := make([]string, 0, len(seen))
@@ -106,7 +118,7 @@ func (c *Catalog) plan(before, target Manifest, g uint64) (Plan, *PlanningEviden
 	for _, k := range keys {
 		facts = append(facts, seen[k])
 	}
-	return planV2(before, target, g, facts)
+	return planV2Canonical(before, target, g, facts)
 }
 
 func treeIndex(m Manifest) map[forest.TreeID]Tree {
@@ -127,8 +139,9 @@ func bindingLink(b Binding) forest.Link {
 	return forest.Link{ID: b.ID, Consumer: b.Consumer, Port: b.Port, Provider: b.Provider, Capability: b.Capability}
 }
 func sameEndpoints(a, b Binding) bool { return bindingLink(a) == bindingLink(b) && a.Kind == b.Kind }
-func orderedTrees(m Manifest, reverse bool) []Tree {
-	nodes := treeIndex(m)
+func orderedTrees(c *canonicalManifest, reverse bool) []Tree {
+	m := c.value
+	nodes := c.nodes
 	depth := map[forest.TreeID]int{"": 0}
 	for _, t := range m.Trees {
 		var path []forest.TreeID
@@ -157,19 +170,20 @@ func orderedTrees(m Manifest, reverse bool) []Tree {
 	return out
 }
 
-func planV2(before, target Manifest, g uint64, facts []DefinitionFacts) (Plan, *PlanningEvidence, error) {
+func planV2Canonical(ca, cb *canonicalManifest, g uint64, facts []DefinitionFacts) (Plan, *PlanningEvidence, error) {
+	before, target := ca.value, cb.value
 	p := Plan{BaseGeneration: g, Operations: []forest.Operation{}}
 	e := &PlanningEvidence{Version: 2, Facts: facts, Impact: Impact{RetainedTrees: []forest.TreeID{}, AddedTrees: []forest.TreeID{}, RebuildTrees: []forest.TreeID{}, RemovedTrees: []forest.TreeID{}, MovedTrees: []forest.TreeID{}, RetainedBindings: []string{}, ReboundBindings: []string{}, RemovedBindings: []string{}, InsertedBindings: []string{}, Reasons: []Reason{}, Blockers: []Reason{}}}
 	if facts == nil {
 		return p, e, ErrInvalidManifest
 	}
-	at, bt := treeIndex(before), treeIndex(target)
-	ab, bb := bindingIndex(before), bindingIndex(target)
+	at, bt := ca.nodes, cb.nodes
+	ab, bb := ca.bindingIndex(), cb.bindingIndex()
 	fm := map[string]DefinitionFacts{}
 	needed := map[string]bool{}
 	for _, m := range []Manifest{before, target} {
 		for _, t := range m.Trees {
-			needed[treeFactKey(t)] = true
+			needed[ca.treeKey(t)] = true
 		}
 	}
 	previous := ""
@@ -190,7 +204,7 @@ func planV2(before, target Manifest, g uint64, facts []DefinitionFacts) (Plan, *
 		return p, e, ErrInvalidManifest
 	}
 	phase := func(t Tree, port forest.PortID) forest.Phase {
-		for _, v := range fm[treeFactKey(t)].Ports {
+		for _, v := range fm[ca.treeKey(t)].Ports {
 			if v.ID == port {
 				return v.Phase
 			}
@@ -247,7 +261,7 @@ func planV2(before, target Manifest, g uint64, facts []DefinitionFacts) (Plan, *
 			}
 			checked[id] = true
 			todo = append(todo, children[id]...)
-			if old, exists := at[id]; exists && (!fm[treeFactKey(old)].Reparentable || !fm[treeFactKey(bt[id])].Reparentable) {
+			if old, exists := at[id]; exists && (!fm[ca.treeKey(old)].Reparentable || !fm[ca.treeKey(bt[id])].Reparentable) {
 				e.Impact.Blockers = append(e.Impact.Blockers, Reason{Code: "not-reparentable", Tree: id, Source: root})
 			}
 		}
@@ -294,7 +308,7 @@ func planV2(before, target Manifest, g uint64, facts []DefinitionFacts) (Plan, *
 		for _, r := range watchers[id] {
 			mark(r.Tree, r)
 		}
-		if !fm[treeFactKey(bt[id])].PreserveChildren {
+		if !fm[ca.treeKey(bt[id])].PreserveChildren {
 			todo := append([]forest.TreeID(nil), children[id]...)
 			for len(todo) > 0 {
 				child := todo[0]
@@ -312,7 +326,7 @@ func planV2(before, target Manifest, g uint64, facts []DefinitionFacts) (Plan, *
 		if old, exists := at[t.ID]; exists {
 			if rebuilt[t.ID] {
 				e.Impact.RebuildTrees = append(e.Impact.RebuildTrees, t.ID)
-				if !fm[treeFactKey(old)].HotSwappable || !fm[treeFactKey(t)].HotSwappable {
+				if !fm[ca.treeKey(old)].HotSwappable || !fm[ca.treeKey(t)].HotSwappable {
 					e.Impact.Blockers = append(e.Impact.Blockers, Reason{Code: "not-hot-swappable", Tree: t.ID})
 				}
 			} else {
@@ -320,7 +334,7 @@ func planV2(before, target Manifest, g uint64, facts []DefinitionFacts) (Plan, *
 			}
 		}
 	}
-	ordered := orderedTrees(target, false)
+	ordered := orderedTrees(cb, false)
 	for _, t := range ordered {
 		if _, exists := at[t.ID]; !exists {
 			if t.ParentID == "" {
@@ -339,7 +353,7 @@ func planV2(before, target Manifest, g uint64, facts []DefinitionFacts) (Plan, *
 			}
 		}
 	}
-	for _, t := range orderedTrees(before, true) {
+	for _, t := range orderedTrees(ca, true) {
 		if removed[t.ID] {
 			p.Operations = append(p.Operations, forest.Remove(t.ID))
 		}
@@ -347,7 +361,7 @@ func planV2(before, target Manifest, g uint64, facts []DefinitionFacts) (Plan, *
 	// A replaced ancestor may retain any depth of descendants. Compute that
 	// fact once, bottom-up, rather than repeatedly scanning each subtree.
 	hasRetained := map[forest.TreeID]bool{}
-	for _, t := range orderedTrees(target, true) {
+	for _, t := range orderedTrees(cb, true) {
 		if _, ok := at[t.ID]; ok && !rebuilt[t.ID] {
 			hasRetained[t.ParentID] = true
 		}

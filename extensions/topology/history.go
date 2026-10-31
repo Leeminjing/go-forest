@@ -27,21 +27,21 @@ type Diff struct {
 
 // Compare reports logical differences only, without allocating any resource.
 func Compare(before, after Manifest) (Diff, error) {
-	a, e := Normalize(before)
+	a, e := canonicalize(before)
 	if e != nil {
 		return Diff{}, e
 	}
-	b, e := Normalize(after)
+	b, e := canonicalize(after)
 	if e != nil {
 		return Diff{}, e
 	}
+	return compareCanonical(a, b), nil
+}
+func compareCanonical(ca, cb *canonicalManifest) Diff {
+	a, b := ca.value, cb.value
 	d := Diff{AddedTrees: []Tree{}, RemovedTrees: []Tree{}, ChangedTrees: []TreeChange{}, AddedBindings: []Binding{}, RemovedBindings: []Binding{}, ChangedBindings: []BindingChange{}}
-	at, bt := map[forest.TreeID]Tree{}, map[forest.TreeID]Tree{}
-	for _, t := range a.Trees {
-		at[t.ID] = t
-	}
+	at, bt := ca.nodes, cb.nodes
 	for _, t := range b.Trees {
-		bt[t.ID] = t
 		if old, ok := at[t.ID]; !ok {
 			d.AddedTrees = append(d.AddedTrees, t)
 		} else if old != t {
@@ -53,12 +53,8 @@ func Compare(before, after Manifest) (Diff, error) {
 			d.RemovedTrees = append(d.RemovedTrees, t)
 		}
 	}
-	ab, bb := map[string]Binding{}, map[string]Binding{}
-	for _, v := range a.Bindings {
-		ab[v.ID] = v
-	}
+	ab, bb := ca.bindingIndex(), cb.bindingIndex()
 	for _, v := range b.Bindings {
-		bb[v.ID] = v
 		if old, ok := ab[v.ID]; !ok {
 			d.AddedBindings = append(d.AddedBindings, v)
 		} else if old != v {
@@ -70,7 +66,7 @@ func Compare(before, after Manifest) (Diff, error) {
 			d.RemovedBindings = append(d.RemovedBindings, v)
 		}
 	}
-	return d, nil
+	return d
 }
 
 type Proposal struct {
@@ -103,20 +99,17 @@ func (c *Controller) previewLocked(target Manifest, mode string, source uint64) 
 		c.shutAdmission()
 		return Proposal{}, e
 	}
-	n, e := Normalize(target)
+	n, e := canonicalize(target)
 	if e != nil {
 		return Proposal{}, e
 	}
-	if e = c.catalog.check(n); e != nil {
+	if e = c.catalog.checkCanonical(n); e != nil {
 		return Proposal{}, e
 	}
-	diff, e := Compare(before, n)
-	if e != nil {
-		return Proposal{}, e
-	}
-	plan, planning, err := c.catalog.plan(before, n, c.generation)
-	targetDigest, _ := Digest(n)
-	p := Proposal{TargetDigest: targetDigest, Expected: s.state.inspection.Position, Generation: c.generation, BeforeDigest: c.digest, Target: n, Mode: mode, SourceRevision: source, RebuildTrees: planning.Impact.RebuildTrees, Diff: diff, Plan: plan, Planning: planning}
+	diff := compareCanonical(before, n)
+	plan, planning, err := c.catalog.planCanonical(before, n, c.generation)
+	targetDigest := n.sum()
+	p := Proposal{TargetDigest: targetDigest, Expected: s.state.inspection.Position, Generation: c.generation, BeforeDigest: c.digest, Target: n.value, Mode: mode, SourceRevision: source, RebuildTrees: planning.Impact.RebuildTrees, Diff: diff, Plan: plan, Planning: planning}
 	return p, err
 }
 func (c *Controller) Preview(target Manifest) (Proposal, error) {
