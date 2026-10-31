@@ -62,6 +62,10 @@ func main() {
 		delete(spans, "planV2")
 		spans["planV2Canonical"] = "Plan-v2"
 	}
+	if names["captureCanonical"] {
+		delete(spans, "Capture")
+		spans["captureCanonical"] = "Capture-public"
+	}
 	seen := map[string]int{}
 	for name, f := range files {
 		ast.Inspect(f, func(n ast.Node) bool {

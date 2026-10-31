@@ -1,0 +1,148 @@
+{
+  "Release": "v0.2.1",
+  "Go": "go1.23.12",
+  "Samples": [
+    {
+      "Input": {
+        "version": 1,
+        "trees": [],
+        "bindings": []
+      },
+      "Normalized": {
+        "version": 1,
+        "trees": [],
+        "bindings": []
+      },
+      "Encoding": "{\"version\":1,\"trees\":[],\"bindings\":[]}",
+      "Digest": "2b80806392f126b7f44384bddac3f3c7f4bf0460f879f26b2bf2fd131a298874"
+    },
+    {
+      "Input": {
+        "version": 1,
+        "trees": null,
+        "bindings": null
+      },
+      "Normalized": {
+        "version": 1,
+        "trees": [],
+        "bindings": []
+      },
+      "Encoding": "{\"version\":1,\"trees\":[],\"bindings\":[]}",
+      "Digest": "2b80806392f126b7f44384bddac3f3c7f4bf0460f879f26b2bf2fd131a298874"
+    },
+    {
+      "Input": {
+        "version": 1,
+        "trees": [
+          {
+            "id": "z",
+            "parent_id": "",
+            "definition": {
+              "TypeID": "clock",
+              "Version": "1"
+            },
+            "contract_key": "契约/\u003c\u003e\u0026\"",
+            "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "b 子",
+            "parent_id": "a\u003c\u0026\"",
+            "definition": {
+              "TypeID": "clock",
+              "Version": "1"
+            },
+            "contract_key": "契约/\u003c\u003e\u0026\"",
+            "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "a\u003c\u0026\"",
+            "parent_id": "",
+            "definition": {
+              "TypeID": "clock",
+              "Version": "1"
+            },
+            "contract_key": "契约/\u003c\u003e\u0026\"",
+            "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "bindings": [
+          {
+            "id": "link",
+            "consumer": "z",
+            "port": "many",
+            "provider": "a\u003c\u0026\"",
+            "capability": "cap",
+            "kind": "link",
+            "ordinal": 2
+          },
+          {
+            "id": "nest",
+            "consumer": "b 子",
+            "port": "parent",
+            "provider": "a\u003c\u0026\"",
+            "capability": "cap",
+            "kind": "nest",
+            "ordinal": 1
+          }
+        ]
+      },
+      "Normalized": {
+        "version": 1,
+        "trees": [
+          {
+            "id": "a\u003c\u0026\"",
+            "parent_id": "",
+            "definition": {
+              "TypeID": "clock",
+              "Version": "1"
+            },
+            "contract_key": "契约/\u003c\u003e\u0026\"",
+            "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "b 子",
+            "parent_id": "a\u003c\u0026\"",
+            "definition": {
+              "TypeID": "clock",
+              "Version": "1"
+            },
+            "contract_key": "契约/\u003c\u003e\u0026\"",
+            "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "z",
+            "parent_id": "",
+            "definition": {
+              "TypeID": "clock",
+              "Version": "1"
+            },
+            "contract_key": "契约/\u003c\u003e\u0026\"",
+            "implementation_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "bindings": [
+          {
+            "id": "nest",
+            "consumer": "b 子",
+            "port": "parent",
+            "provider": "a\u003c\u0026\"",
+            "capability": "cap",
+            "kind": "nest",
+            "ordinal": 1
+          },
+          {
+            "id": "link",
+            "consumer": "z",
+            "port": "many",
+            "provider": "a\u003c\u0026\"",
+            "capability": "cap",
+            "kind": "link",
+            "ordinal": 2
+          }
+        ]
+      },
+      "Encoding": "{\"version\":1,\"trees\":[{\"id\":\"a\\u003c\\u0026\\\"\",\"parent_id\":\"\",\"definition\":{\"TypeID\":\"clock\",\"Version\":\"1\"},\"contract_key\":\"契约/\\u003c\\u003e\\u0026\\\"\",\"implementation_digest\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"},{\"id\":\"b 子\",\"parent_id\":\"a\\u003c\\u0026\\\"\",\"definition\":{\"TypeID\":\"clock\",\"Version\":\"1\"},\"contract_key\":\"契约/\\u003c\\u003e\\u0026\\\"\",\"implementation_digest\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"},{\"id\":\"z\",\"parent_id\":\"\",\"definition\":{\"TypeID\":\"clock\",\"Version\":\"1\"},\"contract_key\":\"契约/\\u003c\\u003e\\u0026\\\"\",\"implementation_digest\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}],\"bindings\":[{\"id\":\"nest\",\"consumer\":\"b 子\",\"port\":\"parent\",\"provider\":\"a\\u003c\\u0026\\\"\",\"capability\":\"cap\",\"kind\":\"nest\",\"ordinal\":1},{\"id\":\"link\",\"consumer\":\"z\",\"port\":\"many\",\"provider\":\"a\\u003c\\u0026\\\"\",\"capability\":\"cap\",\"kind\":\"link\",\"ordinal\":2}]}",
+      "Digest": "4cb0de7df32630f675fcb7981a1eae37bdb5b734d4f9a383da4e79f5e4737b64"
+    }
+  ]
+}
