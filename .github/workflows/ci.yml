@@ -437,3 +437,27 @@ jobs:
           name: topology-patch-published-${{ matrix.os }}
           path: .scratch/topology-patch-release/**
           retention-days: 14
+
+  planning-performance-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/measure-planning.py --source-ref HEAD --harness-ref 199de69774523ef3a985b7b24a1e7772e2523458 --label ci-smoke --matrix smoke --count 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: planning-performance-smoke
+          path: |
+            .scratch/topology-planning/*ci-smoke/*.json
+            .scratch/topology-planning/*ci-smoke/*.txt
+            .scratch/topology-planning/*ci-smoke/COMPLETE
+          retention-days: 14

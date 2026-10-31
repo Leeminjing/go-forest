@@ -277,6 +277,10 @@ func PlanningProfile(kind, output, profile string) (err error) {
 	if profile == "cpu" {
 		pprof.StopCPUProfile()
 	} else if profile == "allocs" {
+		// Flush the delayed memory profile outside the operation. Ordinary timing
+		// remains on its frozen harness; this is a separate diagnostic run.
+		runtime.GC()
+		runtime.GC()
 		e = errors.Join(e, pprof.Lookup("allocs").WriteTo(f, 0))
 	} else {
 		return fmt.Errorf("unknown profile")
