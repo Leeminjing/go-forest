@@ -455,6 +455,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python scripts/test-planning-evidence.py
+      - run: python scripts/verify-planning-artifacts.py
       - run: python scripts/measure-planning.py --source-ref HEAD --harness-ref 199de69774523ef3a985b7b24a1e7772e2523458 --label ci-smoke --matrix smoke --count 1
       - uses: actions/upload-artifact@v4
         if: always()
