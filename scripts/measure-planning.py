@@ -50,6 +50,7 @@ def main():
    if name not in dims:name='small'
    for profile in ['cpu','allocs']:
     path=out/(kind+'-'+profile+'.pprof');run('profile-'+kind+'-'+profile,str(binary),'-mode=profile','-operation='+kind,'-profile='+profile,'-out='+str(path),dimensions=dims[name]);run('top-'+kind+'-'+profile,'go','tool','pprof','-top',str(binary),str(path))
+   run('memory-'+kind,str(binary),'-mode=memory','-operation='+kind,'-out='+str(out/(kind+'-heap.pprof')),dimensions=dims[name])
  instrumented=out/'instrumented';shutil.copytree(source/'extensions/topology',instrumented)
  tool=out/('instrument.exe' if os.name=='nt' else 'instrument');run('build-instrument','go','build','-pgo=off','-buildvcs=false','-o',str(tool),'./scripts/planning-instrument',cwd=tools)
  run('instrument',str(tool),'-source='+str(instrumented));metadata['instrumented_files']=shared['manifest'](instrumented,['*.go'])

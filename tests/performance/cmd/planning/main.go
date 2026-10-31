@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -20,6 +21,12 @@ func main() {
 		e = perf.CreatePlanningInput(*input, *journal)
 	} else if *mode == "profile" {
 		e = perf.PlanningProfile(*kind, *input, *profile)
+	} else if *mode == "memory" {
+		var data perf.PlanningMemoryResult
+		data, e = perf.PlanningMemory(*kind, *input)
+		if e == nil {
+			e = json.NewEncoder(os.Stdout).Encode(data)
+		}
 	} else {
 		e = fmt.Errorf("unknown mode")
 	}

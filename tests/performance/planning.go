@@ -7,7 +7,9 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"runtime/pprof"
+	"time"
 
 	"github.com/Leeminjing/go-forest/extensions/topology"
 )
@@ -286,4 +288,55 @@ func equalPlanningManifest(a, b topology.Manifest) bool {
 	x, _ := json.Marshal(a)
 	y, _ := json.Marshal(b)
 	return string(x) == string(y)
+}
+
+type PlanningMemoryResult struct {
+	Operation               string
+	ElapsedNS               int64
+	Allocated, Allocations  uint64
+	Before, After, Released JournalMemorySample
+}
+
+func PlanningMemory(kind, output string) (out PlanningMemoryResult, err error) {
+	op, close, e := PlanningOperation(kind)
+	if e != nil {
+		return out, e
+	}
+	runtime.GC()
+	out.Operation = kind
+	out.Before = journalMemorySample()
+	var before, after runtime.MemStats
+	runtime.ReadMemStats(&before)
+	start := time.Now()
+	e = op()
+	out.ElapsedNS = time.Since(start).Nanoseconds()
+	runtime.ReadMemStats(&after)
+	out.Allocated = after.TotalAlloc - before.TotalAlloc
+	out.Allocations = after.Mallocs - before.Mallocs
+	if e != nil {
+		_ = close()
+		return out, e
+	}
+	runtime.GC()
+	out.After = journalMemorySample()
+	if output != "" {
+		f, e := os.Create(output)
+		if e != nil {
+			_ = close()
+			return out, e
+		}
+		e = pprof.WriteHeapProfile(f)
+		if e = errors.Join(e, f.Close()); e != nil {
+			_ = close()
+			return out, e
+		}
+	}
+	if e = close(); e != nil {
+		return out, e
+	}
+	op = nil
+	close = nil
+	runtime.GC()
+	out.Released = journalMemorySample()
+	return out, nil
 }
