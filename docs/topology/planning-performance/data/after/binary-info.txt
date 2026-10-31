@@ -1,0 +1,17 @@
+/src/.scratch/topology-planning/20261031-032428-candidate/planning: go1.23.12
+	path	github.com/Leeminjing/go-forest/tests/performance/cmd/planning
+	mod	github.com/Leeminjing/go-forest/tests/performance	(devel)	
+	dep	github.com/Leeminjing/go-forest	v0.3.1	h1:k9Q3jg6ZHJ2rFVIsTF/DbMrgkze3A+zODE0RuufagpY=
+	dep	github.com/Leeminjing/go-forest/extensions/topology	v0.2.1
+	=>	/src/.scratch/topology-planning/20261031-032428-candidate/source/extensions/topology	(devel)	
+	
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	CGO_ENABLED=1
+	build	CGO_CFLAGS=
+	build	CGO_CPPFLAGS=
+	build	CGO_CXXFLAGS=
+	build	CGO_LDFLAGS=
+	build	GOARCH=amd64
+	build	GOOS=linux
+	build	GOAMD64=v1

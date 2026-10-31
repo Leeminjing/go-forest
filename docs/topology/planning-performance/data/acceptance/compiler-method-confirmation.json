@@ -1,0 +1,89 @@
+{
+  "primary_actual_settings": [
+    [
+      "-buildmode=exe"
+    ],
+    [
+      "-compiler=gc"
+    ],
+    [
+      "CGO_ENABLED=1"
+    ],
+    [
+      "CGO_CFLAGS="
+    ],
+    [
+      "CGO_CPPFLAGS="
+    ],
+    [
+      "CGO_CXXFLAGS="
+    ],
+    [
+      "CGO_LDFLAGS="
+    ],
+    [
+      "GOARCH=amd64"
+    ],
+    [
+      "GOOS=linux"
+    ],
+    [
+      "GOAMD64=v1"
+    ]
+  ],
+  "audit_actual_settings": {
+    "before-ordinary": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\t-tags=planningprobe",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux",
+      "build\tGOAMD64=v1"
+    ],
+    "before-instrumented": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\t-tags=planningprobe",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux",
+      "build\tGOAMD64=v1"
+    ],
+    "after-ordinary": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\t-tags=planningprobe",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux",
+      "build\tGOAMD64=v1"
+    ],
+    "after-instrumented": [
+      "build\t-buildmode=exe",
+      "build\t-compiler=gc",
+      "build\t-tags=planningprobe",
+      "build\tCGO_ENABLED=1",
+      "build\tCGO_CFLAGS=",
+      "build\tCGO_CPPFLAGS=",
+      "build\tCGO_CXXFLAGS=",
+      "build\tCGO_LDFLAGS=",
+      "build\tGOARCH=amd64",
+      "build\tGOOS=linux",
+      "build\tGOAMD64=v1"
+    ]
+  },
+  "notes": "Post-run confirmation from original build-info artifacts; identical actual compiler settings on both primary runs and across all four audit builds. Ordinary timing and raw audit data unchanged."
+}

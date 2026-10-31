@@ -8,6 +8,8 @@ from pathlib import Path
 import shutil
 import subprocess
 
+from planning_evidence import verify_attribution, verify_pair, verify_primary
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -15,9 +17,18 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--before', required=True)
     parser.add_argument('--after', required=True)
+    parser.add_argument('--attribute-before', required=True)
+    parser.add_argument('--attribute-after', required=True)
     parser.add_argument('--harness-ref', required=True)
     parser.add_argument('--out', required=True)
     args = parser.parse_args()
+    method = verify_pair(args.before, args.after)
+    attributed = {}
+    for side in ['before', 'after']:
+        primary = verify_primary(getattr(args, side))
+        attributed[side] = verify_attribution(getattr(args, 'attribute_' + side), primary)
+    if attributed['before']['tool'] != attributed['after']['tool']:
+        raise RuntimeError('different attribution tools')
     out = Path(args.out).resolve()
     out.mkdir(parents=True)
     env = dict(os.environ, GOWORK='off', GOTOOLCHAIN='local', GOFLAGS='', GOMAXPROCS='4')
@@ -57,7 +68,8 @@ def main():
             name = item['name'][6:].rsplit('-', 1)[0]
             dimensions[name] = item['dimensions']
         metadata[side] = dict(source=original['source'], timing_harness=original['harness'], inputs=original['inputs'])
-        for mode, topology in [('ordinary', primary / 'source/extensions/topology'), ('instrumented', primary / 'instrumented')]:
+        actual_instrumented = Path(getattr(args, 'attribute_' + side)).resolve() / 'topology'
+        for mode, topology in [('ordinary', primary / 'source/extensions/topology'), ('instrumented', actual_instrumented)]:
             project = out / (side + '-' + mode)
             shutil.copytree(primary / 'harness', project)
             for name, data in files.items():
@@ -94,7 +106,7 @@ def main():
                     dims = dimensions['open-large' if operation == 'Open' else 'large']
                     run(prefix + '-' + operation + '-profile', [str(profiler), '-mode=profile', '-profile=allocs', '-operation=' + operation, '-out=' + str(path)], project, dims)
                     run(prefix + '-' + operation + '-top', ['go', 'tool', 'pprof', '-top', '-alloc_space', str(profiler), str(path)], project)
-    metadata.update(harness=harness_ref, overlays={k: hashlib.sha256(v).hexdigest() for k, v in files.items()}, cases=len(results), builds=4,
+    metadata.update(method=method, attribution=attributed, harness=harness_ref, overlays={k: hashlib.sha256(v).hexdigest() for k, v in files.items()}, cases=len(results), builds=4,
                     notes='Raw results retained. Only independently verified random identities renamed; Position.Sequence, generation, and retained/new instance relations preserved. Open projections compare exact frozen journal. Profiles include setup and GC-flushed operation allocations; ordinary timing harness unchanged.')
     (out / 'metadata.json').write_text(json.dumps(metadata, indent=2))
     (out / 'COMPLETE').write_text(f'all four builds agree on {len(results)} result audits; eight GC-flushed allocation profiles saved\n')

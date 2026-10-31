@@ -1,0 +1,2342 @@
+{
+  "history/Capture": {
+    "before": {
+      "ns": {
+        "median": 73629.5,
+        "minimum": 65196,
+        "maximum": 103540
+      },
+      "bytes": {
+        "median": 48952.0,
+        "minimum": 48392,
+        "maximum": 51944
+      },
+      "allocations": {
+        "median": 135.0,
+        "minimum": 133,
+        "maximum": 141
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 53512.0,
+        "minimum": 46680,
+        "maximum": 94278
+      },
+      "bytes": {
+        "median": 50504.0,
+        "minimum": 49752,
+        "maximum": 52272
+      },
+      "allocations": {
+        "median": 140.0,
+        "minimum": 137,
+        "maximum": 145
+      }
+    }
+  },
+  "history/Normalize": {
+    "before": {
+      "ns": {
+        "median": 42976.5,
+        "minimum": 37651,
+        "maximum": 47092
+      },
+      "bytes": {
+        "median": 34192.0,
+        "minimum": 33600,
+        "maximum": 35488
+      },
+      "allocations": {
+        "median": 52.0,
+        "minimum": 51,
+        "maximum": 53
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 30310.5,
+        "minimum": 26354,
+        "maximum": 106673
+      },
+      "bytes": {
+        "median": 35472.0,
+        "minimum": 34800,
+        "maximum": 37872
+      },
+      "allocations": {
+        "median": 55.5,
+        "minimum": 54,
+        "maximum": 57
+      }
+    }
+  },
+  "history/Encode": {
+    "before": {
+      "ns": {
+        "median": 52406.0,
+        "minimum": 47895,
+        "maximum": 59720
+      },
+      "bytes": {
+        "median": 44160.0,
+        "minimum": 43136,
+        "maximum": 45504
+      },
+      "allocations": {
+        "median": 54.0,
+        "minimum": 53,
+        "maximum": 57
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 38407.5,
+        "minimum": 31621,
+        "maximum": 52912
+      },
+      "bytes": {
+        "median": 35664.0,
+        "minimum": 34640,
+        "maximum": 37168
+      },
+      "allocations": {
+        "median": 55.0,
+        "minimum": 53,
+        "maximum": 58
+      }
+    }
+  },
+  "history/Compare": {
+    "before": {
+      "ns": {
+        "median": 83145.0,
+        "minimum": 74897,
+        "maximum": 111076
+      },
+      "bytes": {
+        "median": 112688.0,
+        "minimum": 110560,
+        "maximum": 114656
+      },
+      "allocations": {
+        "median": 118.5,
+        "minimum": 115,
+        "maximum": 120
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 75818.0,
+        "minimum": 53498,
+        "maximum": 137591
+      },
+      "bytes": {
+        "median": 87376.0,
+        "minimum": 86272,
+        "maximum": 90688
+      },
+      "allocations": {
+        "median": 122.0,
+        "minimum": 119,
+        "maximum": 125
+      }
+    }
+  },
+  "history/Digest": {
+    "before": {
+      "ns": {
+        "median": 52659.0,
+        "minimum": 49735,
+        "maximum": 61096
+      },
+      "bytes": {
+        "median": 54272.0,
+        "minimum": 52576,
+        "maximum": 55968
+      },
+      "allocations": {
+        "median": 58.0,
+        "minimum": 55,
+        "maximum": 60
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 44744.5,
+        "minimum": 39208,
+        "maximum": 81140
+      },
+      "bytes": {
+        "median": 45424.0,
+        "minimum": 44400,
+        "maximum": 47312
+      },
+      "allocations": {
+        "median": 58.0,
+        "minimum": 57,
+        "maximum": 59
+      }
+    }
+  },
+  "history/Preview": {
+    "before": {
+      "ns": {
+        "median": 450086.5,
+        "minimum": 424713,
+        "maximum": 492080
+      },
+      "bytes": {
+        "median": 608692.0,
+        "minimum": 603232,
+        "maximum": 616128
+      },
+      "allocations": {
+        "median": 1336.5,
+        "minimum": 1330,
+        "maximum": 1341
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 263249.0,
+        "minimum": 236747,
+        "maximum": 318056
+      },
+      "bytes": {
+        "median": 270404.0,
+        "minimum": 267008,
+        "maximum": 275856
+      },
+      "allocations": {
+        "median": 562.0,
+        "minimum": 553,
+        "maximum": 565
+      }
+    }
+  },
+  "history/Commit": {
+    "before": {
+      "ns": {
+        "median": 5058613.5,
+        "minimum": 4824478,
+        "maximum": 6457007
+      },
+      "bytes": {
+        "median": 1438616.0,
+        "minimum": 1430144,
+        "maximum": 1448024
+      },
+      "allocations": {
+        "median": 3875.5,
+        "minimum": 3861,
+        "maximum": 3890
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 4619073.5,
+        "minimum": 3787418,
+        "maximum": 5474084
+      },
+      "bytes": {
+        "median": 939180.0,
+        "minimum": 932688,
+        "maximum": 946688
+      },
+      "allocations": {
+        "median": 2754.5,
+        "minimum": 2746,
+        "maximum": 2776
+      }
+    }
+  },
+  "history/PreviewCommit": {
+    "before": {
+      "ns": {
+        "median": 5627695.0,
+        "minimum": 5329668,
+        "maximum": 6105568
+      },
+      "bytes": {
+        "median": 2048088.0,
+        "minimum": 2040496,
+        "maximum": 2053728
+      },
+      "allocations": {
+        "median": 5211.5,
+        "minimum": 5203,
+        "maximum": 5217
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 4412245.5,
+        "minimum": 3465004,
+        "maximum": 5312878
+      },
+      "bytes": {
+        "median": 1209860.0,
+        "minimum": 1205520,
+        "maximum": 1214920
+      },
+      "allocations": {
+        "median": 3320.5,
+        "minimum": 3306,
+        "maximum": 3337
+      }
+    }
+  },
+  "history/Open": {
+    "before": {
+      "ns": {
+        "median": 25462874.0,
+        "minimum": 24386866,
+        "maximum": 26786883
+      },
+      "bytes": {
+        "median": 13439496.0,
+        "minimum": 13403528,
+        "maximum": 13459080
+      },
+      "allocations": {
+        "median": 194088.0,
+        "minimum": 194055,
+        "maximum": 194126
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 21287257.5,
+        "minimum": 19986307,
+        "maximum": 23442188
+      },
+      "bytes": {
+        "median": 11352552.0,
+        "minimum": 11332344,
+        "maximum": 11365760
+      },
+      "allocations": {
+        "median": 189120.0,
+        "minimum": 189100,
+        "maximum": 189155
+      }
+    }
+  },
+  "large/Capture": {
+    "before": {
+      "ns": {
+        "median": 13819122.5,
+        "minimum": 11715190,
+        "maximum": 23152569
+      },
+      "bytes": {
+        "median": 13194204.0,
+        "minimum": 13146752,
+        "maximum": 13202272
+      },
+      "allocations": {
+        "median": 30546.0,
+        "minimum": 30517,
+        "maximum": 30576
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 16539185.0,
+        "minimum": 12904225,
+        "maximum": 32467176
+      },
+      "bytes": {
+        "median": 13191472.0,
+        "minimum": 13158408,
+        "maximum": 13218528
+      },
+      "allocations": {
+        "median": 30552.0,
+        "minimum": 30533,
+        "maximum": 30576
+      }
+    }
+  },
+  "large/Normalize": {
+    "before": {
+      "ns": {
+        "median": 7259431.5,
+        "minimum": 5616260,
+        "maximum": 14633472
+      },
+      "bytes": {
+        "median": 8347128.0,
+        "minimum": 8312872,
+        "maximum": 8370544
+      },
+      "allocations": {
+        "median": 10497.5,
+        "minimum": 10442,
+        "maximum": 10515
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 6739043.5,
+        "minimum": 6080083,
+        "maximum": 16230581
+      },
+      "bytes": {
+        "median": 8342776.0,
+        "minimum": 8325272,
+        "maximum": 8362080
+      },
+      "allocations": {
+        "median": 10496.5,
+        "minimum": 10461,
+        "maximum": 10514
+      }
+    }
+  },
+  "large/Encode": {
+    "before": {
+      "ns": {
+        "median": 9590043.5,
+        "minimum": 8177668,
+        "maximum": 17149177
+      },
+      "bytes": {
+        "median": 10331992.0,
+        "minimum": 10290152,
+        "maximum": 10360488
+      },
+      "allocations": {
+        "median": 10484.0,
+        "minimum": 10433,
+        "maximum": 10527
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 6505475.5,
+        "minimum": 5909851,
+        "maximum": 14251978
+      },
+      "bytes": {
+        "median": 8344184.0,
+        "minimum": 8308856,
+        "maximum": 8355256
+      },
+      "allocations": {
+        "median": 10494.0,
+        "minimum": 10461,
+        "maximum": 10508
+      }
+    }
+  },
+  "large/Compare": {
+    "before": {
+      "ns": {
+        "median": 26278218.0,
+        "minimum": 17666284,
+        "maximum": 40587373
+      },
+      "bytes": {
+        "median": 25518816.0,
+        "minimum": 25485424,
+        "maximum": 25590872
+      },
+      "allocations": {
+        "median": 21536.5,
+        "minimum": 21487,
+        "maximum": 21618
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 17242936.0,
+        "minimum": 13710163,
+        "maximum": 29698042
+      },
+      "bytes": {
+        "median": 16971152.0,
+        "minimum": 16951360,
+        "maximum": 17024872
+      },
+      "allocations": {
+        "median": 20996.0,
+        "minimum": 20963,
+        "maximum": 21051
+      }
+    }
+  },
+  "large/Digest": {
+    "before": {
+      "ns": {
+        "median": 9906346.5,
+        "minimum": 9346383,
+        "maximum": 18101686
+      },
+      "bytes": {
+        "median": 12332952.0,
+        "minimum": 12305320,
+        "maximum": 12374568
+      },
+      "allocations": {
+        "median": 10485.5,
+        "minimum": 10440,
+        "maximum": 10538
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 8093509.0,
+        "minimum": 7125566,
+        "maximum": 22917796
+      },
+      "bytes": {
+        "median": 10347160.0,
+        "minimum": 10315000,
+        "maximum": 10361336
+      },
+      "allocations": {
+        "median": 10503.5,
+        "minimum": 10471,
+        "maximum": 10523
+      }
+    }
+  },
+  "large/Preview": {
+    "before": {
+      "ns": {
+        "median": 179140332.5,
+        "minimum": 151173094,
+        "maximum": 208077808
+      },
+      "bytes": {
+        "median": 146078172.0,
+        "minimum": 145971400,
+        "maximum": 146118496
+      },
+      "allocations": {
+        "median": 288918.5,
+        "minimum": 288829,
+        "maximum": 288992
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 81886830.5,
+        "minimum": 60158316,
+        "maximum": 103716766
+      },
+      "bytes": {
+        "median": 62371444.0,
+        "minimum": 62298160,
+        "maximum": 62403768
+      },
+      "allocations": {
+        "median": 103449.0,
+        "minimum": 103337,
+        "maximum": 103533
+      }
+    }
+  },
+  "large/Commit": {
+    "before": {
+      "ns": {
+        "median": 548463600.0,
+        "minimum": 508570611,
+        "maximum": 631385590
+      },
+      "bytes": {
+        "median": 346851712.0,
+        "minimum": 346734104,
+        "maximum": 350997232
+      },
+      "allocations": {
+        "median": 743791.5,
+        "minimum": 743552,
+        "maximum": 744002
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 394837099.5,
+        "minimum": 365831541,
+        "maximum": 428221766
+      },
+      "bytes": {
+        "median": 221479644.0,
+        "minimum": 221419096,
+        "maximum": 221559880
+      },
+      "allocations": {
+        "median": 484835.5,
+        "minimum": 484665,
+        "maximum": 484929
+      }
+    }
+  },
+  "large/PreviewCommit": {
+    "before": {
+      "ns": {
+        "median": 644342988.0,
+        "minimum": 615772393,
+        "maximum": 697523816
+      },
+      "bytes": {
+        "median": 492841944.0,
+        "minimum": 492667072,
+        "maximum": 492963744
+      },
+      "allocations": {
+        "median": 1032712.0,
+        "minimum": 1032439,
+        "maximum": 1032872
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 474538673.0,
+        "minimum": 439746977,
+        "maximum": 549912388
+      },
+      "bytes": {
+        "median": 283865628.0,
+        "minimum": 283703824,
+        "maximum": 283964072
+      },
+      "allocations": {
+        "median": 588263.5,
+        "minimum": 588038,
+        "maximum": 588489
+      }
+    }
+  },
+  "large/Open": {
+    "before": {
+      "ns": {
+        "median": 538892909.5,
+        "minimum": 496959685,
+        "maximum": 642019539
+      },
+      "bytes": {
+        "median": 304139876.0,
+        "minimum": 299995472,
+        "maximum": 308364600
+      },
+      "allocations": {
+        "median": 4776030.5,
+        "minimum": 4775921,
+        "maximum": 4776093
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 461638325.0,
+        "minimum": 443917710,
+        "maximum": 490145560
+      },
+      "bytes": {
+        "median": 254342136.0,
+        "minimum": 254282224,
+        "maximum": 254392336
+      },
+      "allocations": {
+        "median": 4712962.5,
+        "minimum": 4712891,
+        "maximum": 4713082
+      }
+    }
+  },
+  "many/Capture": {
+    "before": {
+      "ns": {
+        "median": 73704.0,
+        "minimum": 67839,
+        "maximum": 95042
+      },
+      "bytes": {
+        "median": 48868.0,
+        "minimum": 48552,
+        "maximum": 51784
+      },
+      "allocations": {
+        "median": 137.0,
+        "minimum": 134,
+        "maximum": 140
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 66413.0,
+        "minimum": 63611,
+        "maximum": 89466
+      },
+      "bytes": {
+        "median": 51800.0,
+        "minimum": 49912,
+        "maximum": 52976
+      },
+      "allocations": {
+        "median": 140.0,
+        "minimum": 137,
+        "maximum": 147
+      }
+    }
+  },
+  "many/Normalize": {
+    "before": {
+      "ns": {
+        "median": 41545.0,
+        "minimum": 38693,
+        "maximum": 65249
+      },
+      "bytes": {
+        "median": 34864.0,
+        "minimum": 33600,
+        "maximum": 36832
+      },
+      "allocations": {
+        "median": 53.5,
+        "minimum": 51,
+        "maximum": 55
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 39478.0,
+        "minimum": 33516,
+        "maximum": 51040
+      },
+      "bytes": {
+        "median": 35824.0,
+        "minimum": 35120,
+        "maximum": 36848
+      },
+      "allocations": {
+        "median": 55.0,
+        "minimum": 54,
+        "maximum": 58
+      }
+    }
+  },
+  "many/Encode": {
+    "before": {
+      "ns": {
+        "median": 52366.0,
+        "minimum": 46277,
+        "maximum": 62811
+      },
+      "bytes": {
+        "median": 45184.0,
+        "minimum": 42976,
+        "maximum": 46208
+      },
+      "allocations": {
+        "median": 55.0,
+        "minimum": 52,
+        "maximum": 57
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 34009.0,
+        "minimum": 32403,
+        "maximum": 36865
+      },
+      "bytes": {
+        "median": 35904.0,
+        "minimum": 34640,
+        "maximum": 36848
+      },
+      "allocations": {
+        "median": 55.0,
+        "minimum": 53,
+        "maximum": 58
+      }
+    }
+  },
+  "many/Compare": {
+    "before": {
+      "ns": {
+        "median": 90105.5,
+        "minimum": 83217,
+        "maximum": 110616
+      },
+      "bytes": {
+        "median": 116480.0,
+        "minimum": 113680,
+        "maximum": 119664
+      },
+      "allocations": {
+        "median": 121.0,
+        "minimum": 119,
+        "maximum": 125
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 72534.0,
+        "minimum": 67728,
+        "maximum": 105591
+      },
+      "bytes": {
+        "median": 91600.0,
+        "minimum": 88528,
+        "maximum": 93808
+      },
+      "allocations": {
+        "median": 125.0,
+        "minimum": 122,
+        "maximum": 128
+      }
+    }
+  },
+  "many/Digest": {
+    "before": {
+      "ns": {
+        "median": 56357.5,
+        "minimum": 53205,
+        "maximum": 80919
+      },
+      "bytes": {
+        "median": 54624.0,
+        "minimum": 53216,
+        "maximum": 55808
+      },
+      "allocations": {
+        "median": 57.0,
+        "minimum": 56,
+        "maximum": 59
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 37211.5,
+        "minimum": 32602,
+        "maximum": 48482
+      },
+      "bytes": {
+        "median": 45424.0,
+        "minimum": 44560,
+        "maximum": 48496
+      },
+      "allocations": {
+        "median": 58.0,
+        "minimum": 58,
+        "maximum": 61
+      }
+    }
+  },
+  "many/Preview": {
+    "before": {
+      "ns": {
+        "median": 491330.5,
+        "minimum": 456748,
+        "maximum": 577786
+      },
+      "bytes": {
+        "median": 612232.0,
+        "minimum": 607904,
+        "maximum": 618600
+      },
+      "allocations": {
+        "median": 1329.5,
+        "minimum": 1321,
+        "maximum": 1344
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 213368.5,
+        "minimum": 191491,
+        "maximum": 264655
+      },
+      "bytes": {
+        "median": 277656.0,
+        "minimum": 273360,
+        "maximum": 280560
+      },
+      "allocations": {
+        "median": 569.5,
+        "minimum": 566,
+        "maximum": 577
+      }
+    }
+  },
+  "many/Commit": {
+    "before": {
+      "ns": {
+        "median": 5871135.0,
+        "minimum": 5425158,
+        "maximum": 6172292
+      },
+      "bytes": {
+        "median": 1525748.0,
+        "minimum": 1522096,
+        "maximum": 1537648
+      },
+      "allocations": {
+        "median": 4129.5,
+        "minimum": 4116,
+        "maximum": 4145
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 3564560.5,
+        "minimum": 3311647,
+        "maximum": 5273652
+      },
+      "bytes": {
+        "median": 1033240.0,
+        "minimum": 1021016,
+        "maximum": 1037872
+      },
+      "allocations": {
+        "median": 3033.5,
+        "minimum": 3015,
+        "maximum": 3044
+      }
+    }
+  },
+  "many/PreviewCommit": {
+    "before": {
+      "ns": {
+        "median": 6585005.0,
+        "minimum": 6418239,
+        "maximum": 7746232
+      },
+      "bytes": {
+        "median": 2141848.0,
+        "minimum": 2131536,
+        "maximum": 2151448
+      },
+      "allocations": {
+        "median": 5463.0,
+        "minimum": 5448,
+        "maximum": 5481
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 3822487.0,
+        "minimum": 3513921,
+        "maximum": 4817804
+      },
+      "bytes": {
+        "median": 1309360.0,
+        "minimum": 1302904,
+        "maximum": 1317320
+      },
+      "allocations": {
+        "median": 3600.0,
+        "minimum": 3588,
+        "maximum": 3615
+      }
+    }
+  },
+  "many/Open": {
+    "before": {
+      "ns": {
+        "median": 3819192.5,
+        "minimum": 3548281,
+        "maximum": 4427131
+      },
+      "bytes": {
+        "median": 1318360.0,
+        "minimum": 1315936,
+        "maximum": 1323536
+      },
+      "allocations": {
+        "median": 25711.0,
+        "minimum": 25706,
+        "maximum": 25718
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 2300965.5,
+        "minimum": 2128192,
+        "maximum": 2885071
+      },
+      "bytes": {
+        "median": 1117008.0,
+        "minimum": 1114392,
+        "maximum": 1121928
+      },
+      "allocations": {
+        "median": 25416.0,
+        "minimum": 25409,
+        "maximum": 25422
+      }
+    }
+  },
+  "medium/Capture": {
+    "before": {
+      "ns": {
+        "median": 1669532.0,
+        "minimum": 1331146,
+        "maximum": 3275696
+      },
+      "bytes": {
+        "median": 1444900.0,
+        "minimum": 1437080,
+        "maximum": 1454424
+      },
+      "allocations": {
+        "median": 3228.5,
+        "minimum": 3213,
+        "maximum": 3246
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 2433410.5,
+        "minimum": 1546616,
+        "maximum": 4169479
+      },
+      "bytes": {
+        "median": 1450180.0,
+        "minimum": 1445128,
+        "maximum": 1465976
+      },
+      "allocations": {
+        "median": 3233.0,
+        "minimum": 3221,
+        "maximum": 3257
+      }
+    }
+  },
+  "medium/Normalize": {
+    "before": {
+      "ns": {
+        "median": 1005083.5,
+        "minimum": 698184,
+        "maximum": 1638099
+      },
+      "bytes": {
+        "median": 1056108.0,
+        "minimum": 1050408,
+        "maximum": 1062792
+      },
+      "allocations": {
+        "median": 1120.5,
+        "minimum": 1106,
+        "maximum": 1135
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 2208956.5,
+        "minimum": 901096,
+        "maximum": 3577095
+      },
+      "bytes": {
+        "median": 1058600.0,
+        "minimum": 1052344,
+        "maximum": 1065176
+      },
+      "allocations": {
+        "median": 1125.5,
+        "minimum": 1117,
+        "maximum": 1135
+      }
+    }
+  },
+  "medium/Encode": {
+    "before": {
+      "ns": {
+        "median": 1752772.0,
+        "minimum": 818061,
+        "maximum": 2354297
+      },
+      "bytes": {
+        "median": 1292952.0,
+        "minimum": 1286088,
+        "maximum": 1301832
+      },
+      "allocations": {
+        "median": 1119.5,
+        "minimum": 1112,
+        "maximum": 1131
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 1611387.0,
+        "minimum": 915045,
+        "maximum": 4442839
+      },
+      "bytes": {
+        "median": 1054104.0,
+        "minimum": 1050496,
+        "maximum": 1064376
+      },
+      "allocations": {
+        "median": 1120.5,
+        "minimum": 1114,
+        "maximum": 1126
+      }
+    }
+  },
+  "medium/Compare": {
+    "before": {
+      "ns": {
+        "median": 3143704.0,
+        "minimum": 2356555,
+        "maximum": 3661428
+      },
+      "bytes": {
+        "median": 3505096.0,
+        "minimum": 3493776,
+        "maximum": 3515960
+      },
+      "allocations": {
+        "median": 2341.0,
+        "minimum": 2325,
+        "maximum": 2349
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 3514870.5,
+        "minimum": 1740106,
+        "maximum": 4799625
+      },
+      "bytes": {
+        "median": 2416004.0,
+        "minimum": 2409920,
+        "maximum": 2428264
+      },
+      "allocations": {
+        "median": 2266.0,
+        "minimum": 2260,
+        "maximum": 2284
+      }
+    }
+  },
+  "medium/Digest": {
+    "before": {
+      "ns": {
+        "median": 1327578.5,
+        "minimum": 1023216,
+        "maximum": 2551328
+      },
+      "bytes": {
+        "median": 1528952.0,
+        "minimum": 1523304,
+        "maximum": 1534504
+      },
+      "allocations": {
+        "median": 1119.5,
+        "minimum": 1113,
+        "maximum": 1129
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 1845395.5,
+        "minimum": 953919,
+        "maximum": 2766808
+      },
+      "bytes": {
+        "median": 1294316.0,
+        "minimum": 1288472,
+        "maximum": 1308472
+      },
+      "allocations": {
+        "median": 1126.0,
+        "minimum": 1117,
+        "maximum": 1141
+      }
+    }
+  },
+  "medium/Preview": {
+    "before": {
+      "ns": {
+        "median": 17874757.5,
+        "minimum": 16279925,
+        "maximum": 19525029
+      },
+      "bytes": {
+        "median": 18062232.0,
+        "minimum": 18032440,
+        "maximum": 18083304
+      },
+      "allocations": {
+        "median": 31618.0,
+        "minimum": 31603,
+        "maximum": 31672
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 9249742.5,
+        "minimum": 7259362,
+        "maximum": 12397488
+      },
+      "bytes": {
+        "median": 7451888.0,
+        "minimum": 7436152,
+        "maximum": 7465328
+      },
+      "allocations": {
+        "median": 11030.0,
+        "minimum": 11000,
+        "maximum": 11043
+      }
+    }
+  },
+  "medium/Commit": {
+    "before": {
+      "ns": {
+        "median": 53856200.0,
+        "minimum": 49124033,
+        "maximum": 73859274
+      },
+      "bytes": {
+        "median": 40908664.0,
+        "minimum": 40856752,
+        "maximum": 40923608
+      },
+      "allocations": {
+        "median": 84036.5,
+        "minimum": 83982,
+        "maximum": 84115
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 43380881.0,
+        "minimum": 41066915,
+        "maximum": 53715048
+      },
+      "bytes": {
+        "median": 25067472.0,
+        "minimum": 25045336,
+        "maximum": 25097328
+      },
+      "allocations": {
+        "median": 54488.5,
+        "minimum": 54444,
+        "maximum": 54534
+      }
+    }
+  },
+  "medium/PreviewCommit": {
+    "before": {
+      "ns": {
+        "median": 71742572.5,
+        "minimum": 65487833,
+        "maximum": 75967877
+      },
+      "bytes": {
+        "median": 58974720.0,
+        "minimum": 58938920,
+        "maximum": 59029896
+      },
+      "allocations": {
+        "median": 115687.5,
+        "minimum": 115655,
+        "maximum": 115759
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 49784373.5,
+        "minimum": 44626093,
+        "maximum": 58005881
+      },
+      "bytes": {
+        "median": 32525120.0,
+        "minimum": 32493648,
+        "maximum": 32548928
+      },
+      "allocations": {
+        "median": 65529.5,
+        "minimum": 65447,
+        "maximum": 65567
+      }
+    }
+  },
+  "medium/Open": {
+    "before": {
+      "ns": {
+        "median": 59827191.5,
+        "minimum": 58016505,
+        "maximum": 63102807
+      },
+      "bytes": {
+        "median": 33764600.0,
+        "minimum": 33730648,
+        "maximum": 34281408
+      },
+      "allocations": {
+        "median": 597404.5,
+        "minimum": 597360,
+        "maximum": 597426
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 57576087.0,
+        "minimum": 55693838,
+        "maximum": 58321570
+      },
+      "bytes": {
+        "median": 27523280.0,
+        "minimum": 27509704,
+        "maximum": 28045648
+      },
+      "allocations": {
+        "median": 590124.0,
+        "minimum": 590094,
+        "maximum": 590143
+      }
+    }
+  },
+  "noop/Capture": {
+    "before": {
+      "ns": {
+        "median": 77253.5,
+        "minimum": 63745,
+        "maximum": 105224
+      },
+      "bytes": {
+        "median": 49576.0,
+        "minimum": 48712,
+        "maximum": 51624
+      },
+      "allocations": {
+        "median": 136.0,
+        "minimum": 135,
+        "maximum": 140
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 73343.0,
+        "minimum": 67138,
+        "maximum": 103662
+      },
+      "bytes": {
+        "median": 50936.0,
+        "minimum": 50072,
+        "maximum": 53104
+      },
+      "allocations": {
+        "median": 139.0,
+        "minimum": 137,
+        "maximum": 147
+      }
+    }
+  },
+  "noop/Normalize": {
+    "before": {
+      "ns": {
+        "median": 39625.0,
+        "minimum": 35622,
+        "maximum": 48018
+      },
+      "bytes": {
+        "median": 34624.0,
+        "minimum": 33440,
+        "maximum": 36832
+      },
+      "allocations": {
+        "median": 52.0,
+        "minimum": 50,
+        "maximum": 56
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 43544.5,
+        "minimum": 39359,
+        "maximum": 69192
+      },
+      "bytes": {
+        "median": 35824.0,
+        "minimum": 34800,
+        "maximum": 37872
+      },
+      "allocations": {
+        "median": 55.0,
+        "minimum": 54,
+        "maximum": 58
+      }
+    }
+  },
+  "noop/Encode": {
+    "before": {
+      "ns": {
+        "median": 51343.5,
+        "minimum": 47739,
+        "maximum": 65671
+      },
+      "bytes": {
+        "median": 44832.0,
+        "minimum": 43136,
+        "maximum": 45664
+      },
+      "allocations": {
+        "median": 55.0,
+        "minimum": 53,
+        "maximum": 58
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 46097.0,
+        "minimum": 38498,
+        "maximum": 53734
+      },
+      "bytes": {
+        "median": 35824.0,
+        "minimum": 34800,
+        "maximum": 36144
+      },
+      "allocations": {
+        "median": 55.0,
+        "minimum": 54,
+        "maximum": 57
+      }
+    }
+  },
+  "noop/Compare": {
+    "before": {
+      "ns": {
+        "median": 86326.5,
+        "minimum": 82781,
+        "maximum": 109614
+      },
+      "bytes": {
+        "median": 113440.0,
+        "minimum": 110048,
+        "maximum": 115168
+      },
+      "allocations": {
+        "median": 118.0,
+        "minimum": 113,
+        "maximum": 119
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 85582.5,
+        "minimum": 69216,
+        "maximum": 122441
+      },
+      "bytes": {
+        "median": 86752.0,
+        "minimum": 85696,
+        "maximum": 90176
+      },
+      "allocations": {
+        "median": 120.5,
+        "minimum": 119,
+        "maximum": 122
+      }
+    }
+  },
+  "noop/Digest": {
+    "before": {
+      "ns": {
+        "median": 53995.5,
+        "minimum": 50559,
+        "maximum": 79852
+      },
+      "bytes": {
+        "median": 53920.0,
+        "minimum": 52736,
+        "maximum": 54784
+      },
+      "allocations": {
+        "median": 57.5,
+        "minimum": 56,
+        "maximum": 58
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 44938.5,
+        "minimum": 39946,
+        "maximum": 66067
+      },
+      "bytes": {
+        "median": 45344.0,
+        "minimum": 44240,
+        "maximum": 46608
+      },
+      "allocations": {
+        "median": 57.5,
+        "minimum": 56,
+        "maximum": 60
+      }
+    }
+  },
+  "noop/Preview": {
+    "before": {
+      "ns": {
+        "median": 447982.0,
+        "minimum": 435629,
+        "maximum": 600219
+      },
+      "bytes": {
+        "median": 598232.0,
+        "minimum": 592784,
+        "maximum": 601536
+      },
+      "allocations": {
+        "median": 1317.5,
+        "minimum": 1314,
+        "maximum": 1321
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 247493.0,
+        "minimum": 226250,
+        "maximum": 256814
+      },
+      "bytes": {
+        "median": 261320.0,
+        "minimum": 258464,
+        "maximum": 266288
+      },
+      "allocations": {
+        "median": 554.5,
+        "minimum": 548,
+        "maximum": 563
+      }
+    }
+  },
+  "noop/Commit": {
+    "before": {
+      "ns": {
+        "median": 5332485.5,
+        "minimum": 5033580,
+        "maximum": 6357684
+      },
+      "bytes": {
+        "median": 1325296.0,
+        "minimum": 1314432,
+        "maximum": 1334192
+      },
+      "allocations": {
+        "median": 3293.0,
+        "minimum": 3287,
+        "maximum": 3302
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 5512454.0,
+        "minimum": 4005505,
+        "maximum": 26537300
+      },
+      "bytes": {
+        "median": 829780.0,
+        "minimum": 827072,
+        "maximum": 833504
+      },
+      "allocations": {
+        "median": 2198.0,
+        "minimum": 2188,
+        "maximum": 2209
+      }
+    }
+  },
+  "noop/PreviewCommit": {
+    "before": {
+      "ns": {
+        "median": 6218088.0,
+        "minimum": 5717305,
+        "maximum": 7087650
+      },
+      "bytes": {
+        "median": 1919716.0,
+        "minimum": 1912688,
+        "maximum": 1925768
+      },
+      "allocations": {
+        "median": 4607.5,
+        "minimum": 4599,
+        "maximum": 4612
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 3793912.0,
+        "minimum": 3364191,
+        "maximum": 5460709
+      },
+      "bytes": {
+        "median": 1093188.0,
+        "minimum": 1085952,
+        "maximum": 1100336
+      },
+      "allocations": {
+        "median": 2757.5,
+        "minimum": 2747,
+        "maximum": 2771
+      }
+    }
+  },
+  "noop/Open": {
+    "before": {
+      "ns": {
+        "median": 3637179.0,
+        "minimum": 3386482,
+        "maximum": 3829117
+      },
+      "bytes": {
+        "median": 1317184.0,
+        "minimum": 1313568,
+        "maximum": 1321632
+      },
+      "allocations": {
+        "median": 25708.0,
+        "minimum": 25704,
+        "maximum": 25715
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 1930621.5,
+        "minimum": 1897168,
+        "maximum": 2202512
+      },
+      "bytes": {
+        "median": 1117792.0,
+        "minimum": 1113160,
+        "maximum": 1120216
+      },
+      "allocations": {
+        "median": 25417.5,
+        "minimum": 25409,
+        "maximum": 25420
+      }
+    }
+  },
+  "open-history/Open": {
+    "before": {
+      "ns": {
+        "median": 101099851.0,
+        "minimum": 98702482,
+        "maximum": 109541833
+      },
+      "bytes": {
+        "median": 49748216.0,
+        "minimum": 49719472,
+        "maximum": 49780792
+      },
+      "allocations": {
+        "median": 699288.5,
+        "minimum": 699249,
+        "maximum": 699333
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 89151533.0,
+        "minimum": 81103078,
+        "maximum": 103831904
+      },
+      "bytes": {
+        "median": 42005448.0,
+        "minimum": 41991232,
+        "maximum": 42024384
+      },
+      "allocations": {
+        "median": 680278.5,
+        "minimum": 680220,
+        "maximum": 680297
+      }
+    }
+  },
+  "open-large/Open": {
+    "before": {
+      "ns": {
+        "median": 1662396422.5,
+        "minimum": 1543410745,
+        "maximum": 1874264948
+      },
+      "bytes": {
+        "median": 1008604788.0,
+        "minimum": 1008332448,
+        "maximum": 1008769224
+      },
+      "allocations": {
+        "median": 12119129.5,
+        "minimum": 12118705,
+        "maximum": 12119208
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 1372953137.5,
+        "minimum": 1288627675,
+        "maximum": 1634876811
+      },
+      "bytes": {
+        "median": 833599548.0,
+        "minimum": 825198896,
+        "maximum": 833697888
+      },
+      "allocations": {
+        "median": 11804239.0,
+        "minimum": 11804132,
+        "maximum": 11804434
+      }
+    }
+  },
+  "rebind/Capture": {
+    "before": {
+      "ns": {
+        "median": 70304.5,
+        "minimum": 67596,
+        "maximum": 92466
+      },
+      "bytes": {
+        "median": 49652.0,
+        "minimum": 48552,
+        "maximum": 51776
+      },
+      "allocations": {
+        "median": 136.5,
+        "minimum": 134,
+        "maximum": 141
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 61290.5,
+        "minimum": 50131,
+        "maximum": 160201
+      },
+      "bytes": {
+        "median": 50772.0,
+        "minimum": 49904,
+        "maximum": 52120
+      },
+      "allocations": {
+        "median": 139.0,
+        "minimum": 137,
+        "maximum": 144
+      }
+    }
+  },
+  "rebind/Normalize": {
+    "before": {
+      "ns": {
+        "median": 42171.5,
+        "minimum": 39757,
+        "maximum": 63032
+      },
+      "bytes": {
+        "median": 34544.0,
+        "minimum": 33440,
+        "maximum": 35648
+      },
+      "allocations": {
+        "median": 52.0,
+        "minimum": 50,
+        "maximum": 55
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 33743.5,
+        "minimum": 31578,
+        "maximum": 56151
+      },
+      "bytes": {
+        "median": 35552.0,
+        "minimum": 34640,
+        "maximum": 37872
+      },
+      "allocations": {
+        "median": 55.0,
+        "minimum": 53,
+        "maximum": 58
+      }
+    }
+  },
+  "rebind/Encode": {
+    "before": {
+      "ns": {
+        "median": 55323.0,
+        "minimum": 49856,
+        "maximum": 69628
+      },
+      "bytes": {
+        "median": 44320.0,
+        "minimum": 42976,
+        "maximum": 46368
+      },
+      "allocations": {
+        "median": 55.0,
+        "minimum": 52,
+        "maximum": 57
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 34645.0,
+        "minimum": 30781,
+        "maximum": 55255
+      },
+      "bytes": {
+        "median": 36416.0,
+        "minimum": 34640,
+        "maximum": 37008
+      },
+      "allocations": {
+        "median": 55.0,
+        "minimum": 53,
+        "maximum": 57
+      }
+    }
+  },
+  "rebind/Compare": {
+    "before": {
+      "ns": {
+        "median": 103056.0,
+        "minimum": 91300,
+        "maximum": 133948
+      },
+      "bytes": {
+        "median": 114672.0,
+        "minimum": 110256,
+        "maximum": 116720
+      },
+      "allocations": {
+        "median": 120.0,
+        "minimum": 114,
+        "maximum": 123
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 76955.5,
+        "minimum": 67939,
+        "maximum": 88788
+      },
+      "bytes": {
+        "median": 87040.0,
+        "minimum": 84560,
+        "maximum": 89200
+      },
+      "allocations": {
+        "median": 120.0,
+        "minimum": 118,
+        "maximum": 122
+      }
+    }
+  },
+  "rebind/Digest": {
+    "before": {
+      "ns": {
+        "median": 60424.5,
+        "minimum": 55599,
+        "maximum": 71378
+      },
+      "bytes": {
+        "median": 54432.0,
+        "minimum": 52736,
+        "maximum": 55104
+      },
+      "allocations": {
+        "median": 58.0,
+        "minimum": 56,
+        "maximum": 60
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 38973.0,
+        "minimum": 37238,
+        "maximum": 41553
+      },
+      "bytes": {
+        "median": 45504.0,
+        "minimum": 44400,
+        "maximum": 47632
+      },
+      "allocations": {
+        "median": 59.0,
+        "minimum": 57,
+        "maximum": 61
+      }
+    }
+  },
+  "rebind/Preview": {
+    "before": {
+      "ns": {
+        "median": 498957.5,
+        "minimum": 457191,
+        "maximum": 559662
+      },
+      "bytes": {
+        "median": 596288.0,
+        "minimum": 590216,
+        "maximum": 605968
+      },
+      "allocations": {
+        "median": 1322.0,
+        "minimum": 1312,
+        "maximum": 1329
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 219946.0,
+        "minimum": 206953,
+        "maximum": 256409
+      },
+      "bytes": {
+        "median": 263536.0,
+        "minimum": 258368,
+        "maximum": 267184
+      },
+      "allocations": {
+        "median": 558.0,
+        "minimum": 553,
+        "maximum": 564
+      }
+    }
+  },
+  "rebind/Commit": {
+    "before": {
+      "ns": {
+        "median": 5497134.5,
+        "minimum": 5073730,
+        "maximum": 5667877
+      },
+      "bytes": {
+        "median": 1409672.0,
+        "minimum": 1400880,
+        "maximum": 1422936
+      },
+      "allocations": {
+        "median": 3825.0,
+        "minimum": 3806,
+        "maximum": 3834
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 3416173.0,
+        "minimum": 3170838,
+        "maximum": 3994629
+      },
+      "bytes": {
+        "median": 915692.0,
+        "minimum": 910824,
+        "maximum": 920536
+      },
+      "allocations": {
+        "median": 2719.0,
+        "minimum": 2715,
+        "maximum": 2729
+      }
+    }
+  },
+  "rebind/PreviewCommit": {
+    "before": {
+      "ns": {
+        "median": 6513594.5,
+        "minimum": 6156856,
+        "maximum": 7145090
+      },
+      "bytes": {
+        "median": 2012244.0,
+        "minimum": 1997552,
+        "maximum": 2016632
+      },
+      "allocations": {
+        "median": 5146.0,
+        "minimum": 5120,
+        "maximum": 5153
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 3513683.5,
+        "minimum": 3439554,
+        "maximum": 4110602
+      },
+      "bytes": {
+        "median": 1177052.0,
+        "minimum": 1167376,
+        "maximum": 1184040
+      },
+      "allocations": {
+        "median": 3282.0,
+        "minimum": 3265,
+        "maximum": 3290
+      }
+    }
+  },
+  "rebind/Open": {
+    "before": {
+      "ns": {
+        "median": 3861256.5,
+        "minimum": 3585303,
+        "maximum": 4916804
+      },
+      "bytes": {
+        "median": 1316664.0,
+        "minimum": 1312768,
+        "maximum": 1320384
+      },
+      "allocations": {
+        "median": 25707.5,
+        "minimum": 25704,
+        "maximum": 25718
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 1834622.5,
+        "minimum": 1747877,
+        "maximum": 2251380
+      },
+      "bytes": {
+        "median": 1115864.0,
+        "minimum": 1111976,
+        "maximum": 1119016
+      },
+      "allocations": {
+        "median": 25416.0,
+        "minimum": 25407,
+        "maximum": 25419
+      }
+    }
+  },
+  "small/Capture": {
+    "before": {
+      "ns": {
+        "median": 64021.0,
+        "minimum": 59963,
+        "maximum": 95152
+      },
+      "bytes": {
+        "median": 49816.0,
+        "minimum": 48392,
+        "maximum": 51944
+      },
+      "allocations": {
+        "median": 135.0,
+        "minimum": 133,
+        "maximum": 139
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 66946.5,
+        "minimum": 64504,
+        "maximum": 97700
+      },
+      "bytes": {
+        "median": 50932.0,
+        "minimum": 49752,
+        "maximum": 51960
+      },
+      "allocations": {
+        "median": 139.5,
+        "minimum": 137,
+        "maximum": 142
+      }
+    }
+  },
+  "small/Normalize": {
+    "before": {
+      "ns": {
+        "median": 37065.0,
+        "minimum": 34824,
+        "maximum": 46326
+      },
+      "bytes": {
+        "median": 34784.0,
+        "minimum": 33440,
+        "maximum": 35808
+      },
+      "allocations": {
+        "median": 52.5,
+        "minimum": 50,
+        "maximum": 54
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 38343.0,
+        "minimum": 36149,
+        "maximum": 82984
+      },
+      "bytes": {
+        "median": 35472.0,
+        "minimum": 34640,
+        "maximum": 37712
+      },
+      "allocations": {
+        "median": 55.0,
+        "minimum": 53,
+        "maximum": 57
+      }
+    }
+  },
+  "small/Encode": {
+    "before": {
+      "ns": {
+        "median": 46865.0,
+        "minimum": 44144,
+        "maximum": 58934
+      },
+      "bytes": {
+        "median": 44672.0,
+        "minimum": 43296,
+        "maximum": 45344
+      },
+      "allocations": {
+        "median": 54.0,
+        "minimum": 53,
+        "maximum": 56
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 38132.5,
+        "minimum": 35067,
+        "maximum": 44611
+      },
+      "bytes": {
+        "median": 35984.0,
+        "minimum": 34640,
+        "maximum": 38032
+      },
+      "allocations": {
+        "median": 56.0,
+        "minimum": 53,
+        "maximum": 58
+      }
+    }
+  },
+  "small/Compare": {
+    "before": {
+      "ns": {
+        "median": 81117.0,
+        "minimum": 77273,
+        "maximum": 105008
+      },
+      "bytes": {
+        "median": 113632.0,
+        "minimum": 110720,
+        "maximum": 116000
+      },
+      "allocations": {
+        "median": 118.0,
+        "minimum": 115,
+        "maximum": 123
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 77653.5,
+        "minimum": 73986,
+        "maximum": 94747
+      },
+      "bytes": {
+        "median": 87376.0,
+        "minimum": 84064,
+        "maximum": 91552
+      },
+      "allocations": {
+        "median": 120.5,
+        "minimum": 116,
+        "maximum": 125
+      }
+    }
+  },
+  "small/Digest": {
+    "before": {
+      "ns": {
+        "median": 52704.5,
+        "minimum": 50552,
+        "maximum": 86753
+      },
+      "bytes": {
+        "median": 54272.0,
+        "minimum": 52896,
+        "maximum": 55968
+      },
+      "allocations": {
+        "median": 57.0,
+        "minimum": 56,
+        "maximum": 60
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 43894.0,
+        "minimum": 39947,
+        "maximum": 48358
+      },
+      "bytes": {
+        "median": 45584.0,
+        "minimum": 44240,
+        "maximum": 47632
+      },
+      "allocations": {
+        "median": 58.5,
+        "minimum": 56,
+        "maximum": 61
+      }
+    }
+  },
+  "small/Preview": {
+    "before": {
+      "ns": {
+        "median": 444787.0,
+        "minimum": 407096,
+        "maximum": 582308
+      },
+      "bytes": {
+        "median": 600828.0,
+        "minimum": 595104,
+        "maximum": 609488
+      },
+      "allocations": {
+        "median": 1331.5,
+        "minimum": 1328,
+        "maximum": 1344
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 249683.5,
+        "minimum": 234496,
+        "maximum": 257944
+      },
+      "bytes": {
+        "median": 262660.0,
+        "minimum": 260624,
+        "maximum": 266304
+      },
+      "allocations": {
+        "median": 559.0,
+        "minimum": 556,
+        "maximum": 564
+      }
+    }
+  },
+  "small/Commit": {
+    "before": {
+      "ns": {
+        "median": 5200655.0,
+        "minimum": 5020451,
+        "maximum": 6040387
+      },
+      "bytes": {
+        "median": 1416136.0,
+        "minimum": 1406984,
+        "maximum": 1425144
+      },
+      "allocations": {
+        "median": 3867.5,
+        "minimum": 3854,
+        "maximum": 3885
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 4320985.0,
+        "minimum": 3986789,
+        "maximum": 4701431
+      },
+      "bytes": {
+        "median": 919752.0,
+        "minimum": 915288,
+        "maximum": 921112
+      },
+      "allocations": {
+        "median": 2750.5,
+        "minimum": 2746,
+        "maximum": 2762
+      }
+    }
+  },
+  "small/PreviewCommit": {
+    "before": {
+      "ns": {
+        "median": 6262956.0,
+        "minimum": 5952060,
+        "maximum": 6478594
+      },
+      "bytes": {
+        "median": 2017208.0,
+        "minimum": 2002560,
+        "maximum": 2025176
+      },
+      "allocations": {
+        "median": 5201.5,
+        "minimum": 5182,
+        "maximum": 5207
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 4720754.0,
+        "minimum": 4038205,
+        "maximum": 8086592
+      },
+      "bytes": {
+        "median": 1181924.0,
+        "minimum": 1178432,
+        "maximum": 1187304
+      },
+      "allocations": {
+        "median": 3312.5,
+        "minimum": 3303,
+        "maximum": 3319
+      }
+    }
+  },
+  "small/Open": {
+    "before": {
+      "ns": {
+        "median": 3666780.0,
+        "minimum": 3398556,
+        "maximum": 3774080
+      },
+      "bytes": {
+        "median": 1317240.0,
+        "minimum": 1314784,
+        "maximum": 1323872
+      },
+      "allocations": {
+        "median": 25709.5,
+        "minimum": 25704,
+        "maximum": 25714
+      }
+    },
+    "after": {
+      "ns": {
+        "median": 2326088.5,
+        "minimum": 2224140,
+        "maximum": 2560943
+      },
+      "bytes": {
+        "median": 1116928.0,
+        "minimum": 1113816,
+        "maximum": 1119144
+      },
+      "allocations": {
+        "median": 25417.0,
+        "minimum": 25412,
+        "maximum": 25423
+      }
+    }
+  }
+}

@@ -1,0 +1,130 @@
+File: planning
+Type: cpu
+Time: Oct 31, 2026 at 3:41am (UTC)
+Duration: 517.23ms, Total samples = 450ms (87.00%)
+Showing nodes accounting for 450ms, 100% of 450ms total
+      flat  flat%   sum%        cum   cum%
+      40ms  8.89%  8.89%       40ms  8.89%  runtime.mapaccess1_faststr
+      20ms  4.44% 13.33%       20ms  4.44%  reflect.Value.Field
+      20ms  4.44% 17.78%       20ms  4.44%  runtime.duffcopy
+      20ms  4.44% 22.22%       70ms 15.56%  runtime.gcDrain
+      20ms  4.44% 26.67%       50ms 11.11%  runtime.mallocgc
+      20ms  4.44% 31.11%       30ms  6.67%  runtime.mapiternext
+      20ms  4.44% 35.56%       50ms 11.11%  runtime.scanobject
+      20ms  4.44% 40.00%       30ms  6.67%  runtime.typedmemmove
+      10ms  2.22% 42.22%       10ms  2.22%  aeshashbody
+      10ms  2.22% 44.44%       10ms  2.22%  bytes.(*Buffer).WriteByte
+      10ms  2.22% 46.67%       10ms  2.22%  crypto/sha256.block
+      10ms  2.22% 48.89%       10ms  2.22%  encoding/hex.Decode
+      10ms  2.22% 51.11%       10ms  2.22%  encoding/json.appendString[go.shape.string]
+      10ms  2.22% 53.33%       10ms  2.22%  encoding/json.checkValid
+      10ms  2.22% 55.56%       10ms  2.22%  encoding/json.indirect
+      10ms  2.22% 57.78%       40ms  8.89%  encoding/json.structEncoder.encode
+      10ms  2.22% 60.00%       10ms  2.22%  encoding/json.unquoteBytes
+      10ms  2.22% 62.22%       10ms  2.22%  internal/runtime/syscall.Syscall6
+      10ms  2.22% 64.44%       10ms  2.22%  reflect.deepValueEqual
+      10ms  2.22% 66.67%       10ms  2.22%  runtime.(*mspan).base (inline)
+      10ms  2.22% 68.89%       10ms  2.22%  runtime.(*mspan).typePointersOf
+      10ms  2.22% 71.11%       10ms  2.22%  runtime.bucketShift (inline)
+      10ms  2.22% 73.33%       30ms  6.67%  runtime.bulkBarrierPreWrite
+      10ms  2.22% 75.56%       20ms  4.44%  runtime.findObject
+      10ms  2.22% 77.78%       20ms  4.44%  runtime.growslice
+      10ms  2.22% 80.00%       10ms  2.22%  runtime.ifaceeq
+      10ms  2.22% 82.22%       20ms  4.44%  runtime.mapaccess2_faststr
+      10ms  2.22% 84.44%       60ms 13.33%  runtime.mapassign_faststr
+      10ms  2.22% 86.67%       10ms  2.22%  runtime.mapiterinit
+      10ms  2.22% 88.89%       10ms  2.22%  runtime.markroot
+      10ms  2.22% 91.11%       10ms  2.22%  runtime.memclrNoHeapPointers
+      10ms  2.22% 93.33%       20ms  4.44%  runtime.memclrNoHeapPointersChunked
+      10ms  2.22% 95.56%       10ms  2.22%  runtime.memmove
+      10ms  2.22% 97.78%       10ms  2.22%  runtime.spanOf (inline)
+      10ms  2.22%   100%       10ms  2.22%  runtime.spanOfUnchecked (inline)
+         0     0%   100%       10ms  2.22%  crypto/sha256.(*digest).Write
+         0     0%   100%       10ms  2.22%  crypto/sha256.Sum256
+         0     0%   100%       10ms  2.22%  encoding/hex.DecodeString
+         0     0%   100%       40ms  8.89%  encoding/json.(*decodeState).array
+         0     0%   100%       20ms  4.44%  encoding/json.(*decodeState).literalStore
+         0     0%   100%       40ms  8.89%  encoding/json.(*decodeState).object
+         0     0%   100%       40ms  8.89%  encoding/json.(*decodeState).unmarshal
+         0     0%   100%       40ms  8.89%  encoding/json.(*decodeState).value
+         0     0%   100%       40ms  8.89%  encoding/json.(*encodeState).marshal
+         0     0%   100%       40ms  8.89%  encoding/json.(*encodeState).reflectValue
+         0     0%   100%       40ms  8.89%  encoding/json.Marshal
+         0     0%   100%       50ms 11.11%  encoding/json.Unmarshal
+         0     0%   100%       40ms  8.89%  encoding/json.arrayEncoder.encode
+         0     0%   100%       10ms  2.22%  encoding/json.ptrEncoder.encode
+         0     0%   100%       40ms  8.89%  encoding/json.sliceEncoder.encode
+         0     0%   100%       10ms  2.22%  encoding/json.stringEncoder
+         0     0%   100%       50ms 11.11%  github.com/Leeminjing/go-forest/extensions/topology.(*Catalog).planCanonical
+         0     0%   100%       60ms 13.33%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).Preview
+         0     0%   100%      320ms 71.11%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).Reconfigure (inline)
+         0     0%   100%       50ms 11.11%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).actual
+         0     0%   100%      240ms 53.33%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).applyLocked
+         0     0%   100%       60ms 13.33%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).applyLocked.func1
+         0     0%   100%      320ms 71.11%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).commit
+         0     0%   100%      130ms 28.89%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).previewLocked
+         0     0%   100%      140ms 31.11%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).appendLocked
+         0     0%   100%      130ms 28.89%  github.com/Leeminjing/go-forest/extensions/topology.(*journalState).prepareRecord
+         0     0%   100%       30ms  6.67%  github.com/Leeminjing/go-forest/extensions/topology.Normalize (inline)
+         0     0%   100%       90ms 20.00%  github.com/Leeminjing/go-forest/extensions/topology.canonicalize
+         0     0%   100%       50ms 11.11%  github.com/Leeminjing/go-forest/extensions/topology.captureCanonical
+         0     0%   100%       70ms 15.56%  github.com/Leeminjing/go-forest/extensions/topology.checkProjection
+         0     0%   100%       10ms  2.22%  github.com/Leeminjing/go-forest/extensions/topology.checkRetainedInstances
+         0     0%   100%       10ms  2.22%  github.com/Leeminjing/go-forest/extensions/topology.compareCanonical
+         0     0%   100%       50ms 11.11%  github.com/Leeminjing/go-forest/extensions/topology.detached[go.shape.*uint8]
+         0     0%   100%       10ms  2.22%  github.com/Leeminjing/go-forest/extensions/topology.detached[go.shape.struct { Version int "json:\"version\""; Trees []github.com/Leeminjing/go-forest/extensions/topology.Tree "json:\"trees\""; Bindings []github.com/Leeminjing/go-forest/extensions/topology.Binding "json:\"bindings\"" }]
+         0     0%   100%       10ms  2.22%  github.com/Leeminjing/go-forest/extensions/topology.hash
+         0     0%   100%       10ms  2.22%  github.com/Leeminjing/go-forest/extensions/topology.intentHash
+         0     0%   100%       20ms  4.44%  github.com/Leeminjing/go-forest/extensions/topology.makePlanV1
+         0     0%   100%       20ms  4.44%  github.com/Leeminjing/go-forest/extensions/topology.orderedTrees
+         0     0%   100%       90ms 20.00%  github.com/Leeminjing/go-forest/extensions/topology.planV2Canonical
+         0     0%   100%       40ms  8.89%  github.com/Leeminjing/go-forest/extensions/topology.treeIndex (inline)
+         0     0%   100%       10ms  2.22%  github.com/Leeminjing/go-forest/extensions/topology.validDigest
+         0     0%   100%       60ms 13.33%  github.com/Leeminjing/go-forest/forest.(*Forest).Apply
+         0     0%   100%       30ms  6.67%  github.com/Leeminjing/go-forest/forest.(*Forest).Snapshot
+         0     0%   100%       10ms  2.22%  github.com/Leeminjing/go-forest/forest.ancestor (inline)
+         0     0%   100%       10ms  2.22%  github.com/Leeminjing/go-forest/forest.lifecycleOrder
+         0     0%   100%       10ms  2.22%  github.com/Leeminjing/go-forest/forest.lifecycleOrder.func1
+         0     0%   100%       50ms 11.11%  github.com/Leeminjing/go-forest/forest.validateRetained
+         0     0%   100%      380ms 84.44%  github.com/Leeminjing/go-forest/tests/performance.PlanningOperation.func4
+         0     0%   100%      380ms 84.44%  github.com/Leeminjing/go-forest/tests/performance.PlanningProfile
+         0     0%   100%       10ms  2.22%  internal/poll.(*FD).Fsync
+         0     0%   100%       10ms  2.22%  internal/poll.(*FD).Fsync.func1 (inline)
+         0     0%   100%       10ms  2.22%  internal/poll.ignoringEINTR (inline)
+         0     0%   100%       20ms  4.44%  internal/reflectlite.Swapper.func9
+         0     0%   100%       20ms  4.44%  internal/reflectlite.typedmemmove
+         0     0%   100%      380ms 84.44%  main.main
+         0     0%   100%       10ms  2.22%  os.(*File).Sync
+         0     0%   100%       10ms  2.22%  reflect.DeepEqual
+         0     0%   100%       20ms  4.44%  reflect.typedmemmove (inline)
+         0     0%   100%       10ms  2.22%  runtime.(*wbBuf).get2 (inline)
+         0     0%   100%       10ms  2.22%  runtime.convTslice
+         0     0%   100%       10ms  2.22%  runtime.deductAssistCredit
+         0     0%   100%       20ms  4.44%  runtime.evacuate_faststr
+         0     0%   100%       10ms  2.22%  runtime.gcAssistAlloc
+         0     0%   100%       10ms  2.22%  runtime.gcAssistAlloc.func1
+         0     0%   100%       10ms  2.22%  runtime.gcAssistAlloc1
+         0     0%   100%       70ms 15.56%  runtime.gcBgMarkWorker
+         0     0%   100%       70ms 15.56%  runtime.gcBgMarkWorker.func2
+         0     0%   100%       60ms 13.33%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0%   100%       10ms  2.22%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0%   100%       10ms  2.22%  runtime.gcDrainN
+         0     0%   100%       10ms  2.22%  runtime.greyobject
+         0     0%   100%       20ms  4.44%  runtime.growWork_faststr
+         0     0%   100%       30ms  6.67%  runtime.hashGrow
+         0     0%   100%      380ms 84.44%  runtime.main
+         0     0%   100%       30ms  6.67%  runtime.makeBucketArray
+         0     0%   100%       10ms  2.22%  runtime.memclrHasPointers
+         0     0%   100%       30ms  6.67%  runtime.newarray
+         0     0%   100%       90ms 20.00%  runtime.systemstack
+         0     0%   100%       10ms  2.22%  runtime.typedslicecopy
+         0     0%   100%       10ms  2.22%  runtime.wbBufFlush
+         0     0%   100%       10ms  2.22%  runtime.wbBufFlush.func1
+         0     0%   100%       10ms  2.22%  runtime.wbBufFlush1
+         0     0%   100%       10ms  2.22%  runtime.wbMove
+         0     0%   100%       20ms  4.44%  sort.Slice
+         0     0%   100%       20ms  4.44%  sort.partition_func
+         0     0%   100%       20ms  4.44%  sort.pdqsort_func
+         0     0%   100%       10ms  2.22%  syscall.Fsync
+         0     0%   100%       10ms  2.22%  syscall.RawSyscall6
+         0     0%   100%       10ms  2.22%  syscall.Syscall

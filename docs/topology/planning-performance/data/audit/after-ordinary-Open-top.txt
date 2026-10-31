@@ -1,0 +1,94 @@
+File: profile
+Type: alloc_space
+Time: Oct 31, 2026 at 3:51am (UTC)
+Showing nodes accounting for 2539.06MB, 97.00% of 2617.47MB total
+Dropped 50 nodes (cum <= 13.09MB)
+      flat  flat%   sum%        cum   cum%
+  396.15MB 15.13% 15.13%   687.02MB 26.25%  github.com/Leeminjing/go-forest/extensions/topology.canonicalize
+  272.46MB 10.41% 25.54%   461.01MB 17.61%  encoding/json.Marshal
+     255MB  9.74% 35.29%      255MB  9.74%  reflect.growslice
+  190.35MB  7.27% 42.56%   190.35MB  7.27%  github.com/Leeminjing/go-forest/extensions/topology.makePlanV1
+  188.55MB  7.20% 49.76%   188.55MB  7.20%  bytes.growSlice
+  155.59MB  5.94% 55.71%   155.59MB  5.94%  github.com/Leeminjing/go-forest/forest.(*Forest).Snapshot
+  138.16MB  5.28% 60.98%   138.16MB  5.28%  github.com/Leeminjing/go-forest/extensions/topology.hash
+  137.33MB  5.25% 66.23%   137.33MB  5.25%  github.com/Leeminjing/go-forest/extensions/topology.treeIndex (inline)
+  108.13MB  4.13% 70.36%   108.13MB  4.13%  github.com/Leeminjing/go-forest/extensions/topology.orderedTrees
+  102.27MB  3.91% 74.27%   298.65MB 11.41%  github.com/Leeminjing/go-forest/extensions/topology.captureCanonical
+   95.90MB  3.66% 77.93%   441.06MB 16.85%  github.com/Leeminjing/go-forest/extensions/topology.checkProjection
+   95.50MB  3.65% 81.58%      118MB  4.51%  encoding/json.(*scanner).error (inline)
+   64.50MB  2.46% 84.05%    64.50MB  2.46%  encoding/json.(*decodeState).literalStore
+   43.39MB  1.66% 85.70%   593.12MB 22.66%  github.com/Leeminjing/go-forest/extensions/topology.planV2Canonical
+   37.84MB  1.45% 87.15%    73.06MB  2.79%  github.com/Leeminjing/go-forest/extensions/topology.frame
+      37MB  1.41% 88.56%      171MB  6.53%  encoding/json.(*Decoder).Token
+   36.49MB  1.39% 89.96%    36.49MB  1.39%  github.com/Leeminjing/go-forest/extensions/topology.checkRetainedInstances
+   34.68MB  1.32% 91.28%    34.68MB  1.32%  encoding/json.(*Decoder).refill
+   22.50MB  0.86% 92.14%    22.50MB  0.86%  encoding/hex.DecodeString
+   20.01MB  0.76% 92.91%    20.01MB  0.76%  os.ReadFile
+   17.87MB  0.68% 93.59%    17.87MB  0.68%  github.com/Leeminjing/go-forest/forest.lifecycleOrder.func1
+   14.50MB  0.55% 94.14%    14.50MB  0.55%  github.com/Leeminjing/go-forest/forest.(*Forest).notify
+   14.32MB  0.55% 94.69%   846.87MB 32.35%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).scan
+    9.73MB  0.37% 95.06%    29.34MB  1.12%  github.com/Leeminjing/go-forest/forest.lifecycleOrder
+    8.34MB  0.32% 95.38%  1110.83MB 42.44%  github.com/Leeminjing/go-forest/extensions/topology.(*journalState).prepareRecord
+    8.23MB  0.31% 95.70%   393.67MB 15.04%  github.com/Leeminjing/go-forest/tests/performance.New
+    7.50MB  0.29% 95.98%       18MB  0.69%  github.com/Leeminjing/go-forest/forest.(*Forest).withCandidate
+    7.50MB  0.29% 96.27%    22.50MB  0.86%  encoding/json.quoteChar
+    6.53MB  0.25% 96.52%    93.70MB  3.58%  github.com/Leeminjing/go-forest/forest.(*Forest).Apply
+    6.23MB  0.24% 96.76%   808.19MB 30.88%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).applyLocked
+    3.50MB  0.13% 96.89%       14MB  0.53%  github.com/Leeminjing/go-forest/forest.(*Forest).stop
+       3MB  0.11% 97.00%       15MB  0.57%  strconv.quoteWith (inline)
+         0     0% 97.00%   149.28MB  5.70%  bytes.(*Buffer).Write
+         0     0% 97.00%    38.11MB  1.46%  bytes.(*Buffer).WriteString
+         0     0% 97.00%   188.55MB  7.20%  bytes.(*Buffer).grow
+         0     0% 97.00%   217.85MB  8.32%  encoding/json.(*Decoder).Decode
+         0     0% 97.00%   152.69MB  5.83%  encoding/json.(*Decoder).readValue
+         0     0% 97.00%   303.50MB 11.60%  encoding/json.(*decodeState).array
+         0     0% 97.00%   303.50MB 11.60%  encoding/json.(*decodeState).object
+         0     0% 97.00%   319.51MB 12.21%  encoding/json.(*decodeState).unmarshal
+         0     0% 97.00%   319.51MB 12.21%  encoding/json.(*decodeState).value
+         0     0% 97.00%   188.55MB  7.20%  encoding/json.(*encodeState).marshal
+         0     0% 97.00%   188.55MB  7.20%  encoding/json.(*encodeState).reflectValue
+         0     0% 97.00%   254.34MB  9.72%  encoding/json.Unmarshal
+         0     0% 97.00%   188.55MB  7.20%  encoding/json.arrayEncoder.encode
+         0     0% 97.00%    24.37MB  0.93%  encoding/json.ptrEncoder.encode
+         0     0% 97.00%   188.55MB  7.20%  encoding/json.sliceEncoder.encode
+         0     0% 97.00%      118MB  4.51%  encoding/json.stateEndTop
+         0     0% 97.00%      118MB  4.51%  encoding/json.stateEndValue
+         0     0% 97.00%   149.28MB  5.70%  encoding/json.stringEncoder
+         0     0% 97.00%   188.55MB  7.20%  encoding/json.structEncoder.encode
+         0     0% 97.00%    48.08MB  1.84%  github.com/Leeminjing/go-forest/extensions/topology.(*Catalog).plan
+         0     0% 97.00%   300.12MB 11.47%  github.com/Leeminjing/go-forest/extensions/topology.(*Catalog).planCanonical
+         0     0% 97.00%    23.01MB  0.88%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).OpenAdmission
+         0     0% 97.00%   273.90MB 10.46%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).Preview
+         0     0% 97.00%   894.29MB 34.17%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).Reconfigure (inline)
+         0     0% 97.00%   260.97MB  9.97%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).Restore
+         0     0% 97.00%   204.46MB  7.81%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).actual
+         0     0% 97.00%    61.75MB  2.36%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).applyLocked.func1
+         0     0% 97.00%   894.29MB 34.17%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).commit
+         0     0% 97.00%   535.86MB 20.47%  github.com/Leeminjing/go-forest/extensions/topology.(*Controller).previewLocked
+         0     0% 97.00%    33.89MB  1.29%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).Seed
+         0     0% 97.00%   622.55MB 23.78%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).appendLocked
+         0     0% 97.00%    66.28MB  2.53%  github.com/Leeminjing/go-forest/extensions/topology.(*canonicalManifest).sum (inline)
+         0     0% 97.00%   101.66MB  3.88%  github.com/Leeminjing/go-forest/extensions/topology.Capture
+         0     0% 97.00%   211.64MB  8.09%  github.com/Leeminjing/go-forest/extensions/topology.Normalize (inline)
+         0     0% 97.00%   846.87MB 32.35%  github.com/Leeminjing/go-forest/extensions/topology.Open
+         0     0% 97.00%   213.46MB  8.16%  github.com/Leeminjing/go-forest/extensions/topology.detached[go.shape.*uint8]
+         0     0% 97.00%    41.18MB  1.57%  github.com/Leeminjing/go-forest/extensions/topology.detached[go.shape.f86a019d4cc35b7d2def75f8ee96fa6e09625d3d350d98d04852b4bf5b6358a8]
+         0     0% 97.00%    85.21MB  3.26%  github.com/Leeminjing/go-forest/extensions/topology.detached[go.shape.struct { Version int "json:\"version\""; Trees []github.com/Leeminjing/go-forest/extensions/topology.Tree "json:\"trees\""; Bindings []github.com/Leeminjing/go-forest/extensions/topology.Binding "json:\"bindings\"" }]
+         0     0% 97.00%    82.26MB  3.14%  github.com/Leeminjing/go-forest/extensions/topology.intentHash
+         0     0% 97.00%   254.85MB  9.74%  github.com/Leeminjing/go-forest/extensions/topology.strict
+         0     0% 97.00%      171MB  6.53%  github.com/Leeminjing/go-forest/extensions/topology.strict.func1
+         0     0% 97.00%    22.50MB  0.86%  github.com/Leeminjing/go-forest/extensions/topology.validDigest
+         0     0% 97.00%       15MB  0.57%  github.com/Leeminjing/go-forest/forest.(*Forest).drainLocked.func1
+         0     0% 97.00%    14.50MB  0.55%  github.com/Leeminjing/go-forest/forest.(*Forest).setState
+         0     0% 97.00%   104.11MB  3.98%  github.com/Leeminjing/go-forest/tests/performance.(*Fixture).Target
+         0     0% 97.00%  1642.60MB 62.76%  github.com/Leeminjing/go-forest/tests/performance.NewPlanning
+         0     0% 97.00%    51.87MB  1.98%  github.com/Leeminjing/go-forest/tests/performance.PlanningData
+         0     0% 97.00%  1750.54MB 66.88%  github.com/Leeminjing/go-forest/tests/performance.PlanningOperation
+         0     0% 97.00%   846.87MB 32.35%  github.com/Leeminjing/go-forest/tests/performance.PlanningOperation.func2
+         0     0% 97.00%  2597.41MB 99.23%  github.com/Leeminjing/go-forest/tests/performance.PlanningProfile
+         0     0% 97.00%    23.37MB  0.89%  github.com/Leeminjing/go-forest/tests/performance.planningTarget
+         0     0% 97.00%  2597.41MB 99.23%  main.main
+         0     0% 97.00%      255MB  9.74%  reflect.Value.Grow
+         0     0% 97.00%      255MB  9.74%  reflect.Value.grow
+         0     0% 97.00%  2597.41MB 99.23%  runtime.main
+         0     0% 97.00%       15MB  0.57%  strconv.Quote (inline)

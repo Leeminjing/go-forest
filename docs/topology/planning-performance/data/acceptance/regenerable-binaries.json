@@ -1,0 +1,20 @@
+[
+  {
+    "file": "D:\\go-forest\\.scratch\\core-performance\\20261028-153527-candidate-d72dfc\\source\\.scratch\\temporal\\cli\\windows_amd64\\temporal.exe",
+    "archive": "D:\\go-forest\\.scratch\\core-performance\\20261028-153527-candidate-d72dfc\\source\\.scratch\\temporal\\cli\\windows_amd64\\temporal_cli_1.9.1_windows_amd64.zip",
+    "sha256": "c49d7f0d9f6a7ae5aed3b97a259070c1cee7bf7e7543be9b4c602109caf3c806",
+    "bytes": 159710720
+  },
+  {
+    "file": "D:\\go-forest\\.scratch\\core-performance\\20261028-165708-candidate-781b18\\source\\.scratch\\temporal\\cli\\windows_amd64\\temporal.exe",
+    "archive": "D:\\go-forest\\.scratch\\core-performance\\20261028-165708-candidate-781b18\\source\\.scratch\\temporal\\cli\\windows_amd64\\temporal_cli_1.9.1_windows_amd64.zip",
+    "sha256": "c49d7f0d9f6a7ae5aed3b97a259070c1cee7bf7e7543be9b4c602109caf3c806",
+    "bytes": 159710720
+  },
+  {
+    "file": "D:\\go-forest\\.scratch\\core-performance\\20261028-165739-candidate-969a53\\source\\.scratch\\temporal\\cli\\windows_amd64\\temporal.exe",
+    "archive": "D:\\go-forest\\.scratch\\core-performance\\20261028-165739-candidate-969a53\\source\\.scratch\\temporal\\cli\\windows_amd64\\temporal_cli_1.9.1_windows_amd64.zip",
+    "sha256": "c49d7f0d9f6a7ae5aed3b97a259070c1cee7bf7e7543be9b4c602109caf3c806",
+    "bytes": 159710720
+  }
+]

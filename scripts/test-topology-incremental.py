@@ -1,5 +1,6 @@
 """Run the real Gin/PostgreSQL example, with explicit source or published mode."""
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -59,6 +60,14 @@ def main():
                 run("go", "mod", "edit", *flags,
                     "-replace=github.com/Leeminjing/go-forest/extensions/topology=" + str(ROOT / "extensions/topology"))
                 run("go", "mod", "tidy", *flags)
+                selected = json.loads(run("go", "list", *flags, "-m", "-json",
+                                          "github.com/Leeminjing/go-forest/extensions/topology", capture=True))
+                expected = (ROOT / "extensions/topology").resolve()
+                if Path(selected.get("Replace", {}).get("Dir", "")).resolve() != expected:
+                    raise RuntimeError("source acceptance selected the wrong topology module")
+                production = sorted(p for p in expected.glob("*.go") if not p.name.endswith("_test.go"))
+                print(json.dumps(dict(candidate_topology=selected,
+                                      production_sha256={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in production}), indent=2), flush=True)
                 print("SOURCE acceptance: only topology is replaced with the current checkout", flush=True)
             else:
                 payload = run("go", "list", "-m", "-json", "github.com/Leeminjing/go-forest/extensions/topology", capture=True)

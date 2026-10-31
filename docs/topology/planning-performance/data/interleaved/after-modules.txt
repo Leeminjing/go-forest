@@ -1,0 +1,30 @@
+{
+	"Path": "github.com/Leeminjing/go-forest/tests/performance",
+	"Main": true,
+	"Dir": "/src/.scratch/topology-planning/interleaved/after",
+	"GoMod": "/src/.scratch/topology-planning/interleaved/after/go.mod",
+	"GoVersion": "1.23"
+}
+{
+	"Path": "github.com/Leeminjing/go-forest",
+	"Version": "v0.3.1",
+	"Time": "2026-10-28T09:13:03Z",
+	"Dir": "/go/pkg/mod/github.com/!leeminjing/go-forest@v0.3.1",
+	"GoMod": "/go/pkg/mod/cache/download/github.com/!leeminjing/go-forest/@v/v0.3.1.mod",
+	"GoVersion": "1.23",
+	"Sum": "h1:k9Q3jg6ZHJ2rFVIsTF/DbMrgkze3A+zODE0RuufagpY=",
+	"GoModSum": "h1:UejDPb4g0Q8YdwTVz0OyFLXw1WowR/DizszTlKhGkVc="
+}
+{
+	"Path": "github.com/Leeminjing/go-forest/extensions/topology",
+	"Version": "v0.2.1",
+	"Replace": {
+		"Path": "/src/.scratch/topology-planning/20261031-032428-candidate/source/extensions/topology",
+		"Dir": "/src/.scratch/topology-planning/20261031-032428-candidate/source/extensions/topology",
+		"GoMod": "/src/.scratch/topology-planning/20261031-032428-candidate/source/extensions/topology/go.mod",
+		"GoVersion": "1.23"
+	},
+	"Dir": "/src/.scratch/topology-planning/20261031-032428-candidate/source/extensions/topology",
+	"GoMod": "/src/.scratch/topology-planning/20261031-032428-candidate/source/extensions/topology/go.mod",
+	"GoVersion": "1.23"
+}

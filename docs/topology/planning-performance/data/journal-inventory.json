@@ -1,0 +1,110 @@
+{
+  "history": {
+    "bytes": 254254,
+    "records": 38,
+    "kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "session-opened": 1,
+      "intent": 17,
+      "apply-observed": 17,
+      "session-closed": 1
+    }
+  },
+  "large": {
+    "bytes": 6588212,
+    "records": 6,
+    "kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "session-opened": 1,
+      "intent": 1,
+      "apply-observed": 1,
+      "session-closed": 1
+    }
+  },
+  "many": {
+    "bytes": 33419,
+    "records": 6,
+    "kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "session-opened": 1,
+      "intent": 1,
+      "apply-observed": 1,
+      "session-closed": 1
+    }
+  },
+  "medium": {
+    "bytes": 789715,
+    "records": 6,
+    "kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "session-opened": 1,
+      "intent": 1,
+      "apply-observed": 1,
+      "session-closed": 1
+    }
+  },
+  "noop": {
+    "bytes": 33543,
+    "records": 6,
+    "kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "session-opened": 1,
+      "intent": 1,
+      "apply-observed": 1,
+      "session-closed": 1
+    }
+  },
+  "open-history": {
+    "bytes": 916606,
+    "records": 134,
+    "kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "session-opened": 1,
+      "intent": 65,
+      "apply-observed": 65,
+      "session-closed": 1
+    }
+  },
+  "open-large": {
+    "bytes": 16985636,
+    "records": 14,
+    "kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "session-opened": 1,
+      "intent": 5,
+      "apply-observed": 5,
+      "session-closed": 1
+    }
+  },
+  "rebind": {
+    "bytes": 33543,
+    "records": 6,
+    "kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "session-opened": 1,
+      "intent": 1,
+      "apply-observed": 1,
+      "session-closed": 1
+    }
+  },
+  "small": {
+    "bytes": 33544,
+    "records": 6,
+    "kinds": {
+      "genesis": 1,
+      "seed": 1,
+      "session-opened": 1,
+      "intent": 1,
+      "apply-observed": 1,
+      "session-closed": 1
+    }
+  }
+}

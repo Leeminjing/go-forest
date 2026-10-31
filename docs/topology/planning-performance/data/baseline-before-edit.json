@@ -1,0 +1,9 @@
+{
+  "time": 1793416235.8701205,
+  "baseline": ".scratch\\topology-planning\\20261031-025317-baseline-retry",
+  "observations": 650,
+  "counter_cases": 65,
+  "source": "a9f75600afaeba5aee0b407bcd08bcb85eb2fdeb",
+  "harness": "199de69774523ef3a985b7b24a1e7772e2523458",
+  "production_unmodified": true
+}

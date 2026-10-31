@@ -1,0 +1,217 @@
+File: planning
+Type: cpu
+Time: Oct 31, 2026 at 3:41am (UTC)
+Duration: 1.32s, Total samples = 1.48s (111.77%)
+Showing nodes accounting for 1.48s, 100% of 1.48s total
+      flat  flat%   sum%        cum   cum%
+     0.08s  5.41%  5.41%      0.08s  5.41%  runtime.memclrNoHeapPointers
+     0.07s  4.73% 10.14%      0.24s 16.22%  encoding/json.(*Decoder).readValue
+     0.07s  4.73% 14.86%      0.07s  4.73%  encoding/json.(*decodeState).rescanLiteral
+     0.07s  4.73% 19.59%      0.07s  4.73%  encoding/json.unquoteBytes
+     0.06s  4.05% 23.65%      0.06s  4.05%  encoding/json.stateInString
+     0.06s  4.05% 27.70%      0.06s  4.05%  runtime.(*mspan).base (inline)
+     0.06s  4.05% 31.76%      0.24s 16.22%  runtime.mallocgc
+     0.05s  3.38% 35.14%      0.05s  3.38%  crypto/sha256.block
+     0.05s  3.38% 38.51%      0.06s  4.05%  reflect.(*rtype).Name
+     0.05s  3.38% 41.89%      0.23s 15.54%  runtime.scanobject
+     0.04s  2.70% 44.59%      0.10s  6.76%  encoding/json.checkValid
+     0.04s  2.70% 47.30%      0.06s  4.05%  runtime.findObject
+     0.04s  2.70% 50.00%      0.11s  7.43%  runtime.greyobject
+     0.03s  2.03% 52.03%      0.33s 22.30%  encoding/json.(*decodeState).object
+     0.03s  2.03% 54.05%      0.06s  4.05%  encoding/json.stateBeginValue
+     0.03s  2.03% 56.08%      0.03s  2.03%  runtime.futex
+     0.03s  2.03% 58.11%      0.03s  2.03%  runtime.mapaccess2_faststr
+     0.03s  2.03% 60.14%      0.03s  2.03%  runtime.memmove
+     0.02s  1.35% 61.49%      0.02s  1.35%  encoding/json.(*scanner).pushParseState
+     0.02s  1.35% 62.84%      0.11s  7.43%  encoding/json.indirect
+     0.02s  1.35% 64.19%      0.27s 18.24%  runtime.gcDrain
+     0.02s  1.35% 65.54%      0.02s  1.35%  runtime.nextFreeFast (inline)
+     0.02s  1.35% 66.89%      0.02s  1.35%  runtime.readgstatus (inline)
+     0.01s  0.68% 67.57%      0.01s  0.68%  aeshashbody
+     0.01s  0.68% 68.24%      0.02s  1.35%  bytes.(*Buffer).Write
+     0.01s  0.68% 68.92%      0.01s  0.68%  cmpbody
+     0.01s  0.68% 69.59%      0.01s  0.68%  encoding/hex.Decode
+     0.01s  0.68% 70.27%      0.21s 14.19%  encoding/json.(*decodeState).literalStore
+     0.01s  0.68% 70.95%      0.12s  8.11%  encoding/json.(*scanner).error (inline)
+     0.01s  0.68% 71.62%      0.04s  2.70%  encoding/json.arrayEncoder.encode
+     0.01s  0.68% 72.30%      0.02s  1.35%  encoding/json.cachedTypeFields
+     0.01s  0.68% 72.97%      0.01s  0.68%  encoding/json.isSpace (inline)
+     0.01s  0.68% 73.65%      0.08s  5.41%  encoding/json.quoteChar
+     0.01s  0.68% 74.32%      0.04s  2.70%  encoding/json.structEncoder.encode
+     0.01s  0.68% 75.00%      0.05s  3.38%  github.com/Leeminjing/go-forest/extensions/topology.orderedTrees
+     0.01s  0.68% 75.68%      0.42s 28.38%  github.com/Leeminjing/go-forest/extensions/topology.strict.func1
+     0.01s  0.68% 76.35%      0.01s  0.68%  indexbytebody
+     0.01s  0.68% 77.03%      0.01s  0.68%  internal/abi.Name.ReadVarint (inline)
+     0.01s  0.68% 77.70%      0.01s  0.68%  memeqbody
+     0.01s  0.68% 78.38%      0.01s  0.68%  reflect.Value.Elem
+     0.01s  0.68% 79.05%      0.01s  0.68%  reflect.Value.NumMethod
+     0.01s  0.68% 79.73%      0.01s  0.68%  reflect.Value.SetString
+     0.01s  0.68% 80.41%      0.01s  0.68%  reflect.typedmemmove
+     0.01s  0.68% 81.08%      0.01s  0.68%  runtime.(*gcBits).bitp (inline)
+     0.01s  0.68% 81.76%      0.01s  0.68%  runtime.(*inlineUnwinder).srcFunc (inline)
+     0.01s  0.68% 82.43%      0.01s  0.68%  runtime.(*mspan).writeHeapBitsSmall
+     0.01s  0.68% 83.11%      0.01s  0.68%  runtime.(*sweepLocker).tryAcquire
+     0.01s  0.68% 83.78%      0.01s  0.68%  runtime.acquirem (inline)
+     0.01s  0.68% 84.46%      0.01s  0.68%  runtime.add (inline)
+     0.01s  0.68% 85.14%      0.01s  0.68%  runtime.alignUp (inline)
+     0.01s  0.68% 85.81%      0.01s  0.68%  runtime.bucketShift (inline)
+     0.01s  0.68% 86.49%      0.03s  2.03%  runtime.concatstrings
+     0.01s  0.68% 87.16%      0.02s  1.35%  runtime.deductAssistCredit
+     0.01s  0.68% 87.84%      0.01s  0.68%  runtime.duffcopy
+     0.01s  0.68% 88.51%      0.01s  0.68%  runtime.gcWriteBarrier1
+     0.01s  0.68% 89.19%      0.02s  1.35%  runtime.gcmarknewobject
+     0.01s  0.68% 89.86%      0.09s  6.08%  runtime.growslice
+     0.01s  0.68% 90.54%      0.01s  0.68%  runtime.madvise
+     0.01s  0.68% 91.22%      0.01s  0.68%  runtime.mapaccess1_fast32
+     0.01s  0.68% 91.89%      0.05s  3.38%  runtime.mapaccess1_faststr
+     0.01s  0.68% 92.57%      0.01s  0.68%  runtime.mapaccess2
+     0.01s  0.68% 93.24%      0.01s  0.68%  runtime.markBits.setMarked (inline)
+     0.01s  0.68% 93.92%      0.03s  2.03%  runtime.markroot
+     0.01s  0.68% 94.59%      0.01s  0.68%  runtime.pageIndexOf (inline)
+     0.01s  0.68% 95.27%      0.01s  0.68%  runtime.releasem (inline)
+     0.01s  0.68% 95.95%      0.02s  1.35%  runtime.resolveTypeOff
+     0.01s  0.68% 96.62%      0.01s  0.68%  runtime.spanOf (inline)
+     0.01s  0.68% 97.30%      0.01s  0.68%  runtime.typePointers.nextFast (inline)
+     0.01s  0.68% 97.97%      0.01s  0.68%  runtime.wbBufFlush1
+     0.01s  0.68% 98.65%      0.01s  0.68%  sort.partition_func
+     0.01s  0.68% 99.32%      0.05s  3.38%  strconv.appendQuotedWith
+     0.01s  0.68%   100%      0.02s  1.35%  strings.IndexRune
+         0     0%   100%      0.01s  0.68%  bytes.(*Buffer).grow
+         0     0%   100%      0.01s  0.68%  bytes.growSlice
+         0     0%   100%      0.05s  3.38%  crypto/sha256.(*digest).Write
+         0     0%   100%      0.05s  3.38%  crypto/sha256.Sum256
+         0     0%   100%      0.01s  0.68%  encoding/hex.DecodeString
+         0     0%   100%      0.52s 35.14%  encoding/json.(*Decoder).Decode
+         0     0%   100%      0.41s 27.70%  encoding/json.(*Decoder).Token
+         0     0%   100%      0.01s  0.68%  encoding/json.(*Decoder).peek
+         0     0%   100%      0.01s  0.68%  encoding/json.(*Decoder).refill
+         0     0%   100%      0.33s 22.30%  encoding/json.(*decodeState).array
+         0     0%   100%      0.02s  1.35%  encoding/json.(*decodeState).scanWhile
+         0     0%   100%      0.46s 31.08%  encoding/json.(*decodeState).unmarshal
+         0     0%   100%      0.45s 30.41%  encoding/json.(*decodeState).value
+         0     0%   100%      0.04s  2.70%  encoding/json.(*encodeState).marshal
+         0     0%   100%      0.04s  2.70%  encoding/json.(*encodeState).reflectValue
+         0     0%   100%      0.04s  2.70%  encoding/json.Marshal
+         0     0%   100%      0.28s 18.92%  encoding/json.Unmarshal
+         0     0%   100%      0.01s  0.68%  encoding/json.ptrEncoder.encode
+         0     0%   100%      0.04s  2.70%  encoding/json.sliceEncoder.encode
+         0     0%   100%      0.12s  8.11%  encoding/json.stateEndTop
+         0     0%   100%      0.12s  8.11%  encoding/json.stateEndValue
+         0     0%   100%      0.02s  1.35%  encoding/json.stringEncoder
+         0     0%   100%      0.01s  0.68%  gcWriteBarrier
+         0     0%   100%      1.17s 79.05%  github.com/Leeminjing/go-forest/extensions/topology.(*Store).scan
+         0     0%   100%      0.03s  2.03%  github.com/Leeminjing/go-forest/extensions/topology.(*canonicalManifest).sum (inline)
+         0     0%   100%      0.56s 37.84%  github.com/Leeminjing/go-forest/extensions/topology.(*journalState).prepareRecord
+         0     0%   100%      0.05s  3.38%  github.com/Leeminjing/go-forest/extensions/topology.Normalize (inline)
+         0     0%   100%      1.17s 79.05%  github.com/Leeminjing/go-forest/extensions/topology.Open
+         0     0%   100%      0.11s  7.43%  github.com/Leeminjing/go-forest/extensions/topology.canonicalize
+         0     0%   100%      0.01s  0.68%  github.com/Leeminjing/go-forest/extensions/topology.canonicalize.func1
+         0     0%   100%      0.06s  4.05%  github.com/Leeminjing/go-forest/extensions/topology.checkProjection
+         0     0%   100%      0.01s  0.68%  github.com/Leeminjing/go-forest/extensions/topology.checkRetainedInstances
+         0     0%   100%      0.20s 13.51%  github.com/Leeminjing/go-forest/extensions/topology.detached[go.shape.*uint8]
+         0     0%   100%      0.04s  2.70%  github.com/Leeminjing/go-forest/extensions/topology.detached[go.shape.f86a019d4cc35b7d2def75f8ee96fa6e09625d3d350d98d04852b4bf5b6358a8]
+         0     0%   100%      0.05s  3.38%  github.com/Leeminjing/go-forest/extensions/topology.detached[go.shape.struct { Version int "json:\"version\""; Trees []github.com/Leeminjing/go-forest/extensions/topology.Tree "json:\"trees\""; Bindings []github.com/Leeminjing/go-forest/extensions/topology.Binding "json:\"bindings\"" }]
+         0     0%   100%      0.06s  4.05%  github.com/Leeminjing/go-forest/extensions/topology.hash
+         0     0%   100%      0.02s  1.35%  github.com/Leeminjing/go-forest/extensions/topology.intentHash
+         0     0%   100%      0.03s  2.03%  github.com/Leeminjing/go-forest/extensions/topology.makePlanV1
+         0     0%   100%      0.01s  0.68%  github.com/Leeminjing/go-forest/extensions/topology.orderedTrees.func1
+         0     0%   100%      0.12s  8.11%  github.com/Leeminjing/go-forest/extensions/topology.planV2Canonical
+         0     0%   100%      0.59s 39.86%  github.com/Leeminjing/go-forest/extensions/topology.strict
+         0     0%   100%      0.01s  0.68%  github.com/Leeminjing/go-forest/extensions/topology.treeIndex (inline)
+         0     0%   100%      0.01s  0.68%  github.com/Leeminjing/go-forest/extensions/topology.validDigest
+         0     0%   100%      0.02s  1.35%  github.com/Leeminjing/go-forest/extensions/topology.validID
+         0     0%   100%      1.17s 79.05%  github.com/Leeminjing/go-forest/tests/performance.PlanningOperation.func2
+         0     0%   100%      1.17s 79.05%  github.com/Leeminjing/go-forest/tests/performance.PlanningProfile
+         0     0%   100%      0.01s  0.68%  internal/abi.Name.Name
+         0     0%   100%      0.01s  0.68%  internal/stringslite.IndexByte (inline)
+         0     0%   100%      1.17s 79.05%  main.main
+         0     0%   100%      0.01s  0.68%  reflect.(*rtype).String
+         0     0%   100%      0.02s  1.35%  reflect.(*rtype).ptrTo
+         0     0%   100%      0.02s  1.35%  reflect.(*rtype).typeOff (inline)
+         0     0%   100%      0.02s  1.35%  reflect.Value.Addr
+         0     0%   100%      0.02s  1.35%  reflect.Value.Grow
+         0     0%   100%      0.01s  0.68%  reflect.Value.Set
+         0     0%   100%      0.02s  1.35%  reflect.Value.grow
+         0     0%   100%      0.02s  1.35%  reflect.growslice
+         0     0%   100%      0.02s  1.35%  reflect.ptrTo (inline)
+         0     0%   100%      0.02s  1.35%  reflect.resolveTypeOff
+         0     0%   100%      0.01s  0.68%  runtime.(*bmap).overflow (inline)
+         0     0%   100%      0.01s  0.68%  runtime.(*mcache).nextFree
+         0     0%   100%      0.01s  0.68%  runtime.(*mcache).refill
+         0     0%   100%      0.01s  0.68%  runtime.(*mcentral).cacheSpan
+         0     0%   100%      0.01s  0.68%  runtime.(*mspan).markBitsForIndex (inline)
+         0     0%   100%      0.01s  0.68%  runtime.(*pageAlloc).scavenge
+         0     0%   100%      0.01s  0.68%  runtime.(*pageAlloc).scavenge.func1
+         0     0%   100%      0.01s  0.68%  runtime.(*pageAlloc).scavengeOne
+         0     0%   100%      0.01s  0.68%  runtime.(*scavengerState).init.func1
+         0     0%   100%      0.01s  0.68%  runtime.(*scavengerState).init.func2
+         0     0%   100%      0.01s  0.68%  runtime.(*scavengerState).run
+         0     0%   100%      0.01s  0.68%  runtime.(*scavengerState).wake
+         0     0%   100%      0.01s  0.68%  runtime.(*timer).unlockAndRun
+         0     0%   100%      0.01s  0.68%  runtime.(*timers).check
+         0     0%   100%      0.01s  0.68%  runtime.(*timers).run
+         0     0%   100%      0.01s  0.68%  runtime.bgscavenge
+         0     0%   100%      0.01s  0.68%  runtime.bucketMask (inline)
+         0     0%   100%      0.01s  0.68%  runtime.callers
+         0     0%   100%      0.01s  0.68%  runtime.callers.func1
+         0     0%   100%      0.03s  2.03%  runtime.concatstring4
+         0     0%   100%      0.03s  2.03%  runtime.convTstring
+         0     0%   100%      0.01s  0.68%  runtime.evacuate_faststr
+         0     0%   100%      0.02s  1.35%  runtime.findRunnable
+         0     0%   100%      0.03s  2.03%  runtime.futexwakeup
+         0     0%   100%      0.01s  0.68%  runtime.gcAssistAlloc
+         0     0%   100%      0.01s  0.68%  runtime.gcAssistAlloc.func1
+         0     0%   100%      0.01s  0.68%  runtime.gcAssistAlloc1
+         0     0%   100%      0.27s 18.24%  runtime.gcBgMarkWorker
+         0     0%   100%      0.27s 18.24%  runtime.gcBgMarkWorker.func2
+         0     0%   100%      0.20s 13.51%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0%   100%      0.07s  4.73%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0%   100%      0.01s  0.68%  runtime.gcDrainN
+         0     0%   100%      0.01s  0.68%  runtime.gopreempt_m (inline)
+         0     0%   100%      0.01s  0.68%  runtime.goschedImpl
+         0     0%   100%      0.01s  0.68%  runtime.growWork_faststr
+         0     0%   100%      0.02s  1.35%  runtime.hashGrow
+         0     0%   100%      0.01s  0.68%  runtime.heapSetType
+         0     0%   100%      0.01s  0.68%  runtime.injectglist
+         0     0%   100%      0.01s  0.68%  runtime.injectglist.func1
+         0     0%   100%      0.01s  0.68%  runtime.mProf_Malloc
+         0     0%   100%      1.17s 79.05%  runtime.main
+         0     0%   100%      0.02s  1.35%  runtime.makeBucketArray
+         0     0%   100%      0.02s  1.35%  runtime.makeslice
+         0     0%   100%      0.03s  2.03%  runtime.mapassign_faststr
+         0     0%   100%      0.02s  1.35%  runtime.mcall
+         0     0%   100%      0.01s  0.68%  runtime.memclrHasPointers
+         0     0%   100%      0.06s  4.05%  runtime.memclrNoHeapPointersChunked
+         0     0%   100%      0.01s  0.68%  runtime.morestack
+         0     0%   100%      0.02s  1.35%  runtime.newarray
+         0     0%   100%      0.02s  1.35%  runtime.newobject
+         0     0%   100%      0.01s  0.68%  runtime.newstack
+         0     0%   100%      0.03s  2.03%  runtime.notewakeup
+         0     0%   100%      0.02s  1.35%  runtime.park_m
+         0     0%   100%      0.01s  0.68%  runtime.profilealloc
+         0     0%   100%      0.01s  0.68%  runtime.rawstring (inline)
+         0     0%   100%      0.01s  0.68%  runtime.rawstringtmp
+         0     0%   100%      0.01s  0.68%  runtime.resetspinning
+         0     0%   100%      0.02s  1.35%  runtime.rtype.typeOff (inline)
+         0     0%   100%      0.01s  0.68%  runtime.runSafePointFn
+         0     0%   100%      0.03s  2.03%  runtime.schedule
+         0     0%   100%      0.07s  4.73%  runtime.slicebytetostring
+         0     0%   100%      0.02s  1.35%  runtime.startm
+         0     0%   100%      0.01s  0.68%  runtime.stealWork
+         0     0%   100%      0.01s  0.68%  runtime.sysUnused (inline)
+         0     0%   100%      0.01s  0.68%  runtime.sysUnusedOS
+         0     0%   100%      0.31s 20.95%  runtime.systemstack
+         0     0%   100%      0.01s  0.68%  runtime.tracebackPCs
+         0     0%   100%      0.01s  0.68%  runtime.wakep
+         0     0%   100%      0.01s  0.68%  runtime.wbBufFlush
+         0     0%   100%      0.01s  0.68%  runtime.wbBufFlush.func1
+         0     0%   100%      0.03s  2.03%  sort.Slice
+         0     0%   100%      0.01s  0.68%  sort.partialInsertionSort_func
+         0     0%   100%      0.03s  2.03%  sort.pdqsort_func
+         0     0%   100%      0.07s  4.73%  strconv.Quote (inline)
+         0     0%   100%      0.04s  2.70%  strconv.appendEscapedRune
+         0     0%   100%      0.07s  4.73%  strconv.quoteWith (inline)
+         0     0%   100%      0.02s  1.35%  strings.ContainsRune (inline)
+         0     0%   100%      0.01s  0.68%  strings.IndexByte (inline)
+         0     0%   100%      0.01s  0.68%  sync.(*Map).Load
+         0     0%   100%      0.04s  2.70%  unicode/utf8.AppendRune (inline)

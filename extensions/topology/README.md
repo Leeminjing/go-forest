@@ -21,6 +21,11 @@ instead of repeatedly cloning all history during append/replay. Log formats,
 original receipts, reconciliation and Write/Sync rules are unchanged. See the
 [measurements and limits](../../docs/topology/journal-performance/results.md).
 
+Current source also reuses privately owned canonical Manifest values within a
+Preview/Reconfigure operation. Complete Proposal revalidation, journal bytes
+and public ownership rules remain unchanged. This optimization is not in the
+v0.2.1 tag; see the paired [planning study](../../docs/topology/planning-performance/results.md).
+
 ## Host responsibilities
 
 Use a trusted, existing local directory on Windows or Linux. A nonblocking OS

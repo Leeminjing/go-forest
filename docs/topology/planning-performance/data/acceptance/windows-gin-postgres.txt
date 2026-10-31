@@ -1,0 +1,39 @@
+9bc6fbe1ee589cb1d33578c78a985f36356906f3ea77e6389fd12369a098b3b4
+{
+  "candidate_topology": {
+    "Path": "github.com/Leeminjing/go-forest/extensions/topology",
+    "Version": "v0.2.0",
+    "Replace": {
+      "Path": "D:\\go-forest\\extensions\\topology",
+      "Dir": "D:\\go-forest\\extensions\\topology",
+      "GoMod": "D:\\go-forest\\extensions\\topology\\go.mod",
+      "GoVersion": "1.23"
+    },
+    "Dir": "D:\\go-forest\\extensions\\topology",
+    "GoMod": "D:\\go-forest\\extensions\\topology\\go.mod",
+    "GoVersion": "1.23"
+  },
+  "production_sha256": {
+    "canonical.go": "ca1864e67864d9d5b3fc0ab78b527a191102d3db9aa5052c4a2d9210619aa7da",
+    "catalog.go": "35d08e7a9c432cb65184100179b148f049b379190a8163fb29bec4a0c162056e",
+    "controller.go": "83776dec6b6c84dae0558724479f389021540b6f41d8bc322398b6427157e62a",
+    "errors.go": "6f2b2021181d4fd6fc7515b392e8fd47c05ca50cbe5acae1bcf5bf0cb321300c",
+    "history.go": "666fad3f6512e1340a8d59facac8b3405116fcdc99e4024dcc05b68d7274106c",
+    "incremental.go": "f6dca93aa2aa7a1a8113345b6e33602a96edb84221293a13d40f174553a9e4c6",
+    "journal.go": "d544fb096f454138fe5f605e9d3c73f686f917e26457cf72edd9101e25f5d732",
+    "lock_linux.go": "863be09688be899d8e6351c4f7cef4729384264c83e96d0cff5d2cef91e15ba4",
+    "lock_unsupported.go": "da69d4cece5036d2d57dec77bb9cbb299278f6e1aa2e9cde94f6242141273c76",
+    "lock_windows.go": "46752c386c40fba9e35471ce8e639f2b8341e8858abaf71318f866e1f04ac0b3",
+    "manifest.go": "af4709311125d45f4949f8952053e8ec121dd1a8f58ab899727b62718fbf2066",
+    "planner.go": "7308522ce561ad177a23486e80d5af4906933c9cbe4c86938f5ddc2eaa0c47d8",
+    "records.go": "5c62d8eed3e1cd82603273823d69128ba12b7686402b026d6e20c8d8d2222c2c",
+    "transition.go": "75d491bb3f5ee54fc277addbf10adf854b1e4bbd1367562ff79a476460138619"
+  }
+}
+SOURCE acceptance: only topology is replaced with the current checkout
+=== RUN   TestRealGinAndPostgresKeepNativeInstancesAcrossChangeAndRollback
+    application_test.go:46: actual Gin/PostgreSQL evidence: {Old:{Versions:[1 1] Generations:[1 1] Values:[41 41] Pools:[13963498076256 13963498076256]} New:{Versions:[2 2] Generations:[2 2] Values:[41 41] Pools:[13963498076256 13963498076256]} Rollback:{Versions:[1 1] Generations:[3 3] Values:[41 41] Pools:[13963498076256 13963498076256]} Before:map[business:instance-1 db:instance-2 gin:instance-3] After:map[business:instance-4 db:instance-2 gin:instance-3] Reverted:map[business:instance-5 db:instance-2 gin:instance-3] Counts:map[business-1:{Builds:2 Starts:2 Stops:2} business-2:{Builds:1 Starts:1 Stops:1} db:{Builds:1 Starts:1 Stops:1} gin:{Builds:1 Starts:1 Stops:1}] EndpointBefore:13963498349792 EndpointAfter:13963498349792 EndpointRollback:13963498349792 Engine:13963497792832 Pool:13963498076256 ClosedBeforeOpen:503 ClosedDuringPrepare:503 BusinessCallsBeforeBlocked:1 BusinessCallsAfterBlocked:1 ReceiptVersion:2 PoolClosed:true}
+--- PASS: TestRealGinAndPostgresKeepNativeInstancesAcrossChangeAndRollback (0.04s)
+PASS
+ok  	github.com/Leeminjing/go-forest/examples/topology-incremental	0.406s
+?   	github.com/Leeminjing/go-forest/examples/topology-incremental/cmd/demo	[no test files]

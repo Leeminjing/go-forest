@@ -1,0 +1,2172 @@
+[
+  {
+    "name": "configure",
+    "command": [
+      "go",
+      "mod",
+      "edit",
+      "-replace=github.com/Leeminjing/go-forest/extensions/topology=/src/.scratch/topology-planning/20261031-025317-baseline-retry/source/extensions/topology"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "tidy",
+    "command": [
+      "go",
+      "mod",
+      "tidy"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "modules",
+    "command": [
+      "go",
+      "list",
+      "-m",
+      "-json",
+      "all"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "version",
+    "command": [
+      "go",
+      "version"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "vet",
+    "command": [
+      "go",
+      "vet",
+      "./..."
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "fixture-tests",
+    "command": [
+      "go",
+      "test",
+      "./...",
+      "-count=1",
+      "-timeout=120s"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "build",
+    "command": [
+      "go",
+      "build",
+      "-pgo=off",
+      "-buildvcs=false",
+      "-o",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "./cmd/planning"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "binary-info",
+    "command": [
+      "go",
+      "version",
+      "-m",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "input-small",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=input",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.json",
+      "-journal=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.journal"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "input-medium",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=input",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.json",
+      "-journal=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.journal"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "input-large",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=input",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "-journal=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "input-history",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=input",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.json",
+      "-journal=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.journal"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "16",
+      "FOREST_PLANNING_CHANGE": "replace"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "input-rebind",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=input",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.json",
+      "-journal=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.journal"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "rebind"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "input-noop",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=input",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.json",
+      "-journal=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.journal"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "noop"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "input-many",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=input",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.json",
+      "-journal=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.journal"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "8",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "reorder"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "input-open-history",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=input",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-history.json",
+      "-journal=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-history.journal"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "64",
+      "FOREST_PLANNING_CHANGE": "replace"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "input-open-large",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=input",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-large.json",
+      "-journal=/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-large.journal"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "4",
+      "FOREST_PLANNING_CHANGE": "replace"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "bench-small",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-buildvcs=false",
+      "-run=^$",
+      "-bench=^BenchmarkPlanning$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "bench-medium",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-buildvcs=false",
+      "-run=^$",
+      "-bench=^BenchmarkPlanning$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "bench-large",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-buildvcs=false",
+      "-run=^$",
+      "-bench=^BenchmarkPlanning$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "bench-history",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-buildvcs=false",
+      "-run=^$",
+      "-bench=^BenchmarkPlanning$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "16",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "bench-rebind",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-buildvcs=false",
+      "-run=^$",
+      "-bench=^BenchmarkPlanning$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "rebind",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "bench-noop",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-buildvcs=false",
+      "-run=^$",
+      "-bench=^BenchmarkPlanning$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "noop",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "bench-many",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-buildvcs=false",
+      "-run=^$",
+      "-bench=^BenchmarkPlanning$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "8",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "reorder",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "bench-open-history",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-buildvcs=false",
+      "-run=^$",
+      "-bench=^BenchmarkPlanning/Open$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "64",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-history.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-history.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "bench-open-large",
+    "command": [
+      "go",
+      "test",
+      "-pgo=off",
+      "-buildvcs=false",
+      "-run=^$",
+      "-bench=^BenchmarkPlanning/Open$",
+      "-benchmem",
+      "-benchtime=1x",
+      "-count=10",
+      "-cpu=1",
+      "-timeout=25m"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "4",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "profile-Preview-cpu",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=profile",
+      "-operation=Preview",
+      "-profile=cpu",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/Preview-cpu.pprof"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "top-Preview-cpu",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/Preview-cpu.pprof"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "profile-Preview-allocs",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=profile",
+      "-operation=Preview",
+      "-profile=allocs",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/Preview-allocs.pprof"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "top-Preview-allocs",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/Preview-allocs.pprof"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "memory-Preview",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=memory",
+      "-operation=Preview",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/Preview-heap.pprof"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "profile-Commit-cpu",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=profile",
+      "-operation=Commit",
+      "-profile=cpu",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/Commit-cpu.pprof"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "top-Commit-cpu",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/Commit-cpu.pprof"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "profile-Commit-allocs",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=profile",
+      "-operation=Commit",
+      "-profile=allocs",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/Commit-allocs.pprof"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "top-Commit-allocs",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/Commit-allocs.pprof"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "memory-Commit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=memory",
+      "-operation=Commit",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/Commit-heap.pprof"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "profile-PreviewCommit-cpu",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=profile",
+      "-operation=PreviewCommit",
+      "-profile=cpu",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/PreviewCommit-cpu.pprof"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "top-PreviewCommit-cpu",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/PreviewCommit-cpu.pprof"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "profile-PreviewCommit-allocs",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=profile",
+      "-operation=PreviewCommit",
+      "-profile=allocs",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/PreviewCommit-allocs.pprof"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "top-PreviewCommit-allocs",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/PreviewCommit-allocs.pprof"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "memory-PreviewCommit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=memory",
+      "-operation=PreviewCommit",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/PreviewCommit-heap.pprof"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "profile-Open-cpu",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=profile",
+      "-operation=Open",
+      "-profile=cpu",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/Open-cpu.pprof"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "4",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "top-Open-cpu",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/Open-cpu.pprof"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "profile-Open-allocs",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=profile",
+      "-operation=Open",
+      "-profile=allocs",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/Open-allocs.pprof"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "4",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "top-Open-allocs",
+    "command": [
+      "go",
+      "tool",
+      "pprof",
+      "-top",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/Open-allocs.pprof"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "memory-Open",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/planning",
+      "-mode=memory",
+      "-operation=Open",
+      "-out=/src/.scratch/topology-planning/20261031-025317-baseline-retry/Open-heap.pprof"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "4",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "build-instrument",
+    "command": [
+      "go",
+      "build",
+      "-pgo=off",
+      "-buildvcs=false",
+      "-o",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/instrument",
+      "./scripts/planning-instrument"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/tools"
+  },
+  {
+    "name": "instrument",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/instrument",
+      "-source=/src/.scratch/topology-planning/20261031-025317-baseline-retry/instrumented"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "probe-configure",
+    "command": [
+      "go",
+      "mod",
+      "edit",
+      "-replace=github.com/Leeminjing/go-forest/extensions/topology=/src/.scratch/topology-planning/20261031-025317-baseline-retry/instrumented"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "probe-tidy",
+    "command": [
+      "go",
+      "mod",
+      "tidy"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "probe-build",
+    "command": [
+      "go",
+      "build",
+      "-pgo=off",
+      "-buildvcs=false",
+      "-tags=planningprobe",
+      "-o",
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "./cmd/planningprobe"
+    ],
+    "dimensions": {},
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-small-Capture",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Capture"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-small-Normalize",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Normalize"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-small-Encode",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Encode"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-small-Compare",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Compare"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-small-Digest",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Digest"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-small-Preview",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Preview"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-small-Commit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Commit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-small-PreviewCommit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=PreviewCommit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-small-Open",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Open"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/small.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-medium-Capture",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Capture"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-medium-Normalize",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Normalize"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-medium-Encode",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Encode"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-medium-Compare",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Compare"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-medium-Digest",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Digest"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-medium-Preview",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Preview"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-medium-Commit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Commit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-medium-PreviewCommit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=PreviewCommit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-medium-Open",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Open"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "1024",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/medium.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-large-Capture",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Capture"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-large-Normalize",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Normalize"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-large-Encode",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Encode"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-large-Compare",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Compare"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-large-Digest",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Digest"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-large-Preview",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Preview"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-large-Commit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Commit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-large-PreviewCommit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=PreviewCommit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-large-Open",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Open"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-history-Capture",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Capture"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "16",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-history-Normalize",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Normalize"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "16",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-history-Encode",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Encode"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "16",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-history-Compare",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Compare"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "16",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-history-Digest",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Digest"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "16",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-history-Preview",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Preview"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "16",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-history-Commit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Commit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "16",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-history-PreviewCommit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=PreviewCommit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "16",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-history-Open",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Open"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "16",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/history.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-rebind-Capture",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Capture"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "rebind",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-rebind-Normalize",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Normalize"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "rebind",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-rebind-Encode",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Encode"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "rebind",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-rebind-Compare",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Compare"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "rebind",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-rebind-Digest",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Digest"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "rebind",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-rebind-Preview",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Preview"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "rebind",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-rebind-Commit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Commit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "rebind",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-rebind-PreviewCommit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=PreviewCommit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "rebind",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-rebind-Open",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Open"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "rebind",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/rebind.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-noop-Capture",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Capture"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "noop",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-noop-Normalize",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Normalize"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "noop",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-noop-Encode",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Encode"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "noop",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-noop-Compare",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Compare"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "noop",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-noop-Digest",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Digest"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "noop",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-noop-Preview",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Preview"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "noop",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-noop-Commit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Commit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "noop",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-noop-PreviewCommit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=PreviewCommit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "noop",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-noop-Open",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Open"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "noop",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/noop.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-many-Capture",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Capture"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "8",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "reorder",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-many-Normalize",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Normalize"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "8",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "reorder",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-many-Encode",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Encode"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "8",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "reorder",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-many-Compare",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Compare"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "8",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "reorder",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-many-Digest",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Digest"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "8",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "reorder",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-many-Preview",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Preview"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "8",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "reorder",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-many-Commit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Commit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "8",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "reorder",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-many-PreviewCommit",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=PreviewCommit"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "8",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "reorder",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-many-Open",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Open"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "8",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "1",
+      "FOREST_PERF_HISTORY": "0",
+      "FOREST_PLANNING_CHANGE": "reorder",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/many.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-open-history-Open",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Open"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "32",
+      "FOREST_PERF_E": "16",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "64",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-history.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-history.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  },
+  {
+    "name": "count-open-large-Open",
+    "command": [
+      "/src/.scratch/topology-planning/20261031-025317-baseline-retry/probe",
+      "-operation=Open"
+    ],
+    "dimensions": {
+      "FOREST_PERF_N": "10000",
+      "FOREST_PERF_E": "256",
+      "FOREST_PERF_D": "1",
+      "FOREST_PERF_PORTS": "1",
+      "FOREST_PERF_MANY": "0",
+      "FOREST_PERF_HISTORY": "4",
+      "FOREST_PLANNING_CHANGE": "replace",
+      "FOREST_PLANNING_INPUT": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-large.json",
+      "FOREST_PLANNING_JOURNAL": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/inputs/open-large.journal"
+    },
+    "cwd": "/src/.scratch/topology-planning/20261031-025317-baseline-retry/harness"
+  }
+]

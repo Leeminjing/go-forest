@@ -8,3 +8,7 @@ __pycache__/
 # Spec and Design documents stay local, at every directory level.
 [sS][pP][eE][cC].md
 [dD][eE][sS][iI][gG][nN].md
+# Locally retained, regenerable executables are not raw benchmark evidence.
+/docs/topology/planning-performance/data/**/planning
+/docs/topology/planning-performance/data/**/probe
+/docs/topology/planning-performance/data/**/instrument

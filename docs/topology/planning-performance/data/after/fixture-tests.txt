@@ -1,0 +1,5 @@
+?   	github.com/Leeminjing/go-forest/tests/performance/cmd/journal	[no test files]
+?   	github.com/Leeminjing/go-forest/tests/performance/cmd/journal-audit	[no test files]
+?   	github.com/Leeminjing/go-forest/tests/performance/cmd/perf	[no test files]
+?   	github.com/Leeminjing/go-forest/tests/performance/cmd/planning	[no test files]
+ok  	github.com/Leeminjing/go-forest/tests/performance	0.127s
