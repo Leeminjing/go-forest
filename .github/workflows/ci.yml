@@ -195,7 +195,8 @@ jobs:
           python-version: '3.12'
       - run: python scripts/verify-eino-release.py
   browser:
-    runs-on: ubuntu-latest
+    # Keep the pinned Playwright 1.58 installer on its supported Ubuntu image.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -231,7 +232,8 @@ jobs:
           python-version: '3.12'
       - run: python scripts/verify-release.py
   ecosystem:
-    runs-on: ubuntu-latest
+    # Keep the pinned Playwright 1.58 installer on its supported Ubuntu image.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -287,7 +289,7 @@ jobs:
       fail-fast: false
       matrix:
         service: [ecosystem, cross-adapter, temporal-eino, temporal, topology]
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.service == 'ecosystem' && 'ubuntu-24.04' || 'ubuntu-latest' }}
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
@@ -320,7 +322,8 @@ jobs:
             .scratch/core-performance/*candidate*/COMPLETE
           retention-days: 14
   candidate-browser:
-    runs-on: ubuntu-latest
+    # Keep the pinned Playwright 1.58 installer on its supported Ubuntu image.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
