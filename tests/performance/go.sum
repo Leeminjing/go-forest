@@ -1,4 +1,4 @@
 github.com/Leeminjing/go-forest v0.3.1 h1:k9Q3jg6ZHJ2rFVIsTF/DbMrgkze3A+zODE0RuufagpY=
 github.com/Leeminjing/go-forest v0.3.1/go.mod h1:UejDPb4g0Q8YdwTVz0OyFLXw1WowR/DizszTlKhGkVc=
-github.com/Leeminjing/go-forest/extensions/topology v0.2.0 h1:fzICZiJrJ25T1QrmSliLidknKxAj/LvOUnZbTeN9/jU=
-github.com/Leeminjing/go-forest/extensions/topology v0.2.0/go.mod h1:cWqjCMIOeqpYO9byGaVg0n1V1S0F4hSNsQRIxkPDljU=
+github.com/Leeminjing/go-forest/extensions/topology v0.2.1 h1:wdqBbRLkGlvE/wQiJhk5EWjXk3/GXjB/JFnFUaaVR8o=
+github.com/Leeminjing/go-forest/extensions/topology v0.2.1/go.mod h1:cWqjCMIOeqpYO9byGaVg0n1V1S0F4hSNsQRIxkPDljU=
